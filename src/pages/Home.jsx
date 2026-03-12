@@ -1,0 +1,21 @@
+import Hero         from '../components/Hero'
+import StatsSection  from '../components/StatsSection'
+import ValueProps    from '../components/ValueProps'
+import CategoryGrid  from '../components/CategoryGrid'
+import HowItWorks    from '../components/HowItWorks'
+import TrustBadge    from '../components/TrustBadge'
+import CTASection    from '../components/CTASection'
+
+export default function Home() {
+  return (
+    <main>
+      <Hero />
+      <StatsSection />
+      <ValueProps />
+      <CategoryGrid />
+      <HowItWorks />
+      <TrustBadge />
+      <CTASection />
+    </main>
+  )
+}

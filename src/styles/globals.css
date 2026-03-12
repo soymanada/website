@@ -1,0 +1,273 @@
+/* ═══════════════════════════════════════════════════════════════════
+   SoyManada — "Iris & Ivory" Design System
+   Purple as warmth, not authority. Ivory as home, not paper.
+   ═══════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+/* ── Tokens ─────────────────────────────────────────────────────── */
+:root {
+  /* Core palette */
+  --iris-900: #1E0A3C;
+  --iris-800: #2D1057;
+  --iris-700: #3D1A78;
+  --iris-600: #5B2D9E;
+  --iris-500: #7B4DC8;   /* primary */
+  --iris-400: #A07DE0;
+  --iris-300: #C4B0F0;
+  --iris-200: #E2D6FA;
+  --iris-100: #F2EDFD;
+  --iris-50:  #F8F5FF;
+
+  /* Ivory */
+  --ivory:        #FAF8F4;
+  --ivory-warm:   #F4F0E8;
+  --ivory-deeper: #EDE8DC;
+
+  /* Text */
+  --text-900: #120826;
+  --text-700: #2E1A4A;
+  --text-500: #5A4877;
+  --text-300: #9B8CB5;
+  --text-100: #D4CCE5;
+
+  /* White */
+  --white: #FFFFFF;
+
+  /* Accent: warm gold */
+  --gold:       #C9953A;
+  --gold-light: #FDF3E1;
+  --gold-border:#F0D89A;
+
+  /* Semantic */
+  --color-verified:    var(--iris-500);
+  --color-bg:          var(--ivory);
+  --color-surface:     var(--white);
+  --color-border:      var(--iris-200);
+  --color-border-soft: rgba(91,45,158,0.10);
+
+  /* Typography */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body:    'Plus Jakarta Sans', system-ui, sans-serif;
+
+  /* Radii */
+  --r-sm:  8px;
+  --r-md:  14px;
+  --r-lg:  20px;
+  --r-xl:  28px;
+  --r-2xl: 40px;
+
+  /* Shadows — iris-tinted */
+  --shadow-xs: 0 1px 3px rgba(91,45,158,0.06);
+  --shadow-sm: 0 2px 8px rgba(91,45,158,0.08);
+  --shadow-md: 0 6px 24px rgba(91,45,158,0.12);
+  --shadow-lg: 0 16px 48px rgba(91,45,158,0.16);
+  --shadow-xl: 0 32px 80px rgba(91,45,158,0.20);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --t-fast: 0.18s;
+  --t-med:  0.28s;
+  --t-slow: 0.45s;
+
+  /* Layout */
+  --max-w: 1200px;
+  --gap:   24px;
+}
+
+/* ── Reset ───────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--ivory);
+  color: var(--text-900);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; border: none; background: none; font-family: inherit; }
+ul, ol { list-style: none; }
+
+/* ── Noise texture overlay (subtle grain) ────────────────────────── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.4;
+}
+
+/* ── Typography scale ────────────────────────────────────────────── */
+.d-2xl {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 6vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+}
+.d-xl {
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 4.5vw, 3.4rem);
+  font-weight: 700;
+  line-height: 1.10;
+  letter-spacing: -0.02em;
+}
+.d-lg {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3vw, 2.4rem);
+  font-weight: 600;
+  line-height: 1.18;
+  letter-spacing: -0.015em;
+}
+.d-md {
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 2.5vw, 1.85rem);
+  font-weight: 600;
+  line-height: 1.25;
+}
+.t-lg   { font-size: 1.125rem; line-height: 1.7; }
+.t-md   { font-size: 1rem;     line-height: 1.65; }
+.t-sm   { font-size: 0.875rem; line-height: 1.6; }
+.t-xs   { font-size: 0.78rem;  line-height: 1.5; }
+.label  { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+
+/* ── Layout ──────────────────────────────────────────────────────── */
+.container {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 var(--gap);
+}
+.section { padding: 100px 24px; }
+@media (max-width: 768px) { .section { padding: 64px 20px; } }
+
+/* ── Buttons ─────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  padding: 13px 26px;
+  border-radius: 100px;
+  transition: all var(--t-med) var(--ease-out);
+  white-space: nowrap;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Primary: iris gradient */
+.btn-primary {
+  background: linear-gradient(135deg, var(--iris-600) 0%, var(--iris-500) 100%);
+  color: var(--white);
+  box-shadow: 0 4px 20px rgba(91,45,158,0.40);
+}
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--iris-700) 0%, var(--iris-600) 100%);
+  opacity: 0;
+  transition: opacity var(--t-fast);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(91,45,158,0.45); }
+.btn-primary:hover::before { opacity: 1; }
+.btn-primary > * { position: relative; z-index: 1; }
+.btn-primary span { position: relative; z-index: 1; }
+
+/* Secondary: outlined */
+.btn-secondary {
+  background: var(--white);
+  color: var(--iris-700);
+  border: 1.5px solid var(--iris-300);
+  box-shadow: var(--shadow-xs);
+}
+.btn-secondary:hover {
+  background: var(--iris-50);
+  border-color: var(--iris-400);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Ghost */
+.btn-ghost {
+  background: transparent;
+  color: var(--iris-600);
+  border: 1.5px solid transparent;
+}
+.btn-ghost:hover { background: var(--iris-100); border-color: var(--iris-200); }
+
+.btn-sm   { font-size: 0.84rem; padding: 9px 20px; }
+.btn-lg   { font-size: 1.0625rem; padding: 16px 34px; }
+.btn-full { width: 100%; justify-content: center; }
+
+/* ── Iris pill label ─────────────────────────────────────────────── */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--iris-100);
+  border: 1px solid var(--iris-200);
+  color: var(--iris-600);
+  padding: 5px 14px;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  width: fit-content;
+}
+.eyebrow-dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--iris-500);
+  animation: pulse-dot 2.4s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.45; transform: scale(0.8); }
+}
+
+/* ── Animations ──────────────────────────────────────────────────── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes float-gentle {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33%       { transform: translateY(-8px) rotate(0.5deg); }
+  66%       { transform: translateY(-4px) rotate(-0.3deg); }
+}
+@keyframes shimmer {
+  from { background-position: -200% center; }
+  to   { background-position: 200% center; }
+}
+
+.anim-fade-up { animation: fade-up var(--t-slow) var(--ease-out) both; }
+.delay-1 { animation-delay: 0.10s; }
+.delay-2 { animation-delay: 0.20s; }
+.delay-3 { animation-delay: 0.32s; }
+.delay-4 { animation-delay: 0.44s; }
+.delay-5 { animation-delay: 0.56s; }
+
+/* ── Scrollbar ───────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--ivory); }
+::-webkit-scrollbar-thumb { background: var(--iris-300); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--iris-400); }
+
+/* ── Focus ───────────────────────────────────────────────────────── */
+:focus-visible { outline: 2px solid var(--iris-500); outline-offset: 3px; border-radius: 4px; }
+
+/* ── Selection ───────────────────────────────────────────────────── */
+::selection { background: var(--iris-200); color: var(--iris-900); }

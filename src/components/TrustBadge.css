@@ -1,0 +1,80 @@
+.trust { background: var(--white); }
+
+.trust__layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+/* Seal */
+.trust__seal {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--iris-50);
+  border: 1.5px solid var(--iris-200);
+  border-radius: var(--r-xl);
+  padding: 16px 22px;
+  margin-bottom: 28px;
+}
+.trust__seal-ring {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--iris-600), var(--iris-400));
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 16px rgba(91,45,158,0.3);
+}
+.trust__seal-glyph { color: white; font-size: 1.1rem; }
+.trust__seal-text { display: flex; flex-direction: column; gap: 3px; }
+.trust__seal-label { color: var(--iris-700); }
+.trust__seal-sub   { color: var(--text-500); }
+
+.trust__title { color: var(--iris-900); margin-bottom: 16px; }
+.trust__title em { font-style: italic; color: var(--iris-500); }
+.trust__lead   { color: var(--text-500); margin-bottom: 24px; }
+
+.trust__disclaimer {
+  color: var(--text-300);
+  background: var(--ivory);
+  border-left: 3px solid var(--iris-300);
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  padding: 12px 16px;
+}
+
+/* Pillars */
+.trust__right { display: flex; flex-direction: column; gap: 20px; }
+
+.trust-pillar {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  padding: 22px 22px;
+  border: 1px solid var(--iris-200);
+  border-radius: var(--r-lg);
+  background: var(--ivory);
+  transition: all var(--t-med) var(--ease-out);
+}
+.trust-pillar:hover {
+  border-color: var(--iris-400);
+  background: var(--iris-50);
+  transform: translateX(6px);
+  box-shadow: var(--shadow-sm);
+}
+.trust-pillar__icon {
+  font-size: 1.4rem;
+  width: 44px; height: 44px;
+  background: var(--white);
+  border-radius: var(--r-sm);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-xs);
+}
+.trust-pillar__title { font-weight: 600; color: var(--text-700); margin-bottom: 6px; }
+.trust-pillar__body  { color: var(--text-500); }
+
+@media (max-width: 900px) {
+  .trust__layout { grid-template-columns: 1fr; gap: 48px; }
+  .trust-pillar:hover { transform: none; }
+}
