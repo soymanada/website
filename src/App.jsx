@@ -5,7 +5,8 @@ import Footer        from './components/Footer'
 import Home          from './pages/Home'
 import CategoryPage  from './pages/CategoryPage'
 import ProvidersPage from './pages/ProvidersPage'
-import { initScrollTracking } from './utils/analytics'
+// IMPORTANTE: Se eliminó initScrollTracking de la siguiente línea
+import { trackPageView } from './utils/analytics'
 
 function ScrollTop() {
   const { pathname } = useLocation()
@@ -13,10 +14,18 @@ function ScrollTop() {
   return null
 }
 
+function AnalyticsListener() {
+  const location = useLocation();
+  useEffect(() => {
+    trackPageView(location.pathname, document.title);
+  }, [location]);
+  return null;
+}
+
 function Layout() {
-  useEffect(() => initScrollTracking(), [])
   return (
     <>
+      <AnalyticsListener />
       <ScrollTop />
       <Header />
       <Routes>
@@ -37,7 +46,7 @@ function Layout() {
 
 export default function App() {
   return (
-    <BrowserRouter basename="/soy-manada">
+    <BrowserRouter>
       <Layout />
     </BrowserRouter>
   )

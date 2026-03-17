@@ -1,6 +1,6 @@
 // src/utils/analytics.js
 
-const GA_MEASUREMENT_ID = 'G-XXXXXXXX'; // Reemplazar por el ID real [cite: 30]
+const GA_MEASUREMENT_ID = 'G-8THTZR9NSJ'; 
 
 export const trackEvent = (eventName, params = {}) => {
   if (typeof window.gtag !== 'undefined') {
@@ -26,6 +26,7 @@ export const trackPageView = (path, title) => {
   });
 };
 
+// Dejamos este objeto para que los componentes puedan usar nombres estandarizados
 export const Events = {
   CLICK_CATEGORIA: 'click_categoria',
   PROVEEDOR_VISITADO: 'proveedor_visitado',

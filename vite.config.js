@@ -3,5 +3,6 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/soy-manada/',
+  // Al usar soymanada.com, la base debe ser la raíz '/'
+  base: '/',
 })
