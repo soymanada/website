@@ -2,7 +2,7 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <meta 
@@ -19,8 +19,8 @@
       gtag('js', new Date());
 
       /**
-       * IMPORTANTE: 'send_page_view: false' es necesario porque 
-       * el seguimiento de páginas lo maneja React Router en App.jsx
+       * IMPORTANTE: 'send_page_view: false' para evitar duplicados, 
+       * ya que React Router maneja las vistas en App.jsx
        */
       gtag('config', 'G-8THTZR9NSJ', { send_page_view: false });
     </script>
