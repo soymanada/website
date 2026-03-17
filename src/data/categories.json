@@ -1,5 +1,5 @@
 [
-  { "slug": "seguros",     "name": "Seguros",              "oneLiner": "Protege tu salud, auto y hogar en tu nuevo país.",          "icon": "🛡️", "order": 1 },
+  { "slug": "seguros",     "name": "Seguros",              "oneLiner": "Protege tu salud, auto y hogar en tu nuevo país.",          "icon": "🛡️", "order": 1, "isHot": true },
   { "slug": "migracion",   "name": "Asesoría migratoria",  "oneLiner": "Visas, permisos y residencia con orientación real.",        "icon": "📋", "order": 2 },
   { "slug": "traducciones","name": "Traducciones",         "oneLiner": "Documentos oficiales traducidos por personas calificadas.", "icon": "🌐", "order": 3 },
   { "slug": "trabajo",     "name": "Trabajo",              "oneLiner": "Empleo, freelance y oportunidades para migrantes.",         "icon": "💼", "order": 4 },

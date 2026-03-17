@@ -5,6 +5,36 @@ export default function Footer() {
   return (
     <footer className="footer">
       <div className="container">
+        {/* Nueva sección ¿Por qué confiar? */}
+        <div className="footer__trust-section">
+          <h4 className="footer__trust-title d-md">¿Por qué confiar en Manada?</h4>
+          <div className="footer__trust-grid">
+            <div className="trust-item">
+              <span className="trust-item__icon">🛡️</span>
+              <div>
+                <strong>Filtro manual</strong>
+                <p className="t-xs">Cada proveedor es revisado antes de aparecer.</p>
+              </div>
+            </div>
+            <div className="trust-item">
+              <span className="trust-item__icon">💬</span>
+              <div>
+                <strong>Feedback real</strong>
+                <p className="t-xs">Validado por la experiencia de nuestra comunidad.</p>
+              </div>
+            </div>
+            <div className="trust-item">
+              <span className="trust-item__icon">🎁</span>
+              <div>
+                <strong>Beneficios exclusivos</strong>
+                <p className="t-xs">Descuentos negociados solo para ti.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr className="footer__divider" />
+
         <div className="footer__inner">
           <div className="footer__brand">
             <Link to="/" className="footer__logo">

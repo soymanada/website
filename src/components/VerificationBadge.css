@@ -1,0 +1,60 @@
+.v-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  cursor: help;
+  z-index: 10;
+}
+
+.v-badge__icon {
+  background: var(--iris-600);
+  color: var(--white);
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 8px rgba(91, 45, 158, 0.3);
+  transition: transform var(--t-fast);
+}
+
+.v-badge:hover .v-badge__icon {
+  transform: scale(1.1);
+  background: var(--iris-500);
+}
+
+.v-badge__tooltip {
+  position: absolute;
+  bottom: 130%;
+  right: -10px;
+  width: 200px;
+  background: var(--iris-900);
+  color: var(--white);
+  padding: 12px;
+  border-radius: var(--r-md);
+  font-size: 0.75rem;
+  line-height: 1.4;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.3s var(--ease-out);
+  box-shadow: var(--shadow-lg);
+  pointer-events: none;
+}
+
+.v-badge__tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  right: 18px;
+  border: 6px solid transparent;
+  border-top-color: var(--iris-900);
+}
+
+.v-badge:hover .v-badge__tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
