@@ -3,5 +3,6 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/website/', // repo name en GitHub Pages
+  // Esto debe ser '/' para soymanada.com
+  base: '/', 
 })
