@@ -3,7 +3,7 @@ import { trackEvent, Events } from '../utils/analytics'
 import './ProvidersPage.css'
 
 const benefits = [
-  { icon: '🌍', title: 'Llega a tu comunidad',       body: 'Miles de migrantes buscan servicios confiables cada semana. Tu perfil estará donde ellos buscan.' },
+  { icon: '🌍', title: 'Llega a tu comunidad',      body: 'Miles de migrantes buscan servicios confiables cada semana. Tu perfil estará donde ellos buscan.' },
   { icon: '⚡', title: 'Contacto directo',            body: 'Los usuarios te contactan por WhatsApp o Instagram. Sin intermediarios ni comisiones.' },
   { icon: '✦',  title: 'Sello de confianza',         body: 'Si cumples los criterios, recibes el sello "Verificado por Manada". Vale más que cualquier anuncio.' },
   { icon: '🆓', title: 'Gratuito para empezar',       body: 'Aparecer en SoyManada no tiene costo. La confianza de la comunidad es el único requisito.' },
@@ -13,8 +13,10 @@ export default function ProvidersPage() {
   useEffect(() => { window.scrollTo(0, 0) }, [])
 
   const handleApply = () => {
+    // Analytics para medir cuántos proveedores se interesan
     trackEvent(Events.CLICK_APPLY_PROVIDER, { from: 'providers_page' })
-    window.open('https://forms.google.com', '_blank', 'noopener,noreferrer')
+    // Tu enlace real de Google Forms
+    window.open('https://forms.gle/fcafAqi49XRevVot6', '_blank', 'noopener,noreferrer')
   }
 
   return (
@@ -102,7 +104,7 @@ export default function ProvidersPage() {
           <h2 className="d-xl ppg-steps__title">¿Cómo funciona el proceso?</h2>
           <div className="ppg-steps__list">
             {[
-              { n: '01', t: 'Envías tu solicitud',    d: 'Completa el formulario con tu nombre, servicio, países y contactos.' },
+              { n: '01', t: 'Envías tu solicitud',     d: 'Completa el formulario con tu nombre, servicio, países y contactos.' },
               { n: '02', t: 'Revisamos tu perfil',    d: 'El equipo valida tu información y presencia en la comunidad.' },
               { n: '03', t: 'Apareces en el directorio', d: 'Tu perfil queda activo y empiezas a recibir contactos directos.' },
             ].map(s => (
