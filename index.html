@@ -12,6 +12,23 @@
     
     <title>SoyManada – Directorio para la comunidad migrante</title>
 
+    <!-- SPA restore: decodifica el path que 404.html codificó en la query string -->
+    <script>
+      (function(l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function(s) {
+            return s.replace(/~and~/g, '&');
+          });
+          window.history.replaceState(
+            null, null,
+            l.pathname.slice(0, -1) + decoded[0] +
+            (decoded[1] ? '?' + decoded[1] : '') +
+            l.hash
+          );
+        }
+      }(window.location));
+    </script>
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8THTZR9NSJ"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
