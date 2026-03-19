@@ -36,7 +36,7 @@ export default function ProviderCard({ provider }) {
       
       <article className="pcard">
         <div className="pcard__accent" aria-hidden="true" />
-        {verified && <VerificationBadge />}
+        {verified && <VerificationBadge variant="pill" theme="light" />}
 
         <div className="pcard__header">
           <div className="pcard__avatar">{name.charAt(0)}</div>

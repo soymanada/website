@@ -1,4 +1,5 @@
 import './TrustBadge.css'
+import VerificationBadge from './VerificationBadge'
 
 const pillars = [
   { icon: '👥', title: 'Recomendado por la comunidad', body: 'Cada proveedor fue sugerido o avalado por miembros reales de la Manada. No listamos a desconocidos.' },
@@ -13,15 +14,7 @@ export default function TrustBadge() {
         <div className="trust__layout">
           {/* Left */}
           <div className="trust__left">
-            <div className="trust__seal">
-              <div className="trust__seal-ring" aria-hidden="true">
-                <span className="trust__seal-glyph">✦</span>
-              </div>
-              <div className="trust__seal-text">
-                <span className="label trust__seal-label">Verificado por Manada</span>
-                <span className="t-sm trust__seal-sub">El sello de confianza de tu comunidad</span>
-              </div>
-            </div>
+            <VerificationBadge variant="seal" theme="dark" />
 
             <h2 className="d-lg trust__title">
               ¿Qué significa<br />
