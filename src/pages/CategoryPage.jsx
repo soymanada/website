@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import categories   from '../data/categories.json'
 import providers    from '../data/providers.json'
 import ProviderCard from '../components/ProviderCard'
+import CategoryIcon from '../components/CategoryIcon'
 import { trackEvent, Events } from '../utils/analytics'
 import './CategoryPage.css'
 
@@ -41,7 +42,9 @@ export default function CategoryPage() {
           </nav>
 
           <div className="catpage__hero-content">
-            <div className="catpage__icon" aria-hidden="true">{cat.icon}</div>
+            <div className="catpage__icon" aria-hidden="true">
+              <CategoryIcon name={cat.icon} size={32} />
+            </div>
             <div>
               <h1 className="d-xl catpage__title">{cat.name}</h1>
               <p className="t-lg catpage__sub">{cat.oneLiner}</p>
@@ -102,7 +105,7 @@ export default function CategoryPage() {
                 className="catpage__other-chip"
                 onClick={() => trackEvent(Events.CLICK_CATEGORY_CARD, { category: c.slug, from: 'category_bottom' })}
               >
-                {c.icon} {c.name}
+                <CategoryIcon name={c.icon} size={14} /> {c.name}
               </Link>
             ))}
           </div>

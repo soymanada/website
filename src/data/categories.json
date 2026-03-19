@@ -1,11 +1,11 @@
 [
-  { "slug": "seguros",     "name": "Seguros",              "oneLiner": "Protege tu salud, auto y hogar en tu nuevo país.",          "icon": "🛡️", "order": 1, "isHot": true },
-  { "slug": "migracion",   "name": "Asesoría migratoria",  "oneLiner": "Visas, permisos y residencia con orientación real.",        "icon": "📋", "order": 2 },
-  { "slug": "traducciones","name": "Traducciones",         "oneLiner": "Documentos oficiales traducidos por personas calificadas.", "icon": "🌐", "order": 3 },
-  { "slug": "trabajo",     "name": "Trabajo",              "oneLiner": "Empleo, freelance y oportunidades para migrantes.",         "icon": "💼", "order": 4 },
-  { "slug": "alojamiento", "name": "Alojamiento",          "oneLiner": "Habitaciones, arriendos y ayuda para instalarte.",          "icon": "🏠", "order": 5 },
-  { "slug": "idiomas",          "name": "Idiomas",          "oneLiner": "Clases, tutorías y práctica para integrarte mejor.",                                "icon": "💬", "order": 6 },
-  { "slug": "banca",            "name": "Banca",            "oneLiner": "Ejecutivos bancarios que entienden tu realidad migratoria",                          "icon": "🏦", "order": 7, "isHot": true },
-  { "slug": "salud-mental",     "name": "Salud Mental",     "oneLiner": "Psicólogos y terapeutas que hablan tu idioma y entienden tu proceso",                "icon": "🧠", "order": 8, "isHot": false },
-  { "slug": "antes-de-viajar",  "name": "Antes de viajar", "oneLiner": "Lo que nadie te contó antes de emigrar",                                             "icon": "🧳", "order": 9, "isHot": true }
+  { "slug": "seguros",         "name": "Seguros",             "oneLiner": "Protege tu salud, auto y hogar en tu nuevo país.",                          "icon": "shield",      "order": 1, "isHot": true },
+  { "slug": "migracion",       "name": "Asesoría migratoria", "oneLiner": "Visas, permisos y residencia con orientación real.",                        "icon": "compass",     "order": 2 },
+  { "slug": "traducciones",    "name": "Traducciones",        "oneLiner": "Documentos oficiales traducidos por personas calificadas.",                  "icon": "globe",       "order": 3 },
+  { "slug": "trabajo",         "name": "Trabajo",             "oneLiner": "Empleo, freelance y oportunidades para migrantes.",                         "icon": "briefcase",   "order": 4 },
+  { "slug": "alojamiento",     "name": "Alojamiento",         "oneLiner": "Habitaciones, arriendos y ayuda para instalarte.",                          "icon": "home",        "order": 5 },
+  { "slug": "idiomas",         "name": "Idiomas",             "oneLiner": "Clases, tutorías y práctica para integrarte mejor.",                        "icon": "book-open",   "order": 6 },
+  { "slug": "banca",           "name": "Banca",               "oneLiner": "Ejecutivos bancarios que entienden tu realidad migratoria",                 "icon": "credit-card", "order": 7, "isHot": true },
+  { "slug": "salud-mental",    "name": "Salud Mental",        "oneLiner": "Psicólogos y terapeutas que hablan tu idioma y entienden tu proceso",       "icon": "heart",       "order": 8, "isHot": false },
+  { "slug": "antes-de-viajar", "name": "Antes de viajar",    "oneLiner": "Lo que nadie te contó antes de emigrar",                                    "icon": "plane",       "order": 9, "isHot": true }
 ]

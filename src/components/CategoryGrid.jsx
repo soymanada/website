@@ -2,6 +2,7 @@
 import { Link } from 'react-router-dom';
 import categories from '../data/categories.json';
 import { trackEvent, Events } from '../utils/analytics';
+import CategoryIcon from './CategoryIcon';
 import './CategoryGrid.css';
 
 export default function CategoryGrid() {
@@ -28,7 +29,9 @@ export default function CategoryGrid() {
               >
                 {cat.isHot && <span className="catcard__badge-hot">TOP</span>}
                 <div className="catcard__top">
-                  <div className="catcard__icon">{cat.icon}</div>
+                  <div className="catcard__icon">
+                  <CategoryIcon name={cat.icon} size={28} />
+                </div>
                 </div>
                 <h3 className="catcard__name">{cat.name}</h3>
                 <p className="catcard__desc t-sm">{cat.oneLiner}</p>
