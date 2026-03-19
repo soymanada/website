@@ -185,3 +185,14 @@
   .ppg-hero__visual { display: none; }
   .ppg-benefits__grid { grid-template-columns: 1fr; }
 }
+
+@media (max-width: 768px) {
+  .ppg-benefit {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .ppg-benefit__icon {
+    flex-shrink: 0;
+  }
+}

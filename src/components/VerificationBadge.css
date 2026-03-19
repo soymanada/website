@@ -1,60 +1,195 @@
-.v-badge {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  cursor: help;
-  z-index: 10;
+/* ═══════════════════════════════════════════════════════
+   VerificationBadge — pill + seal
+   Usa tokens de globals.css. Sin colores hardcodeados.
+   ═══════════════════════════════════════════════════════ */
+
+/* ── PILL (variant="pill") ──────────────────────────── */
+.vb-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px 4px 5px;
+  border-radius: 100px;
+  width: fit-content;
+  user-select: none;
 }
 
-.v-badge__icon {
-  background: var(--iris-600);
-  color: var(--white);
-  width: 26px;
-  height: 26px;
+/* Tema claro (default) — sobre ivory o surface */
+.vb-pill--light {
+  background: var(--iris-100);
+  border: 1px solid var(--iris-200);
+}
+
+/* Tema oscuro — sobre secciones iris-900/iris-800 */
+.vb-pill--dark {
+  background: rgba(123, 77, 200, 0.20);
+  border: 1px solid rgba(160, 125, 224, 0.35);
+}
+
+/* Círculo con checkmark */
+.vb-pill__dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  font-size: 0.9rem;
-  box-shadow: 0 2px 8px rgba(91, 45, 158, 0.3);
-  transition: transform var(--t-fast);
+  flex-shrink: 0;
 }
 
-.v-badge:hover .v-badge__icon {
-  transform: scale(1.1);
+.vb-pill--light .vb-pill__dot {
   background: var(--iris-500);
+  color: var(--white);
 }
 
-.v-badge__tooltip {
-  position: absolute;
-  bottom: 130%;
-  right: -10px;
-  width: 200px;
-  background: var(--iris-900);
-  color: var(--white);
-  padding: 12px;
-  border-radius: var(--r-md);
+.vb-pill--dark .vb-pill__dot {
+  background: var(--iris-400);
+  color: var(--iris-900);
+}
+
+.vb-pill__check {
+  width: 10px;
+  height: 10px;
+}
+
+/* Texto del pill */
+.vb-pill__text {
+  font-family: var(--font-body);
   font-size: 0.75rem;
-  line-height: 1.4;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(10px);
-  transition: all 0.3s var(--ease-out);
-  box-shadow: var(--shadow-lg);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.vb-pill--light .vb-pill__text strong {
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--iris-700);
+}
+
+.vb-pill--light .vb-pill__text span {
+  font-weight: 400;
+  color: var(--iris-600);
+}
+
+.vb-pill--dark .vb-pill__text strong {
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--iris-200);
+}
+
+.vb-pill--dark .vb-pill__text span {
+  font-weight: 400;
+  color: var(--iris-300);
+}
+
+
+/* ── SEAL (variant="seal") ──────────────────────────── */
+.vb-seal {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+}
+
+/* Círculo exterior con borde punteado interno */
+.vb-seal__circle {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Anillo punteado decorativo (via outline con offset) */
+.vb-seal__circle::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  border: 1px dashed;
   pointer-events: none;
 }
 
-.v-badge__tooltip::after {
-  content: '';
-  position: absolute;
-  top: 100%;
-  right: 18px;
-  border: 6px solid transparent;
-  border-top-color: var(--iris-900);
+.vb-seal--light .vb-seal__circle {
+  background: var(--iris-100);
+  border: 1px solid var(--iris-200);
 }
 
-.v-badge:hover .v-badge__tooltip {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
+.vb-seal--light .vb-seal__circle::before {
+  border-color: var(--iris-300);
+}
+
+.vb-seal--dark .vb-seal__circle {
+  background: rgba(123, 77, 200, 0.25);
+  border: 1px solid rgba(160, 125, 224, 0.4);
+}
+
+.vb-seal--dark .vb-seal__circle::before {
+  border-color: rgba(160, 125, 224, 0.4);
+}
+
+/* Círculo interno con check */
+.vb-seal__circle::after {
+  content: '';
+  position: absolute;
+  inset: 16px;
+  border-radius: 50%;
+}
+
+.vb-seal--light .vb-seal__circle::after {
+  background: var(--iris-500);
+}
+
+.vb-seal--dark .vb-seal__circle::after {
+  background: var(--iris-400);
+}
+
+/* SVG del check sobre el círculo interno */
+.vb-seal__check {
+  width: 22px;
+  height: 22px;
+  position: relative;
+  z-index: 1;
+}
+
+.vb-seal--light .vb-seal__check {
+  color: var(--white);
+}
+
+.vb-seal--dark .vb-seal__check {
+  color: var(--iris-900);
+}
+
+/* Textos del seal */
+.vb-seal__label {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.vb-seal--light .vb-seal__label {
+  color: var(--iris-700);
+}
+
+.vb-seal--dark .vb-seal__label {
+  color: var(--iris-200);
+}
+
+.vb-seal__sub {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-top: -4px;
+}
+
+.vb-seal--light .vb-seal__sub {
+  color: var(--iris-500);
+}
+
+.vb-seal--dark .vb-seal__sub {
+  color: var(--iris-300);
 }
