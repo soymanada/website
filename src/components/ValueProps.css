@@ -3,7 +3,7 @@
 .vp__header {
   text-align: center;
   max-width: 640px;
-  margin: 0 auto 64px;
+  margin: 0 auto 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -16,7 +16,7 @@
 .vp__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  gap: 32px;
 }
 
 .vp-card {
