@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom'
+import categories from '../data/categories.json'
+import CategoryIcon from './CategoryIcon'
 import './Footer.css'
 
 export default function Footer() {
@@ -10,21 +12,21 @@ export default function Footer() {
           <h4 className="footer__trust-title d-md">¿Por qué confiar en Manada?</h4>
           <div className="footer__trust-grid">
             <div className="trust-item">
-              <span className="trust-item__icon">🛡️</span>
+              <span className="trust-item__icon"><CategoryIcon name="shield" size={24} /></span>
               <div>
                 <strong>Filtro manual</strong>
                 <p className="t-xs">Cada proveedor es revisado antes de aparecer.</p>
               </div>
             </div>
             <div className="trust-item">
-              <span className="trust-item__icon">💬</span>
+              <span className="trust-item__icon"><CategoryIcon name="message-circle" size={24} /></span>
               <div>
                 <strong>Feedback real</strong>
                 <p className="t-xs">Validado por la experiencia de nuestra comunidad.</p>
               </div>
             </div>
             <div className="trust-item">
-              <span className="trust-item__icon">🎁</span>
+              <span className="trust-item__icon"><CategoryIcon name="gift" size={24} /></span>
               <div>
                 <strong>Beneficios exclusivos</strong>
                 <p className="t-xs">Descuentos negociados solo para ti.</p>
@@ -50,12 +52,9 @@ export default function Footer() {
           <div className="footer__col">
             <h4 className="footer__col-title label">Categorías</h4>
             <nav className="footer__links">
-              <Link to="/categoria/seguros">Seguros</Link>
-              <Link to="/categoria/migracion">Asesoría migratoria</Link>
-              <Link to="/categoria/traducciones">Traducciones</Link>
-              <Link to="/categoria/trabajo">Trabajo</Link>
-              <Link to="/categoria/alojamiento">Alojamiento</Link>
-              <Link to="/categoria/idiomas">Idiomas</Link>
+              {[...categories].sort((a, b) => a.order - b.order).map(cat => (
+                <Link key={cat.slug} to={`/categoria/${cat.slug}`}>{cat.name}</Link>
+              ))}
             </nav>
           </div>
 

@@ -89,8 +89,10 @@ export default function ProvidersPage() {
             {benefits.map((b, i) => (
               <div key={i} className="ppg-benefit">
                 <div className="ppg-benefit__icon">{b.icon}</div>
-                <h3 className="ppg-benefit__title">{b.title}</h3>
-                <p className="t-sm ppg-benefit__body">{b.body}</p>
+                <div>
+                  <h3 className="ppg-benefit__title">{b.title}</h3>
+                  <p className="t-sm ppg-benefit__body">{b.body}</p>
+                </div>
               </div>
             ))}
           </div>

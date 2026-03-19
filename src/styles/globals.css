@@ -109,8 +109,8 @@ body::after {
   font-family: var(--font-display);
   font-size: clamp(3rem, 6vw, 4.5rem);
   font-weight: 700;
-  line-height: 1.08;
-  letter-spacing: -0.025em;
+  line-height: 1.13;
+  letter-spacing: -0.018em;
 }
 .d-xl {
   font-family: var(--font-display);
@@ -136,7 +136,7 @@ body::after {
 .t-md   { font-size: 1rem;     line-height: 1.65; }
 .t-sm   { font-size: 0.875rem; line-height: 1.6; }
 .t-xs   { font-size: 0.78rem;  line-height: 1.5; }
-.label  { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+.label  { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
 
 /* ── Layout ──────────────────────────────────────────────────────── */
 .container {
@@ -145,7 +145,13 @@ body::after {
   padding: 0 var(--gap);
 }
 .section { padding: 100px 24px; }
-@media (max-width: 768px) { .section { padding: 64px 20px; } }
+@media (max-width: 768px) {
+  .section    { padding: 64px 20px; }
+  .t-xs       { font-size: 0.875rem; }
+  .t-lg       { line-height: 1.8; }
+  .t-md       { line-height: 1.75; }
+  body::after { display: none; }
+}
 
 /* ── Buttons ─────────────────────────────────────────────────────── */
 .btn {
@@ -219,7 +225,7 @@ body::after {
   color: var(--iris-600);
   padding: 5px 14px;
   border-radius: 100px;
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   font-weight: 700;
   letter-spacing: 0.07em;
   text-transform: uppercase;
