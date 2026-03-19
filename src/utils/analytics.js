@@ -28,8 +28,11 @@ export const trackPageView = (path, title) => {
 
 // Dejamos este objeto para que los componentes puedan usar nombres estandarizados
 export const Events = {
-  CLICK_CATEGORIA: 'click_categoria',
-  PROVEEDOR_VISITADO: 'proveedor_visitado',
-  CLICK_WHATSAPP: 'click_whatsapp_proveedor',
-  CLICK_APPLY: 'click_apply_provider',
+  CLICK_CATEGORIA:      'click_categoria',
+  PROVEEDOR_VISITADO:   'proveedor_visitado',
+  CLICK_WHATSAPP:       'click_whatsapp_proveedor',
+  CLICK_APPLY:          'click_apply_provider',       // conservado (sin usos activos)
+  CLICK_APPLY_PROVIDER: 'click_apply_provider',       // CTASection.jsx, ProvidersPage.jsx
+  VIEW_CATEGORY_PAGE:   'view_category_page',         // CategoryPage.jsx:16
+  CLICK_CATEGORY_CARD:  'click_category_card',        // CategoryPage.jsx:86
 };
