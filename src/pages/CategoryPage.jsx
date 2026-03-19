@@ -58,7 +58,24 @@ export default function CategoryPage() {
       {/* Providers */}
       <section className="catpage__providers section">
         <div className="container">
-          {list.length === 0 ? (
+          {slug === 'antes-de-viajar' ? (
+            <div className="catpage__empty">
+              <span className="catpage__empty-icon" aria-hidden="true">🧳</span>
+              <h2 className="d-md">Antes de viajar</h2>
+              <p className="t-lg" style={{ color: 'var(--text-500)' }}>
+                Esta sección está en construcción, pero la conversación ya está pasando.
+              </p>
+              <a
+                href="https://chat.whatsapp.com/CMIWk9cQkEIDso4Ll6JG8j"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-primary"
+                style={{ marginTop: 20 }}
+              >
+                <span>Únete al grupo Manada a Canadá →</span>
+              </a>
+            </div>
+          ) : list.length === 0 ? (
             <div className="catpage__empty">
               <span className="catpage__empty-icon" aria-hidden="true">🌱</span>
               <h2 className="d-md">Pronto habrá proveedores aquí</h2>

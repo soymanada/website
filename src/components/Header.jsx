@@ -16,11 +16,14 @@ export default function Header() {
   useEffect(() => { setMenuOpen(false) }, [location])
 
   const navLinks = [
-    { to: '/categoria/seguros',     label: 'Seguros' },
-    { to: '/categoria/migracion',   label: 'Migración' },
-    { to: '/categoria/trabajo',     label: 'Trabajo' },
-    { to: '/categoria/alojamiento', label: 'Alojamiento' },
-    { to: '/categoria/idiomas',     label: 'Idiomas' },
+    { to: '/categoria/seguros',      label: 'Seguros' },
+    { to: '/categoria/migracion',    label: 'Migración' },
+    { to: '/categoria/traducciones', label: 'Traducciones' },
+    { to: '/categoria/trabajo',      label: 'Trabajo' },
+    { to: '/categoria/alojamiento',  label: 'Alojamiento' },
+    { to: '/categoria/idiomas',      label: 'Idiomas' },
+    { to: '/categoria/banca',        label: 'Banca' },
+    { to: '/categoria/salud-mental', label: 'Salud Mental' },
   ]
 
   return (
@@ -62,7 +65,6 @@ export default function Header() {
         <nav className="hdr__drawer-nav">
           <NavLink to="/" end>Inicio</NavLink>
           {navLinks.map(l => <NavLink key={l.to} to={l.to}>{l.label}</NavLink>)}
-          <NavLink to="/categoria/traducciones">Traducciones</NavLink>
         </nav>
         <div className="hdr__drawer-actions">
           <Link to="/proveedores" className="btn btn-secondary btn-full">Soy proveedor</Link>
