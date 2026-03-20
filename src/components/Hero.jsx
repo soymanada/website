@@ -35,11 +35,11 @@ export default function Hero() {
               className="btn btn-primary btn-lg"
               onClick={() => trackEvent(Events.CLICK_CATEGORIA, { origen: 'hero_primary' })}
             >
-              Explorar proveedores
+              <span>Explorar proveedores</span>
             </Link>
             <Link
               to="/"
-              className="btn btn-secondary"
+              className="btn btn-secondary btn-lg"
               onClick={(e) => {
                 e.preventDefault();
                 document.getElementById('categorias')
