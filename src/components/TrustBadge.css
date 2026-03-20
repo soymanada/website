@@ -31,9 +31,16 @@
 .trust__seal-label { color: var(--iris-700); }
 .trust__seal-sub   { color: var(--text-500); }
 
-.trust__title { color: var(--iris-900); margin-bottom: 16px; }
+.trust__left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.trust__title { color: var(--iris-900); }
 .trust__title em { font-style: italic; color: var(--iris-500); }
-.trust__lead   { color: var(--text-500); margin-bottom: 24px; }
+.trust__lead   { color: var(--text-500); }
 
 .trust__disclaimer {
   color: var(--text-300);
