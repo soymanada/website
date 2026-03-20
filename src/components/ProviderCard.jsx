@@ -15,10 +15,14 @@ export default function ProviderCard({ provider }) {
   const [targetPlatform, setTargetPlatform] = useState('');
 
   const handleContact = (platform, url) => {
-    trackEvent(Events.CLICK_WHATSAPP, { 
-      proveedor_id: id, 
+    trackEvent(Events.PROVEEDOR_VISITADO, {
+      proveedor_id: id,
       proveedor_nombre: name,
-      plataforma: platform 
+    });
+    trackEvent(Events.CLICK_WHATSAPP, {
+      proveedor_id: id,
+      proveedor_nombre: name,
+      plataforma: platform
     });
     
     setTargetPlatform(platform === 'whatsapp' ? 'WhatsApp' : 'Instagram');

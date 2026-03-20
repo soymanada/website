@@ -37,12 +37,15 @@ export default function Hero() {
             >
               Explorar proveedores
             </Link>
-            <Link
-              to="/#categorias"
+            <button
               className="btn btn-secondary"
+              onClick={() => {
+                document.getElementById('categorias')
+                  ?.scrollIntoView({ behavior: 'smooth' });
+              }}
             >
               Ver categorías
-            </Link>
+            </button>
           </div>
         </div>
       </div>
