@@ -7,10 +7,8 @@
 
 .stats__grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
-  max-width: 640px;
-  margin: 0 auto;
 }
 
 .stat {
@@ -49,5 +47,5 @@
 }
 .stat__label { color: var(--text-500); }
 
-@media (max-width: 768px) { .stats__grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 480px) { .stats__grid { grid-template-columns: 1fr; } }
+@media (max-width: 900px)  { .stats__grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px)  { .stats__grid { grid-template-columns: 1fr; } }

@@ -1,9 +1,12 @@
-import { ShieldCheck, LayoutGrid } from 'lucide-react'
+import { Users, CalendarDays, LayoutGrid, ShieldCheck } from 'lucide-react'
 import './StatsSection.css'
 
 const stats = [
-  { value: '12',  label: 'proveedores verificados', Icon: ShieldCheck },
-  { value: '6',   label: 'categorías activas',       Icon: LayoutGrid  },
+  { value: '+500', label: 'miembros en la comunidad', Icon: Users        },
+  { value: '2',    label: 'años acompañando',          Icon: CalendarDays },
+  { value: '9',    label: 'categorías activas',         Icon: LayoutGrid   },
+  // TODO: reemplazar con número real de proveedores verificados (confirmar con el equipo)
+  { value: '12',   label: 'proveedores verificados',   Icon: ShieldCheck  },
 ]
 
 export default function StatsSection() {
