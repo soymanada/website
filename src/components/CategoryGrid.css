@@ -97,4 +97,3 @@
   .catcard--vip:hover { transform: translateY(-4px); }
 }
 @media (max-width: 520px) { .catgrid__grid { grid-template-columns: 1fr; } }
-+++++++
