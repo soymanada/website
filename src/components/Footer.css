@@ -1,15 +1,19 @@
 .footer__trust-section {
+  padding-top: 16px;
   padding-bottom: 40px;
 }
 
 .footer__trust-title {
-  margin-bottom: 20px;
+  margin-bottom: 40px;
+  text-align: center;
 }
 
 .footer__trust-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
+  max-width: 860px;
+  margin: 0 auto;
 }
 
 .trust-item {
