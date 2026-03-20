@@ -16,7 +16,7 @@ export default function HowItWorks() {
       
       <div className="container" style={{ position: 'relative', zIndex: 2 }}>
         <div className="how__header" style={{ textAlign: 'center', marginBottom: '64px' }}>
-          <p className="eyebrow how__eyebrow" style={{ color: '#EBE5FF', fontWeight: '700' }}>
+          <p className="eyebrow how__eyebrow" style={{ background: 'rgba(255,255,255,0.12)', borderColor: 'rgba(255,255,255,0.20)', color: '#EBE5FF' }}>
             Simple y rápido
           </p>
           <h2 className="d-xl how__title" style={{ color: '#FFFFFF', marginTop: '16px', fontSize: 'clamp(32px, 5vw, 64px)' }}>

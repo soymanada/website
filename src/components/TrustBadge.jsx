@@ -14,12 +14,13 @@ export default function TrustBadge() {
         <div className="trust__layout">
           {/* Left */}
           <div className="trust__left">
-            <VerificationBadge variant="seal" theme="dark" />
-
-            <h2 className="d-lg trust__title">
-              ¿Qué significa<br />
-              <em>"Verificado por Manada"?</em>
-            </h2>
+            <div className="trust__title-row">
+              <VerificationBadge variant="seal" theme="dark" />
+              <h2 className="d-lg trust__title">
+                ¿Qué significa<br />
+                <em>"Verificado por Manada"?</em>
+              </h2>
+            </div>
             <p className="t-lg trust__lead">
               No es un certificado legal. Es algo más valioso:
               la validación de personas reales que ya trabajaron

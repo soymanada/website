@@ -38,6 +38,12 @@
   gap: 16px;
 }
 
+.trust__title-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
 .trust__title { color: var(--iris-900); }
 .trust__title em { font-style: italic; color: var(--iris-500); }
 .trust__lead   { color: var(--text-500); }
