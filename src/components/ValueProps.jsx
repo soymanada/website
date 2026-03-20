@@ -1,9 +1,10 @@
+import { Users, MessageCircle, LayoutGrid } from 'lucide-react'
 import './ValueProps.css'
 
 const items = [
-  { icon: '🤝', title: 'De la comunidad, para la comunidad', body: 'Cada proveedor fue recomendado o validado por miembros reales de la Manada. No listamos a desconocidos.' },
-  { icon: '⚡', title: 'Contacto directo. Sin fricción.', body: 'Un clic en WhatsApp y hablas directamente con quien puede ayudarte. Sin formularios, sin esperas.' },
-  { icon: '🔍', title: 'Organizado por fin', body: 'Categorías claras, tarjetas limpias. Sin ruido de grupo de WhatsApp. Encuéntrate en segundos.' },
+  { Icon: Users,         title: 'De la comunidad, para la comunidad', body: 'Cada proveedor fue recomendado o validado por miembros reales de la Manada. No listamos a desconocidos.' },
+  { Icon: MessageCircle, title: 'Contacto directo. Sin fricción.',     body: 'Un clic en WhatsApp y hablas directamente con quien puede ayudarte. Sin formularios, sin esperas.' },
+  { Icon: LayoutGrid,    title: 'Organizado por fin',                  body: 'Categorías claras, tarjetas limpias. Sin ruido de grupo de WhatsApp. Encuéntrate en segundos.' },
 ]
 
 export default function ValueProps() {
@@ -24,7 +25,9 @@ export default function ValueProps() {
         <div className="vp__grid">
           {items.map((item, i) => (
             <div key={i} className="vp-card">
-              <div className="vp-card__icon" aria-hidden="true">{item.icon}</div>
+              <div className="vp-card__icon" aria-hidden="true">
+                <item.Icon size={28} strokeWidth={1.5} />
+              </div>
               <h3 className="d-md vp-card__title">{item.title}</h3>
               <p className="t-md vp-card__body">{item.body}</p>
               <div className="vp-card__line" aria-hidden="true" />
