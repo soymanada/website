@@ -4,7 +4,7 @@
     "name": "Daniela Valenzuela",
     "categorySlug": "traducciones",
     "service": "Traducciones certificadas e interpretación",
-    "description": "Ofrezco traducciones certificadas e interpretación para migrantes. Te oriento sobre qué documentos traducir, cuándo y cómo, con atención personalizada en Español e Inglés.",
+    "description": "Ofrezco servicios de traducción e interpretación, también los puedo ayudar y guiar en el proceso, ventajas, desventajas, aplicaciones. Atención personalizada en Español e Inglés.",
     "countries": ["Australia", "Austria", "Canadá", "Chile", "Nueva Zelanda"],
     "languages": ["Español", "Inglés"],
     "verified": true,
@@ -14,5 +14,70 @@
       "website": null
     },
     "disclaimerTag": null
+  },
+  {
+    "id": "p002",
+    "name": "TripeandoVoy",
+    "categorySlug": "seguros",
+    "service": "Seguros y Visas",
+    "description": "Tratamos de tener los precios más competitivos del mercado en cuanto a seguros para migrantes.",
+    "countries": ["Alemania", "Australia", "Austria", "Canadá", "Chile", "Dinamarca", "Francia", "Hungría", "Luxemburgo", "Portugal"],
+    "languages": ["Español", "Inglés"],
+    "verified": true,
+    "contact": {
+      "whatsapp": "4531836014",
+      "instagram": "tripeandovoy",
+      "website": "https://www.tripeandovoy.com"
+    },
+    "disclaimerTag": null
+  },
+  {
+    "id": "p003",
+    "name": "Objetivo Canadá",
+    "categorySlug": "migracion",
+    "service": "Ruta estratégica migratoria a Canadá",
+    "description": "Ayudo a latinoamericanos a construir su camino a Canadá de forma legal e inteligente. Combino preparación en francés, posicionamiento profesional y estrategia migratoria para que lleguen con un perfil competitivo, una oferta real y la ruta correcta hacia la residencia permanente.",
+    "countries": ["Canadá"],
+    "languages": ["Español", "Inglés"],
+    "verified": true,
+    "contact": {
+      "whatsapp": "16047009832",
+      "instagram": null,
+      "website": null
+    },
+    "disclaimerTag": null
+  },
+  {
+    "id": "p004",
+    "name": "AV Traducciones",
+    "categorySlug": "traducciones",
+    "service": "Traducciones para procesos migratorios",
+    "description": "Traducciones para procesos migratorios y otros varios.",
+    "countries": ["Canadá", "Chile"],
+    "languages": ["Español", "Inglés"],
+    "verified": true,
+    "contact": {
+      "whatsapp": "56934100804",
+      "instagram": null,
+      "website": null
+    },
+    "disclaimerTag": null
+  },
+  {
+    "id": "p005",
+    "name": "Patricia Gomez — BMO",
+    "categorySlug": "banca",
+    "service": "Representante de Servicio al Cliente, BMO Toronto",
+    "description": "Ejecutiva bancaria hispanohablante en BMO, sucursal Yonge Street Toronto. Te puede orientar en la apertura de cuentas, créditos y servicios financieros para migrantes recién llegados a Canadá.",
+    "countries": ["Canadá"],
+    "languages": ["Español", "Inglés"],
+    "verified": true,
+    "contact": {
+      "whatsapp": null,
+      "instagram": null,
+      "website": null,
+      "phone": "4164881145"
+    },
+    "disclaimerTag": "Contacto directo a sucursal bancaria. Consulta disponibilidad antes de visitar."
   }
 ]

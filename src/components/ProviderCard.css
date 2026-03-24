@@ -76,6 +76,17 @@
 .pcard__verified-glyph { color: var(--iris-500); font-weight: 800; }
 .pcard__verified-text  { font-size: 0.72rem; font-weight: 700; color: var(--iris-600); letter-spacing: 0.04em; }
 
+.pcard__countries {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.pcard__flag {
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: default;
+}
+
 .pcard__desc { color: var(--text-500); line-height: 1.7; }
 
 .pcard__tags { display: flex; flex-direction: column; gap: 10px; }
@@ -117,6 +128,15 @@
   flex: 1; /* Clic principal prominente */
 }
 .pcard__btn--wa:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.pcard__btn--phone {
+  background: var(--iris-50);
+  color: var(--iris-700);
+  border: 1px solid var(--iris-300);
+  text-decoration: none;
+  flex: 1;
+}
+.pcard__btn--phone:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
 .pcard__btn--ig {
   background: var(--ivory);
   color: var(--text-500);

@@ -5,6 +5,23 @@ import VerificationBadge from './VerificationBadge';
 import Interstitial from './Interstitial';
 import './ProviderCard.css';
 
+const COUNTRY_FLAGS = {
+  'Alemania':      '🇩🇪',
+  'Australia':     '🇦🇺',
+  'Austria':       '🇦🇹',
+  'Canadá':        '🇨🇦',
+  'Chile':         '🇨🇱',
+  'Dinamarca':     '🇩🇰',
+  'España':        '🇪🇸',
+  'Francia':       '🇫🇷',
+  'Hungría':       '🇭🇺',
+  'Luxemburgo':    '🇱🇺',
+  'Nueva Zelanda': '🇳🇿',
+  'Polonia':       '🇵🇱',
+  'Portugal':      '🇵🇹',
+  'Otro':          '🌍',
+};
+
 export default function ProviderCard({ provider }) {
   const { 
     id, name, service, description, countries, 
@@ -57,6 +74,16 @@ export default function ProviderCard({ provider }) {
           </div>
         )}
 
+        {countries?.length > 0 && (
+          <div className="pcard__countries">
+            {countries.map(c => (
+              <span key={c} className="pcard__flag" title={c}>
+                {COUNTRY_FLAGS[c] ?? '🌍'}
+              </span>
+            ))}
+          </div>
+        )}
+
         <p className="pcard__desc t-sm">{description}</p>
 
         {testimonial && (
@@ -70,16 +97,25 @@ export default function ProviderCard({ provider }) {
 
         <div className="pcard__actions">
           {contact.whatsapp && (
-            <button 
-              className="pcard__btn pcard__btn--wa" 
+            <button
+              className="pcard__btn pcard__btn--wa"
               onClick={() => handleContact('whatsapp', `https://wa.me/${contact.whatsapp}`)}
             >
               Hablar por WhatsApp
             </button>
           )}
+          {contact.phone && (
+            <a
+              className="pcard__btn pcard__btn--phone"
+              href={`tel:+${contact.phone}`}
+              onClick={() => trackEvent(Events.PROVEEDOR_VISITADO, { proveedor_id: id, proveedor_nombre: name, plataforma: 'phone' })}
+            >
+              Llamar a sucursal
+            </a>
+          )}
           {contact.instagram && (
-            <button 
-              className="pcard__btn pcard__btn--ig" 
+            <button
+              className="pcard__btn pcard__btn--ig"
               onClick={() => handleContact('instagram', `https://instagram.com/${contact.instagram}`)}
             >
               Instagram

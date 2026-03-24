@@ -5,7 +5,7 @@ const stats = [
   { value: '+500', label: 'miembros en la comunidad', Icon: Users        },
   { value: '2',    label: 'años acompañando',          Icon: CalendarDays },
   { value: '9',    label: 'categorías activas',         Icon: LayoutGrid   },
-  { value: '1',    label: 'proveedor verificado',       Icon: ShieldCheck  },
+  { value: '5',    label: 'proveedores verificados',    Icon: ShieldCheck  },
 ]
 
 export default function StatsSection() {
