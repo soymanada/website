@@ -79,12 +79,15 @@
 .pcard__countries {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 6px;
+  align-items: center;
 }
 .pcard__flag {
-  font-size: 1.25rem;
-  line-height: 1;
+  width: 20px;
+  height: 15px;
+  border-radius: 2px;
   cursor: default;
+  flex-shrink: 0;
 }
 
 .pcard__desc { color: var(--text-500); line-height: 1.7; }

@@ -5,21 +5,20 @@ import VerificationBadge from './VerificationBadge';
 import Interstitial from './Interstitial';
 import './ProviderCard.css';
 
-const COUNTRY_FLAGS = {
-  'Alemania':      '🇩🇪',
-  'Australia':     '🇦🇺',
-  'Austria':       '🇦🇹',
-  'Canadá':        '🇨🇦',
-  'Chile':         '🇨🇱',
-  'Dinamarca':     '🇩🇰',
-  'España':        '🇪🇸',
-  'Francia':       '🇫🇷',
-  'Hungría':       '🇭🇺',
-  'Luxemburgo':    '🇱🇺',
-  'Nueva Zelanda': '🇳🇿',
-  'Polonia':       '🇵🇱',
-  'Portugal':      '🇵🇹',
-  'Otro':          '🌍',
+const COUNTRY_ISO = {
+  'Alemania':      'de',
+  'Australia':     'au',
+  'Austria':       'at',
+  'Canadá':        'ca',
+  'Chile':         'cl',
+  'Dinamarca':     'dk',
+  'España':        'es',
+  'Francia':       'fr',
+  'Hungría':       'hu',
+  'Luxemburgo':    'lu',
+  'Nueva Zelanda': 'nz',
+  'Polonia':       'pl',
+  'Portugal':      'pt',
 };
 
 export default function ProviderCard({ provider }) {
@@ -76,10 +75,12 @@ export default function ProviderCard({ provider }) {
 
         {countries?.length > 0 && (
           <div className="pcard__countries">
-            {countries.map(c => (
-              <span key={c} className="pcard__flag" title={c}>
-                {COUNTRY_FLAGS[c] ?? '🌍'}
-              </span>
+            {countries.filter(c => COUNTRY_ISO[c]).map(c => (
+              <span
+                key={c}
+                className={`fi fi-${COUNTRY_ISO[c]} pcard__flag`}
+                title={c}
+              />
             ))}
           </div>
         )}
