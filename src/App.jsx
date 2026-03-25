@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, Suspense } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import Header               from './components/Header'
 import Footer               from './components/Footer'
@@ -12,7 +12,18 @@ import ResetPasswordPage    from './pages/ResetPasswordPage'
 import ProtectedRoute       from './components/ProtectedRoute'
 import { AuthProvider }     from './hooks/useAuth'
 // IMPORTANTE: Se eliminó initScrollTracking de la siguiente línea
+import { useTranslation } from 'react-i18next'
 import { trackPageView } from './utils/analytics'
+
+function NotFound() {
+  const { t } = useTranslation()
+  return (
+    <main style={{ padding: '180px 24px 80px', textAlign: 'center' }}>
+      <h1 className="d-lg" style={{ color: 'var(--iris-900)', marginBottom: 16 }}>{t('not_found.title')}</h1>
+      <a href="/" className="btn btn-primary" style={{ display: 'inline-flex' }}><span>{t('not_found.back_home')}</span></a>
+    </main>
+  )
+}
 
 function ScrollTop() {
   const { pathname } = useLocation()
@@ -46,12 +57,7 @@ function Layout() {
             <ProviderDashboard />
           </ProtectedRoute>
         } />
-        <Route path="*" element={
-          <main style={{ padding: '180px 24px 80px', textAlign: 'center' }}>
-            <h1 className="d-lg" style={{ color: 'var(--iris-900)', marginBottom: 16 }}>Página no encontrada</h1>
-            <a href="/" className="btn btn-primary" style={{ display: 'inline-flex' }}><span>Volver al inicio</span></a>
-          </main>
-        } />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
     </>

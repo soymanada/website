@@ -1,0 +1,27 @@
+/* ── Language Switcher ──────────────────────────────────────────── */
+.lang-sw {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: var(--iris-100);
+  border-radius: 100px;
+  padding: 3px;
+}
+.lang-sw__btn {
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text-500);
+  cursor: pointer;
+  transition: all var(--t-fast);
+  line-height: 1.4;
+}
+.lang-sw__btn:hover { color: var(--iris-700); }
+.lang-sw__btn--active {
+  background: var(--white);
+  color: var(--iris-700);
+  box-shadow: var(--shadow-xs);
+}

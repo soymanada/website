@@ -1,14 +1,15 @@
 import { Users, CalendarDays, LayoutGrid, ShieldCheck } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import './StatsSection.css'
 
-const stats = [
-  { value: '+500', label: 'miembros en la comunidad', Icon: Users        },
-  { value: '2',    label: 'años acompañando',          Icon: CalendarDays },
-  { value: '9',    label: 'categorías activas',         Icon: LayoutGrid   },
-  { value: '7',    label: 'proveedores verificados',    Icon: ShieldCheck  },
-]
-
 export default function StatsSection() {
+  const { t } = useTranslation()
+  const stats = [
+    { value: '+500', labelKey: 'stats.members',    Icon: Users        },
+    { value: '2',    labelKey: 'stats.years',       Icon: CalendarDays },
+    { value: '9',    labelKey: 'stats.categories',  Icon: LayoutGrid   },
+    { value: '7',    labelKey: 'stats.providers',   Icon: ShieldCheck  },
+  ]
   return (
     <section className="stats">
       <div className="container">
@@ -19,7 +20,7 @@ export default function StatsSection() {
                 <s.Icon size={24} strokeWidth={1.5} />
               </span>
               <span className="stat__val">{s.value}</span>
-              <span className="stat__label t-sm">{s.label}</span>
+              <span className="stat__label t-sm">{t(s.labelKey)}</span>
             </div>
           ))}
         </div>

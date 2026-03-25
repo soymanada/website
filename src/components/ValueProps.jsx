@@ -1,35 +1,33 @@
 import { Users, MessageCircle, LayoutGrid } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import './ValueProps.css'
 
-const items = [
-  { Icon: Users,         title: 'De la comunidad, para la comunidad', body: 'Cada proveedor fue recomendado o validado por miembros reales de la Manada. No listamos a desconocidos.' },
-  { Icon: MessageCircle, title: 'Contacto directo. Sin fricción.',     body: 'Un clic en WhatsApp y hablas directamente con quien puede ayudarte. Sin formularios, sin esperas.' },
-  { Icon: LayoutGrid,    title: 'Organizado por fin',                  body: 'Categorías claras, tarjetas limpias. Sin ruido de grupo de WhatsApp. Encuéntrate en segundos.' },
-]
-
 export default function ValueProps() {
+  const { t } = useTranslation()
+  const items = [
+    { Icon: Users,         titleKey: 'value_props.item1_title', bodyKey: 'value_props.item1_body' },
+    { Icon: MessageCircle, titleKey: 'value_props.item2_title', bodyKey: 'value_props.item2_body' },
+    { Icon: LayoutGrid,    titleKey: 'value_props.item3_title', bodyKey: 'value_props.item3_body' },
+  ]
   return (
     <section className="vp section">
       <div className="container">
         <div className="vp__header">
-          <p className="eyebrow">¿Por qué SoyManada?</p>
+          <p className="eyebrow">{t('value_props.eyebrow')}</p>
           <h2 className="d-xl vp__title">
-            La información que buscas,<br />
-            <em>ordenada por fin.</em>
+            {t('value_props.title')}<br />
+            <em>{t('value_props.title_em')}</em>
           </h2>
-          <p className="t-lg vp__lead">
-            Los grupos de WhatsApp son un caos. Aquí todo está verificado y listo para cuando lo necesitas.
-          </p>
+          <p className="t-lg vp__lead">{t('value_props.lead')}</p>
         </div>
-
         <div className="vp__grid">
           {items.map((item, i) => (
             <div key={i} className="vp-card">
               <div className="vp-card__icon" aria-hidden="true">
                 <item.Icon size={28} strokeWidth={1.5} />
               </div>
-              <h3 className="d-md vp-card__title">{item.title}</h3>
-              <p className="t-md vp-card__body">{item.body}</p>
+              <h3 className="d-md vp-card__title">{t(item.titleKey)}</h3>
+              <p className="t-md vp-card__body">{t(item.bodyKey)}</p>
               <div className="vp-card__line" aria-hidden="true" />
             </div>
           ))}

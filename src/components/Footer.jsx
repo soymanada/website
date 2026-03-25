@@ -1,35 +1,36 @@
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import categories from '../data/categories.json'
 import CategoryIcon from './CategoryIcon'
 import './Footer.css'
 
 export default function Footer() {
+  const { t } = useTranslation()
   return (
     <footer className="footer">
       <div className="container">
-        {/* Nueva sección ¿Por qué confiar? */}
         <div className="footer__trust-section">
-          <h4 className="footer__trust-title d-md">¿Por qué confiar en Manada?</h4>
+          <h4 className="footer__trust-title d-md">{t('footer.trust_title')}</h4>
           <div className="footer__trust-grid">
             <div className="trust-item">
               <span className="trust-item__icon"><CategoryIcon name="shield" size={24} /></span>
               <div>
-                <strong>Filtro manual</strong>
-                <p className="t-xs">Cada proveedor es revisado antes de aparecer.</p>
+                <strong>{t('footer.trust_filtro_title')}</strong>
+                <p className="t-xs">{t('footer.trust_filtro_body')}</p>
               </div>
             </div>
             <div className="trust-item">
               <span className="trust-item__icon"><CategoryIcon name="message-circle" size={24} /></span>
               <div>
-                <strong>Feedback real</strong>
-                <p className="t-xs">Validado por la experiencia de nuestra comunidad.</p>
+                <strong>{t('footer.trust_feedback_title')}</strong>
+                <p className="t-xs">{t('footer.trust_feedback_body')}</p>
               </div>
             </div>
             <div className="trust-item">
               <span className="trust-item__icon"><CategoryIcon name="gift" size={24} /></span>
               <div>
-                <strong>Beneficios exclusivos</strong>
-                <p className="t-xs">Descuentos negociados solo para ti.</p>
+                <strong>{t('footer.trust_beneficios_title')}</strong>
+                <p className="t-xs">{t('footer.trust_beneficios_body')}</p>
               </div>
             </div>
           </div>
@@ -43,33 +44,30 @@ export default function Footer() {
               <span className="footer__logo-glyph">✦</span>
               <span>SoyManada</span>
             </Link>
-            <p className="footer__tagline t-sm">
-              El directorio de confianza para la comunidad migrante.
-              Hecho con cariño, para gente lejos de casa.
-            </p>
+            <p className="footer__tagline t-sm">{t('footer.tagline')}</p>
           </div>
-
           <div className="footer__col">
-            <h4 className="footer__col-title label">Categorías</h4>
+            <h4 className="footer__col-title label">{t('footer.col_categorias')}</h4>
             <nav className="footer__links">
               {[...categories].sort((a, b) => a.order - b.order).map(cat => (
-                <Link key={cat.slug} to={`/categoria/${cat.slug}`}>{cat.name}</Link>
+                <Link key={cat.slug} to={`/categoria/${cat.slug}`}>
+                  {t(`categories.${cat.slug}`, cat.name)}
+                </Link>
               ))}
             </nav>
           </div>
-
           <div className="footer__col">
-            <h4 className="footer__col-title label">Comunidad</h4>
+            <h4 className="footer__col-title label">{t('footer.col_comunidad')}</h4>
             <nav className="footer__links">
-              <Link to="/registro-proveedores">Soy proveedor</Link>
-              <a href="https://chat.whatsapp.com/CMIWk9cQkEIDso4Ll6JG8j" target="_blank" rel="noopener noreferrer">Grupo de WhatsApp</a>
+              <Link to="/registro-proveedores">{t('footer.link_proveedor')}</Link>
+              <a href="https://chat.whatsapp.com/CMIWk9cQkEIDso4Ll6JG8j" target="_blank" rel="noopener noreferrer">{t('footer.link_whatsapp')}</a>
             </nav>
           </div>
         </div>
 
         <div className="footer__bottom">
-          <p className="t-xs">© {new Date().getFullYear()} SoyManada. Todos los derechos reservados.</p>
-          <p className="t-xs footer__disc">SoyManada es un directorio informativo y no provee asesoría legal, migratoria ni financiera.</p>
+          <p className="t-xs">{t('footer.copyright', { year: new Date().getFullYear() })}</p>
+          <p className="t-xs footer__disc">{t('footer.disclaimer')}</p>
         </div>
       </div>
     </footer>
