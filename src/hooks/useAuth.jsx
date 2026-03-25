@@ -17,7 +17,7 @@ export function AuthProvider({ children }) {
       .eq('id', userId)
       .single()
     if (!error && data) setProfile(data)
-    else setProfile({ role: 'migrant', tier: 'basica' }) // fallback seguro
+    else setProfile({ role: 'migrant', tier: 'bronze' }) // fallback seguro
   }
 
   useEffect(() => {
@@ -52,7 +52,7 @@ export function AuthProvider({ children }) {
     user:    session?.user ?? null,
     loading: session === undefined,
     role:    profile?.role  ?? null,   // 'migrant' | 'provider' | 'admin'
-    tier:    profile?.tier  ?? null,   // 'basica' | 'activa' | 'pro'
+    tier:    profile?.tier  ?? null,   // 'bronze' | 'silver' | 'gold'
     isProvider: profile?.role === 'provider' || profile?.role === 'admin',
     isAdmin:    profile?.role === 'admin',
     signOut,

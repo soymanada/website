@@ -75,8 +75,9 @@
   font-size: 0.72rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
 }
 .pdash__badge--verified { background: var(--iris-100); color: var(--iris-600); border: 1px solid var(--iris-200); }
-.pdash__badge--activa   { background: #FEF9C3; color: #854D0E; border: 1px solid #FDE047; }
-.pdash__badge--pro      { background: #FDF3E1; color: var(--gold); border: 1px solid var(--gold-border); }
+.pdash__badge--bronze   { background: #FDF0E7; color: #92400E; border: 1px solid #F5C49A; }
+.pdash__badge--silver   { background: #F1F5F9; color: #475569; border: 1px solid #CBD5E1; }
+.pdash__badge--gold     { background: #FDF3E1; color: var(--gold); border: 1px solid var(--gold-border); }
 
 /* Form */
 .pdash__form {

@@ -65,13 +65,13 @@ function SectionPerfil({ provider, onSave, saving }) {
 
 // ── Sección 2: Mis Métricas ──────────────────────────────────────
 function SectionMetricas({ tier, metrics }) {
-  const locked = tier === 'basica'
+  const locked = tier === 'bronze' || !tier
   return (
     <div className="pdash__section">
       <div className="pdash__section-header">
         <h2 className="pdash__section-title d-md">
           Mis métricas
-          {locked && <span className="pdash__badge pdash__badge--activa">Capa Activa</span>}
+          {locked && <span className="pdash__badge pdash__badge--silver">Silver</span>}
         </h2>
         <p className="t-sm pdash__section-sub">Entiende cómo los migrantes interactúan con tu perfil.</p>
       </div>
@@ -87,9 +87,9 @@ function SectionMetricas({ tier, metrics }) {
             ))}
           </div>
           <div className="pdash__upgrade-cta">
-            <p className="t-sm"><strong>Activa Capa Activa</strong> por $5 USD/mes y desbloquea tus métricas.</p>
-            <a href="mailto:hola@soymanada.com?subject=Quiero Capa Activa" className="btn btn-primary btn-sm">
-              <span>Activar por $5/mes</span>
+            <p className="t-sm"><strong>Activa Silver</strong> por $5 USD/mes y desbloquea tus métricas.</p>
+            <a href="mailto:hola@soymanada.com?subject=Quiero Silver" className="btn btn-primary btn-sm">
+              <span>Activar Silver — $5/mes</span>
             </a>
           </div>
         </div>
@@ -119,7 +119,7 @@ function SectionMetricas({ tier, metrics }) {
 
 // ── Sección 3: Mis Herramientas ──────────────────────────────────
 function SectionHerramientas({ tier, provider, onSave, saving }) {
-  const locked = tier !== 'pro'
+  const locked = tier !== 'gold'
   const [form, setForm] = useState({
     calendar_link:        provider?.calendar_link        ?? '',
     redirect_email:       provider?.redirect_email       ?? '',
@@ -132,7 +132,7 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
       <div className="pdash__section-header">
         <h2 className="pdash__section-title d-md">
           Mis herramientas
-          {locked && <span className="pdash__badge pdash__badge--pro">Capa Pro</span>}
+          {locked && <span className="pdash__badge pdash__badge--gold">Gold</span>}
         </h2>
         <p className="t-sm pdash__section-sub">Automatiza tu atención y ahorra tiempo.</p>
       </div>
@@ -155,9 +155,9 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
             ))}
           </div>
           <div className="pdash__upgrade-cta">
-            <p className="t-sm"><strong>Activa Capa Pro</strong> por $15 USD/mes y desbloquea todas las herramientas.</p>
-            <a href="mailto:hola@soymanada.com?subject=Quiero Capa Pro" className="btn btn-primary btn-sm">
-              <span>Activar por $15/mes</span>
+            <p className="t-sm"><strong>Activa Gold</strong> por $15 USD/mes y desbloquea todas las herramientas.</p>
+            <a href="mailto:hola@soymanada.com?subject=Quiero Gold" className="btn btn-primary btn-sm">
+              <span>Activar Gold — $15/mes</span>
             </a>
           </div>
         </div>
@@ -212,7 +212,7 @@ export default function ProviderDashboard() {
       if (data) setProvider(data)
 
       // Métricas (solo si tier >= activa)
-      if (tier === 'activa' || tier === 'pro') {
+      if (tier === 'silver' || tier === 'gold') {
         const { data: m } = await supabase
           .from('provider_metrics')
           .select('*')
@@ -282,9 +282,9 @@ export default function ProviderDashboard() {
                 {provider?.name ?? user?.user_metadata?.full_name ?? 'Mi perfil'}
               </h1>
             </div>
-            <div className="pdash__tier-badge pdash__tier-badge--{tier ?? 'basica'}">
+            <div className={`pdash__tier-badge pdash__tier-badge--${tier ?? 'bronze'}`}>
               <span className="pdash__tier-dot" />
-              Capa {tier ? tier.charAt(0).toUpperCase() + tier.slice(1) : 'Básica'}
+              {tier ? tier.charAt(0).toUpperCase() + tier.slice(1) : 'Bronze'}
             </div>
           </div>
           {/* Tabs */}
