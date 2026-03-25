@@ -61,7 +61,7 @@ export default function Footer() {
           <div className="footer__col">
             <h4 className="footer__col-title label">Comunidad</h4>
             <nav className="footer__links">
-              <Link to="/proveedores">Soy proveedor</Link>
+              <Link to="/registro-proveedores">Soy proveedor</Link>
               <a href="https://chat.whatsapp.com/CMIWk9cQkEIDso4Ll6JG8j" target="_blank" rel="noopener noreferrer">Grupo de WhatsApp</a>
             </nav>
           </div>

@@ -85,7 +85,7 @@ export default function CategoryPage() {
               <span className="catpage__empty-icon" aria-hidden="true">🌱</span>
               <h2 className="d-md">Pronto habrá proveedores aquí</h2>
               <p className="t-lg" style={{ color: 'var(--text-500)' }}>Estamos validando proveedores para esta categoría.</p>
-              <Link to="/proveedores" className="btn btn-primary" style={{ marginTop: 20 }}><span>Sugerir un proveedor</span></Link>
+              <Link to="/registro-proveedores" className="btn btn-primary" style={{ marginTop: 20 }}><span>Sugerir un proveedor</span></Link>
             </div>
           ) : (
             <div className="catpage__grid">

@@ -33,7 +33,7 @@ export default function CTASection() {
           </ul>
 
           <Link
-            to="/proveedores"
+            to="/registro-proveedores"
             className="btn btn-primary btn-lg cta-sec__btn"
             onClick={() => trackEvent(Events.CLICK_APPLY_PROVIDER, { from: 'cta_section' })}
           >

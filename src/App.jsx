@@ -4,7 +4,8 @@ import Header        from './components/Header'
 import Footer        from './components/Footer'
 import Home          from './pages/Home'
 import CategoryPage  from './pages/CategoryPage'
-import ProvidersPage from './pages/ProvidersPage'
+import ProvidersPage         from './pages/ProvidersPage'
+import RegistroProveedoresPage from './pages/RegistroProveedoresPage'
 // IMPORTANTE: Se eliminó initScrollTracking de la siguiente línea
 import { trackPageView } from './utils/analytics'
 
@@ -31,7 +32,8 @@ function Layout() {
       <Routes>
         <Route path="/"                element={<Home />} />
         <Route path="/categoria/:slug" element={<CategoryPage />} />
-        <Route path="/proveedores"     element={<ProvidersPage />} />
+        <Route path="/proveedores"          element={<ProvidersPage />} />
+        <Route path="/registro-proveedores" element={<RegistroProveedoresPage />} />
         <Route path="*" element={
           <main style={{ padding: '180px 24px 80px', textAlign: 'center' }}>
             <h1 className="d-lg" style={{ color: 'var(--iris-900)', marginBottom: 16 }}>Página no encontrada</h1>

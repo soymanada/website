@@ -47,7 +47,7 @@ export default function Header() {
 
         {/* Actions */}
         <div className="hdr__actions">
-          <Link to="/proveedores" className="btn btn-ghost btn-sm hdr__provider-btn">
+          <Link to="/registro-proveedores" className="btn btn-ghost btn-sm hdr__provider-btn">
             Soy proveedor
           </Link>
           <Link to="/proveedores" className="btn btn-primary btn-sm">
@@ -68,7 +68,7 @@ export default function Header() {
           {navLinks.map(l => <NavLink key={l.to} to={l.to}>{l.label}</NavLink>)}
         </nav>
         <div className="hdr__drawer-actions">
-          <Link to="/proveedores" className="btn btn-secondary btn-full">Soy proveedor</Link>
+          <Link to="/registro-proveedores" className="btn btn-secondary btn-full">Soy proveedor</Link>
           <Link to="/proveedores" className="btn btn-primary btn-full"><span>Explorar directorio</span></Link>
         </div>
       </div>
