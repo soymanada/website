@@ -1,0 +1,151 @@
+/* ── Login / Registro ───────────────────────────────────────────── */
+.lgp {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 24px 60px;
+  position: relative;
+  overflow: hidden;
+  background: var(--ivory);
+}
+
+.lgp__bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.lgp__bg-orb--1 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(91,45,158,0.10) 0%, transparent 70%);
+  top: -100px; right: -100px;
+}
+.lgp__bg-orb--2 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(196,149,58,0.07) 0%, transparent 70%);
+  bottom: -80px; left: -80px;
+}
+
+/* Card */
+.lgp__card {
+  position: relative;
+  z-index: 1;
+  background: var(--white);
+  border: 1.5px solid var(--iris-200);
+  border-radius: var(--r-xl);
+  padding: 48px 44px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: var(--shadow-lg);
+}
+@media (max-width: 480px) {
+  .lgp__card { padding: 36px 24px; }
+}
+
+/* Logo */
+.lgp__logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--iris-900);
+  text-decoration: none;
+  margin-bottom: 28px;
+  width: fit-content;
+}
+.lgp__logo-glyph {
+  color: var(--iris-500);
+  font-size: 1.1rem;
+}
+
+/* Tabs */
+.lgp__tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--iris-50);
+  border-radius: 100px;
+  padding: 4px;
+  margin-bottom: 20px;
+}
+.lgp__tab {
+  flex: 1;
+  padding: 9px 16px;
+  border-radius: 100px;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-500);
+  transition: all var(--t-fast);
+  cursor: pointer;
+}
+.lgp__tab--active {
+  background: var(--white);
+  color: var(--iris-700);
+  font-weight: 600;
+  box-shadow: var(--shadow-xs);
+}
+
+.lgp__subtitle {
+  color: var(--text-500);
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+/* Form */
+.lgp__form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.lgp__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.lgp__label {
+  font-weight: 600;
+  color: var(--text-700);
+}
+.lgp__input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: var(--r-md);
+  border: 1.5px solid var(--iris-200);
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  color: var(--text-900);
+  background: var(--white);
+  outline: none;
+  transition: border-color var(--t-fast), box-shadow var(--t-fast);
+}
+.lgp__input:focus {
+  border-color: var(--iris-500);
+  box-shadow: 0 0 0 3px rgba(91,45,158,0.12);
+}
+.lgp__input::placeholder { color: var(--text-100); }
+
+/* Feedback */
+.lgp__error {
+  background: #FEF2F2;
+  color: #B91C1C;
+  border: 1px solid #FECACA;
+  border-radius: var(--r-sm);
+  padding: 10px 14px;
+}
+.lgp__success {
+  background: #F0FDF4;
+  color: #15803D;
+  border: 1px solid #BBF7D0;
+  border-radius: var(--r-sm);
+  padding: 10px 14px;
+}
+
+/* Footer note */
+.lgp__footer {
+  color: var(--text-300);
+  margin-top: 20px;
+  text-align: center;
+  line-height: 1.6;
+}

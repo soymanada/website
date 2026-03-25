@@ -134,3 +134,29 @@
   .hdr__burger         { display: flex; }
   .hdr__drawer         { display: block; }
 }
+
+/* ── Avatar usuario autenticado ──────────────────────────────────── */
+.hdr__avatar {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--iris-600), var(--iris-400));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 2px solid var(--iris-300);
+  transition: all var(--t-fast);
+  flex-shrink: 0;
+}
+.hdr__avatar:hover {
+  transform: scale(1.06);
+  box-shadow: 0 0 0 3px rgba(91,45,158,0.20);
+}
+.hdr__avatar-initials {
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1;
+  pointer-events: none;
+}

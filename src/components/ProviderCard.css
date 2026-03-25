@@ -151,3 +151,38 @@
   .pcard__actions { flex-direction: column; }
   .pcard__btn { width: 100%; justify-content: center; }
 }
+/* ── Auth gate ───────────────────────────────────────────────────── */
+.pcard__gate {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--iris-50);
+  border: 1.5px dashed var(--iris-300);
+  border-radius: var(--r-md);
+  padding: 12px 16px;
+  margin-top: 4px;
+}
+.pcard__gate-text {
+  color: var(--text-500);
+  flex: 1;
+}
+.pcard__gate-btn {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  padding: 8px 18px;
+  border-radius: 100px;
+  background: linear-gradient(135deg, var(--iris-600) 0%, var(--iris-500) 100%);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 0.84rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all var(--t-fast);
+  box-shadow: 0 2px 12px rgba(91,45,158,0.30);
+}
+.pcard__gate-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 18px rgba(91,45,158,0.40);
+}

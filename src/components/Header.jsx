@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth'
 import './Header.css'
 
 export default function Header() {
@@ -9,6 +10,7 @@ export default function Header() {
 
   // Páginas con hero oscuro: el header arranca con fondo sólido
   const darkHero = ['/proveedores'].includes(location.pathname)
+  const { user, signOut } = useAuth()
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 24)
@@ -53,9 +55,17 @@ export default function Header() {
           <Link to="/registro-proveedores" className="btn btn-ghost btn-sm hdr__provider-btn">
             Soy proveedor
           </Link>
-          <Link to="/proveedores" className="btn btn-primary btn-sm">
-            <span>Explorar directorio</span>
-          </Link>
+          {user ? (
+            <button className="hdr__avatar" onClick={signOut} title="Cerrar sesión">
+              <span className="hdr__avatar-initials">
+                {(user.user_metadata?.full_name || user.email || '?')[0].toUpperCase()}
+              </span>
+            </button>
+          ) : (
+            <Link to="/login" className="btn btn-primary btn-sm">
+              <span>Ingresar</span>
+            </Link>
+          )}
         </div>
 
         {/* Burger */}

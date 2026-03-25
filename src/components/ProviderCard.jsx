@@ -1,6 +1,8 @@
 // src/components/ProviderCard.jsx
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { trackEvent, Events } from '../utils/analytics';
+import { useAuth } from '../hooks/useAuth';
 import VerificationBadge from './VerificationBadge';
 import Interstitial from './Interstitial';
 import './ProviderCard.css';
@@ -33,6 +35,7 @@ export default function ProviderCard({ provider }) {
     verified, contact, testimonial, benefit 
   } = provider;
 
+  const { user } = useAuth();
   const [isConnecting, setIsConnecting] = useState(false);
   const [targetPlatform, setTargetPlatform] = useState('');
 
@@ -102,33 +105,42 @@ export default function ProviderCard({ provider }) {
           </div>
         )}
 
-        <div className="pcard__actions">
-          {contact.whatsapp && (
-            <button
-              className="pcard__btn pcard__btn--wa"
-              onClick={() => handleContact('whatsapp', `https://wa.me/${contact.whatsapp}`)}
-            >
-              Hablar por WhatsApp
-            </button>
-          )}
-          {contact.phone && (
-            <a
-              className="pcard__btn pcard__btn--phone"
-              href={`tel:+${contact.phone}`}
-              onClick={() => trackEvent(Events.PROVEEDOR_VISITADO, { proveedor_id: id, proveedor_nombre: name, plataforma: 'phone' })}
-            >
-              Llamar a sucursal
-            </a>
-          )}
-          {contact.instagram && (
-            <button
-              className="pcard__btn pcard__btn--ig"
-              onClick={() => handleContact('instagram', `https://instagram.com/${contact.instagram}`)}
-            >
-              Instagram
-            </button>
-          )}
-        </div>
+        {user ? (
+          <div className="pcard__actions">
+            {contact.whatsapp && (
+              <button
+                className="pcard__btn pcard__btn--wa"
+                onClick={() => handleContact('whatsapp', `https://wa.me/${contact.whatsapp}`)}
+              >
+                Hablar por WhatsApp
+              </button>
+            )}
+            {contact.phone && (
+              <a
+                className="pcard__btn pcard__btn--phone"
+                href={`tel:+${contact.phone}`}
+                onClick={() => trackEvent(Events.PROVEEDOR_VISITADO, { proveedor_id: id, proveedor_nombre: name, plataforma: 'phone' })}
+              >
+                Llamar a sucursal
+              </a>
+            )}
+            {contact.instagram && (
+              <button
+                className="pcard__btn pcard__btn--ig"
+                onClick={() => handleContact('instagram', `https://instagram.com/${contact.instagram}`)}
+              >
+                Instagram
+              </button>
+            )}
+          </div>
+        ) : (
+          <div className="pcard__gate">
+            <p className="pcard__gate-text t-xs">Regístrate gratis para ver los datos de contacto</p>
+            <Link to="/login" className="pcard__gate-btn">
+              Ver contacto
+            </Link>
+          </div>
+        )}
       </article>
     </>
   );
