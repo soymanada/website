@@ -176,3 +176,14 @@
   cursor: pointer;
 }
 .pdash__signout:hover { color: rgba(255,255,255,0.90); }
+
+/* ── Subsección y upgrades inline ───────────────────────────────── */
+.pdash__subsection-title { color: var(--text-300); margin-bottom: 4px; }
+.pdash__divider-section  { padding-top: 8px; border-top: 1px solid var(--iris-100); margin-top: 4px; }
+.pdash__section-label    { color: var(--text-300); }
+
+.pdash__upgrade-inline {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  background: var(--ivory-warm); border: 1.5px dashed var(--iris-300);
+  border-radius: var(--r-md); padding: 14px 18px; flex-wrap: wrap;
+}

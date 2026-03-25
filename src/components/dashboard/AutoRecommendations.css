@@ -1,0 +1,26 @@
+/* ── AutoRecommendations ────────────────────────────────────────── */
+.autorec { display: flex; flex-direction: column; gap: 14px; }
+
+.autorec__card {
+  display: flex; gap: 16px; align-items: flex-start;
+  background: var(--white);
+  border: 1.5px solid var(--iris-200);
+  border-left: 4px solid var(--iris-500);
+  border-radius: var(--r-md);
+  padding: 18px 20px;
+  box-shadow: var(--shadow-xs);
+  transition: box-shadow var(--t-fast);
+}
+.autorec__card:hover { box-shadow: var(--shadow-sm); }
+
+.autorec__icon { font-size: 1.5rem; flex-shrink: 0; margin-top: 2px; }
+.autorec__body { display: flex; flex-direction: column; gap: 6px; }
+.autorec__title { color: var(--iris-900); font-weight: 600; }
+.autorec__text  { color: var(--text-500); line-height: 1.6; }
+
+.autorec--empty {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 10px; padding: 40px 20px; text-align: center;
+  color: var(--text-300);
+}
+.autorec__empty-icon { font-size: 2rem; color: var(--iris-300); }

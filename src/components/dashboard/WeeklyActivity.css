@@ -1,0 +1,47 @@
+/* ── WeeklyActivity ─────────────────────────────────────────────── */
+.wact {
+  background: var(--white);
+  border: 1.5px solid var(--iris-200);
+  border-radius: var(--r-lg);
+  padding: 24px 20px 16px;
+  box-shadow: var(--shadow-xs);
+}
+.wact__bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 140px;
+  margin-bottom: 10px;
+}
+.wact__col {
+  flex: 1;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  height: 100%;
+}
+.wact__bar-group {
+  flex: 1; width: 100%;
+  display: flex; align-items: flex-end; gap: 2px;
+}
+.wact__bar {
+  flex: 1; border-radius: 4px 4px 0 0;
+  min-height: 3px;
+  transition: height 0.4s var(--ease-out);
+}
+.wact__bar--views    { background: var(--iris-400); }
+.wact__bar--contacts { background: var(--gold); }
+.wact__bar--skeleton {
+  background: linear-gradient(90deg, var(--iris-100) 25%, var(--iris-50) 50%, var(--iris-100) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+.wact__day { color: var(--text-300); }
+
+.wact__legend {
+  display: flex; align-items: center; gap: 16px;
+  padding-top: 12px; border-top: 1px solid var(--iris-100);
+}
+.wact__dot {
+  width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+}
+.wact__dot--views    { background: var(--iris-400); }
+.wact__dot--contacts { background: var(--gold); }
