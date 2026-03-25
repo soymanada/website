@@ -1,11 +1,19 @@
 // src/components/ProviderCard.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { trackEvent, Events } from '../utils/analytics';
 import { useAuth } from '../hooks/useAuth';
+import { supabase } from '../lib/supabase';
 import VerificationBadge from './VerificationBadge';
 import Interstitial from './Interstitial';
 import './ProviderCard.css';
+
+// Fire-and-forget: inserta evento en Supabase sin bloquear la UI
+// Funciona para usuarios anon y autenticados (RLS: insert abierto)
+const insertEvent = (provider_id, event_type) => {
+  if (!provider_id) return
+  supabase.from('events').insert({ provider_id, event_type }).then()
+}
 
 const COUNTRY_ISO = {
   'Alemania':      'de',
@@ -39,8 +47,20 @@ export default function ProviderCard({ provider }) {
   const location  = useLocation();
   const [isConnecting, setIsConnecting] = useState(false);
   const [targetPlatform, setTargetPlatform] = useState('');
+  const viewTracked = useRef(false);
+
+  // Evento 'view' — se dispara una sola vez al montar la card
+  useEffect(() => {
+    if (!viewTracked.current && id) {
+      viewTracked.current = true
+      insertEvent(id, 'view')
+    }
+  }, [id])
 
   const handleContact = (platform, url) => {
+    // Evento 'contact_click' → Supabase (métricas del proveedor)
+    insertEvent(id, 'contact_click')
+    // GA4 (analytics del negocio)
     trackEvent(Events.PROVEEDOR_VISITADO, {
       proveedor_id: id,
       proveedor_nombre: name,
