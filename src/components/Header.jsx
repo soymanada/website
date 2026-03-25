@@ -7,6 +7,9 @@ export default function Header() {
   const [menuOpen,  setMenuOpen]  = useState(false)
   const location = useLocation()
 
+  // Páginas con hero oscuro: el header arranca con fondo sólido
+  const darkHero = ['/proveedores'].includes(location.pathname)
+
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 24)
     window.addEventListener('scroll', fn, { passive: true })
@@ -28,7 +31,7 @@ export default function Header() {
   ]
 
   return (
-    <header className={`hdr${scrolled ? ' hdr--scrolled' : ''}${menuOpen ? ' hdr--open' : ''}`}>
+    <header className={`hdr${(scrolled || darkHero) ? ' hdr--scrolled' : ''}${menuOpen ? ' hdr--open' : ''}`}>
       <div className="hdr__bar container">
         {/* Logo */}
         <Link to="/" className="hdr__logo">
