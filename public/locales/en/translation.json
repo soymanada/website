@@ -123,16 +123,22 @@
     "suggest_btn": "Suggest a provider"
   },
   "category_page": {
+    "not_found_title": "Category not found",
+    "not_found_body": "The category you are looking for does not exist or has been moved.",
+    "back_home": "Back to home",
     "breadcrumb_home": "Home",
-    "coming_soon_body": "This section is under construction, but the conversation is already happening.",
-    "coming_soon_cta": "Join the Manada to Canada group →",
-    "empty_title": "Providers coming soon",
-    "empty_body": "We are currently validating providers for this category.",
-    "empty_cta": "Suggest a provider",
-    "other_categories": "Other categories",
-    "verified_label": "verified by Manada",
     "provider_count_one": "{{count}} provider",
-    "provider_count_other": "{{count}} providers"
+    "provider_count_other": "{{count}} providers",
+    "provider_count": "{{count}} providers",
+    "verified_count_one": "{{count}} verified by Manada",
+    "verified_count_other": "{{count}} verified by Manada",
+    "verified_count": "{{count}} verified by Manada",
+    "coming_soon_body": "This section is under construction, but the conversation is already happening.",
+    "coming_soon_cta": "Join the Manada a Canadá group →",
+    "empty_title": "Providers coming soon",
+    "empty_body": "We are validating providers for this category.",
+    "empty_cta": "Suggest a provider",
+    "others_title": "Other categories"
   },
   "login_page": {
     "tab_login": "Sign in",

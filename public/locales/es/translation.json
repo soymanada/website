@@ -121,16 +121,22 @@
     "suggest_btn": "Sugiere un proveedor"
   },
   "category_page": {
+    "not_found_title": "Categoría no encontrada",
+    "not_found_body": "La categoría que buscas no existe o fue movida.",
+    "back_home": "Volver al inicio",
     "breadcrumb_home": "Inicio",
+    "provider_count_one": "{{count}} proveedor",
+    "provider_count_other": "{{count}} proveedores",
+    "provider_count": "{{count}} proveedores",
+    "verified_count_one": "{{count}} verificado por Manada",
+    "verified_count_other": "{{count}} verificados por Manada",
+    "verified_count": "{{count}} verificados por Manada",
     "coming_soon_body": "Esta sección está en construcción, pero la conversación ya está pasando.",
     "coming_soon_cta": "Únete al grupo Manada a Canadá →",
     "empty_title": "Pronto habrá proveedores aquí",
     "empty_body": "Estamos validando proveedores para esta categoría.",
     "empty_cta": "Sugerir un proveedor",
-    "other_categories": "Otras categorías",
-    "verified_label": "verificado{{plural}} por Manada",
-    "provider_count_one": "{{count}} proveedor",
-    "provider_count_other": "{{count}} proveedores"
+    "others_title": "Otras categorías"
   },
   "login_page": {
     "tab_login": "Ingresar",
