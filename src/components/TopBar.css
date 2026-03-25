@@ -29,6 +29,13 @@
   font-family: var(--font-body);
 }
 
+.topbar__flag-icon {
+  width: 18px;
+  height: 13px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
 .topbar__label {
   font-size: 0.72rem;
   font-weight: 700;
