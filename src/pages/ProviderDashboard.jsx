@@ -192,7 +192,7 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
 
 // ── Dashboard principal ──────────────────────────────────────────
 export default function ProviderDashboard() {
-  const { user, tier } = useAuth()
+  const { user, tier, signOut } = useAuth()
   const [provider, setProvider] = useState(null)
   const [metrics,  setMetrics]  = useState(null)
   const [loading,  setLoading]  = useState(true)
@@ -282,9 +282,14 @@ export default function ProviderDashboard() {
                 {provider?.name ?? user?.user_metadata?.full_name ?? 'Mi perfil'}
               </h1>
             </div>
-            <div className={`pdash__tier-badge pdash__tier-badge--${tier ?? 'bronze'}`}>
-              <span className="pdash__tier-dot" />
-              {tier ? tier.charAt(0).toUpperCase() + tier.slice(1) : 'Bronze'}
+            <div className="pdash__hero-right">
+              <div className={`pdash__tier-badge pdash__tier-badge--${tier ?? 'bronze'}`}>
+                <span className="pdash__tier-dot" />
+                {tier ? tier.charAt(0).toUpperCase() + tier.slice(1) : 'Bronze'}
+              </div>
+              <button className="pdash__signout t-sm" onClick={signOut}>
+                Cerrar sesión
+              </button>
             </div>
           </div>
           {/* Tabs */}

@@ -56,18 +56,15 @@ export default function Header() {
             Soy proveedor
           </Link>
           {user ? (
-            <div className="hdr__user-group">
-              {isProvider && (
-                <Link to="/mi-perfil" className="btn btn-ghost btn-sm" style={{ color: 'var(--iris-600)' }}>
-                  Mi perfil
-                </Link>
-              )}
-              <button className="hdr__avatar" onClick={signOut} title="Cerrar sesión">
-                <span className="hdr__avatar-initials">
-                  {(user.user_metadata?.full_name || user.email || '?')[0].toUpperCase()}
-                </span>
-              </button>
-            </div>
+            <Link
+              to={isProvider ? '/mi-perfil' : '/proveedores'}
+              className="hdr__avatar"
+              title={user.user_metadata?.full_name || user.email}
+            >
+              <span className="hdr__avatar-initials">
+                {(user.user_metadata?.full_name || user.email || '?')[0].toUpperCase()}
+              </span>
+            </Link>
           ) : (
             <Link to="/login" className="btn btn-primary btn-sm">
               <span>Ingresar</span>

@@ -159,3 +159,20 @@
   from { opacity: 0; transform: translateX(-50%) translateY(12px); }
   to   { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
+
+/* ── Sign out en dashboard ───────────────────────────────────────── */
+.pdash__hero-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  margin-top: 14px;
+}
+.pdash__signout {
+  color: rgba(255,255,255,0.50);
+  font-family: var(--font-body);
+  font-weight: 500;
+  transition: color var(--t-fast);
+  cursor: pointer;
+}
+.pdash__signout:hover { color: rgba(255,255,255,0.90); }
