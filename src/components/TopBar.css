@@ -1,122 +1,54 @@
-/* ── TopBar ─────────────────────────────────────────────────────── */
+/* ── TopBar — selector de idioma flotante ───────────────────────── */
 .topbar {
-  width: 100%;
-  z-index: 200; /* sobre el header */
-  position: relative;
-  transition: background var(--t-fast);
-}
-
-/* Modo banner: idioma del navegador es EN o FR */
-.topbar--banner {
-  background: var(--iris-900);
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-  padding: 10px 0;
-}
-
-/* Modo compacto: usuario ya cambió idioma */
-.topbar--compact {
-  background: var(--iris-50);
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 300; /* sobre todo */
+  padding: 6px 16px;
+  background: var(--ivory);
+  border-bottom-left-radius: var(--r-md);
+  border-left: 1px solid var(--iris-200);
   border-bottom: 1px solid var(--iris-200);
-  padding: 6px 0;
+  box-shadow: var(--shadow-xs);
 }
 
-.topbar__inner {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-/* Banner elements */
-.topbar__flag { font-size: 1.1rem; flex-shrink: 0; }
-
-.topbar__text {
-  color: rgba(255,255,255,0.80);
-  flex: 1;
-  min-width: 0;
-}
-
-.topbar__cta {
-  color: var(--white);
-  font-family: var(--font-body);
-  font-weight: 700;
-  font-size: 0.8rem;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: opacity var(--t-fast);
-}
-.topbar__cta:hover { opacity: 0.75; }
-
-.topbar__divider {
-  width: 1px; height: 16px;
-  background: rgba(255,255,255,0.20);
-  flex-shrink: 0;
-}
-
-.topbar__close {
-  color: rgba(255,255,255,0.50);
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  padding: 3px 6px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: color var(--t-fast), background var(--t-fast);
-  flex-shrink: 0;
-}
-.topbar__close:hover { color: var(--white); background: rgba(255,255,255,0.10); }
-
-/* Flag selector */
 .topbar__flags {
   display: flex;
   align-items: center;
-  gap: 4px;
-  margin-left: auto; /* empuja a la derecha */
+  gap: 2px;
 }
 
-.topbar__flag-btn {
+.topbar__btn {
   display: flex;
   align-items: center;
   gap: 5px;
-  padding: 3px 8px;
-  border-radius: 100px;
+  padding: 3px 7px;
+  border-radius: var(--r-sm);
   cursor: pointer;
   transition: all var(--t-fast);
   font-family: var(--font-body);
 }
 
-/* En banner (fondo oscuro) */
-.topbar--banner .topbar__flag-btn {
-  color: rgba(255,255,255,0.55);
-}
-.topbar--banner .topbar__flag-btn:hover {
-  background: rgba(255,255,255,0.10);
-  color: var(--white);
-}
-.topbar--banner .topbar__flag-btn--active {
-  background: rgba(255,255,255,0.15);
-  color: var(--white);
+.topbar__label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text-300);
+  line-height: 1;
 }
 
-/* En compacto (fondo claro) */
-.topbar--compact .topbar__flag-btn {
-  color: var(--text-500);
-}
-.topbar--compact .topbar__flag-btn:hover {
-  background: var(--iris-100);
+.topbar__btn:hover .topbar__label { color: var(--iris-700); }
+.topbar__btn:hover { background: var(--iris-50); }
+
+.topbar__btn--active .topbar__label {
   color: var(--iris-700);
 }
-.topbar--compact .topbar__flag-btn--active {
+.topbar__btn--active {
   background: var(--iris-100);
-  color: var(--iris-700);
-  font-weight: 600;
 }
 
-.topbar__flag-emoji { font-size: 1rem; line-height: 1; }
-.topbar__flag-hint  { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; }
-
+/* En mobile: solo mostrar labels sin flags SVG */
 @media (max-width: 480px) {
-  .topbar__text { display: none; }
-  .topbar__flags { margin-left: 0; }
+  .topbar { padding: 5px 10px; }
+  .topbar__btn svg { display: none; }
 }

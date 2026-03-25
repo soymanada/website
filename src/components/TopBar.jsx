@@ -1,90 +1,68 @@
 // src/components/TopBar.jsx
-// Barra superior con selector de idioma via banderas.
-// Lógica inteligente:
-//   - Si el idioma activo es ES: muestra solo las banderas como selector discreto
-//   - Si el idioma del navegador es EN o FR: muestra un banner de sugerencia
-//   - Se puede cerrar (guarda en sessionStorage para no molestar de nuevo)
-import { useState, useEffect } from 'react'
+// Selector de idioma compacto en esquina superior derecha — no interfiere con el Header
 import { useTranslation } from 'react-i18next'
 import './TopBar.css'
 
 const LANGS = [
-  { code: 'es',    flag: '🇨🇱', label: 'Español',          hint: 'ES' },
-  { code: 'en',    flag: '🇨🇦', label: 'English',           hint: 'EN' },
-  { code: 'fr-CA', flag: '🇶🇨', label: 'Français (Canada)', hint: 'FR' },
+  { code: 'es',    label: 'ES', country: 'cl' },
+  { code: 'en',    label: 'EN', country: 'ca' },
+  { code: 'fr-CA', label: 'FR', country: 'qc' },
 ]
 
-// Mensajes de sugerencia según idioma del navegador
-const SUGGESTIONS = {
-  en:    { text: 'This site is also available in English', cta: 'Switch to English', code: 'en' },
-  fr:    { text: 'Ce site est aussi disponible en français', cta: 'Passer en français', code: 'fr-CA' },
-  'fr-CA': { text: 'Ce site est aussi disponible en français', cta: 'Passer en français', code: 'fr-CA' },
+// Íconos SVG de banderas simples (no emoji — compatibilidad total)
+function FlagIcon({ country, size = 16 }) {
+  const flags = {
+    cl: (
+      <svg width={size} height={size * 0.67} viewBox="0 0 30 20" aria-hidden="true">
+        <rect width="30" height="10" fill="#D52B1E"/>
+        <rect y="10" width="30" height="10" fill="#fff"/>
+        <rect width="10" height="10" fill="#003087"/>
+        <polygon points="5,2 6.2,5.8 10,5.8 6.9,8 8.1,11.8 5,9.5 1.9,11.8 3.1,8 0,5.8 3.8,5.8" fill="#fff"/>
+      </svg>
+    ),
+    ca: (
+      <svg width={size} height={size * 0.67} viewBox="0 0 30 20" aria-hidden="true">
+        <rect width="7.5" height="20" fill="#FF0000"/>
+        <rect x="22.5" width="7.5" height="20" fill="#FF0000"/>
+        <rect x="7.5" width="15" height="20" fill="#fff"/>
+        <path d="M15,4 l1.5,3 3.5,0.5 -2.5,2.5 0.5,3.5 -3,-1.5 -3,1.5 0.5,-3.5 -2.5,-2.5 3.5,-0.5z" fill="#FF0000"/>
+      </svg>
+    ),
+    qc: (
+      <svg width={size} height={size * 0.67} viewBox="0 0 30 20" aria-hidden="true">
+        <rect width="30" height="20" fill="#003087"/>
+        <rect x="13" width="4" height="20" fill="#fff"/>
+        <rect y="8" width="30" height="4" fill="#fff"/>
+        <text x="5" y="7" fontSize="5" fill="#fff" fontFamily="serif">✦</text>
+        <text x="20" y="7" fontSize="5" fill="#fff" fontFamily="serif">✦</text>
+        <text x="5" y="17" fontSize="5" fill="#fff" fontFamily="serif">✦</text>
+        <text x="20" y="17" fontSize="5" fill="#fff" fontFamily="serif">✦</text>
+      </svg>
+    ),
+  }
+  return flags[country] ?? null
 }
 
 export default function TopBar() {
   const { i18n } = useTranslation()
-  const [dismissed, setDismissed] = useState(() =>
-    sessionStorage.getItem('topbar_dismissed') === '1'
-  )
-
-  // Detectar si el navegador prefiere EN o FR (no ES)
-  const browserLang = navigator.language?.toLowerCase() ?? 'es'
-  const browserBase = browserLang.startsWith('fr') ? 'fr' : browserLang.startsWith('en') ? 'en' : 'es'
-  const suggestion  = SUGGESTIONS[browserBase]
-
-  // Idioma activo normalizado
   const activeLang = i18n.language === 'fr-CA' || i18n.language?.startsWith('fr') ? 'fr-CA'
     : i18n.language?.startsWith('en') ? 'en' : 'es'
 
-  const dismiss = () => {
-    setDismissed(true)
-    sessionStorage.setItem('topbar_dismissed', '1')
-  }
-
-  const switchTo = (code) => {
-    i18n.changeLanguage(code)
-    dismiss()
-  }
-
-  // Si el idioma activo NO es ES, mostrar solo el selector compacto (sin banner)
-  // Si el idioma activo ES es el predeterminado y hay sugerencia → mostrar banner
-  const showBanner  = !dismissed && activeLang === 'es' && !!suggestion
-  const showCompact = activeLang !== 'es'
-
   return (
-    <div className={`topbar${showBanner ? ' topbar--banner' : ' topbar--compact'}`}>
-      <div className="container topbar__inner">
-
-        {showBanner && (
-          <>
-            <span className="topbar__flag">{LANGS.find(l => l.code === suggestion.code)?.flag}</span>
-            <span className="topbar__text t-xs">{suggestion.text}</span>
-            <button className="topbar__cta t-xs" onClick={() => switchTo(suggestion.code)}>
-              {suggestion.cta}
-            </button>
-            <div className="topbar__divider" />
-          </>
-        )}
-
-        {/* Selector de banderas — siempre visible */}
-        <div className="topbar__flags" role="group" aria-label="Language / Langue / Idioma">
-          {LANGS.map(l => (
-            <button
-              key={l.code}
-              className={`topbar__flag-btn${activeLang === l.code ? ' topbar__flag-btn--active' : ''}`}
-              onClick={() => switchTo(l.code)}
-              title={l.label}
-              aria-pressed={activeLang === l.code}
-            >
-              <span className="topbar__flag-emoji">{l.flag}</span>
-              <span className="topbar__flag-hint">{l.hint}</span>
-            </button>
-          ))}
-        </div>
-
-        {showBanner && (
-          <button className="topbar__close" onClick={dismiss} aria-label="Cerrar">✕</button>
-        )}
+    <div className="topbar">
+      <div className="topbar__flags" role="group" aria-label="Language / Langue / Idioma">
+        {LANGS.map(l => (
+          <button
+            key={l.code}
+            className={`topbar__btn${activeLang === l.code ? ' topbar__btn--active' : ''}`}
+            onClick={() => i18n.changeLanguage(l.code)}
+            title={l.code === 'es' ? 'Español' : l.code === 'en' ? 'English' : 'Français'}
+            aria-pressed={activeLang === l.code}
+          >
+            <FlagIcon country={l.country} size={14} />
+            <span className="topbar__label">{l.label}</span>
+          </button>
+        ))}
       </div>
     </div>
   )

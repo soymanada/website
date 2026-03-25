@@ -72,9 +72,8 @@
   --t-slow: 0.45s;
 
   /* Layout */
-  --max-w:      1200px;
-  --gap:        24px;
-  --topbar-h:   37px; /* altura de la TopBar */
+  --max-w: 1200px;
+  --gap:   24px;
 }
 
 /* ── Reset ───────────────────────────────────────────────────────── */
