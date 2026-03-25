@@ -136,7 +136,15 @@ export default function ProviderCard({ provider }) {
         ) : (
           <div className="pcard__gate">
             <p className="pcard__gate-text t-xs">Regístrate gratis para ver los datos de contacto</p>
-            <Link to="/login" className="pcard__gate-btn">
+            <Link
+              to="/login"
+              className="pcard__gate-btn"
+              onClick={() => trackEvent(Events.GATE_CLICK, {
+                proveedor_id:     id,
+                proveedor_nombre: name,
+                categoria:        provider.categorySlug,
+              })}
+            >
               Ver contacto
             </Link>
           </div>

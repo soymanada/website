@@ -1,10 +1,11 @@
 // src/pages/ProvidersPage.jsx — Directorio de proveedores con búsqueda y filtros
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import providers   from '../data/providers.json'
 import categories  from '../data/categories.json'
 import ProviderCard from '../components/ProviderCard'
 import CategoryIcon from '../components/CategoryIcon'
+import { trackEvent, Events } from '../utils/analytics'
 import './ProvidersPage.css'
 
 // Países únicos extraídos de los datos
@@ -19,6 +20,32 @@ export default function ProvidersPage() {
   const [activeSlug,   setActiveSlug]   = useState('todas')
   const [activeCountry,setActiveCountry]= useState('todos')
   const [onlyVerified, setOnlyVerified] = useState(false)
+
+  // Debounce búsqueda: dispara evento solo cuando el usuario para de escribir
+  const searchTimer = useRef(null)
+  const handleSearch = (value) => {
+    setQuery(value)
+    clearTimeout(searchTimer.current)
+    if (value.trim().length >= 2) {
+      searchTimer.current = setTimeout(() => {
+        trackEvent(Events.SEARCH_DIRECTORIO, { termino: value.trim() })
+      }, 800)
+    }
+  }
+
+  // Eventos de filtros
+  const handleFilterCategoria = (slug) => {
+    setActiveSlug(slug)
+    if (slug !== 'todas') trackEvent(Events.FILTER_CATEGORIA, { categoria: slug })
+  }
+  const handleFilterPais = (pais) => {
+    setActiveCountry(pais)
+    if (pais !== 'todos') trackEvent(Events.FILTER_PAIS, { pais })
+  }
+  const handleFilterVerificados = (checked) => {
+    setOnlyVerified(checked)
+    trackEvent(Events.FILTER_VERIFICADOS, { activo: checked })
+  }
 
   const filtered = useMemo(() => {
     return providers.filter(p => {
@@ -74,7 +101,7 @@ export default function ProvidersPage() {
               type="search"
               placeholder="Buscar por nombre, servicio o descripción…"
               value={query}
-              onChange={e => setQuery(e.target.value)}
+              onChange={e => handleSearch(e.target.value)}
               aria-label="Buscar proveedores"
             />
             {query && (
@@ -96,7 +123,7 @@ export default function ProvidersPage() {
                 <div className="dirpage__filter-options">
                   <button
                     className={`dirpage__filter-chip${activeSlug === 'todas' ? ' dirpage__filter-chip--active' : ''}`}
-                    onClick={() => setActiveSlug('todas')}
+                    onClick={() => handleFilterCategoria('todas')}
                   >
                     Todas
                   </button>
@@ -107,7 +134,7 @@ export default function ProvidersPage() {
                       <button
                         key={c.slug}
                         className={`dirpage__filter-chip${activeSlug === c.slug ? ' dirpage__filter-chip--active' : ''}`}
-                        onClick={() => setActiveSlug(c.slug)}
+                        onClick={() => handleFilterCategoria(c.slug)}
                       >
                         <CategoryIcon name={c.icon} size={13} />
                         {c.name}
@@ -122,7 +149,7 @@ export default function ProvidersPage() {
                 <select
                   className="dirpage__select"
                   value={activeCountry}
-                  onChange={e => setActiveCountry(e.target.value)}
+                  onChange={e => handleFilterPais(e.target.value)}
                 >
                   <option value="todos">Todos los países</option>
                   {ALL_COUNTRIES.map(c => (
@@ -136,7 +163,7 @@ export default function ProvidersPage() {
                   <input
                     type="checkbox"
                     checked={onlyVerified}
-                    onChange={e => setOnlyVerified(e.target.checked)}
+                    onChange={e => handleFilterVerificados(e.target.checked)}
                   />
                   <span className="dirpage__toggle-track" />
                   <span className="dirpage__toggle-label t-sm">Solo verificados por Manada</span>
