@@ -9,8 +9,8 @@ export default function Header() {
   const location = useLocation()
 
   // Páginas con hero oscuro: el header arranca con fondo sólido
-  const darkHero = ['/proveedores'].includes(location.pathname)
-  const { user, signOut } = useAuth()
+  const darkHero = ['/proveedores', '/mi-perfil'].includes(location.pathname)
+  const { user, signOut, isProvider } = useAuth()
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 24)
@@ -56,11 +56,18 @@ export default function Header() {
             Soy proveedor
           </Link>
           {user ? (
-            <button className="hdr__avatar" onClick={signOut} title="Cerrar sesión">
-              <span className="hdr__avatar-initials">
-                {(user.user_metadata?.full_name || user.email || '?')[0].toUpperCase()}
-              </span>
-            </button>
+            <div className="hdr__user-group">
+              {isProvider && (
+                <Link to="/mi-perfil" className="btn btn-ghost btn-sm" style={{ color: 'var(--iris-600)' }}>
+                  Mi perfil
+                </Link>
+              )}
+              <button className="hdr__avatar" onClick={signOut} title="Cerrar sesión">
+                <span className="hdr__avatar-initials">
+                  {(user.user_metadata?.full_name || user.email || '?')[0].toUpperCase()}
+                </span>
+              </button>
+            </div>
           ) : (
             <Link to="/login" className="btn btn-primary btn-sm">
               <span>Ingresar</span>

@@ -160,3 +160,10 @@
   line-height: 1;
   pointer-events: none;
 }
+
+/* ── User group (avatar + Mi perfil) ────────────────────────────── */
+.hdr__user-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

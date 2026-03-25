@@ -5,36 +5,61 @@ import { trackEvent, Events } from '../utils/analytics'
 const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
-  const [session, setSession] = useState(undefined) // undefined = cargando, null = sin sesión
+  const [session, setSession] = useState(undefined) // undefined = cargando
+  const [profile, setProfile] = useState(null)      // { role, tier, ... }
+
+  // Carga el perfil desde la tabla profiles
+  const loadProfile = async (userId) => {
+    if (!userId) { setProfile(null); return }
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('role, tier')
+      .eq('id', userId)
+      .single()
+    if (!error && data) setProfile(data)
+    else setProfile({ role: 'migrant', tier: 'basica' }) // fallback seguro
+  }
 
   useEffect(() => {
-    // Sesión inicial
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
+      loadProfile(session?.user?.id)
     })
 
-    // Escuchar cambios y trackear login/signup/logout
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setSession(session)
+      loadProfile(session?.user?.id)
+
       if (event === 'SIGNED_IN') {
         const method = session?.user?.app_metadata?.provider ?? 'email'
-        // sign_up solo en el primer login (created_at == last_sign_in_at)
-        const isNew = session?.user?.created_at === session?.user?.last_sign_in_at
+        const isNew  = session?.user?.created_at === session?.user?.last_sign_in_at
         if (isNew) trackEvent(Events.SIGN_UP, { method })
         else       trackEvent(Events.LOGIN,   { method })
       }
-      if (event === 'SIGNED_OUT') trackEvent(Events.LOGOUT)
+      if (event === 'SIGNED_OUT') {
+        trackEvent(Events.LOGOUT)
+        setProfile(null)
+      }
     })
 
     return () => subscription.unsubscribe()
   }, [])
 
-  const signOut = async () => {
-    await supabase.auth.signOut()
+  const signOut = async () => { await supabase.auth.signOut() }
+
+  const value = {
+    session,
+    user:    session?.user ?? null,
+    loading: session === undefined,
+    role:    profile?.role  ?? null,   // 'migrant' | 'provider' | 'admin'
+    tier:    profile?.tier  ?? null,   // 'basica' | 'activa' | 'pro'
+    isProvider: profile?.role === 'provider' || profile?.role === 'admin',
+    isAdmin:    profile?.role === 'admin',
+    signOut,
   }
 
   return (
-    <AuthContext.Provider value={{ session, user: session?.user ?? null, loading: session === undefined, signOut }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   )
