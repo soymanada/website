@@ -64,6 +64,38 @@
     "disclaimerTag": null
   },
   {
+    "id": "p006",
+    "name": "Terapia para migrantes",
+    "categorySlug": "salud-mental",
+    "service": "Psicoterapia cognitivo conductual",
+    "description": "Psicoterapia con enfoque en procesos migratorios. Acompañamiento psicológico para quienes están viviendo la experiencia de migrar.",
+    "countries": ["Otro"],
+    "languages": ["Español"],
+    "verified": true,
+    "contact": {
+      "whatsapp": "541125449558",
+      "instagram": "terapia_para_migrantes",
+      "website": null
+    },
+    "disclaimerTag": null
+  },
+  {
+    "id": "p007",
+    "name": "AseguraTuWH",
+    "categorySlug": "seguros",
+    "service": "Seguros y asesorías para Working Holiday",
+    "description": "Seguros de viaje, orientación y planes de teléfono para visas Working Holiday de Canadá y el mundo. Cobertura en más de 15 países.",
+    "countries": ["Alemania", "Australia", "Austria", "Canadá", "Chile", "Corea del Sur", "Dinamarca", "Francia", "Hungría", "Irlanda", "Islandia", "Japón", "Luxemburgo", "Nueva Zelanda", "Polonia", "Portugal", "República Checa", "Suecia"],
+    "languages": ["Español", "Inglés"],
+    "verified": true,
+    "contact": {
+      "whatsapp": "56965629187",
+      "instagram": "AseguratuWH",
+      "website": "https://www.aseguratuwh.com"
+    },
+    "disclaimerTag": null
+  },
+  {
     "id": "p005",
     "name": "Patricia Gomez — BMO",
     "categorySlug": "banca",

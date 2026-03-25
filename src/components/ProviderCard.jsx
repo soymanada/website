@@ -17,8 +17,14 @@ const COUNTRY_ISO = {
   'Hungría':       'hu',
   'Luxemburgo':    'lu',
   'Nueva Zelanda': 'nz',
-  'Polonia':       'pl',
-  'Portugal':      'pt',
+  'Polonia':        'pl',
+  'Portugal':       'pt',
+  'Corea del Sur':  'kr',
+  'Irlanda':        'ie',
+  'Islandia':       'is',
+  'Japón':          'jp',
+  'República Checa':'cz',
+  'Suecia':         'se',
 };
 
 export default function ProviderCard({ provider }) {
