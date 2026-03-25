@@ -119,6 +119,83 @@ function ProviderProfileEditor({ provider, tier, onSave, saving }) {
   )
 }
 
+// ── Sección Herramientas (Gold) ─────────────────────────────────
+function SectionHerramientas({ tier, provider, onSave, saving }) {
+  const locked = tier !== 'gold'
+  const [form, setForm] = useState({
+    calendar_link:        provider?.calendar_link        ?? '',
+    redirect_email:       provider?.redirect_email       ?? '',
+    predefined_responses: (provider?.predefined_responses ?? []).join('\n'),
+  })
+  const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
+
+  return (
+    <div className="pdash__section">
+      <div className="pdash__section-header">
+        <h2 className="pdash__section-title d-md">
+          Herramientas
+          {locked && <span className="pdash__badge pdash__badge--gold">Gold</span>}
+        </h2>
+        <p className="t-sm pdash__section-sub">Automatiza tu atención y ahorra tiempo.</p>
+      </div>
+
+      {locked ? (
+        <div className="pdash__locked">
+          <div className="pdash__tools-preview">
+            {[
+              { icon: '📅', name: 'Agenda de llamada',       desc: 'Los migrantes reservan un horario contigo directamente.' },
+              { icon: '💬', name: 'Respuestas predefinidas',  desc: 'Responde preguntas frecuentes con un click.' },
+              { icon: '✉️',  name: 'Redirección a email',      desc: 'Recibe consultas con asunto pre-llenado en tu correo.' },
+            ].map(t => (
+              <div key={t.name} className="pdash__tool-card pdash__tool-card--locked">
+                <span className="pdash__tool-icon">{t.icon}</span>
+                <div>
+                  <strong className="t-sm">{t.name}</strong>
+                  <p className="t-xs" style={{ color: 'var(--text-300)' }}>{t.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="pdash__upgrade-cta">
+            <p className="t-sm"><strong>Activa Gold</strong> por $15 USD/mes y desbloquea todas las herramientas.</p>
+            <a href="mailto:hola@soymanada.com?subject=Quiero Gold" className="btn btn-primary btn-sm">
+              <span>Activar Gold — $15/mes</span>
+            </a>
+          </div>
+        </div>
+      ) : (
+        <div className="pdash__form">
+          <div className="pdash__field pdash__field--full">
+            <label className="pdash__label t-sm">📅 Link de agenda (Calendly, Cal.com, etc.)</label>
+            <input className="pdash__input" value={form.calendar_link}
+              onChange={e => set('calendar_link', e.target.value)} placeholder="https://calendly.com/tu-nombre" />
+          </div>
+          <div className="pdash__field pdash__field--full">
+            <label className="pdash__label t-sm">✉️ Email para redirección de consultas</label>
+            <input className="pdash__input" type="email" value={form.redirect_email}
+              onChange={e => set('redirect_email', e.target.value)} placeholder="tu@email.com" />
+          </div>
+          <div className="pdash__field pdash__field--full">
+            <label className="pdash__label t-sm">💬 Respuestas predefinidas (una por línea)</label>
+            <textarea className="pdash__textarea" rows={5}
+              value={form.predefined_responses}
+              onChange={e => set('predefined_responses', e.target.value)}
+              placeholder="¿Cuánto cuesta una consulta?\nMi primera sesión es gratuita." />
+          </div>
+          <button className="btn btn-primary pdash__save-btn" onClick={() => onSave({
+            ...provider,
+            calendar_link:        form.calendar_link,
+            redirect_email:       form.redirect_email,
+            predefined_responses: form.predefined_responses,
+          })} disabled={saving}>
+            <span>{saving ? 'Guardando…' : 'Guardar herramientas'}</span>
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ── Sección métricas completa ────────────────────────────────────
 function SectionMetricas({ tier, metrics, activity, hourlyActivity, feedback, provider, metricsLoading }) {
   const locked = tier === 'bronze' || !tier
@@ -238,8 +315,9 @@ export default function ProviderDashboard() {
   }
 
   const tabs = [
-    { id: 'perfil',   label: '👤 Mi perfil' },
-    { id: 'metricas', label: '📊 Métricas' },
+    { id: 'perfil',       label: '👤 Mi perfil' },
+    { id: 'metricas',     label: '📊 Métricas' },
+    { id: 'herramientas', label: '🛠 Herramientas' },
   ]
 
   return (
@@ -295,6 +373,9 @@ export default function ProviderDashboard() {
                   hourlyActivity={hourlyActivity} feedback={feedback}
                   provider={provider} metricsLoading={metricsLoading}
                 />
+              )}
+              {activeTab === 'herramientas' && (
+                <SectionHerramientas tier={tier} provider={provider} onSave={handleSave} saving={saving} />
               )}
             </>
           )}
