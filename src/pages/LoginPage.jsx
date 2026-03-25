@@ -10,6 +10,8 @@ export default function LoginPage() {
   const { user }    = useAuth()
   const navigate    = useNavigate()
   const location    = useLocation()
+  // Si viene de una ruta protegida o del gate, volver ahí tras el login
+  const from        = location.state?.from?.pathname ?? '/proveedores'
 
   const [mode,      setMode]      = useState('login')   // 'login' | 'register'
   const [email,     setEmail]     = useState('')
@@ -22,8 +24,8 @@ export default function LoginPage() {
 
   // Redirigir si ya tiene sesión
   useEffect(() => {
-    if (user) navigate('/proveedores', { replace: true })
-  }, [user, navigate])
+    if (user) navigate(from, { replace: true })
+  }, [user, navigate, from])
 
   // Capturar error OAuth en URL hash
   useEffect(() => {
@@ -39,7 +41,7 @@ export default function LoginPage() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${import.meta.env.VITE_SITE_URL ?? window.location.origin}/proveedores`,
+        redirectTo: `${import.meta.env.VITE_SITE_URL ?? window.location.origin}${from}`,
         queryParams: { access_type: 'offline', prompt: 'select_account' },
       },
     })
@@ -71,7 +73,7 @@ export default function LoginPage() {
         const { error } = await supabase.auth.signInWithPassword({ email, password })
         if (error) throw error
         trackEvent(Events.LOGIN, { method: 'email' })
-        navigate('/proveedores', { replace: true })
+        navigate(from, { replace: true })
       }
     } catch (err) {
       const msg = err.message
@@ -170,7 +172,14 @@ export default function LoginPage() {
             />
           </div>
           <div className="lgp__field">
-            <label className="lgp__label t-sm" htmlFor="password">Contraseña</label>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <label className="lgp__label t-sm" htmlFor="password">Contraseña</label>
+              {mode === 'login' && (
+                <Link to="/reset-password" className="t-xs" style={{ color: 'var(--iris-500)', fontWeight: 600 }}>
+                  ¿Olvidaste tu contraseña?
+                </Link>
+              )}
+            </div>
             <input
               id="password" className="lgp__input" type="password"
               placeholder={mode === 'register' ? 'Mínimo 6 caracteres' : '••••••••'}

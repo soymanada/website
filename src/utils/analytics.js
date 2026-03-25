@@ -17,6 +17,7 @@ export const trackPageView = (path, title) => {
   else if (path === '/proveedores')          pageType = 'directorio';
   else if (path.includes('/registro-proveedores')) pageType = 'registro';
   else if (path === '/login')                pageType = 'login';
+  else if (path === '/reset-password')       pageType = 'reset_password';
   else if (path.includes('/proveedor/'))     pageType = 'proveedor';
   else if (['/privacidad', '/terminos'].includes(path)) pageType = 'legal';
 

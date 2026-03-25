@@ -1,6 +1,6 @@
 // src/components/ProviderCard.jsx
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { trackEvent, Events } from '../utils/analytics';
 import { useAuth } from '../hooks/useAuth';
 import VerificationBadge from './VerificationBadge';
@@ -36,6 +36,7 @@ export default function ProviderCard({ provider }) {
   } = provider;
 
   const { user } = useAuth();
+  const location  = useLocation();
   const [isConnecting, setIsConnecting] = useState(false);
   const [targetPlatform, setTargetPlatform] = useState('');
 
@@ -138,6 +139,7 @@ export default function ProviderCard({ provider }) {
             <p className="pcard__gate-text t-xs">Regístrate gratis para ver los datos de contacto</p>
             <Link
               to="/login"
+              state={{ from: location }}
               className="pcard__gate-btn"
               onClick={() => trackEvent(Events.GATE_CLICK, {
                 proveedor_id:     id,

@@ -8,6 +8,7 @@ import ProvidersPage        from './pages/ProvidersPage'
 import RegistroProveedoresPage from './pages/RegistroProveedoresPage'
 import LoginPage            from './pages/LoginPage'
 import ProviderDashboard    from './pages/ProviderDashboard'
+import ResetPasswordPage    from './pages/ResetPasswordPage'
 import ProtectedRoute       from './components/ProtectedRoute'
 import { AuthProvider }     from './hooks/useAuth'
 // IMPORTANTE: Se eliminó initScrollTracking de la siguiente línea
@@ -39,6 +40,7 @@ function Layout() {
         <Route path="/proveedores"          element={<ProvidersPage />} />
         <Route path="/registro-proveedores" element={<RegistroProveedoresPage />} />
         <Route path="/login"                element={<LoginPage />} />
+        <Route path="/reset-password"       element={<ResetPasswordPage />} />
         <Route path="/mi-perfil"            element={
           <ProtectedRoute requireRole="provider">
             <ProviderDashboard />
