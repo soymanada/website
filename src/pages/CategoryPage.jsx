@@ -61,22 +61,24 @@ export default function CategoryPage() {
       {/* Providers */}
       <section className="catpage__providers section">
         <div className="container">
-          {slug === 'antes-de-viajar' ? (
+          {cat.comingSoon ? (
             <div className="catpage__empty">
               <span className="catpage__empty-icon" aria-hidden="true">🧳</span>
-              <h2 className="d-md">Antes de viajar</h2>
+              <h2 className="d-md">{cat.name}</h2>
               <p className="t-lg" style={{ color: 'var(--text-500)' }}>
                 Esta sección está en construcción, pero la conversación ya está pasando.
               </p>
-              <a
-                href="https://chat.whatsapp.com/CMIWk9cQkEIDso4Ll6JG8j"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-primary"
-                style={{ marginTop: 20 }}
-              >
-                <span>Únete al grupo Manada a Canadá →</span>
-              </a>
+              {cat.comingSoonLink && (
+                <a
+                  href={cat.comingSoonLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-primary"
+                  style={{ marginTop: 20 }}
+                >
+                  <span>Únete al grupo Manada a Canadá →</span>
+                </a>
+              )}
             </div>
           ) : list.length === 0 ? (
             <div className="catpage__empty">

@@ -23,7 +23,8 @@ export default function Header() {
     { to: '/categoria/alojamiento',  label: 'Alojamiento' },
     { to: '/categoria/idiomas',      label: 'Idiomas' },
     { to: '/categoria/banca',        label: 'Banca' },
-    { to: '/categoria/salud-mental', label: 'Salud Mental' },
+    { to: '/categoria/salud-mental',    label: 'Salud Mental' },
+    { to: '/categoria/antes-de-viajar', label: 'Antes de viajar' },
   ]
 
   return (

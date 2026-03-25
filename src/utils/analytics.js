@@ -12,7 +12,7 @@ export const trackEvent = (eventName, params = {}) => {
 
 export const trackPageView = (path, title) => {
   let pageType = 'otros';
-  if (path === '/' || path === '/soy-manada/') pageType = 'home';
+  if (path === '/') pageType = 'home';
   else if (path.includes('/categoria/')) pageType = 'categoria';
   else if (path.includes('/proveedores')) pageType = 'otros';
   else if (path.includes('/proveedor/')) pageType = 'proveedor';
