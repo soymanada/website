@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../hooks/useAuth'
-import LanguageSwitcher from './LanguageSwitcher'
 import './Header.css'
 
 export default function Header() {
@@ -51,7 +50,6 @@ export default function Header() {
         </nav>
 
         <div className="hdr__actions">
-          <LanguageSwitcher />
           <Link to="/registro-proveedores" className="btn btn-ghost btn-sm hdr__provider-btn">
             {t('header.cta_proveedor')}
           </Link>
@@ -83,7 +81,6 @@ export default function Header() {
           {navLinks.map(l => <NavLink key={l.to} to={l.to}>{l.label}</NavLink>)}
         </nav>
         <div className="hdr__drawer-actions">
-          <div style={{ padding: '8px 0' }}><LanguageSwitcher /></div>
           <Link to="/registro-proveedores" className="btn btn-secondary btn-full">{t('header.cta_proveedor')}</Link>
           <Link to="/proveedores" className="btn btn-primary btn-full"><span>{t('header.cta_explorar')}</span></Link>
         </div>

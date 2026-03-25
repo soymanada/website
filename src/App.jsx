@@ -1,6 +1,7 @@
 import { useEffect, Suspense } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import Header               from './components/Header'
+import TopBar               from './components/TopBar'
 import Footer               from './components/Footer'
 import Home                 from './pages/Home'
 import CategoryPage         from './pages/CategoryPage'
@@ -44,6 +45,7 @@ function Layout() {
     <>
       <AnalyticsListener />
       <ScrollTop />
+      <TopBar />
       <Header />
       <Routes>
         <Route path="/"                element={<Home />} />
