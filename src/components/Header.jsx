@@ -50,7 +50,7 @@ export default function Header() {
           <Link to="/proveedores" className="btn btn-ghost btn-sm hdr__provider-btn">
             Soy proveedor
           </Link>
-          <Link to="/categoria/migracion" className="btn btn-primary btn-sm">
+          <Link to="/proveedores" className="btn btn-primary btn-sm">
             <span>Explorar directorio</span>
           </Link>
         </div>
@@ -69,7 +69,7 @@ export default function Header() {
         </nav>
         <div className="hdr__drawer-actions">
           <Link to="/proveedores" className="btn btn-secondary btn-full">Soy proveedor</Link>
-          <Link to="/categoria/migracion" className="btn btn-primary btn-full"><span>Explorar directorio</span></Link>
+          <Link to="/proveedores" className="btn btn-primary btn-full"><span>Explorar directorio</span></Link>
         </div>
       </div>
     </header>
