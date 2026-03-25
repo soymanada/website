@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { resolveProvider } from '../utils/providerI18n'
 import { trackEvent, Events } from '../utils/analytics'
 import { useAuth } from '../hooks/useAuth'
 import { supabase } from '../lib/supabase'
@@ -22,10 +23,12 @@ const COUNTRY_ISO = {
   'Japón': 'jp', 'República Checa': 'cz', 'Suecia': 'se',
 }
 
-export default function ProviderCard({ provider }) {
-  const { id, name, service, description, countries, verified, contact, testimonial, benefit } = provider
+export default function ProviderCard({ provider: rawProvider }) {
   const { user }     = useAuth()
-  const { t }        = useTranslation()
+  const { t, i18n }  = useTranslation()
+  // Resuelve campos traducidos según idioma activo
+  const provider = resolveProvider(rawProvider, i18n.language)
+  const { id, name, service, description, countries, verified, contact, testimonial, benefit } = provider
   const location     = useLocation()
   const [isConnecting, setIsConnecting] = useState(false)
   const [targetPlatform, setTargetPlatform] = useState('')

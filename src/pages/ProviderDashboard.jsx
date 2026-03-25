@@ -115,6 +115,51 @@ function ProviderProfileEditor({ provider, tier, onSave, saving }) {
           <span>{saving ? 'Guardando…' : 'Guardar cambios'}</span>
         </button>
       </div>
+
+      {/* Traducciones automáticas */}
+      <div className="pdash__translations">
+        <div className="pdash__translations-header">
+          <h3 className="pdash__section-title" style={{ fontSize: '1.1rem' }}>
+            🌐 Traducciones automáticas
+          </h3>
+          <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 4 }}>
+            Generadas por DeepL al guardar. Puedes editarlas manualmente.
+          </p>
+        </div>
+
+        {[{ suffix: 'en', flag: 'ca', lang: 'English' }, { suffix: 'fr', flag: 'ca', lang: 'Français (Canada)' }].map(({ suffix, flag, lang }) => (
+          <div key={suffix} className="pdash__trans-block">
+            <div className="pdash__trans-lang">
+              <span className={`fi fi-${flag} pdash__trans-flag`} />
+              <span className="t-sm" style={{ fontWeight: 700, color: 'var(--text-700)' }}>{lang}</span>
+              {provider?.[`description_${suffix}`]
+                ? <span className="pdash__badge pdash__badge--verified" style={{ fontSize: '0.65rem' }}>✔ Traducido</span>
+                : <span className="pdash__badge pdash__badge--silver" style={{ fontSize: '0.65rem' }}>Pendiente</span>
+              }
+            </div>
+            <div className="pdash__form" style={{ marginTop: 10 }}>
+              <div className="pdash__field">
+                <label className="pdash__label t-sm">Servicio ({suffix.toUpperCase()})</label>
+                <input className="pdash__input"
+                  value={form[`service_${suffix}`] ?? provider?.[`service_${suffix}`] ?? ''}
+                  onChange={e => setForm(f => ({ ...f, [`service_${suffix}`]: e.target.value }))}
+                  placeholder={provider?.service ?? 'Se generará automáticamente'} />
+              </div>
+              <div className="pdash__field pdash__field--full">
+                <label className="pdash__label t-sm">Descripción ({suffix.toUpperCase()})</label>
+                <textarea className="pdash__textarea" rows={3}
+                  value={form[`description_${suffix}`] ?? provider?.[`description_${suffix}`] ?? ''}
+                  onChange={e => setForm(f => ({ ...f, [`description_${suffix}`]: e.target.value }))}
+                  placeholder={provider?.description ?? 'Se generará automáticamente al guardar'} />
+              </div>
+            </div>
+          </div>
+        ))}
+
+        <button className="btn btn-secondary pdash__save-btn" onClick={() => onSave({ ...form })} disabled={saving}>
+          <span>{saving ? 'Guardando…' : 'Guardar traducciones'}</span>
+        </button>
+      </div>
     </div>
   )
 }
@@ -301,12 +346,17 @@ export default function ProviderDashboard() {
         name:                 form.name,
         description:          form.description,
         service:              form.service,
-        languages:            form.languages.split(',').map(s => s.trim()).filter(Boolean),
-        countries:            form.countries.split(',').map(s => s.trim()).filter(Boolean),
+        languages:            form.languages?.split(',').map(s => s.trim()).filter(Boolean),
+        countries:            form.countries?.split(',').map(s => s.trim()).filter(Boolean),
         payment_link:         form.payment_link,
         calendar_link:        form.calendar_link,
         redirect_email:       form.redirect_email,
-        predefined_responses: form.predefined_responses.split('\n').filter(Boolean),
+        predefined_responses: form.predefined_responses?.split('\n').filter(Boolean),
+        // Traducciones manuales (el trigger de DeepL las sobrescribe si están vacías)
+        ...(form.service_en     !== undefined && { service_en:     form.service_en }),
+        ...(form.service_fr     !== undefined && { service_fr:     form.service_fr }),
+        ...(form.description_en !== undefined && { description_en: form.description_en }),
+        ...(form.description_fr !== undefined && { description_fr: form.description_fr }),
       })
       .eq('user_id', user.id)
     setSaving(false)

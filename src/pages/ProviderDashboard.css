@@ -187,3 +187,26 @@
   background: var(--ivory-warm); border: 1.5px dashed var(--iris-300);
   border-radius: var(--r-md); padding: 14px 18px; flex-wrap: wrap;
 }
+
+/* ── Traducciones automáticas ───────────────────────────────────── */
+.pdash__translations {
+  margin-top: 32px;
+  padding-top: 28px;
+  border-top: 2px dashed var(--iris-200);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.pdash__translations-header { display: flex; flex-direction: column; }
+.pdash__trans-block {
+  background: var(--iris-50);
+  border: 1.5px solid var(--iris-200);
+  border-radius: var(--r-lg);
+  padding: 18px 20px;
+}
+.pdash__trans-lang {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 2px;
+}
+.pdash__trans-flag {
+  width: 20px; height: 14px; border-radius: 2px; flex-shrink: 0;
+}

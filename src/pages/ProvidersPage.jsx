@@ -1,10 +1,12 @@
 // src/pages/ProvidersPage.jsx — Directorio de proveedores con búsqueda y filtros
 import { useState, useMemo, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import providers   from '../data/providers.json'
 import categories  from '../data/categories.json'
 import ProviderCard from '../components/ProviderCard'
 import CategoryIcon from '../components/CategoryIcon'
+import { resolveProvider } from '../utils/providerI18n'
 import { trackEvent, Events } from '../utils/analytics'
 import './ProvidersPage.css'
 
@@ -16,6 +18,7 @@ const ALL_COUNTRIES = [
 ]
 
 export default function ProvidersPage() {
+  const { t, i18n } = useTranslation()
   const [query,        setQuery]        = useState('')
   const [activeSlug,   setActiveSlug]   = useState('todas')
   const [activeCountry,setActiveCountry]= useState('todos')
@@ -49,9 +52,10 @@ export default function ProvidersPage() {
 
   const filtered = useMemo(() => {
     return providers.filter(p => {
-      // Texto libre: nombre, servicio, descripción
+      // Resolver campos traducidos para búsqueda en idioma activo
+      const resolved = resolveProvider(p, i18n.language)
       const q = query.toLowerCase()
-      const matchText = !q || [p.name, p.service, p.description]
+      const matchText = !q || [resolved.name, resolved.service, resolved.description]
         .some(field => field?.toLowerCase().includes(q))
 
       // Categoría
