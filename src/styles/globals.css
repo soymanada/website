@@ -231,14 +231,6 @@ body::after {
   text-transform: uppercase;
   width: fit-content;
 }
-.eyebrow-dot {
-  width: 6px; height: 6px; border-radius: 50%; background: var(--iris-500);
-  animation: pulse-dot 2.4s ease-in-out infinite;
-}
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50%       { opacity: 0.45; transform: scale(0.8); }
-}
 
 /* ── Animations ──────────────────────────────────────────────────── */
 @keyframes fade-up {
