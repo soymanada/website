@@ -10,7 +10,8 @@
     "nav_alojamiento": "Housing",
     "nav_idiomas": "Languages",
     "nav_banca": "Banking",
-    "nav_salud_mental": "Mental Health",
+    "nav_telesalud": "Telehealth",
+    "nav_impuestos": "Taxes",
     "nav_antes_de_viajar": "Before You Go",
     "cta_proveedor": "I'm a provider",
     "cta_explorar": "Browse directory",
@@ -222,7 +223,8 @@
     "alojamiento": "Housing",
     "idiomas": "Languages",
     "banca": "Banking",
-    "salud-mental": "Mental Health",
+    "telesalud": "Telehealth",
+    "impuestos": "Taxes",
     "antes-de-viajar": "Before You Go",
     "seguros_oneliner": "Protect your health, car, and home in your new country.",
     "migracion_oneliner": "Visas, permits, and residency with real guidance.",
@@ -231,7 +233,8 @@
     "alojamiento_oneliner": "Rooms, rentals, and help getting settled.",
     "idiomas_oneliner": "Classes, tutoring, and practice to integrate better.",
     "banca_oneliner": "Bank advisors who understand your migration reality",
-    "salud-mental_oneliner": "Psychologists and therapists who speak your language and understand your journey",
+    "telesalud_oneliner": "Doctors, psychologists and specialists available online from anywhere.",
+    "impuestos_oneliner": "File your Canadian taxes with Spanish-language guidance, error-free.",
     "antes-de-viajar_oneliner": "What nobody told you before emigrating"
   }
 }

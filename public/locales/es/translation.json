@@ -8,7 +8,8 @@
     "nav_alojamiento": "Alojamiento",
     "nav_idiomas": "Idiomas",
     "nav_banca": "Banca",
-    "nav_salud_mental": "Salud Mental",
+    "nav_telesalud": "Telesalud",
+    "nav_impuestos": "Impuestos",
     "nav_antes_de_viajar": "Antes de viajar",
     "cta_proveedor": "Soy proveedor",
     "cta_explorar": "Explorar directorio",
@@ -220,7 +221,8 @@
     "alojamiento": "Alojamiento",
     "idiomas": "Idiomas",
     "banca": "Banca",
-    "salud-mental": "Salud Mental",
+    "telesalud": "Telesalud",
+    "impuestos": "Impuestos",
     "antes-de-viajar": "Antes de viajar",
     "seguros_oneliner": "Protege tu salud, auto y hogar en tu nuevo país.",
     "migracion_oneliner": "Visas, permisos y residencia con orientación real.",
@@ -229,7 +231,8 @@
     "alojamiento_oneliner": "Habitaciones, arriendos y ayuda para instalarte.",
     "idiomas_oneliner": "Clases, tutorías y práctica para integrarte mejor.",
     "banca_oneliner": "Ejecutivos bancarios que entienden tu realidad migratoria",
-    "salud-mental_oneliner": "Psicólogos y terapeutas que hablan tu idioma y entienden tu proceso",
+    "telesalud_oneliner": "Médicos, psicólogos y especialistas que te atienden en línea desde cualquier lugar.",
+    "impuestos_oneliner": "Declara tus impuestos en Canadá con asesoría en español, sin errores.",
     "antes-de-viajar_oneliner": "Lo que nadie te contó antes de emigrar"
   }
 }

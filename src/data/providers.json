@@ -116,7 +116,7 @@
   {
     "id": "p006",
     "name": "Terapia para migrantes",
-    "categorySlug": "salud-mental",
+    "categorySlug": "telesalud",
     "service": "Psicoterapia cognitivo conductual",
     "description": "Psicoterapia con enfoque en procesos migratorios. Acompañamiento psicológico para quienes están viviendo la experiencia de migrar.",
     "countries": [
@@ -178,6 +178,32 @@
     "service_fr": "Assurances et conseils pour visas Working Holiday",
     "description_en": "Travel insurance, guidance and phone plans for Working Holiday visas to Canada and the world. Coverage in more than 15 countries.",
     "description_fr": "Assurances voyage, orientation et forfaits téléphoniques pour les visas Working Holiday au Canada et dans le monde. Couverture dans plus de 15 pays."
+  },
+  {
+    "id": "p008",
+    "name": "amiGO Tax",
+    "categorySlug": "impuestos",
+    "service": "Contabilidad e impuestos en Canadá",
+    "description": "Ayudamos a migrantes a presentar su declaración de impuestos correctamente, evitar errores y aprovechar todos los créditos y beneficios disponibles. Primera asesoría gratis. Atendemos chilenos recién llegados, estudiantes, Working Holiday, trabajadores y autónomos con T4, T4A, T5. También apertura de sole proprietor y corporación.",
+    "countries": [
+      "Canadá"
+    ],
+    "languages": [
+      "Español",
+      "Portugués",
+      "Inglés"
+    ],
+    "verified": false,
+    "contact": {
+      "whatsapp": "16475444824",
+      "instagram": "amigotaxca",
+      "website": null
+    },
+    "disclaimerTag": null,
+    "service_en": "Accounting and taxes in Canada",
+    "service_fr": "Comptabilité et impôts au Canada",
+    "description_en": "We help migrants file their tax return correctly, avoid mistakes and take advantage of all available credits and benefits. Free first consultation. We serve newly arrived Chileans, students, Working Holiday visa holders, employees and self-employed with T4, T4A, T5. Also sole proprietor and corporation setup.",
+    "description_fr": "Nous aidons les migrants à produire leur déclaration de revenus correctement, à éviter les erreurs et à profiter de tous les crédits et avantages disponibles. Première consultation gratuite. Nous servons les nouveaux arrivants, étudiants, Working Holiday, travailleurs et travailleurs autonomes avec T4, T4A, T5. Aussi ouverture de sole proprietor et corporation."
   },
   {
     "id": "p005",

@@ -29,7 +29,8 @@ export default function Header() {
     { to: '/categoria/alojamiento',   label: t('header.nav_alojamiento') },
     { to: '/categoria/idiomas',       label: t('header.nav_idiomas') },
     { to: '/categoria/banca',         label: t('header.nav_banca') },
-    { to: '/categoria/salud-mental',  label: t('header.nav_salud_mental') },
+    { to: '/categoria/telesalud',     label: t('header.nav_telesalud') },
+    { to: '/categoria/impuestos',     label: t('header.nav_impuestos') },
     { to: '/categoria/antes-de-viajar', label: t('header.nav_antes_de_viajar') },
   ]
 

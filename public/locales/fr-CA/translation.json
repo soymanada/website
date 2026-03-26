@@ -10,7 +10,8 @@
     "nav_alojamiento": "Logement",
     "nav_idiomas": "Langues",
     "nav_banca": "Services bancaires",
-    "nav_salud_mental": "Santé mentale",
+    "nav_telesalud": "Télésanté",
+    "nav_impuestos": "Impôts",
     "nav_antes_de_viajar": "Avant de partir",
     "cta_proveedor": "Je suis un fournisseur",
     "cta_explorar": "Explorer le répertoire",
@@ -222,7 +223,8 @@
     "alojamiento": "Logement",
     "idiomas": "Langues",
     "banca": "Services bancaires",
-    "salud-mental": "Santé mentale",
+    "telesalud": "Télésanté",
+    "impuestos": "Impôts",
     "antes-de-viajar": "Avant de partir",
     "seguros_oneliner": "Protégez votre santé, votre voiture et votre maison dans votre nouveau pays.",
     "migracion_oneliner": "Visas, permis et résidence avec un accompagnement réel.",
@@ -231,7 +233,8 @@
     "alojamiento_oneliner": "Chambres, locations et aide pour vous installer.",
     "idiomas_oneliner": "Cours, tutorat et pratique pour mieux vous intégrer.",
     "banca_oneliner": "Conseillers bancaires qui comprennent votre réalité migratoire",
-    "salud-mental_oneliner": "Psychologues et thérapeutes qui parlent votre langue et comprennent votre parcours",
+    "telesalud_oneliner": "Médecins, psychologues et spécialistes disponibles en ligne, où que vous soyez.",
+    "impuestos_oneliner": "Produisez vos impôts canadiens avec un accompagnement en espagnol, sans erreurs.",
     "antes-de-viajar_oneliner": "Ce que personne ne vous a dit avant d'émigrer"
   }
 }
