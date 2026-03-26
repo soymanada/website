@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import categories from '../data/categories.json'
 import CategoryIcon from './CategoryIcon'
+import PawIcon from './PawIcon'
 import './Footer.css'
 
 export default function Footer() {
@@ -41,7 +42,7 @@ export default function Footer() {
         <div className="footer__inner">
           <div className="footer__brand">
             <Link to="/" className="footer__logo">
-              <span className="footer__logo-glyph">✦</span>
+              <PawIcon size={16} className="footer__logo-glyph" />
               <span>SoyManada</span>
             </Link>
             <p className="footer__tagline t-sm">{t('footer.tagline')}</p>

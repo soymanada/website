@@ -1,5 +1,6 @@
 // src/components/Interstitial.jsx
 import React from 'react';
+import PawIcon from './PawIcon';
 import './Interstitial.css';
 
 export default function Interstitial({ providerName, platform }) {
@@ -12,7 +13,7 @@ export default function Interstitial({ providerName, platform }) {
           Verificando perfil de <strong>{providerName}</strong> en {platform}...
         </p>
         <div className="interstitial__footer">
-          <span className="v-badge__icon">✦</span>
+          <PawIcon size={14} className="v-badge__icon" />
           <span className="label">Protegido por SoyManada</span>
         </div>
       </div>

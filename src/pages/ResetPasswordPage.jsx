@@ -5,6 +5,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
+import PawIcon from '../components/PawIcon'
 import './LoginPage.css' // reutiliza los mismos estilos
 
 export default function ResetPasswordPage() {
@@ -61,7 +62,7 @@ export default function ResetPasswordPage() {
 
       <div className="lgp__card">
         <Link to="/" className="lgp__logo">
-          <span className="lgp__logo-glyph" aria-hidden="true">✦</span>
+          <PawIcon size={18} className="lgp__logo-glyph" />
           <span>SoyManada</span>
         </Link>
 

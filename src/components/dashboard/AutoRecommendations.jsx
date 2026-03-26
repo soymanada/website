@@ -1,6 +1,7 @@
 // src/components/dashboard/AutoRecommendations.jsx
 // Componente 3 — Recomendaciones automáticas evaluadas en cliente
 // Sin IA. 3 condiciones sobre datos crudos del backend.
+import PawIcon from '../PawIcon'
 import './AutoRecommendations.css'
 
 // Promedio de conversión por categoría (placeholder hasta tener datos reales)
@@ -85,7 +86,7 @@ export default function AutoRecommendations({ metrics, activity, hourlyActivity,
 
   if (!recs.length) return (
     <div className="autorec autorec--empty">
-      <span className="autorec__empty-icon">✦</span>
+      <PawIcon size={28} className="autorec__empty-icon" />
       <p className="t-sm">Tu perfil está optimizado. No hay recomendaciones por ahora.</p>
     </div>
   )

@@ -5,6 +5,7 @@ import categories   from '../data/categories.json'
 import providers    from '../data/providers.json'
 import ProviderCard from '../components/ProviderCard'
 import CategoryIcon from '../components/CategoryIcon'
+import PawIcon from '../components/PawIcon'
 import { trackEvent, Events } from '../utils/analytics'
 import './CategoryPage.css'
 
@@ -55,7 +56,9 @@ export default function CategoryPage() {
 
           <div className="catpage__meta">
             <span className="catpage__pill">{t('category_page.provider_count', { count: list.length })}</span>
-            <span className="catpage__pill catpage__pill--iris">✦ {t('category_page.verified_count', { count: verified })}</span>
+            <span className="catpage__pill catpage__pill--iris" style={{ display:'inline-flex', alignItems:'center', gap:5 }}>
+              <PawIcon size={11} />{t('category_page.verified_count', { count: verified })}
+            </span>
           </div>
         </div>
       </div>

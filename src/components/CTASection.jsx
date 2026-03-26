@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { trackEvent, Events } from '../utils/analytics'
+import PawIcon from './PawIcon'
 import './CTASection.css'
 
 export default function CTASection() {
@@ -12,7 +13,7 @@ export default function CTASection() {
       <div className="container">
         <div className="cta-sec__inner">
           <div className="cta-sec__badge">
-            <span className="cta-sec__badge-glyph" aria-hidden="true">✦</span>
+            <PawIcon size={13} className="cta-sec__badge-glyph" />
             {t('cta_section.badge')}
           </div>
           <h2 className="d-xl cta-sec__title">
@@ -23,7 +24,7 @@ export default function CTASection() {
           <ul className="cta-sec__perks">
             {perks.map(p => (
               <li key={p} className="cta-sec__perk">
-                <span className="cta-sec__perk-check" aria-hidden="true">✦</span>
+                <PawIcon size={12} className="cta-sec__perk-check" />
                 {p}
               </li>
             ))}

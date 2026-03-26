@@ -108,7 +108,14 @@ function ProviderProfileEditor({ provider, tier, onSave, saving }) {
         )}
 
         <div className="pdash__field--full pdash__verified-notice">
-          <span className="pdash__badge pdash__badge--verified">✦ Verificado por Manada</span>
+          <span className="pdash__badge pdash__badge--verified" style={{ gap: 6 }}>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor" width="11" height="11" aria-hidden="true">
+              <ellipse cx="16" cy="25" rx="8" ry="5.5"/><ellipse cx="4.5" cy="15" rx="3.2" ry="4" transform="rotate(-25,4.5,15)"/>
+              <ellipse cx="11" cy="8" rx="3.2" ry="4" transform="rotate(-10,11,8)"/><ellipse cx="21" cy="8" rx="3.2" ry="4" transform="rotate(10,21,8)"/>
+              <ellipse cx="27.5" cy="15" rx="3.2" ry="4" transform="rotate(25,27.5,15)"/>
+            </svg>
+            Verificado por Manada
+          </span>
           <p className="t-xs" style={{ color: 'var(--text-500)' }}>Este badge lo asigna el equipo. No es editable.</p>
         </div>
 

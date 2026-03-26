@@ -4,6 +4,7 @@ import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../hooks/useAuth'
 import { trackEvent, Events } from '../utils/analytics'
+import PawIcon from '../components/PawIcon'
 import './LoginPage.css'
 
 export default function LoginPage() {
@@ -101,7 +102,7 @@ export default function LoginPage() {
       <div className="lgp__card">
         {/* Logo */}
         <Link to="/" className="lgp__logo">
-          <span className="lgp__logo-glyph" aria-hidden="true">✦</span>
+          <PawIcon size={18} className="lgp__logo-glyph" />
           <span>SoyManada</span>
         </Link>
 

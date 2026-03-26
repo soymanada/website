@@ -1,11 +1,12 @@
 import { useEffect } from 'react'
 import { trackEvent, Events } from '../utils/analytics'
+import PawIcon from '../components/PawIcon'
 import './RegistroProveedoresPage.css'
 
 const benefits = [
   { icon: '🌍', title: 'Llega a tu comunidad',      body: 'Miles de migrantes buscan servicios confiables cada semana. Tu perfil estará donde ellos buscan.' },
   { icon: '⚡', title: 'Contacto directo',            body: 'Los usuarios te contactan por WhatsApp o Instagram. Sin intermediarios ni comisiones.' },
-  { icon: '✦',  title: 'Sello de confianza',         body: 'Si cumples los criterios, recibes el sello "Verificado por Manada". Vale más que cualquier anuncio.' },
+  { icon: 'PAW', title: 'Sello de confianza',        body: 'Si cumples los criterios, recibes el sello "Verificado por Manada". Vale más que cualquier anuncio.' },
   { icon: '🆓', title: 'Gratuito para empezar',       body: 'Aparecer en SoyManada no tiene costo. La confianza de la comunidad es el único requisito.' },
 ]
 
@@ -60,7 +61,9 @@ export default function ProvidersPage() {
                     <strong>María Fernández</strong>
                     <span>Corredora de seguros</span>
                   </div>
-                  <div className="ppg-card__badge">✦ Verificado</div>
+                  <div className="ppg-card__badge" style={{ display:'inline-flex', alignItems:'center', gap:5 }}>
+                    <PawIcon size={11} /> Verificado
+                  </div>
                 </div>
                 <div className="ppg-card__stats">
                   <div className="ppg-card__stat">
@@ -88,7 +91,9 @@ export default function ProvidersPage() {
           <div className="ppg-benefits__grid">
             {benefits.map((b, i) => (
               <div key={i} className="ppg-benefit">
-                <div className="ppg-benefit__icon">{b.icon}</div>
+                <div className="ppg-benefit__icon">
+                  {b.icon === 'PAW' ? <PawIcon size={28} /> : b.icon}
+                </div>
                 <div>
                   <h3 className="ppg-benefit__title">{b.title}</h3>
                   <p className="t-sm ppg-benefit__body">{b.body}</p>
