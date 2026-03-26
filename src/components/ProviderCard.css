@@ -164,6 +164,8 @@
   .pcard { padding: 24px; }
   .pcard__actions { flex-direction: column; }
   .pcard__btn { width: 100%; justify-content: center; }
+  .pcard__gate { flex-direction: column; align-items: stretch; text-align: center; }
+  .pcard__gate-btn { text-align: center; justify-content: center; }
 }
 /* ── Auth gate ───────────────────────────────────────────────────── */
 .pcard__gate {
