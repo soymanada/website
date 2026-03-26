@@ -210,6 +210,10 @@
     "final_cta_body": "It's free, it's simple, and it reaches people who need what you offer.",
     "final_cta_btn": "Submit my application"
   },
+  "verification": {
+    "verified": "VERIFIED",
+    "by_manada": "by Manada"
+  },
   "not_found": {
     "title": "Page not found",
     "back_home": "Back to home"

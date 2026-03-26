@@ -208,6 +208,10 @@
     "final_cta_body": "Es gratis, es simple y llega a gente que necesita lo que ofreces.",
     "final_cta_btn": "Enviar mi solicitud"
   },
+  "verification": {
+    "verified": "VERIFICADO",
+    "by_manada": "por Manada"
+  },
   "not_found": {
     "title": "Página no encontrada",
     "back_home": "Volver al inicio"

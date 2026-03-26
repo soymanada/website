@@ -210,6 +210,10 @@
     "final_cta_body": "C'est gratuit, c'est simple et ça rejoint des gens qui ont besoin de ce que vous offrez.",
     "final_cta_btn": "Soumettre ma demande"
   },
+  "verification": {
+    "verified": "VÉRIFIÉ",
+    "by_manada": "par Manada"
+  },
   "not_found": {
     "title": "Page introuvable",
     "back_home": "Retour à l'accueil"
