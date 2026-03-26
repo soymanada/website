@@ -117,8 +117,8 @@
     "no_results_title": "Sin resultados",
     "no_results_body": "Prueba con otros términos o limpia los filtros.",
     "clear_filters_btn": "Limpiar filtros",
-    "suggest_cta": "¿No encuentras lo que buscas?",
-    "suggest_btn": "Sugiere un proveedor"
+    "suggest_cta": "¿Eres proveedor de servicios para migrantes?",
+    "suggest_btn": "Aparecer en el directorio"
   },
   "category_page": {
     "not_found_title": "Categoría no encontrada",

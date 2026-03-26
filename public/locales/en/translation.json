@@ -119,8 +119,8 @@
     "no_results_title": "No results",
     "no_results_body": "Try different terms or clear the filters.",
     "clear_filters_btn": "Clear filters",
-    "suggest_cta": "Can't find what you're looking for?",
-    "suggest_btn": "Suggest a provider"
+    "suggest_cta": "Are you a service provider for migrants?",
+    "suggest_btn": "Join the directory"
   },
   "category_page": {
     "not_found_title": "Category not found",
