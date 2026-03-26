@@ -36,15 +36,15 @@ export default function VerificationBadge({ variant = 'pill', theme = 'light' })
 
   return (
     <div className={`vb-pill vb-pill--${theme}`} role="img" aria-label={`${label} ${sub}`}>
-      <svg className="vb-pill__paw" viewBox="0 0 32 32" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-        {/* Dedos */}
-        <ellipse cx="4.5"  cy="15" rx="3.2" ry="4"   transform="rotate(-25, 4.5, 15)"  fill="currentColor"/>
-        <ellipse cx="11"   cy="8"  rx="3.2" ry="4"   transform="rotate(-10, 11, 8)"    fill="currentColor"/>
-        <ellipse cx="21"   cy="8"  rx="3.2" ry="4"   transform="rotate(10, 21, 8)"     fill="currentColor"/>
-        <ellipse cx="27.5" cy="15" rx="3.2" ry="4"   transform="rotate(25, 27.5, 15)" fill="currentColor"/>
-        {/* Almohadilla central con check */}
-        <ellipse cx="16" cy="25" rx="8" ry="5.5" fill="currentColor"/>
-        <path d="M11.5 25l3 3 6-6" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+      <svg className="vb-pill__paw" viewBox="0 0 32 32" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+        {/* Pulgar apuntando arriba */}
+        <rect x="4" y="2" width="9" height="18" rx="4.5"/>
+        {/* Puño / palma */}
+        <rect x="4" y="18" width="24" height="12" rx="5"/>
+        {/* Nudillos redondeados — 3 dedos curvados */}
+        <ellipse cx="16" cy="18" rx="3" ry="2.5"/>
+        <ellipse cx="22" cy="16.5" rx="3" ry="2.5"/>
+        <ellipse cx="27.5" cy="18.5" rx="2.5" ry="2"/>
       </svg>
       <span className="vb-pill__text">
         <strong>{label}</strong>
