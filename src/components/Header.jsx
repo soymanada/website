@@ -9,7 +9,7 @@ export default function Header() {
   const [scrolled,  setScrolled]  = useState(false)
   const [menuOpen,  setMenuOpen]  = useState(false)
   const location = useLocation()
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   const darkHero = ['/proveedores', '/mi-perfil'].includes(location.pathname)
   const { user, isProvider } = useAuth()
@@ -45,7 +45,12 @@ export default function Header() {
             <ellipse cx="21" cy="8" rx="3.2" ry="4" transform="rotate(10, 21, 8)"/>
             <ellipse cx="27.5" cy="15" rx="3.2" ry="4" transform="rotate(25, 27.5, 15)"/>
           </svg>
-          <span className="hdr__logo-word">{t('brand_name')}</span>
+          <span className="hdr__logo-word">
+            SoyManada
+            {i18n.language !== 'es' && (
+              <span className="hdr__logo-sub">{t('brand_name')}</span>
+            )}
+          </span>
         </Link>
 
         <nav className="hdr__nav">
