@@ -1,5 +1,6 @@
 // src/pages/ProviderDashboard.jsx
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { supabase } from '../lib/supabase'
 import MetricsSummary      from '../components/dashboard/MetricsSummary'
@@ -202,9 +203,9 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
             ))}
           </div>
           <div className="pdash__upgrade-cta">
-            <p className="t-sm"><strong>Activa Gold</strong> por $15 USD/mes y desbloquea todas las herramientas.</p>
+            <p className="t-sm"><strong>Activa Gold</strong> por $49 CAD/mes y desbloquea todas las herramientas.</p>
             <a href="mailto:hola@soymanada.com?subject=Quiero Gold" className="btn btn-primary btn-sm">
-              <span>Activar Gold — $15/mes</span>
+              <span>Activar Gold — $49 CAD/mes</span>
             </a>
           </div>
         </div>
@@ -256,9 +257,9 @@ function SectionMetricas({ tier, metrics, activity, hourlyActivity, feedback, pr
       <div className="pdash__locked">
         <MetricsSummary metrics={null} loading={true} />
         <div className="pdash__upgrade-cta">
-          <p className="t-sm"><strong>Activa Silver</strong> por $5 USD/mes y desbloquea tus métricas en tiempo real.</p>
+          <p className="t-sm"><strong>Activa Silver</strong> por $19 CAD/mes y desbloquea tus métricas en tiempo real.</p>
           <a href="mailto:hola@soymanada.com?subject=Quiero Silver" className="btn btn-primary btn-sm">
-            <span>Activar Silver — $5/mes</span>
+            <span>Activar Silver — $19 CAD/mes</span>
           </a>
         </div>
       </div>
@@ -285,6 +286,118 @@ function SectionMetricas({ tier, metrics, activity, hourlyActivity, feedback, pr
         feedback={feedback}
         provider={provider}
       />
+    </div>
+  )
+}
+
+// ── Sección Mi Plan ──────────────────────────────────────────────
+const CHECK_ICON = (
+  <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+    <circle cx="8" cy="8" r="7" fill="var(--iris-100)"/>
+    <path d="M5 8l2.5 2.5 4-4" stroke="var(--iris-600)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+)
+
+const TIERS_DEF = [
+  {
+    key: 'bronze', icon: '🥉', label: 'Bronze',
+    price: 'Gratis', priceLocal: null,
+    features: ['Perfil en el directorio', '1 categoría', 'Contacto visible a usuarios registrados', 'Badge verificado (si cumples criterios)'],
+    ctaLabel: null,
+  },
+  {
+    key: 'silver', icon: '🥈', label: 'Silver',
+    price: '$19 CAD', priceLocal: '$9.990 CLP',
+    features: ['Perfil en el directorio', 'Hasta 2 categorías', 'Contacto visible a usuarios registrados', 'Badge verificado garantizado', 'Posición prioritaria en resultados', 'Métricas básicas (vistas y clics)', 'Soporte por email'],
+    ctaLabel: 'Activar Silver — $19 CAD/mes',
+  },
+  {
+    key: 'gold', icon: '🥇', label: 'Gold',
+    price: '$49 CAD', priceLocal: '$24.990 CLP',
+    features: ['Perfil en el directorio', 'Todas las categorías', 'Contacto visible a usuarios registrados', 'Badge verificado garantizado', 'Top 3 garantizado siempre', 'Métricas completas', 'Beneficio exclusivo para usuarios', 'Soporte prioritario', 'Herramientas de atención (agenda, email, respuestas)'],
+    ctaLabel: 'Activar Gold — $49 CAD/mes',
+  },
+]
+
+function SectionMiPlan({ tier }) {
+  const current = tier ?? 'bronze'
+
+  return (
+    <div className="pdash__section">
+      <div className="pdash__section-header">
+        <h2 className="pdash__section-title d-md">Mi plan</h2>
+        <p className="t-sm pdash__section-sub">Tu plan actual y lo que puedes desbloquear.</p>
+      </div>
+
+      {/* Plan actual badge */}
+      <div className="pdash__plan-current">
+        <span className="pdash__plan-current-label t-xs">Tu plan actual</span>
+        <div className={`pdash__plan-current-badge pdash__plan-current-badge--${current}`}>
+          {TIERS_DEF.find(t => t.key === current)?.icon} {current.charAt(0).toUpperCase() + current.slice(1)}
+        </div>
+        {current === 'bronze' && (
+          <p className="t-xs" style={{ color: 'var(--text-400)', marginTop: 8 }}>
+            Actualiza tu plan para obtener más visibilidad, métricas y herramientas.
+          </p>
+        )}
+        {current === 'silver' && (
+          <p className="t-xs" style={{ color: 'var(--text-400)', marginTop: 8 }}>
+            Estás en Silver. Pasa a Gold para desbloquear herramientas de atención y el top 3 garantizado.
+          </p>
+        )}
+        {current === 'gold' && (
+          <p className="t-xs" style={{ color: 'var(--text-400)', marginTop: 8 }}>
+            Estás en el plan máximo. Tienes acceso a todas las funcionalidades.
+          </p>
+        )}
+      </div>
+
+      {/* Comparación de tiers */}
+      <div className="pdash__plan-grid">
+        {TIERS_DEF.map(t => {
+          const isCurrent = t.key === current
+          const isLocked  = (current === 'bronze' && t.key !== 'bronze') ||
+                            (current === 'silver' && t.key === 'gold')
+          return (
+            <div key={t.key} className={`pdash__plan-card${isCurrent ? ' pdash__plan-card--active' : ''}${isLocked ? ' pdash__plan-card--upgrade' : ''}`}>
+              {isCurrent && (
+                <div className="pdash__plan-card-current-tag">Tu plan</div>
+              )}
+              <div className="pdash__plan-card-top">
+                <span className="pdash__plan-card-icon">{t.icon}</span>
+                <div>
+                  <strong className="t-sm" style={{ color: 'var(--iris-900)' }}>{t.label}</strong>
+                  <div className="pdash__plan-card-price">
+                    <span className="pdash__plan-card-price-main">{t.price}</span>
+                    {t.priceLocal && <span className="t-xs" style={{ color: 'var(--text-300)' }}> · {t.priceLocal}/mes</span>}
+                  </div>
+                </div>
+              </div>
+              <ul className="pdash__plan-card-features">
+                {t.features.map(f => (
+                  <li key={f} className="pdash__plan-card-feature">
+                    {CHECK_ICON}
+                    <span className="t-xs">{f}</span>
+                  </li>
+                ))}
+              </ul>
+              {!isCurrent && t.ctaLabel && (
+                <a
+                  href={`mailto:hola@soymanada.com?subject=Quiero ${t.label}`}
+                  className={`btn btn-sm pdash__plan-card-cta ${t.key === 'gold' ? 'pdash__plan-card-cta--gold' : 'btn-primary'}`}
+                >
+                  <span>{t.ctaLabel}</span>
+                </a>
+              )}
+            </div>
+          )
+        })}
+      </div>
+
+      <p className="t-xs" style={{ color: 'var(--text-300)', textAlign: 'center' }}>
+        Precios en CAD · Chile: Silver $9.990 CLP/mes · Gold $24.990 CLP/mes · Sin compromiso, cancela cuando quieras.{' '}
+        <Link to="/planes" style={{ color: 'var(--iris-500)' }}>Ver página de planes →</Link>
+      </p>
     </div>
   )
 }
@@ -368,6 +481,7 @@ export default function ProviderDashboard() {
     { id: 'perfil',       label: '👤 Mi perfil' },
     { id: 'metricas',     label: '📊 Métricas' },
     { id: 'herramientas', label: '🛠 Herramientas' },
+    { id: 'miplan',       label: '💎 Mi plan' },
   ]
 
   return (
@@ -426,6 +540,9 @@ export default function ProviderDashboard() {
               )}
               {activeTab === 'herramientas' && (
                 <SectionHerramientas tier={tier} provider={provider} onSave={handleSave} saving={saving} />
+              )}
+              {activeTab === 'miplan' && (
+                <SectionMiPlan tier={tier} />
               )}
             </>
           )}

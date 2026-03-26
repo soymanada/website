@@ -210,3 +210,151 @@
 .pdash__trans-flag {
   width: 20px; height: 14px; border-radius: 2px; flex-shrink: 0;
 }
+
+/* ── Mi Plan ────────────────────────────────────────────────────── */
+.pdash__plan-current {
+  background: linear-gradient(135deg, var(--iris-50) 0%, var(--ivory) 100%);
+  border: 1.5px solid var(--iris-200);
+  border-radius: var(--r-lg);
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.pdash__plan-current-label {
+  color: var(--text-300);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.pdash__plan-current-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  padding: 6px 16px;
+  border-radius: 100px;
+  width: fit-content;
+}
+.pdash__plan-current-badge--bronze {
+  background: #FDF0E7;
+  color: #92400E;
+  border: 1.5px solid #F5C49A;
+}
+.pdash__plan-current-badge--silver {
+  background: #F1F5F9;
+  color: #334155;
+  border: 1.5px solid #CBD5E1;
+}
+.pdash__plan-current-badge--gold {
+  background: linear-gradient(135deg, #FDF3E1, #FEF9EC);
+  color: #92400E;
+  border: 1.5px solid var(--gold-border);
+}
+
+/* Grid de tiers */
+.pdash__plan-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+@media (max-width: 680px) {
+  .pdash__plan-grid { grid-template-columns: 1fr; }
+}
+
+.pdash__plan-card {
+  position: relative;
+  background: var(--white);
+  border: 1.5px solid var(--iris-100);
+  border-radius: var(--r-lg);
+  padding: 20px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: box-shadow var(--t-fast);
+}
+.pdash__plan-card--active {
+  border-color: var(--iris-400);
+  box-shadow: 0 4px 24px rgba(91,45,158,0.12);
+}
+.pdash__plan-card--upgrade {
+  background: var(--ivory);
+}
+
+.pdash__plan-card-current-tag {
+  position: absolute;
+  top: -11px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--iris-600);
+  color: var(--white);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 12px;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+
+.pdash__plan-card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.pdash__plan-card-icon { font-size: 1.6rem; line-height: 1; flex-shrink: 0; }
+.pdash__plan-card-price {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 2px;
+}
+.pdash__plan-card-price-main {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--iris-800);
+}
+
+.pdash__plan-card-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+.pdash__plan-card-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: var(--text-600);
+  line-height: 1.5;
+}
+.pdash__plan-card-feature svg { flex-shrink: 0; margin-top: 1px; }
+
+.pdash__plan-card-cta {
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+}
+.pdash__plan-card-cta--gold {
+  background: linear-gradient(135deg, #c9973a, #e8c264);
+  color: var(--white);
+  border: none;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 10px 16px;
+  border-radius: 100px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity var(--t-fast);
+}
+.pdash__plan-card-cta--gold:hover { opacity: 0.88; }
