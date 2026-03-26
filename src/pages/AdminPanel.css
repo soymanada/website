@@ -170,6 +170,9 @@
 }
 .adm-modal select:focus { outline: none; border-color: var(--iris-500); }
 .adm-modal__actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 4px; }
+.adm-modal__hint  { font-size: 0.85rem; color: var(--text-400); margin-top: -8px; }
+.adm-modal__ok    { font-size: 0.875rem; color: #16a34a; font-weight: 600; }
+.adm-modal__err   { font-size: 0.875rem; color: #dc2626; }
 
 .adm-modal--lg { width: min(680px, 96vw); }
 

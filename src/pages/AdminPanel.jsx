@@ -7,9 +7,13 @@ const fmt = (iso) => iso ? new Date(iso).toLocaleDateString('es-CL') : '—'
 
 // ── Usuarios ──────────────────────────────────────────────────────────────────
 function UsersPanel() {
-  const [users,   setUsers]   = useState([])
-  const [loading, setLoading] = useState(true)
-  const [editing, setEditing] = useState(null)
+  const [users,    setUsers]    = useState([])
+  const [loading,  setLoading]  = useState(true)
+  const [editing,  setEditing]  = useState(null)
+  const [inviting, setInviting] = useState(false)
+  const [invForm,  setInvForm]  = useState({ email: '', role: 'migrant', tier: 'bronze' })
+  const [invState, setInvState] = useState('idle') // idle | sending | ok | error
+  const [invError, setInvError] = useState('')
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -22,6 +26,21 @@ function UsersPanel() {
   }, [])
 
   useEffect(() => { load() }, [load])
+
+  const sendInvite = async () => {
+    setInvState('sending')
+    setInvError('')
+    const { error } = await supabase.functions.invoke('invite-user', {
+      body: { email: invForm.email.trim(), role: invForm.role, tier: invForm.tier },
+    })
+    if (error) {
+      setInvState('error')
+      setInvError(error.message ?? 'Error desconocido')
+    } else {
+      setInvState('ok')
+      setTimeout(() => { setInviting(false); setInvState('idle'); load() }, 1800)
+    }
+  }
 
   const save = async () => {
     await supabase.from('profiles')
@@ -37,7 +56,53 @@ function UsersPanel() {
         <h2 className="adm-section__title">
           Usuarios <span className="adm-badge">{users.length}</span>
         </h2>
+        <button className="adm-btn adm-btn--primary" onClick={() => { setInviting(true); setInvState('idle'); setInvForm({ email: '', role: 'migrant', tier: 'bronze' }) }}>
+          + Invitar usuario
+        </button>
       </div>
+
+      {inviting && (
+        <div className="adm-overlay" onClick={() => setInviting(false)}>
+          <div className="adm-modal" onClick={e => e.stopPropagation()}>
+            <h3>Invitar usuario</h3>
+            <p className="adm-modal__hint">Se enviará un email de invitación. El usuario elige su contraseña al hacer clic.</p>
+            <label>Email
+              <input
+                type="email"
+                value={invForm.email}
+                onChange={e => setInvForm(p => ({ ...p, email: e.target.value }))}
+                placeholder="usuario@email.com"
+                disabled={invState === 'sending' || invState === 'ok'}
+              />
+            </label>
+            <label>Rol
+              <select value={invForm.role} onChange={e => setInvForm(p => ({ ...p, role: e.target.value }))}>
+                <option value="migrant">migrant</option>
+                <option value="provider">provider</option>
+                <option value="admin">admin</option>
+              </select>
+            </label>
+            <label>Tier
+              <select value={invForm.tier} onChange={e => setInvForm(p => ({ ...p, tier: e.target.value }))}>
+                <option value="bronze">bronze</option>
+                <option value="silver">silver</option>
+                <option value="gold">gold</option>
+              </select>
+            </label>
+            {invState === 'ok'    && <p className="adm-modal__ok">✓ Invitación enviada</p>}
+            {invState === 'error' && <p className="adm-modal__err">Error: {invError}</p>}
+            <div className="adm-modal__actions">
+              <button className="adm-btn adm-btn--ghost" onClick={() => setInviting(false)}>Cancelar</button>
+              <button
+                className="adm-btn adm-btn--primary"
+                onClick={sendInvite}
+                disabled={!invForm.email || invState === 'sending' || invState === 'ok'}>
+                {invState === 'sending' ? 'Enviando…' : 'Enviar invitación'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {loading ? <p className="adm-loading">Cargando...</p> : (
         <div className="adm-table-wrap">
