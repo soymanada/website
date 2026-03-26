@@ -29,11 +29,9 @@
   text-decoration: none;
 }
 .hdr__logo-glyph {
-  font-size: 1.1rem;
   color: var(--iris-500);
-  display: flex;
-  align-items: center;
-  line-height: 1;
+  display: block;
+  flex-shrink: 0;
   animation: float-gentle 5s ease-in-out infinite;
 }
 .hdr__logo-word {
