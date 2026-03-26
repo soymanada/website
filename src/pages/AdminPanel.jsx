@@ -98,10 +98,24 @@ function UsersPanel() {
   )
 }
 
+const CATEGORY_SLUGS = [
+  'seguros','migracion','traducciones','trabajo',
+  'alojamiento','idiomas','banca','salud-mental','antes-de-viajar',
+]
+
+const EMPTY_PROVIDER = {
+  name: '', category_slug: 'seguros', service: '', description: '',
+  countries: '', languages: '', verified: false, active: true,
+  whatsapp: '', instagram: '', website: '',
+}
+
 // ── Proveedores ───────────────────────────────────────────────────────────────
 function ProvidersPanel() {
   const [providers, setProviders] = useState([])
   const [loading,   setLoading]   = useState(true)
+  const [creating,  setCreating]  = useState(false)
+  const [form,      setForm]      = useState(EMPTY_PROVIDER)
+  const [saving,    setSaving]    = useState(false)
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -123,6 +137,32 @@ function ProvidersPanel() {
     load()
   }
 
+  const openCreate = () => { setForm(EMPTY_PROVIDER); setCreating(true) }
+
+  const saveNew = async () => {
+    setSaving(true)
+    const { error } = await supabase.from('providers').insert({
+      name:          form.name.trim(),
+      category_slug: form.category_slug,
+      service:       form.service.trim(),
+      description:   form.description.trim(),
+      countries:     form.countries.split(',').map(s => s.trim()).filter(Boolean),
+      languages:     form.languages.split(',').map(s => s.trim()).filter(Boolean),
+      verified:      form.verified,
+      active:        form.active,
+      contact: {
+        whatsapp:  form.whatsapp.trim()  || null,
+        instagram: form.instagram.trim() || null,
+        website:   form.website.trim()   || null,
+      },
+    })
+    setSaving(false)
+    if (!error) { setCreating(false); load() }
+    else alert('Error al crear: ' + error.message)
+  }
+
+  const set = (k, v) => setForm(p => ({ ...p, [k]: v }))
+
   return (
     <div className="adm-section">
       <div className="adm-section__head">
@@ -132,7 +172,59 @@ function ProvidersPanel() {
             {providers.filter(p => p.verified).length} verificados
           </span>
         </h2>
+        <button className="adm-btn adm-btn--primary" onClick={openCreate}>
+          + Crear proveedor
+        </button>
       </div>
+
+      {creating && (
+        <div className="adm-overlay" onClick={() => setCreating(false)}>
+          <div className="adm-modal adm-modal--lg" onClick={e => e.stopPropagation()}>
+            <h3>Nuevo proveedor</h3>
+            <div className="adm-form-grid">
+              <label>Nombre / Marca
+                <input value={form.name} onChange={e => set('name', e.target.value)} placeholder="Ej: Objetivo Canadá" />
+              </label>
+              <label>Categoría
+                <select value={form.category_slug} onChange={e => set('category_slug', e.target.value)}>
+                  {CATEGORY_SLUGS.map(s => <option key={s} value={s}>{s}</option>)}
+                </select>
+              </label>
+              <label>Servicio (5 palabras)
+                <input value={form.service} onChange={e => set('service', e.target.value)} placeholder="Ej: Asesoría migratoria a Canadá" />
+              </label>
+              <label>WhatsApp (con código país)
+                <input value={form.whatsapp} onChange={e => set('whatsapp', e.target.value)} placeholder="16047009832" />
+              </label>
+              <label className="adm-form-grid--full">Descripción
+                <textarea rows={3} value={form.description} onChange={e => set('description', e.target.value)} />
+              </label>
+              <label>Países (separados por coma)
+                <input value={form.countries} onChange={e => set('countries', e.target.value)} placeholder="Canadá, Chile" />
+              </label>
+              <label>Idiomas (separados por coma)
+                <input value={form.languages} onChange={e => set('languages', e.target.value)} placeholder="Español, Inglés" />
+              </label>
+              <label>Instagram
+                <input value={form.instagram} onChange={e => set('instagram', e.target.value)} placeholder="usuario_sin_@" />
+              </label>
+              <label>Sitio web
+                <input value={form.website} onChange={e => set('website', e.target.value)} placeholder="https://..." />
+              </label>
+              <label className="adm-form-grid--inline">
+                <input type="checkbox" checked={form.verified} onChange={e => set('verified', e.target.checked)} />
+                Verificado al crear
+              </label>
+            </div>
+            <div className="adm-modal__actions">
+              <button className="adm-btn adm-btn--ghost" onClick={() => setCreating(false)}>Cancelar</button>
+              <button className="adm-btn adm-btn--primary" onClick={saveNew} disabled={saving || !form.name}>
+                {saving ? 'Guardando…' : 'Crear proveedor'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {loading ? <p className="adm-loading">Cargando...</p> : (
         <div className="adm-table-wrap">

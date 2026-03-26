@@ -170,3 +170,37 @@
 }
 .adm-modal select:focus { outline: none; border-color: var(--iris-500); }
 .adm-modal__actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 4px; }
+
+.adm-modal--lg { width: min(680px, 96vw); }
+
+.adm-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.adm-form-grid--full  { grid-column: 1 / -1; }
+.adm-form-grid--inline {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+.adm-form-grid--inline input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--iris-600); }
+
+.adm-modal input,
+.adm-modal textarea {
+  padding: 9px 12px;
+  border: 1.5px solid var(--iris-200);
+  border-radius: var(--r-sm);
+  font-size: 0.9rem;
+  color: var(--text-700);
+  background: var(--white);
+  font-family: inherit;
+  resize: vertical;
+}
+.adm-modal input:focus,
+.adm-modal textarea:focus { outline: none; border-color: var(--iris-500); }
+
+.adm-section__head { justify-content: flex-start; }
+.adm-section__head .adm-btn { margin-left: auto; }
