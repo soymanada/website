@@ -77,6 +77,10 @@ export default function Header() {
           )}
         </div>
 
+        <div className="hdr__lang-mobile">
+          <LanguageSwitcher />
+        </div>
+
         <button className={`hdr__burger${menuOpen ? ' hdr__burger--open' : ''}`} onClick={() => setMenuOpen(v => !v)} aria-label={t('header.menu_label')}>
           <span /><span /><span />
         </button>
@@ -99,9 +103,6 @@ export default function Header() {
               {t('header.cta_ingresar')}
             </Link>
           )}
-        </div>
-        <div className="hdr__drawer-lang">
-          <LanguageSwitcher />
         </div>
       </div>
     </header>
