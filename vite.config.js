@@ -7,11 +7,13 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          'vendor-react':   ['react', 'react-dom', 'react-router-dom'],
-          'vendor-supabase': ['@supabase/supabase-js'],
-          'vendor-i18n':    ['i18next', 'react-i18next', 'i18next-browser-languagedetector'],
-          'vendor-icons':   ['lucide-react'],
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('lucide-react'))   return 'icons'
+            if (id.includes('@supabase'))       return 'supabase'
+            if (id.includes('i18next') || id.includes('react-i18next')) return 'i18n'
+            if (id.includes('react-dom') || id.includes('react-router')) return 'react'
+          }
         },
       },
     },
