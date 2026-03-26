@@ -196,3 +196,173 @@
     flex-shrink: 0;
   }
 }
+
+/* ── Form section ─────────────────────────────────────── */
+.ppg-form { background: var(--ivory); border-top: 1px solid var(--iris-200); }
+.ppg-form__inner {
+  max-width: 680px;
+  margin: 0 auto;
+}
+.ppg-form__header { margin-bottom: 40px; }
+.ppg-form__title  { color: var(--iris-900); margin-bottom: 10px; }
+.ppg-form__subtitle { color: var(--text-500); }
+
+/* Form layout */
+.ppg-form__form { display: flex; flex-direction: column; gap: 0; }
+
+.ppg-form__section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 32px 0;
+  border-bottom: 1px solid var(--iris-200);
+}
+.ppg-form__section:last-of-type { border-bottom: none; }
+.ppg-form__section--terms { padding-top: 24px; }
+
+.ppg-form__section-title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--iris-700);
+  letter-spacing: 0.01em;
+}
+.ppg-form__section-note {
+  font-size: 0.82rem;
+  color: var(--text-300);
+  margin-top: -8px;
+}
+
+/* Fields */
+.ppg-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.ppg-form__label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-700);
+}
+.ppg-form__label em {
+  color: var(--iris-500);
+  font-style: normal;
+  margin-left: 2px;
+}
+.ppg-form__hint {
+  font-size: 0.78rem;
+  color: var(--text-300);
+  margin-bottom: 2px;
+}
+.ppg-form__optional {
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: var(--text-300);
+}
+
+.ppg-form__field input,
+.ppg-form__field textarea {
+  font-family: var(--font-body);
+  font-size: 0.93rem;
+  color: var(--text-700);
+  background: var(--white);
+  border: 1.5px solid var(--iris-200);
+  border-radius: var(--r-md);
+  padding: 11px 14px;
+  transition: border-color var(--t-fast), box-shadow var(--t-fast);
+  width: 100%;
+  box-sizing: border-box;
+}
+.ppg-form__field input:focus,
+.ppg-form__field textarea:focus {
+  outline: none;
+  border-color: var(--iris-500);
+  box-shadow: 0 0 0 3px rgba(123,77,200,0.12);
+}
+.ppg-form__field textarea { resize: vertical; }
+
+/* Checkboxes */
+.ppg-form__checks { display: flex; flex-direction: column; gap: 10px; }
+.ppg-form__checks--inline { flex-direction: row; flex-wrap: wrap; gap: 10px 20px; }
+.ppg-form__checks--grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px 20px;
+}
+
+.ppg-form__check {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  color: var(--text-600);
+}
+.ppg-form__check input[type="checkbox"] {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+  accent-color: var(--iris-500);
+  cursor: pointer;
+  margin-top: 1px;
+}
+.ppg-form__check--terms {
+  align-items: flex-start;
+  font-size: 0.84rem;
+  color: var(--text-500);
+  line-height: 1.55;
+}
+.ppg-form__check--terms em {
+  color: var(--iris-500);
+  font-style: normal;
+}
+
+/* Radios */
+.ppg-form__radios { display: flex; flex-wrap: wrap; gap: 10px 24px; }
+.ppg-form__radio {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  color: var(--text-600);
+}
+.ppg-form__radio input[type="radio"] {
+  width: 17px;
+  height: 17px;
+  accent-color: var(--iris-500);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* Error */
+.ppg-form__error {
+  font-size: 0.85rem;
+  color: #c0392b;
+  background: #fdf0ef;
+  border: 1px solid #f5c6c3;
+  border-radius: var(--r-md);
+  padding: 10px 14px;
+}
+
+/* Submit */
+.ppg-form__submit { margin-top: 8px; align-self: flex-start; }
+.ppg-form__submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* Success */
+.ppg-form__success {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 60px 0;
+}
+.ppg-form__success-icon { color: var(--iris-500); }
+.ppg-form__success h2   { color: var(--iris-900); }
+.ppg-form__success p    { color: var(--text-500); max-width: 480px; }
+
+@media (max-width: 600px) {
+  .ppg-form__checks--grid { grid-template-columns: 1fr; }
+  .ppg-form__submit { width: 100%; justify-content: center; }
+}
