@@ -214,9 +214,15 @@ function ProvidersPanel() {
   useEffect(() => { load() }, [load])
 
   const toggleVerified = async (p) => {
-    const next = !p.verified
     await supabase.from('providers')
-      .update({ verified: next, active: next })
+      .update({ verified: !p.verified })
+      .eq('id', p.id)
+    load()
+  }
+
+  const toggleActive = async (p) => {
+    await supabase.from('providers')
+      .update({ active: !p.active })
       .eq('id', p.id)
     load()
   }
@@ -330,11 +336,16 @@ function ProvidersPanel() {
                   <td><span className={`adm-dot ${p.verified ? 'adm-dot--on' : 'adm-dot--off'}`} /></td>
                   <td><span className={`adm-dot ${p.active   ? 'adm-dot--on' : 'adm-dot--off'}`} /></td>
                   <td>{fmt(p.created_at)}</td>
-                  <td>
+                  <td className="adm-td--actions">
                     <button
                       className={`adm-btn adm-btn--sm ${p.verified ? 'adm-btn--ghost' : 'adm-btn--primary'}`}
                       onClick={() => toggleVerified(p)}>
                       {p.verified ? 'Desverificar' : 'Verificar'}
+                    </button>
+                    <button
+                      className={`adm-btn adm-btn--sm ${p.active ? 'adm-btn--danger' : 'adm-btn--success'}`}
+                      onClick={() => toggleActive(p)}>
+                      {p.active ? 'Desactivar' : 'Activar'}
                     </button>
                   </td>
                 </tr>

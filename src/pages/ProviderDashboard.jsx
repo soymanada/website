@@ -203,9 +203,9 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
             ))}
           </div>
           <div className="pdash__upgrade-cta">
-            <p className="t-sm"><strong>Activa Gold</strong> por $49 CAD/mes y desbloquea todas las herramientas.</p>
+            <p className="t-sm"><strong>Activa Gold</strong> por $20 USD/mes y desbloquea todas las herramientas.</p>
             <a href="mailto:hola@soymanada.com?subject=Quiero Gold" className="btn btn-primary btn-sm">
-              <span>Activar Gold — $49 CAD/mes</span>
+              <span>Activar Gold — $20 USD/mes</span>
             </a>
           </div>
         </div>
@@ -257,9 +257,9 @@ function SectionMetricas({ tier, metrics, activity, hourlyActivity, feedback, pr
       <div className="pdash__locked">
         <MetricsSummary metrics={null} loading={true} />
         <div className="pdash__upgrade-cta">
-          <p className="t-sm"><strong>Activa Silver</strong> por $19 CAD/mes y desbloquea tus métricas en tiempo real.</p>
+          <p className="t-sm"><strong>Activa Silver</strong> por $10 USD/mes y desbloquea tus métricas en tiempo real.</p>
           <a href="mailto:hola@soymanada.com?subject=Quiero Silver" className="btn btn-primary btn-sm">
-            <span>Activar Silver — $19 CAD/mes</span>
+            <span>Activar Silver — $10 USD/mes</span>
           </a>
         </div>
       </div>
@@ -307,15 +307,15 @@ const TIERS_DEF = [
   },
   {
     key: 'silver', icon: '🥈', label: 'Silver',
-    price: '$19 CAD', priceLocal: '$9.990 CLP',
+    price: '$10 USD', priceLocal: '$9.500 CLP',
     features: ['Perfil en el directorio', 'Hasta 2 categorías', 'Contacto visible a usuarios registrados', 'Badge verificado garantizado', 'Posición prioritaria en resultados', 'Métricas básicas (vistas y clics)', 'Soporte por email'],
-    ctaLabel: 'Activar Silver — $19 CAD/mes',
+    ctaLabel: 'Activar Silver — $10 USD/mes',
   },
   {
     key: 'gold', icon: '🥇', label: 'Gold',
-    price: '$49 CAD', priceLocal: '$24.990 CLP',
+    price: '$20 USD', priceLocal: '$19.000 CLP',
     features: ['Perfil en el directorio', 'Todas las categorías', 'Contacto visible a usuarios registrados', 'Badge verificado garantizado', 'Top 3 garantizado siempre', 'Métricas completas', 'Beneficio exclusivo para usuarios', 'Soporte prioritario', 'Herramientas de atención (agenda, email, respuestas)'],
-    ctaLabel: 'Activar Gold — $49 CAD/mes',
+    ctaLabel: 'Activar Gold — $20 USD/mes',
   },
 ]
 
@@ -395,7 +395,7 @@ function SectionMiPlan({ tier }) {
       </div>
 
       <p className="t-xs" style={{ color: 'var(--text-300)', textAlign: 'center' }}>
-        Precios en CAD · Chile: Silver $9.990 CLP/mes · Gold $24.990 CLP/mes · Sin compromiso, cancela cuando quieras.{' '}
+        Precios en USD · Chile: Silver $9.500 CLP/mes · Gold $19.000 CLP/mes · Sin compromiso, cancela cuando quieras.{' '}
         <Link to="/planes" style={{ color: 'var(--iris-500)' }}>Ver página de planes →</Link>
       </p>
     </div>

@@ -38,8 +38,8 @@ export default function PricingPage() {
     {
       key: 'silver',
       icon: '🥈',
-      price: '$19 CAD',
-      priceLocal: '$9.990 CLP',
+      price: '$10 USD',
+      priceLocal: '$9.500 CLP',
       highlight: true,
       badge: t('pricing_page.badge_popular'),
       ctaKey: 'cta_paid',
@@ -57,8 +57,8 @@ export default function PricingPage() {
     {
       key: 'gold',
       icon: '🥇',
-      price: '$49 CAD',
-      priceLocal: '$24.990 CLP',
+      price: '$20 USD',
+      priceLocal: '$19.000 CLP',
       highlight: false,
       badge: t('pricing_page.badge_premium'),
       ctaKey: 'cta_paid',

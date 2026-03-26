@@ -125,6 +125,11 @@
 .adm-btn--primary:hover { background: var(--iris-700); }
 .adm-btn--ghost   { background: transparent; color: var(--text-600); border: 1.5px solid var(--iris-200); }
 .adm-btn--ghost:hover { background: var(--iris-50); }
+.adm-btn--danger  { background: #FEE2E2; color: #B91C1C; border: 1.5px solid #FECACA; }
+.adm-btn--danger:hover { background: #FECACA; }
+.adm-btn--success { background: #DCFCE7; color: #15803D; border: 1.5px solid #BBF7D0; }
+.adm-btn--success:hover { background: #BBF7D0; }
+.adm-td--actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
 
 /* States */
 .adm-loading { padding: 48px; text-align: center; color: var(--text-400); }
