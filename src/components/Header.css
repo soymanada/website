@@ -108,7 +108,7 @@
   border-top: 1px solid var(--iris-200);
   box-shadow: 0 12px 40px rgba(91,45,158,0.12);
 }
-.hdr__drawer--open { max-height: 540px; }
+.hdr__drawer--open { max-height: min(720px, 85vh); overflow-y: auto; }
 .hdr__drawer-nav {
   display: flex;
   flex-direction: column;

@@ -81,6 +81,10 @@ export default function ProvidersPage() {
 
   const hasFilters = query || activeSlug !== 'todas' || activeCountry !== 'todos' || onlyVerified
 
+  const resultCount = filtered.length === 1
+    ? t('providers_page.results_count_one', { count: 1 })
+    : t('providers_page.results_count_other', { count: filtered.length })
+
   return (
     <main className="dirpage">
 
@@ -88,11 +92,8 @@ export default function ProvidersPage() {
       <div className="dirpage__hero">
         <div className="dirpage__hero-orb" aria-hidden="true" />
         <div className="container">
-          <h1 className="d-xl dirpage__title">Directorio de proveedores</h1>
-          <p className="t-lg dirpage__sub">
-            Proveedores verificados para la comunidad migrante hispanohablante.
-            Busca, filtra y contacta directo.
-          </p>
+          <h1 className="d-xl dirpage__title">{t('providers_page.title')}</h1>
+          <p className="t-lg dirpage__sub">{t('providers_page.subtitle')}</p>
 
           {/* Buscador */}
           <div className="dirpage__search-wrap">
@@ -103,13 +104,13 @@ export default function ProvidersPage() {
             <input
               className="dirpage__search"
               type="search"
-              placeholder="Buscar por nombre, servicio o descripción…"
+              placeholder={t('providers_page.search_placeholder')}
               value={query}
               onChange={e => handleSearch(e.target.value)}
-              aria-label="Buscar proveedores"
+              aria-label={t('providers_page.search_placeholder')}
             />
             {query && (
-              <button className="dirpage__search-clear" onClick={() => setQuery('')} aria-label="Limpiar búsqueda">✕</button>
+              <button className="dirpage__search-clear" onClick={() => setQuery('')} aria-label="✕">✕</button>
             )}
           </div>
         </div>
@@ -123,13 +124,13 @@ export default function ProvidersPage() {
             {/* Sidebar filtros */}
             <aside className="dirpage__filters">
               <div className="dirpage__filter-block">
-                <h3 className="dirpage__filter-title label">Categoría</h3>
+                <h3 className="dirpage__filter-title label">{t('providers_page.filter_category')}</h3>
                 <div className="dirpage__filter-options">
                   <button
                     className={`dirpage__filter-chip${activeSlug === 'todas' ? ' dirpage__filter-chip--active' : ''}`}
                     onClick={() => handleFilterCategoria('todas')}
                   >
-                    Todas
+                    {t('providers_page.filter_all_categories')}
                   </button>
                   {categories
                     .filter(c => !c.comingSoon)
@@ -141,7 +142,7 @@ export default function ProvidersPage() {
                         onClick={() => handleFilterCategoria(c.slug)}
                       >
                         <CategoryIcon name={c.icon} size={13} />
-                        {c.name}
+                        {t(`categories.${c.slug}`, c.name)}
                       </button>
                     ))
                   }
@@ -149,13 +150,13 @@ export default function ProvidersPage() {
               </div>
 
               <div className="dirpage__filter-block">
-                <h3 className="dirpage__filter-title label">País</h3>
+                <h3 className="dirpage__filter-title label">{t('providers_page.filter_country')}</h3>
                 <select
                   className="dirpage__select"
                   value={activeCountry}
                   onChange={e => handleFilterPais(e.target.value)}
                 >
-                  <option value="todos">Todos los países</option>
+                  <option value="todos">{t('providers_page.filter_all_countries')}</option>
                   {ALL_COUNTRIES.map(c => (
                     <option key={c} value={c}>{c}</option>
                   ))}
@@ -170,13 +171,13 @@ export default function ProvidersPage() {
                     onChange={e => handleFilterVerificados(e.target.checked)}
                   />
                   <span className="dirpage__toggle-track" />
-                  <span className="dirpage__toggle-label t-sm">Solo verificados por Manada</span>
+                  <span className="dirpage__toggle-label t-sm">{t('providers_page.filter_verified')}</span>
                 </label>
               </div>
 
               {hasFilters && (
                 <button className="dirpage__clear t-sm" onClick={clearFilters}>
-                  ✕ Limpiar filtros
+                  {t('providers_page.clear_filters')}
                 </button>
               )}
             </aside>
@@ -185,21 +186,19 @@ export default function ProvidersPage() {
             <div className="dirpage__results">
               <div className="dirpage__results-header">
                 <p className="t-sm dirpage__count">
-                  {filtered.length === 0
-                    ? 'Sin resultados'
-                    : `${filtered.length} proveedor${filtered.length !== 1 ? 'es' : ''}`}
+                  {filtered.length === 0 ? t('providers_page.no_results_title') : resultCount}
                 </p>
               </div>
 
               {filtered.length === 0 ? (
                 <div className="dirpage__empty">
                   <span className="dirpage__empty-icon" aria-hidden="true">🔍</span>
-                  <h2 className="d-md">Sin resultados</h2>
+                  <h2 className="d-md">{t('providers_page.no_results_title')}</h2>
                   <p className="t-lg" style={{ color: 'var(--text-500)' }}>
-                    Prueba con otros términos o limpia los filtros.
+                    {t('providers_page.no_results_body')}
                   </p>
                   <button className="btn btn-secondary" style={{ marginTop: 20 }} onClick={clearFilters}>
-                    Limpiar filtros
+                    {t('providers_page.clear_filters_btn')}
                   </button>
                 </div>
               ) : (
@@ -211,10 +210,10 @@ export default function ProvidersPage() {
               {/* CTA para nuevos proveedores */}
               <div className="dirpage__cta-bottom">
                 <p className="t-sm" style={{ color: 'var(--text-500)' }}>
-                  ¿No encuentras lo que buscas?
+                  {t('providers_page.suggest_cta')}
                 </p>
                 <Link to="/registro-proveedores" className="btn btn-secondary btn-sm">
-                  <span>Sugiere un proveedor</span>
+                  <span>{t('providers_page.suggest_btn')}</span>
                 </Link>
               </div>
             </div>
