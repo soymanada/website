@@ -86,7 +86,6 @@ export default function ProviderCard({ provider: rawProvider }) {
               <ellipse cx="21" cy="8" rx="3.2" ry="4" transform="rotate(10, 21, 8)"/>
               <ellipse cx="27.5" cy="15" rx="3.2" ry="4" transform="rotate(25, 27.5, 15)"/>
             </svg>
-            <span className="pcard__avatar-initial">{name.charAt(0)}</span>
           </div>
           <div className="pcard__meta">
             <h3 className="pcard__name">{name}</h3>

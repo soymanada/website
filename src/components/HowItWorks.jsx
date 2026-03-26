@@ -1,12 +1,40 @@
 import { useTranslation } from 'react-i18next'
 import './HowItWorks.css'
 
+const STEP_ICONS = [
+  // Explorar categorías — grid de búsqueda
+  <svg key="1" width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+    <rect x="4" y="4" width="13" height="13" rx="3" fill="currentColor" opacity="0.9"/>
+    <rect x="23" y="4" width="13" height="13" rx="3" fill="currentColor" opacity="0.6"/>
+    <rect x="4" y="23" width="13" height="13" rx="3" fill="currentColor" opacity="0.6"/>
+    <rect x="23" y="23" width="13" height="13" rx="3" fill="currentColor" opacity="0.35"/>
+    <circle cx="30" cy="30" r="8" fill="#1A113C"/>
+    <circle cx="30" cy="30" r="6.5" stroke="currentColor" strokeWidth="2" fill="none"/>
+    <line x1="34.5" y1="34.5" x2="38" y2="38" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+  </svg>,
+  // Revisar proveedor — perfil con verificado
+  <svg key="2" width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+    <circle cx="20" cy="13" r="7" fill="currentColor" opacity="0.9"/>
+    <path d="M6 34c0-7.732 6.268-12 14-12s14 4.268 14 12" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" fill="none" opacity="0.6"/>
+    <circle cx="30" cy="12" r="7" fill="#1A113C"/>
+    <circle cx="30" cy="12" r="5.5" fill="currentColor" opacity="0.95"/>
+    <path d="M27 12l2 2 4-4" stroke="#1A113C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>,
+  // Contacto directo — mensaje directo
+  <svg key="3" width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+    <rect x="3" y="7" width="34" height="22" rx="5" fill="currentColor" opacity="0.9"/>
+    <path d="M3 29l6-5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" opacity="0.6"/>
+    <line x1="11" y1="16" x2="29" y2="16" stroke="#1A113C" strokeWidth="2" strokeLinecap="round" opacity="0.7"/>
+    <line x1="11" y1="22" x2="23" y2="22" stroke="#1A113C" strokeWidth="2" strokeLinecap="round" opacity="0.5"/>
+  </svg>,
+]
+
 export default function HowItWorks() {
   const { t } = useTranslation()
   const steps = [
-    { n: '01', icon: '🗂️', titleKey: 'how_it_works.step1_title', bodyKey: 'how_it_works.step1_body' },
-    { n: '02', icon: '👤', titleKey: 'how_it_works.step2_title', bodyKey: 'how_it_works.step2_body' },
-    { n: '03', icon: '💬', titleKey: 'how_it_works.step3_title', bodyKey: 'how_it_works.step3_body' },
+    { n: '01', icon: STEP_ICONS[0], titleKey: 'how_it_works.step1_title', bodyKey: 'how_it_works.step1_body' },
+    { n: '02', icon: STEP_ICONS[1], titleKey: 'how_it_works.step2_title', bodyKey: 'how_it_works.step2_body' },
+    { n: '03', icon: STEP_ICONS[2], titleKey: 'how_it_works.step3_title', bodyKey: 'how_it_works.step3_body' },
   ]
   return (
     <section className="how section" style={{ backgroundColor: '#1A113C', position: 'relative', overflow: 'hidden', padding: '100px 0' }}>
