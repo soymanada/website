@@ -1,18 +1,46 @@
 -- ─────────────────────────────────────────────────────────────────
 -- SoyManada · Fix: provider_id debe ser TEXT, no UUID
 --
--- Ejecutar SOLO si el backend creó provider_id como UUID.
--- Los IDs de providers.json son strings como 'p001', 'p002', etc.
+-- CONTEXTO:
+--   El directorio público usa providers.json con IDs string ('p001', 'p002'…)
+--   La tabla reviews fue creada con provider_id UUID FK → providers,
+--   pero el frontend siempre envía el ID string del JSON.
+--   Esto provoca que TODAS las queries de reviews fallen silenciosamente.
+--
+-- SOLUCIÓN:
+--   Quitar el FK y cambiar provider_id a TEXT.
+--   Esto permite reviews tanto para proveedores del JSON como de Supabase.
+--
+-- EJECUTAR en: Supabase Dashboard → SQL Editor
 -- ─────────────────────────────────────────────────────────────────
 
--- Verificar el tipo actual antes de ejecutar:
--- SELECT column_name, data_type
--- FROM information_schema.columns
--- WHERE table_name = 'reviews' AND column_name = 'provider_id';
-
--- Si data_type es 'uuid', ejecutar el bloque DO siguiente:
 DO $$
 BEGIN
+  -- Quitar FK si existe (puede tener nombre variable)
+  IF EXISTS (
+    SELECT 1
+    FROM information_schema.table_constraints tc
+    JOIN information_schema.key_column_usage kcu
+      ON tc.constraint_name = kcu.constraint_name
+    WHERE tc.table_name   = 'reviews'
+      AND tc.constraint_type = 'FOREIGN KEY'
+      AND kcu.column_name = 'provider_id'
+  ) THEN
+    -- Buscar y eliminar el constraint FK dinámicamente
+    EXECUTE (
+      SELECT 'ALTER TABLE public.reviews DROP CONSTRAINT ' || tc.constraint_name
+      FROM information_schema.table_constraints tc
+      JOIN information_schema.key_column_usage kcu
+        ON tc.constraint_name = kcu.constraint_name
+      WHERE tc.table_name     = 'reviews'
+        AND tc.constraint_type  = 'FOREIGN KEY'
+        AND kcu.column_name   = 'provider_id'
+      LIMIT 1
+    );
+    RAISE NOTICE 'FK de provider_id eliminado.';
+  END IF;
+
+  -- Cambiar tipo a TEXT si es UUID
   IF EXISTS (
     SELECT 1
     FROM information_schema.columns
@@ -21,14 +49,8 @@ BEGIN
       AND column_name  = 'provider_id'
       AND data_type    = 'uuid'
   ) THEN
-    -- Eliminar FK si existe
-    ALTER TABLE public.reviews
-      DROP CONSTRAINT IF EXISTS reviews_provider_id_fkey;
-
-    -- Cambiar tipo a TEXT
     ALTER TABLE public.reviews
       ALTER COLUMN provider_id TYPE TEXT USING provider_id::TEXT;
-
     RAISE NOTICE 'provider_id convertido a TEXT correctamente.';
   ELSE
     RAISE NOTICE 'provider_id ya es TEXT — no se requiere cambio.';
