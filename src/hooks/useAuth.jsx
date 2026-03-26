@@ -5,12 +5,14 @@ import { trackEvent, Events } from '../utils/analytics'
 const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
-  const [session, setSession] = useState(undefined) // undefined = cargando
-  const [profile, setProfile] = useState(null)      // { role, tier, ... }
+  const [session,        setSession]        = useState(undefined) // undefined = cargando
+  const [profile,        setProfile]        = useState(null)      // { role, tier, ... }
+  const [profileLoading, setProfileLoading] = useState(true)      // espera a que el perfil llegue
 
   // Carga el perfil desde la tabla profiles
   const loadProfile = async (userId) => {
-    if (!userId) { setProfile(null); return }
+    setProfileLoading(true)
+    if (!userId) { setProfile(null); setProfileLoading(false); return }
     const { data, error } = await supabase
       .from('profiles')
       .select('role, tier')
@@ -18,6 +20,7 @@ export function AuthProvider({ children }) {
       .single()
     if (!error && data) setProfile(data)
     else setProfile({ role: 'migrant', tier: 'bronze' }) // fallback seguro
+    setProfileLoading(false)
   }
 
   useEffect(() => {
@@ -50,7 +53,7 @@ export function AuthProvider({ children }) {
   const value = {
     session,
     user:    session?.user ?? null,
-    loading: session === undefined,
+    loading: session === undefined || (session !== null && profileLoading),
     role:    profile?.role  ?? null,   // 'migrant' | 'provider' | 'admin'
     tier:    profile?.tier  ?? null,   // 'bronze' | 'silver' | 'gold'
     isProvider: profile?.role === 'provider' || profile?.role === 'admin',
