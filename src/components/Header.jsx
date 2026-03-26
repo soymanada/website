@@ -83,6 +83,15 @@ export default function Header() {
         <div className="hdr__drawer-actions">
           <Link to="/registro-proveedores" className="btn btn-secondary btn-full">{t('header.cta_proveedor')}</Link>
           <Link to="/proveedores" className="btn btn-primary btn-full"><span>{t('header.cta_explorar')}</span></Link>
+          {user ? (
+            <Link to={isProvider ? '/mi-perfil' : '/proveedores'} className="btn btn-ghost btn-full">
+              {t('header.cta_mi_perfil', 'Mi perfil')}
+            </Link>
+          ) : (
+            <Link to="/login" className="btn btn-ghost btn-full">
+              {t('header.cta_ingresar')}
+            </Link>
+          )}
         </div>
       </div>
     </header>
