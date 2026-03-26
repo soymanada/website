@@ -36,17 +36,16 @@ export default function VerificationBadge({ variant = 'pill', theme = 'light' })
 
   return (
     <div className={`vb-pill vb-pill--${theme}`} role="img" aria-label={`${label} ${sub}`}>
-      <div className="vb-pill__dot">
-        <svg className="vb-pill__check" viewBox="0 0 10 10" fill="none" aria-hidden="true">
-          <path
-            d="M2 5l2.5 2.5 4-4"
-            stroke="currentColor"
-            strokeWidth="1.4"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </div>
+      <svg className="vb-pill__paw" viewBox="0 0 32 32" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        {/* Dedos */}
+        <ellipse cx="4.5"  cy="15" rx="3.2" ry="4"   transform="rotate(-25, 4.5, 15)"  fill="currentColor"/>
+        <ellipse cx="11"   cy="8"  rx="3.2" ry="4"   transform="rotate(-10, 11, 8)"    fill="currentColor"/>
+        <ellipse cx="21"   cy="8"  rx="3.2" ry="4"   transform="rotate(10, 21, 8)"     fill="currentColor"/>
+        <ellipse cx="27.5" cy="15" rx="3.2" ry="4"   transform="rotate(25, 27.5, 15)" fill="currentColor"/>
+        {/* Almohadilla central con check */}
+        <ellipse cx="16" cy="25" rx="8" ry="5.5" fill="currentColor"/>
+        <path d="M11.5 25l3 3 6-6" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+      </svg>
       <span className="vb-pill__text">
         <strong>{label}</strong>
         <span> {sub}</span>
