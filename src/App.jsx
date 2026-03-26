@@ -10,6 +10,7 @@ import RegistroProveedoresPage from './pages/RegistroProveedoresPage'
 import LoginPage            from './pages/LoginPage'
 import ProviderDashboard    from './pages/ProviderDashboard'
 import ResetPasswordPage    from './pages/ResetPasswordPage'
+import AdminPanel           from './pages/AdminPanel'
 import ProtectedRoute       from './components/ProtectedRoute'
 import { AuthProvider }     from './hooks/useAuth'
 // IMPORTANTE: Se eliminó initScrollTracking de la siguiente línea
@@ -57,6 +58,11 @@ function Layout() {
         <Route path="/mi-perfil"            element={
           <ProtectedRoute requireRole="provider">
             <ProviderDashboard />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin"                element={
+          <ProtectedRoute requireRole="admin">
+            <AdminPanel />
           </ProtectedRoute>
         } />
         <Route path="*" element={<NotFound />} />
