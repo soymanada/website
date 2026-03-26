@@ -84,6 +84,7 @@
 @media (max-width: 768px) {
   .dirpage__layout { grid-template-columns: 1fr; }
   .dirpage__hero   { padding: 140px 20px 48px; }
+  .dirpage__filters { position: static; }
 }
 
 /* Sidebar */
