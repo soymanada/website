@@ -108,7 +108,7 @@
   "providers_page": {
     "title": "Répertoire des fournisseurs",
     "subtitle": "Fournisseurs vérifiés pour la communauté migrante hispanophone. Cherchez, filtrez et contactez directement.",
-    "search_placeholder": "Rechercher par nom, service ou description…",
+    "search_placeholder": "Rechercher un fournisseur…",
     "filter_category": "Catégorie",
     "filter_all_categories": "Toutes",
     "filter_country": "Pays",

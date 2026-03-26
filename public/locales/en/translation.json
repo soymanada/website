@@ -108,7 +108,7 @@
   "providers_page": {
     "title": "Provider directory",
     "subtitle": "Verified providers for the Spanish-speaking migrant community. Search, filter, and connect directly.",
-    "search_placeholder": "Search by name, service, or description…",
+    "search_placeholder": "Search provider…",
     "filter_category": "Category",
     "filter_all_categories": "All",
     "filter_country": "Country",

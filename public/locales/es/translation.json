@@ -106,7 +106,7 @@
   "providers_page": {
     "title": "Directorio de proveedores",
     "subtitle": "Proveedores verificados para la comunidad migrante hispanohablante. Busca, filtra y contacta directo.",
-    "search_placeholder": "Buscar por nombre, servicio o descripción…",
+    "search_placeholder": "Buscar proveedor…",
     "filter_category": "Categoría",
     "filter_all_categories": "Todas",
     "filter_country": "País",
