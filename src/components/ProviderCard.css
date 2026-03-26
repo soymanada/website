@@ -26,19 +26,23 @@
 }
 .pcard:hover .pcard__accent { width: 6px; }
 
-.pcard__header { display: flex; align-items: flex-start; gap: 14px; }
+.pcard__header {
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+  overflow: hidden;
+}
 
-.pcard__avatar {
-  width: 48px; height: 48px;
-  border-radius: var(--r-md);
-  background: linear-gradient(135deg, var(--iris-600), var(--iris-400));
-  color: white;
-  font-family: var(--font-display);
-  font-size: 1.3rem;
-  font-weight: 700;
-  display: flex; align-items: center; justify-content: center;
+.pcard__header-paw {
+  position: absolute;
+  right: -8px;
+  top: -12px;
+  width: 88px;
+  height: 88px;
+  color: var(--iris-500);
+  opacity: 0.06;
+  pointer-events: none;
   flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(91,45,158,0.25);
 }
 
 .pcard__meta { flex: 1; min-width: 0; }
