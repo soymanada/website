@@ -13,7 +13,13 @@ export default function ValueProps() {
     <section className="vp section">
       <div className="container">
         <div className="vp__header">
-          <p className="eyebrow">{t('value_props.eyebrow')}</p>
+          <p className="eyebrow">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor" width="13" height="13" aria-hidden="true">
+              <polygon points="2,13 30,16 2,2"/>
+              <polygon points="2,19 30,16 2,30"/>
+            </svg>
+            {t('value_props.eyebrow')}
+          </p>
           <h2 className="d-xl vp__title">
             {t('value_props.title')}<br />
             <em>{t('value_props.title_em')}</em>

@@ -15,6 +15,10 @@ export default function HowItWorks() {
       <div className="container" style={{ position: 'relative', zIndex: 2 }}>
         <div className="how__header" style={{ textAlign: 'center', marginBottom: '64px' }}>
           <p className="eyebrow how__eyebrow" style={{ background: 'rgba(255,255,255,0.12)', borderColor: 'rgba(255,255,255,0.20)', color: '#EBE5FF' }}>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor" width="13" height="13" aria-hidden="true">
+              <polygon points="2,13 30,16 2,2"/>
+              <polygon points="2,19 30,16 2,30"/>
+            </svg>
             {t('how_it_works.eyebrow')}
           </p>
           <h2 className="d-xl how__title" style={{ color: '#FFFFFF', marginTop: '16px', fontSize: 'clamp(32px, 5vw, 64px)' }}>

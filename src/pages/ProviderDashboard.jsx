@@ -492,7 +492,13 @@ export default function ProviderDashboard() {
           <div className="pdash__hero-inner">
             <div>
               <p className="eyebrow" style={{ color: 'rgba(255,255,255,0.7)', borderColor: 'rgba(255,255,255,0.2)', background: 'rgba(255,255,255,0.1)' }}>
-                <span className="eyebrow-dot" style={{ background: '#4ade80' }} />
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor" width="13" height="13" aria-hidden="true">
+                  <ellipse cx="16" cy="25" rx="8" ry="5.5"/>
+                  <ellipse cx="4.5" cy="15" rx="3.2" ry="4" transform="rotate(-25, 4.5, 15)"/>
+                  <ellipse cx="11" cy="8" rx="3.2" ry="4" transform="rotate(-10, 11, 8)"/>
+                  <ellipse cx="21" cy="8" rx="3.2" ry="4" transform="rotate(10, 21, 8)"/>
+                  <ellipse cx="27.5" cy="15" rx="3.2" ry="4" transform="rotate(25, 27.5, 15)"/>
+                </svg>
                 Panel de proveedor
               </p>
               <h1 className="d-lg pdash__hero-title">
