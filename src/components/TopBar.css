@@ -54,8 +54,7 @@
   background: var(--iris-100);
 }
 
-/* En mobile: solo mostrar labels sin flags SVG */
-@media (max-width: 480px) {
-  .topbar { padding: 5px 10px; }
-  .topbar__btn svg { display: none; }
+/* En mobile se oculta: el selector de idioma pasa al drawer del menú */
+@media (max-width: 960px) {
+  .topbar { display: none; }
 }

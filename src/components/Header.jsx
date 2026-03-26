@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../hooks/useAuth'
+import LanguageSwitcher from './LanguageSwitcher'
 import './Header.css'
 
 export default function Header() {
@@ -92,6 +93,9 @@ export default function Header() {
               {t('header.cta_ingresar')}
             </Link>
           )}
+        </div>
+        <div className="hdr__drawer-lang">
+          <LanguageSwitcher />
         </div>
       </div>
     </header>

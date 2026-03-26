@@ -103,7 +103,7 @@
   border-top: 1px solid var(--iris-200);
   box-shadow: 0 12px 40px rgba(91,45,158,0.12);
 }
-.hdr__drawer--open { max-height: 540px; }
+.hdr__drawer--open { max-height: 620px; }
 .hdr__drawer-nav {
   display: flex;
   flex-direction: column;
@@ -125,7 +125,13 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 0 20px 24px;
+  padding: 0 20px 20px;
+}
+.hdr__drawer-lang {
+  display: flex;
+  justify-content: center;
+  padding: 16px 20px 20px;
+  border-top: 1px solid var(--iris-100);
 }
 
 @media (max-width: 960px) {
