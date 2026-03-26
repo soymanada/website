@@ -1,0 +1,48 @@
+/* ── PawRating ───────────────────────────────────────────────────── */
+.paw-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--iris-500);
+}
+.paw-rating--sm { gap: 4px; }
+
+.paw-rating__paws {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.paw-rating__btn {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: default;
+  transition: transform var(--t-fast);
+}
+.paw-rating--interactive .paw-rating__btn {
+  cursor: pointer;
+}
+.paw-rating--interactive .paw-rating__btn:hover {
+  transform: scale(1.2);
+}
+
+.paw-rating__svg { display: block; }
+
+.paw-rating__score {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--iris-800);
+  line-height: 1;
+}
+.paw-rating--sm .paw-rating__score { font-size: 0.82rem; }
+.paw-rating--md .paw-rating__score { font-size: 0.95rem; }
+
+.paw-rating__count {
+  color: var(--text-300);
+  line-height: 1;
+}
+.paw-rating--sm .paw-rating__count { font-size: 0.75rem; }
+.paw-rating--md .paw-rating__count { font-size: 0.82rem; }

@@ -6,7 +6,10 @@ import { resolveProvider } from '../utils/providerI18n'
 import { trackEvent, Events } from '../utils/analytics'
 import { useAuth } from '../hooks/useAuth'
 import { supabase } from '../lib/supabase'
+import { useProviderRating, useUserReview } from '../hooks/useReviews'
 import VerificationBadge from './VerificationBadge'
+import PawRating from './PawRating'
+import ReviewModal from './ReviewModal'
 import Interstitial from './Interstitial'
 import './ProviderCard.css'
 
@@ -24,15 +27,22 @@ const COUNTRY_ISO = {
 }
 
 export default function ProviderCard({ provider: rawProvider }) {
-  const { user }     = useAuth()
-  const { t, i18n }  = useTranslation()
-  // Resuelve campos traducidos según idioma activo
-  const provider = resolveProvider(rawProvider, i18n.language)
+  const { user }    = useAuth()
+  const { t, i18n } = useTranslation()
+  const provider    = resolveProvider(rawProvider, i18n.language)
   const { id, name, service, description, countries, verified, contact, testimonial, benefit } = provider
-  const location     = useLocation()
-  const [isConnecting, setIsConnecting] = useState(false)
+  const location    = useLocation()
+
+  const [isConnecting,   setIsConnecting]   = useState(false)
   const [targetPlatform, setTargetPlatform] = useState('')
-  const viewTracked  = useRef(false)
+  const [showReview,     setShowReview]     = useState(false)
+  const viewTracked = useRef(false)
+
+  // Rating agregado del proveedor
+  const { avg, count, visible: ratingVisible } = useProviderRating(id)
+
+  // Review del usuario actual (solo si está logueado)
+  const { review: userReview, reload: reloadReview } = useUserReview(id, user?.id)
 
   useEffect(() => {
     if (!viewTracked.current && id) {
@@ -53,9 +63,20 @@ export default function ProviderCard({ provider: rawProvider }) {
   return (
     <>
       {isConnecting && <Interstitial providerName={name} platform={targetPlatform} />}
+      {showReview && (
+        <ReviewModal
+          provider={{ id, name }}
+          userId={user?.id}
+          existingReview={userReview}
+          onClose={() => setShowReview(false)}
+          onSuccess={reloadReview}
+        />
+      )}
+
       <article className="pcard">
         <div className="pcard__accent" aria-hidden="true" />
         {verified && <VerificationBadge variant="pill" theme="light" />}
+
         <div className="pcard__header">
           <div className="pcard__avatar">
             <svg className="pcard__avatar-paw" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
@@ -70,14 +91,20 @@ export default function ProviderCard({ provider: rawProvider }) {
           <div className="pcard__meta">
             <h3 className="pcard__name">{name}</h3>
             <p className="pcard__service t-sm">{service}</p>
+            {/* Rating: visible para todos si ≥3 reviews */}
+            {ratingVisible && (
+              <PawRating rating={avg} count={count} size="sm" />
+            )}
           </div>
         </div>
+
         {benefit && (
           <div className="pcard__benefit">
             <span className="pcard__benefit-icon">🎁</span>
             <span className="t-xs"><strong>{t('provider_card.exclusive_benefit')}</strong> {benefit}</span>
           </div>
         )}
+
         {countries?.length > 0 && (
           <div className="pcard__countries">
             {countries.filter(c => COUNTRY_ISO[c]).map(c => (
@@ -85,7 +112,9 @@ export default function ProviderCard({ provider: rawProvider }) {
             ))}
           </div>
         )}
+
         <p className="pcard__desc t-sm">{description}</p>
+
         {testimonial && (
           <div className="pcard__testimonial">
             <div className="testimonial__bubble">
@@ -94,27 +123,46 @@ export default function ProviderCard({ provider: rawProvider }) {
             </div>
           </div>
         )}
+
         {user ? (
-          <div className="pcard__actions">
-            {contact.whatsapp && (
-              <button className="pcard__btn pcard__btn--wa"
-                onClick={() => handleContact('whatsapp', `https://wa.me/${contact.whatsapp}`)}>
-                {t('provider_card.contact_whatsapp')}
-              </button>
-            )}
-            {contact.phone && (
-              <a className="pcard__btn pcard__btn--phone" href={`tel:+${contact.phone}`}
-                onClick={() => trackEvent(Events.PROVEEDOR_VISITADO, { proveedor_id: id, proveedor_nombre: name, plataforma: 'phone' })}>
-                {t('provider_card.contact_phone')}
-              </a>
-            )}
-            {contact.instagram && (
-              <button className="pcard__btn pcard__btn--ig"
-                onClick={() => handleContact('instagram', `https://instagram.com/${contact.instagram}`)}>
-                {t('provider_card.contact_instagram')}
-              </button>
-            )}
-          </div>
+          <>
+            <div className="pcard__actions">
+              {contact.whatsapp && (
+                <button className="pcard__btn pcard__btn--wa"
+                  onClick={() => handleContact('whatsapp', `https://wa.me/${contact.whatsapp}`)}>
+                  {t('provider_card.contact_whatsapp')}
+                </button>
+              )}
+              {contact.phone && (
+                <a className="pcard__btn pcard__btn--phone" href={`tel:+${contact.phone}`}
+                  onClick={() => trackEvent(Events.PROVEEDOR_VISITADO, { proveedor_id: id, proveedor_nombre: name, plataforma: 'phone' })}>
+                  {t('provider_card.contact_phone')}
+                </a>
+              )}
+              {contact.instagram && (
+                <button className="pcard__btn pcard__btn--ig"
+                  onClick={() => handleContact('instagram', `https://instagram.com/${contact.instagram}`)}>
+                  {t('provider_card.contact_instagram')}
+                </button>
+              )}
+            </div>
+
+            {/* Botón de evaluación — solo usuarios logueados */}
+            <button
+              className={`pcard__rate-btn${userReview ? ' pcard__rate-btn--done' : ''}`}
+              onClick={() => !userReview && setShowReview(true)}
+              disabled={!!userReview}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor" width="12" height="12" aria-hidden="true">
+                <ellipse cx="16" cy="25" rx="8" ry="5.5"/>
+                <ellipse cx="4.5" cy="15" rx="3.2" ry="4" transform="rotate(-25,4.5,15)"/>
+                <ellipse cx="11" cy="8" rx="3.2" ry="4" transform="rotate(-10,11,8)"/>
+                <ellipse cx="21" cy="8" rx="3.2" ry="4" transform="rotate(10,21,8)"/>
+                <ellipse cx="27.5" cy="15" rx="3.2" ry="4" transform="rotate(25,27.5,15)"/>
+              </svg>
+              {userReview ? t('reviews.already_rated') : t('reviews.rate_cta')}
+            </button>
+          </>
         ) : (
           <div className="pcard__gate">
             <p className="pcard__gate-text t-xs">{t('provider_card.gate_text')}</p>

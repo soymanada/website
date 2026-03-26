@@ -1,0 +1,114 @@
+/* ── ReviewModal ─────────────────────────────────────────────────── */
+.rmodal__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(30, 15, 60, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: rmodal-bg-in 0.2s var(--ease-out);
+}
+@keyframes rmodal-bg-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.rmodal {
+  position: relative;
+  background: var(--white);
+  border-radius: var(--r-xl);
+  padding: 32px 28px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 24px 80px rgba(91, 45, 158, 0.25);
+  animation: rmodal-in 0.25s var(--ease-out);
+}
+@keyframes rmodal-in {
+  from { opacity: 0; transform: translateY(16px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+
+.rmodal__close {
+  position: absolute;
+  top: 16px; right: 16px;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--iris-50);
+  color: var(--text-400);
+  font-size: 0.8rem;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all var(--t-fast);
+}
+.rmodal__close:hover { background: var(--iris-100); color: var(--iris-700); }
+
+.rmodal__header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+.rmodal__provider-avatar {
+  width: 44px; height: 44px;
+  border-radius: var(--r-md);
+  background: linear-gradient(135deg, var(--iris-600), var(--iris-400));
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.rmodal__title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--iris-900);
+  line-height: 1.2;
+}
+.rmodal__provider-name { color: var(--text-400); margin-top: 2px; }
+
+.rmodal__form { display: flex; flex-direction: column; gap: 20px; }
+
+.rmodal__field { display: flex; flex-direction: column; gap: 8px; }
+
+.rmodal__label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-600);
+}
+.rmodal__hint { color: var(--text-300); }
+
+.rmodal__textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: var(--r-md);
+  border: 1.5px solid var(--iris-200);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--text-700);
+  resize: vertical;
+  outline: none;
+  transition: border-color var(--t-fast);
+  line-height: 1.6;
+}
+.rmodal__textarea:focus { border-color: var(--iris-500); }
+.rmodal__textarea::placeholder { color: var(--text-300); }
+
+.rmodal__char-count {
+  color: var(--text-300);
+  text-align: right;
+}
+
+.rmodal__error { color: #dc2626; }
+
+.rmodal__success {
+  text-align: center;
+  padding: 32px 0 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.rmodal__success-icon { font-size: 3rem; }

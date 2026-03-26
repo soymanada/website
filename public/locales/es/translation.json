@@ -208,6 +208,19 @@
     "final_cta_body": "Es gratis, es simple y llega a gente que necesita lo que ofreces.",
     "final_cta_btn": "Enviar mi solicitud"
   },
+  "reviews": {
+    "rate_cta": "Evaluar proveedor",
+    "already_rated": "Ya evaluaste",
+    "modal_title": "¿Cómo fue tu experiencia?",
+    "rating_label": "Puntuación general",
+    "rating_hint": "Selecciona una puntuación",
+    "comment_label": "Comentario (opcional)",
+    "comment_placeholder": "Cuéntanos tu experiencia… (máx. 300 caracteres)",
+    "submit": "Enviar evaluación",
+    "submitting": "Enviando…",
+    "success": "¡Gracias! Tu evaluación fue enviada.",
+    "error": "Hubo un error. Intenta de nuevo."
+  },
   "pricing_page": {
     "eyebrow": "Planes para proveedores",
     "title": "Elige cómo",

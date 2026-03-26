@@ -167,6 +167,34 @@
   .pcard__gate { flex-direction: column; align-items: stretch; text-align: center; }
   .pcard__gate-btn { text-align: center; justify-content: center; }
 }
+/* ── Rate button ─────────────────────────────────────────────────── */
+.pcard__rate-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 100px;
+  background: var(--iris-50);
+  border: 1px solid var(--iris-200);
+  color: var(--iris-600);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--t-fast);
+  align-self: flex-start;
+}
+.pcard__rate-btn:hover:not(:disabled) {
+  background: var(--iris-100);
+  border-color: var(--iris-400);
+}
+.pcard__rate-btn--done {
+  color: var(--text-300);
+  background: transparent;
+  border-color: transparent;
+  cursor: default;
+}
+
 /* ── Auth gate ───────────────────────────────────────────────────── */
 .pcard__gate {
   display: flex;

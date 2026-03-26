@@ -210,6 +210,19 @@
     "final_cta_body": "It's free, it's simple, and it reaches people who need what you offer.",
     "final_cta_btn": "Submit my application"
   },
+  "reviews": {
+    "rate_cta": "Rate provider",
+    "already_rated": "Already rated",
+    "modal_title": "How was your experience?",
+    "rating_label": "Overall rating",
+    "rating_hint": "Select a rating",
+    "comment_label": "Comment (optional)",
+    "comment_placeholder": "Tell us about your experience… (max. 300 characters)",
+    "submit": "Submit review",
+    "submitting": "Submitting…",
+    "success": "Thank you! Your review has been submitted.",
+    "error": "Something went wrong. Please try again."
+  },
   "pricing_page": {
     "eyebrow": "Plans for providers",
     "title": "Choose how you",

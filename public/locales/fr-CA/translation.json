@@ -210,6 +210,19 @@
     "final_cta_body": "C'est gratuit, c'est simple et ça rejoint des gens qui ont besoin de ce que vous offrez.",
     "final_cta_btn": "Soumettre ma demande"
   },
+  "reviews": {
+    "rate_cta": "Évaluer le fournisseur",
+    "already_rated": "Déjà évalué",
+    "modal_title": "Comment s'est passée votre expérience?",
+    "rating_label": "Note générale",
+    "rating_hint": "Sélectionnez une note",
+    "comment_label": "Commentaire (optionnel)",
+    "comment_placeholder": "Parlez-nous de votre expérience… (max. 300 caractères)",
+    "submit": "Soumettre l'évaluation",
+    "submitting": "Envoi en cours…",
+    "success": "Merci! Votre évaluation a été soumise.",
+    "error": "Une erreur s'est produite. Veuillez réessayer."
+  },
   "pricing_page": {
     "eyebrow": "Plans pour les fournisseurs",
     "title": "Choisissez comment",
