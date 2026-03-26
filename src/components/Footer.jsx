@@ -60,6 +60,7 @@ export default function Footer() {
             <h4 className="footer__col-title label">{t('footer.col_comunidad')}</h4>
             <nav className="footer__links">
               <Link to="/registro-proveedores">{t('footer.link_proveedor')}</Link>
+              <Link to="/planes">{t('pricing_page.link_pricing')}</Link>
               <a href="https://chat.whatsapp.com/CMIWk9cQkEIDso4Ll6JG8j" target="_blank" rel="noopener noreferrer">{t('footer.link_whatsapp')}</a>
             </nav>
           </div>
