@@ -30,15 +30,34 @@ function UsersPanel() {
   const sendInvite = async () => {
     setInvState('sending')
     setInvError('')
-    const { error } = await supabase.functions.invoke('invite-user', {
-      body: { email: invForm.email.trim(), role: invForm.role, tier: invForm.tier },
-    })
-    if (error) {
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      const res = await fetch(
+        'https://omlpstrmlxeurrqjbear.supabase.co/functions/v1/invite-user',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session.access_token}`,
+          },
+          body: JSON.stringify({
+            email: invForm.email.trim(),
+            role:  invForm.role,
+            tier:  invForm.tier,
+          }),
+        }
+      )
+      const result = await res.json()
+      if (result.ok) {
+        setInvState('ok')
+        setTimeout(() => { setInviting(false); setInvState('idle'); load() }, 1800)
+      } else {
+        setInvState('error')
+        setInvError(result.error ?? 'Error desconocido')
+      }
+    } catch (e) {
       setInvState('error')
-      setInvError(error.message ?? 'Error desconocido')
-    } else {
-      setInvState('ok')
-      setTimeout(() => { setInviting(false); setInvState('idle'); load() }, 1800)
+      setInvError(e.message ?? 'Error de red')
     }
   }
 
