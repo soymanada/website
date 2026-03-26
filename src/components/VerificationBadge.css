@@ -26,19 +26,30 @@
   border: 1px solid rgba(160, 125, 224, 0.35);
 }
 
-/* Pata con check integrado */
-.vb-pill__paw {
-  width: 20px;
-  height: 20px;
+/* Círculo con checkmark */
+.vb-pill__dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
 }
 
-.vb-pill--light .vb-pill__paw {
-  color: var(--iris-500);
+.vb-pill--light .vb-pill__dot {
+  background: var(--iris-500);
+  color: var(--white);
 }
 
-.vb-pill--dark .vb-pill__paw {
-  color: var(--iris-300);
+.vb-pill--dark .vb-pill__dot {
+  background: var(--iris-400);
+  color: var(--iris-900);
+}
+
+.vb-pill__check {
+  width: 10px;
+  height: 10px;
 }
 
 /* Texto del pill */
