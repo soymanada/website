@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS public.providers (
   calendar_link         TEXT,
   redirect_email        TEXT,
   predefined_responses  TEXT[]      DEFAULT '{}',
+  avatar_url            TEXT,
   service_en            TEXT,
   service_fr            TEXT,
   description_en        TEXT,
