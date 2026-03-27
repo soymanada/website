@@ -78,7 +78,8 @@ export default function RegistroProveedoresPage() {
       terms_accepted: form.terms_accepted,
     })
     if (dbErr) {
-      setError('Hubo un error al enviar. Por favor intenta de nuevo.')
+      console.error('provider_applications insert error:', dbErr)
+      setError(`Error al enviar: ${dbErr.message}`)
       setSubmitting(false)
     } else {
       setSubmitted(true)
