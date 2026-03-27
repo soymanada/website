@@ -73,7 +73,7 @@ export default function Header() {
               title={user.user_metadata?.full_name || user.email}
             >
               <span className="hdr__avatar-initials">
-                {(user.user_metadata?.full_name || user.email || '?')[0].toUpperCase()}
+                {(user.user_metadata?.full_name?.split(' ')[0] || user.email?.split('@')[0] || '?')}
               </span>
             </Link>
           ) : (

@@ -156,8 +156,10 @@
 
 /* ── Avatar usuario autenticado ──────────────────────────────────── */
 .hdr__avatar {
-  width: 36px; height: 36px;
-  border-radius: 50%;
+  height: 36px;
+  min-width: 36px;
+  padding: 0 12px;
+  border-radius: 100px;
   background: linear-gradient(135deg, var(--iris-600), var(--iris-400));
   display: flex;
   align-items: center;
@@ -174,10 +176,11 @@
 .hdr__avatar-initials {
   color: var(--white);
   font-family: var(--font-body);
-  font-size: 0.875rem;
+  font-size: 0.82rem;
   font-weight: 700;
   line-height: 1;
   pointer-events: none;
+  white-space: nowrap;
 }
 
 /* ── User group (avatar + Mi perfil) ────────────────────────────── */
