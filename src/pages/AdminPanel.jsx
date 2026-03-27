@@ -184,7 +184,7 @@ function UsersPanel() {
 
 const CATEGORY_SLUGS = [
   'seguros','migracion','traducciones','trabajo',
-  'alojamiento','idiomas','banca','salud-mental','antes-de-viajar',
+  'alojamiento','idiomas','banca','salud-mental','taxes','antes-de-viajar',
 ]
 
 const EMPTY_PROVIDER = {

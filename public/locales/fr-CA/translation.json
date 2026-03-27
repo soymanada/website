@@ -287,7 +287,7 @@
     "alojamiento": "Logement",
     "idiomas": "Langues",
     "banca": "Services bancaires",
-    "salud-mental": "Santé mentale",
+    "salud-mental": "Bien-être",
     "antes-de-viajar": "Avant de partir",
     "seguros_oneliner": "Protégez votre santé, votre voiture et votre maison dans votre nouveau pays.",
     "migracion_oneliner": "Visas, permis et résidence avec un accompagnement réel.",
@@ -296,7 +296,9 @@
     "alojamiento_oneliner": "Chambres, locations et aide pour vous installer.",
     "idiomas_oneliner": "Cours, tutorat et pratique pour mieux vous intégrer.",
     "banca_oneliner": "Conseillers bancaires qui comprennent votre réalité migratoire",
-    "salud-mental_oneliner": "Psychologues et thérapeutes qui parlent votre langue et comprennent votre parcours",
-    "antes-de-viajar_oneliner": "Ce que personne ne vous a dit avant d'émigrer"
+    "salud-mental_oneliner": "Santé mentale, télethérapie et soutien émotionnel pour migrants.",
+    "antes-de-viajar_oneliner": "Ce que personne ne vous a dit avant d'émigrer",
+    "taxes": "Impôts",
+    "taxes_oneliner": "Conseillers qui vous aident avec vos impôts dans votre pays de résidence."
   }
 }

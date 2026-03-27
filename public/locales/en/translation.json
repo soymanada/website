@@ -287,7 +287,7 @@
     "alojamiento": "Housing",
     "idiomas": "Languages",
     "banca": "Banking",
-    "salud-mental": "Mental Health",
+    "salud-mental": "Wellbeing",
     "antes-de-viajar": "Before You Go",
     "seguros_oneliner": "Protect your health, car, and home in your new country.",
     "migracion_oneliner": "Visas, permits, and residency with real guidance.",
@@ -296,7 +296,9 @@
     "alojamiento_oneliner": "Rooms, rentals, and help getting settled.",
     "idiomas_oneliner": "Classes, tutoring, and practice to integrate better.",
     "banca_oneliner": "Bank advisors who understand your migration reality",
-    "salud-mental_oneliner": "Psychologists and therapists who speak your language and understand your journey",
-    "antes-de-viajar_oneliner": "What nobody told you before emigrating"
+    "salud-mental_oneliner": "Mental health, teletherapy and emotional support for migrants.",
+    "antes-de-viajar_oneliner": "What nobody told you before emigrating",
+    "taxes": "Taxes",
+    "taxes_oneliner": "Advisors who help you with taxes in your country of residence."
   }
 }

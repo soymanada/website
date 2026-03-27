@@ -6,15 +6,16 @@ import PawIcon from '../components/PawIcon'
 import './RegistroProveedoresPage.css'
 
 const CATEGORIES = [
-  'Seguros y finanzas',
-  'Asesoría migratoria o legal',
-  'Traducciones e interpretación',
-  'Trabajo y empleo',
-  'Alojamiento y bienes raíces',
-  'Idiomas y educación',
+  'Seguros',
+  'Asesoría migratoria',
+  'Traducciones',
+  'Trabajo',
+  'Alojamiento',
+  'Idiomas',
   'Banca',
-  'Salud mental y bienestar',
-  'Taxes e impuestos',
+  'Bienestar',
+  'Taxes',
+  'Antes de viajar',
 ]
 
 const LANGUAGES = ['Español', 'Inglés', 'Portugués', 'Francés', 'Otro']

@@ -285,7 +285,7 @@
     "alojamiento": "Alojamiento",
     "idiomas": "Idiomas",
     "banca": "Banca",
-    "salud-mental": "Salud Mental",
+    "salud-mental": "Bienestar",
     "antes-de-viajar": "Antes de viajar",
     "seguros_oneliner": "Protege tu salud, auto y hogar en tu nuevo país.",
     "migracion_oneliner": "Visas, permisos y residencia con orientación real.",
@@ -294,7 +294,9 @@
     "alojamiento_oneliner": "Habitaciones, arriendos y ayuda para instalarte.",
     "idiomas_oneliner": "Clases, tutorías y práctica para integrarte mejor.",
     "banca_oneliner": "Ejecutivos bancarios que entienden tu realidad migratoria",
-    "salud-mental_oneliner": "Psicólogos y terapeutas que hablan tu idioma y entienden tu proceso",
-    "antes-de-viajar_oneliner": "Lo que nadie te contó antes de emigrar"
+    "salud-mental_oneliner": "Salud mental, teleterapia y apoyo emocional para migrantes.",
+    "antes-de-viajar_oneliner": "Lo que nadie te contó antes de emigrar",
+    "taxes": "Taxes",
+    "taxes_oneliner": "Asesores que te ayudan con impuestos en tu país de residencia."
   }
 }

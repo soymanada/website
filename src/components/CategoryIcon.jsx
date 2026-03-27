@@ -43,6 +43,20 @@ const paths = {
   heart: (
     <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
   ),
+  calculator: (
+    <>
+      <rect x="4" y="2" width="16" height="20" rx="2" />
+      <line x1="8" y1="6" x2="16" y2="6" />
+      <line x1="8" y1="10" x2="8" y2="10" strokeWidth="3" strokeLinecap="round" />
+      <line x1="12" y1="10" x2="12" y2="10" strokeWidth="3" strokeLinecap="round" />
+      <line x1="16" y1="10" x2="16" y2="10" strokeWidth="3" strokeLinecap="round" />
+      <line x1="8" y1="14" x2="8" y2="14" strokeWidth="3" strokeLinecap="round" />
+      <line x1="12" y1="14" x2="12" y2="14" strokeWidth="3" strokeLinecap="round" />
+      <line x1="16" y1="14" x2="16" y2="18" strokeWidth="3" strokeLinecap="round" />
+      <line x1="8" y1="18" x2="8" y2="18" strokeWidth="3" strokeLinecap="round" />
+      <line x1="12" y1="18" x2="12" y2="18" strokeWidth="3" strokeLinecap="round" />
+    </>
+  ),
   plane: (
     <path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" />
   ),
