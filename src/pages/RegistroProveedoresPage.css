@@ -281,6 +281,32 @@
 }
 .ppg-form__field textarea { resize: vertical; }
 
+/* PhoneInput integration */
+.ppg-form__phone-input {
+  --PhoneInputCountryFlag-height: 1em;
+}
+.ppg-form__phone-input .PhoneInputInput {
+  font-family: var(--font-body);
+  font-size: 0.93rem;
+  padding: 10px 14px;
+  border: 1.5px solid var(--border-200);
+  border-radius: 10px;
+  background: var(--surface-0);
+  color: var(--text-900);
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.ppg-form__phone-input .PhoneInputInput:focus {
+  outline: none;
+  border-color: var(--iris-500);
+  box-shadow: 0 0 0 3px rgba(123,77,200,0.12);
+}
+.ppg-form__phone-input .PhoneInputCountrySelect {
+  font-family: var(--font-body);
+  font-size: 0.93rem;
+}
+
 /* Checkboxes */
 .ppg-form__checks { display: flex; flex-direction: column; gap: 10px; }
 .ppg-form__checks--inline { flex-direction: row; flex-wrap: wrap; gap: 10px 20px; }

@@ -142,6 +142,20 @@
 }
 .pdash__input::placeholder, .pdash__textarea::placeholder { color: var(--text-100); }
 .pdash__field-hint { color: var(--text-300); margin-top: 4px; }
+
+/* PhoneInput in dashboard */
+.pdash__phone-input { --PhoneInputCountryFlag-height: 1em; }
+.pdash__phone-input .PhoneInputInput {
+  width: 100%; padding: 11px 14px; border-radius: var(--r-md);
+  border: 1.5px solid var(--iris-200); font-family: var(--font-body);
+  font-size: 0.9375rem; color: var(--text-900); background: var(--white);
+  outline: none; transition: border-color var(--t-fast), box-shadow var(--t-fast);
+  box-sizing: border-box;
+}
+.pdash__phone-input .PhoneInputInput:focus {
+  border-color: var(--iris-500); box-shadow: 0 0 0 3px rgba(91,45,158,0.10);
+}
+
 .pdash__verified-notice {
   display: flex; align-items: center; gap: 12px;
   background: var(--iris-50); border: 1px solid var(--iris-200);

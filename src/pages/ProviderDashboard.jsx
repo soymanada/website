@@ -1,6 +1,8 @@
 // src/pages/ProviderDashboard.jsx
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import PhoneInput from 'react-phone-number-input'
+import 'react-phone-number-input/style.css'
 import { useAuth } from '../hooks/useAuth'
 import { supabase } from '../lib/supabase'
 import MetricsSummary      from '../components/dashboard/MetricsSummary'
@@ -50,6 +52,7 @@ function ProviderProfileEditor({ provider, tier, onSave, saving, onAvatarUpload,
     service:             provider?.service             ?? '',
     languages:           (provider?.languages ?? []).join(', '),
     countries:           (provider?.countries ?? []).join(', '),
+    whatsapp:            provider?.whatsapp            ?? '',
     payment_link:        provider?.payment_link        ?? '',
     calendar_link:       provider?.calendar_link       ?? '',
     redirect_email:      provider?.redirect_email      ?? '',
@@ -96,6 +99,18 @@ function ProviderProfileEditor({ provider, tier, onSave, saving, onAvatarUpload,
 
         <div className="pdash__field pdash__field--full pdash__divider-section">
           <p className="label pdash__section-label">Contacto y pagos</p>
+        </div>
+
+        <div className="pdash__field">
+          <label className="pdash__label t-sm">WhatsApp de contacto</label>
+          <PhoneInput
+            international
+            defaultCountry="CL"
+            value={form.whatsapp}
+            onChange={v => set('whatsapp', v ?? '')}
+            countryOptionsOrder={['CL', 'CA', 'AR', 'CO', 'VE', 'MX', 'PE', 'ES', '|', '...']}
+            className="pdash__phone-input"
+          />
         </div>
 
         <div className="pdash__field pdash__field--full">
@@ -524,6 +539,7 @@ export default function ProviderDashboard() {
         service:              form.service,
         languages:            form.languages?.split(',').map(s => s.trim()).filter(Boolean),
         countries:            form.countries?.split(',').map(s => s.trim()).filter(Boolean),
+        whatsapp:             form.whatsapp || null,
         payment_link:         form.payment_link,
         calendar_link:        form.calendar_link,
         redirect_email:       form.redirect_email,
