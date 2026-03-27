@@ -32,6 +32,7 @@ export default function Header() {
     { to: '/categoria/banca',         label: t('header.nav_banca') },
     { to: '/categoria/salud-mental',  label: t('header.nav_salud_mental') },
     { to: '/categoria/antes-de-viajar', label: t('header.nav_antes_de_viajar') },
+    { to: '/categoria/taxes',         label: t('header.nav_taxes') },
   ]
 
   return (
