@@ -363,50 +363,163 @@ function ProvidersPanel() {
 }
 
 // ── Solicitudes ───────────────────────────────────────────────────────────────
-function SubmissionsPanel() {
-  const [subs,    setSubs]    = useState([])
-  const [loading, setLoading] = useState(true)
+const CAT_SLUG = {
+  'Seguros': 'seguros', 'Asesoría migratoria': 'migracion',
+  'Traducciones': 'traducciones', 'Trabajo': 'trabajo',
+  'Alojamiento': 'alojamiento', 'Idiomas': 'idiomas',
+  'Banca': 'banca', 'Bienestar': 'salud-mental',
+  'Taxes': 'taxes', 'Antes de viajar': 'antes-de-viajar',
+}
 
-  useEffect(() => {
-    supabase.from('provider_submissions')
+function SubmissionsPanel() {
+  const [subs,     setSubs]     = useState([])
+  const [loading,  setLoading]  = useState(true)
+  const [expanded, setExpanded] = useState(null)
+  const [acting,   setActing]   = useState(null) // id being processed
+
+  const load = useCallback(async () => {
+    setLoading(true)
+    const { data } = await supabase
+      .from('provider_applications')
       .select('*')
       .order('created_at', { ascending: false })
-      .then(({ data }) => { setSubs(data ?? []); setLoading(false) })
+    setSubs(data ?? [])
+    setLoading(false)
   }, [])
 
+  useEffect(() => { load() }, [load])
+
   const pending = subs.filter(s => !s.status || s.status === 'pending').length
+
+  const approve = async (s) => {
+    if (!window.confirm(`¿Aprobar y crear proveedor para "${s.business_name}"?`)) return
+    setActing(s.id)
+    const categorySlug = CAT_SLUG[s.categories?.[0]] ?? 'seguros'
+    const waNumber = (s.whatsapp ?? '').replace(/^\+/, '')
+    const { error } = await supabase.from('providers').insert({
+      name:          s.business_name,
+      category_slug: categorySlug,
+      service:       s.service_title ?? '',
+      description:   s.description   ?? '',
+      countries:     s.countries      ?? [],
+      languages:     s.languages      ?? [],
+      verified:      false,
+      active:        true,
+      contact: {
+        whatsapp:  waNumber || null,
+        instagram: s.instagram || null,
+        website:   s.website   || null,
+      },
+    })
+    if (error) { alert('Error al crear proveedor: ' + error.message); setActing(null); return }
+    await supabase.from('provider_applications').update({ status: 'approved' }).eq('id', s.id)
+    setActing(null)
+    load()
+  }
+
+  const reject = async (s) => {
+    if (!window.confirm(`¿Rechazar la solicitud de "${s.business_name}"?`)) return
+    setActing(s.id)
+    await supabase.from('provider_applications').update({ status: 'rejected' }).eq('id', s.id)
+    setActing(null)
+    load()
+  }
 
   return (
     <div className="adm-section">
       <div className="adm-section__head">
         <h2 className="adm-section__title">
-          Solicitudes <span className="adm-badge">{pending} pendientes</span>
+          Postulaciones <span className="adm-badge">{pending} pendientes</span>
         </h2>
       </div>
 
       {loading ? <p className="adm-loading">Cargando...</p>
-        : subs.length === 0 ? <p className="adm-empty">No hay solicitudes.</p>
+        : subs.length === 0 ? <p className="adm-empty">No hay postulaciones.</p>
         : (
         <div className="adm-table-wrap">
           <table className="adm-table">
             <thead>
               <tr>
-                <th>Nombre</th><th>Categoría</th><th>Estado</th><th>Fecha</th><th>Contacto</th>
+                <th>Negocio</th><th>Categorías</th><th>Estado</th>
+                <th>Fecha</th><th>Contacto interno</th><th></th>
               </tr>
             </thead>
             <tbody>
               {subs.map(s => (
-                <tr key={s.id}>
-                  <td><strong>{s.business_name ?? s.name ?? '—'}</strong></td>
-                  <td>{s.category_slug ?? '—'}</td>
-                  <td>
-                    <span className={`adm-pill adm-pill--${s.status ?? 'pending'}`}>
-                      {s.status ?? 'pending'}
-                    </span>
-                  </td>
-                  <td>{fmt(s.created_at)}</td>
-                  <td className="adm-td--mono">{s.whatsapp ?? s.email ?? '—'}</td>
-                </tr>
+                <>
+                  <tr key={s.id} className={expanded === s.id ? 'adm-tr--expanded' : ''}>
+                    <td>
+                      <strong>{s.business_name ?? '—'}</strong>
+                      <br /><span className="adm-td--sub">{s.service_title ?? ''}</span>
+                    </td>
+                    <td className="adm-td--sub">{(s.categories ?? []).join(', ') || '—'}</td>
+                    <td>
+                      <span className={`adm-pill adm-pill--${s.status ?? 'pending'}`}>
+                        {s.status ?? 'pending'}
+                      </span>
+                    </td>
+                    <td>{fmt(s.created_at)}</td>
+                    <td className="adm-td--mono">{s.contact_name ?? '—'}<br /><span className="adm-td--sub">{s.contact_email ?? ''}</span></td>
+                    <td className="adm-td--actions">
+                      <button className="adm-btn adm-btn--sm adm-btn--ghost"
+                        onClick={() => setExpanded(expanded === s.id ? null : s.id)}>
+                        {expanded === s.id ? 'Cerrar' : 'Ver'}
+                      </button>
+                      {(!s.status || s.status === 'pending') && (
+                        <>
+                          <button className="adm-btn adm-btn--sm adm-btn--success"
+                            onClick={() => approve(s)} disabled={acting === s.id}>
+                            {acting === s.id ? '…' : 'Aprobar'}
+                          </button>
+                          <button className="adm-btn adm-btn--sm adm-btn--danger"
+                            onClick={() => reject(s)} disabled={acting === s.id}>
+                            Rechazar
+                          </button>
+                        </>
+                      )}
+                    </td>
+                  </tr>
+                  {expanded === s.id && (
+                    <tr key={`${s.id}-detail`} className="adm-tr--detail">
+                      <td colSpan={6}>
+                        <div className="adm-detail">
+                          <div className="adm-detail__row">
+                            <span className="adm-detail__label">Descripción</span>
+                            <span>{s.description ?? '—'}</span>
+                          </div>
+                          <div className="adm-detail__row">
+                            <span className="adm-detail__label">Modalidad</span>
+                            <span>{s.modality ?? '—'}</span>
+                          </div>
+                          <div className="adm-detail__row">
+                            <span className="adm-detail__label">Países</span>
+                            <span>{(s.countries ?? []).join(', ') || '—'}</span>
+                          </div>
+                          <div className="adm-detail__row">
+                            <span className="adm-detail__label">Idiomas</span>
+                            <span>{(s.languages ?? []).join(', ') || '—'}</span>
+                          </div>
+                          <div className="adm-detail__row">
+                            <span className="adm-detail__label">WhatsApp</span>
+                            <span>{s.whatsapp ?? '—'}</span>
+                          </div>
+                          <div className="adm-detail__row">
+                            <span className="adm-detail__label">Instagram</span>
+                            <span>{s.instagram ?? '—'}</span>
+                          </div>
+                          <div className="adm-detail__row">
+                            <span className="adm-detail__label">Sitio web</span>
+                            <span>{s.website ?? '—'}</span>
+                          </div>
+                          <div className="adm-detail__row">
+                            <span className="adm-detail__label">Perfil verificación</span>
+                            <a href={s.profile_link} target="_blank" rel="noopener noreferrer">{s.profile_link ?? '—'}</a>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </>
               ))}
             </tbody>
           </table>

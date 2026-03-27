@@ -218,6 +218,19 @@
   cursor: default;
 }
 
+/* ── Profile link ────────────────────────────────────────────────── */
+.pcard__profile-link {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--iris-500);
+  text-decoration: none;
+  margin-bottom: 12px;
+  opacity: 0.8;
+  transition: opacity 0.15s;
+}
+.pcard__profile-link:hover { opacity: 1; }
+
 /* ── Auth gate ───────────────────────────────────────────────────── */
 .pcard__gate {
   display: flex;

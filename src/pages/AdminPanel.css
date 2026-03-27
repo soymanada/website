@@ -212,3 +212,21 @@
 
 .adm-section__head { justify-content: flex-start; }
 .adm-section__head .adm-btn { margin-left: auto; }
+
+/* Submission detail row */
+.adm-tr--expanded td { background: var(--iris-50); }
+.adm-tr--detail td { padding: 0; }
+.adm-detail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 24px;
+  padding: 16px 20px;
+  background: var(--iris-50);
+  border-bottom: 1px solid var(--iris-100);
+}
+.adm-detail__row { display: flex; flex-direction: column; gap: 2px; }
+.adm-detail__label { font-size: 0.72rem; font-weight: 600; color: var(--iris-500); text-transform: uppercase; letter-spacing: 0.05em; }
+.adm-detail__row a { color: var(--iris-600); word-break: break-all; }
+.adm-pill--approved { background: #d1fae5; color: #065f46; }
+.adm-pill--rejected { background: #fee2e2; color: #991b1b; }
+.adm-pill--pending  { background: #fef3c7; color: #92400e; }

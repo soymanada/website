@@ -141,6 +141,10 @@ export default function ProviderCard({ provider: rawProvider }) {
           </div>
         )}
 
+        <Link to={`/proveedor/${id}`} className="pcard__profile-link">
+          Ver perfil completo →
+        </Link>
+
         {user ? (
           <>
             <div className="pcard__actions">
