@@ -8,5 +8,6 @@ desktop.ini
 AUDITORIA_MAESTRA_SOYMANADA_2026-03-25.md
 
 # Variables de entorno
+.env
 .env.local
 .env*.local
