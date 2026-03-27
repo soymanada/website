@@ -29,6 +29,15 @@
 .pcard__header {
   display: flex;
   align-items: flex-start;
+  gap: 14px;
+}
+.pcard__avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--r-md);
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid var(--iris-100);
 }
 
 .pcard__bg-paw {

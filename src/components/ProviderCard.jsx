@@ -30,7 +30,7 @@ export default function ProviderCard({ provider: rawProvider }) {
   const { user }    = useAuth()
   const { t, i18n } = useTranslation()
   const provider    = resolveProvider(rawProvider, i18n.language)
-  const { id, name, service, description, countries, verified, contact, testimonial, benefit, price_clp, price_cad } = provider
+  const { id, name, service, description, countries, verified, contact, testimonial, benefit, price_clp, price_cad, avatar_url } = provider
   const location    = useLocation()
 
   const [isConnecting,   setIsConnecting]   = useState(false)
@@ -85,6 +85,9 @@ export default function ProviderCard({ provider: rawProvider }) {
         {verified && <VerificationBadge variant="pill" theme="light" />}
 
         <div className="pcard__header">
+          {avatar_url && (
+            <img src={avatar_url} alt={name} className="pcard__avatar" />
+          )}
           <div className="pcard__meta">
             <h3 className="pcard__name">{name}</h3>
             <p className="pcard__service t-sm">{service}</p>

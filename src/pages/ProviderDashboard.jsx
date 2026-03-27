@@ -1,5 +1,5 @@
 // src/pages/ProviderDashboard.jsx
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { supabase } from '../lib/supabase'
@@ -8,8 +8,42 @@ import WeeklyActivity      from '../components/dashboard/WeeklyActivity'
 import AutoRecommendations from '../components/dashboard/AutoRecommendations'
 import './ProviderDashboard.css'
 
+// ── Avatar uploader ───────────────────────────────────────────────
+function AvatarUploader({ provider, onUpload, uploading }) {
+  const inputRef = React.useRef()
+  const src = provider?.avatar_url
+
+  return (
+    <div className="pdash__avatar-wrap">
+      <div className="pdash__avatar-preview" onClick={() => !uploading && inputRef.current?.click()}>
+        {src
+          ? <img src={src} alt="Avatar" className="pdash__avatar-img" />
+          : <span className="pdash__avatar-placeholder">{(provider?.name || '?')[0].toUpperCase()}</span>
+        }
+        <div className="pdash__avatar-overlay">
+          {uploading ? '…' : '📷'}
+        </div>
+      </div>
+      <div>
+        <p className="t-sm" style={{ fontWeight: 600, color: 'var(--text-700)' }}>Foto de perfil</p>
+        <p className="t-xs" style={{ color: 'var(--text-300)' }}>JPG o PNG · máx. 2 MB</p>
+        <button className="btn btn-ghost btn-sm" style={{ marginTop: 8 }}
+          onClick={() => inputRef.current?.click()} disabled={uploading}>
+          {uploading ? 'Subiendo…' : 'Cambiar foto'}
+        </button>
+      </div>
+      <input ref={inputRef} type="file" accept="image/jpeg,image/png,image/webp"
+        style={{ display: 'none' }} onChange={e => {
+          const file = e.target.files?.[0]
+          if (file) onUpload(file)
+          e.target.value = ''
+        }} />
+    </div>
+  )
+}
+
 // ── Editor de perfil ─────────────────────────────────────────────
-function ProviderProfileEditor({ provider, tier, onSave, saving }) {
+function ProviderProfileEditor({ provider, tier, onSave, saving, onAvatarUpload, avatarUploading }) {
   const [form, setForm] = useState({
     name:                provider?.name                ?? '',
     description:         provider?.description         ?? '',
@@ -29,6 +63,8 @@ function ProviderProfileEditor({ provider, tier, onSave, saving }) {
         <h2 className="pdash__section-title d-md">Mi perfil</h2>
         <p className="t-sm pdash__section-sub">Esto es exactamente lo que los migrantes ven de ti.</p>
       </div>
+
+      <AvatarUploader provider={provider} onUpload={onAvatarUpload} uploading={avatarUploading} />
 
       <div className="pdash__form">
         <div className="pdash__field">
@@ -412,16 +448,17 @@ function SectionMiPlan({ tier }) {
 // ── Dashboard principal ──────────────────────────────────────────
 export default function ProviderDashboard() {
   const { user, tier, signOut } = useAuth()
-  const [provider,      setProvider]      = useState(null)
-  const [metrics,       setMetrics]       = useState(null)
-  const [activity,      setActivity]      = useState([])
-  const [hourlyActivity,setHourlyActivity]= useState([])
-  const [feedback,      setFeedback]      = useState([])
-  const [loading,       setLoading]       = useState(true)
-  const [metricsLoading,setMetricsLoading]= useState(true)
-  const [saving,        setSaving]        = useState(false)
-  const [toast,         setToast]         = useState(null)
-  const [activeTab,     setActiveTab]     = useState('perfil')
+  const [provider,       setProvider]       = useState(null)
+  const [metrics,        setMetrics]        = useState(null)
+  const [activity,       setActivity]       = useState([])
+  const [hourlyActivity, setHourlyActivity] = useState([])
+  const [feedback,       setFeedback]       = useState([])
+  const [loading,        setLoading]        = useState(true)
+  const [metricsLoading, setMetricsLoading] = useState(true)
+  const [saving,         setSaving]         = useState(false)
+  const [avatarUploading,setAvatarUploading]= useState(false)
+  const [toast,          setToast]          = useState(null)
+  const [activeTab,      setActiveTab]      = useState('perfil')
 
   useEffect(() => {
     const load = async () => {
@@ -456,6 +493,25 @@ export default function ProviderDashboard() {
   const showToast = (msg, type = 'success') => {
     setToast({ msg, type })
     setTimeout(() => setToast(null), 3000)
+  }
+
+  const handleAvatarUpload = async (file) => {
+    if (!provider?.id) return
+    setAvatarUploading(true)
+    const ext = file.name.split('.').pop().toLowerCase()
+    const path = `${provider.id}/avatar.${ext}`
+    const { error } = await supabase.storage
+      .from('avatars')
+      .upload(path, file, { upsert: true, contentType: file.type })
+    if (error) {
+      showToast('Error al subir la foto.', 'error')
+    } else {
+      const { data: { publicUrl } } = supabase.storage.from('avatars').getPublicUrl(path)
+      await supabase.from('providers').update({ avatar_url: publicUrl }).eq('id', provider.id)
+      setProvider(p => ({ ...p, avatar_url: publicUrl }))
+      showToast('Foto actualizada.')
+    }
+    setAvatarUploading(false)
   }
 
   const handleSave = async (form) => {
@@ -542,7 +598,8 @@ export default function ProviderDashboard() {
           ) : (
             <>
               {activeTab === 'perfil' && (
-                <ProviderProfileEditor provider={provider} tier={tier} onSave={handleSave} saving={saving} />
+                <ProviderProfileEditor provider={provider} tier={tier} onSave={handleSave} saving={saving}
+                  onAvatarUpload={handleAvatarUpload} avatarUploading={avatarUploading} />
               )}
               {activeTab === 'metricas' && (
                 <SectionMetricas
