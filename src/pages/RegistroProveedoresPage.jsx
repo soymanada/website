@@ -7,25 +7,48 @@ import { supabase } from '../lib/supabase'
 import PawIcon from '../components/PawIcon'
 import './RegistroProveedoresPage.css'
 
+// value = stored in Supabase (always Spanish), labelKey = i18n display key
 const CATEGORIES = [
-  'Seguros',
-  'Asesoría migratoria',
-  'Traducciones',
-  'Trabajo',
-  'Alojamiento',
-  'Idiomas',
-  'Banca',
-  'Bienestar',
-  'Taxes',
-  'Antes de viajar',
+  { value: 'Seguros',             labelKey: 'categories.seguros' },
+  { value: 'Asesoría migratoria', labelKey: 'categories.migracion' },
+  { value: 'Traducciones',        labelKey: 'categories.traducciones' },
+  { value: 'Trabajo',             labelKey: 'categories.trabajo' },
+  { value: 'Alojamiento',         labelKey: 'categories.alojamiento' },
+  { value: 'Idiomas',             labelKey: 'categories.idiomas' },
+  { value: 'Banca',               labelKey: 'categories.banca' },
+  { value: 'Bienestar',           labelKey: 'categories.salud-mental' },
+  { value: 'Taxes',               labelKey: 'categories.taxes' },
+  { value: 'Antes de viajar',     labelKey: 'categories.antes-de-viajar' },
 ]
 
-const LANGUAGES = ['Español', 'Inglés', 'Portugués', 'Francés', 'Otro']
+const LANGUAGES = [
+  { value: 'Español',   labelKey: 'registro.lang_es' },
+  { value: 'Inglés',    labelKey: 'registro.lang_en' },
+  { value: 'Portugués', labelKey: 'registro.lang_pt' },
+  { value: 'Francés',   labelKey: 'registro.lang_fr' },
+  { value: 'Otro',      labelKey: 'registro.lang_otro' },
+]
 
 const COUNTRIES = [
-  'Alemania', 'Australia', 'Austria', 'Canadá', 'Chile', 'Corea del Sur',
-  'Dinamarca', 'Francia', 'Hungría', 'Irlanda', 'Islandia', 'Japón',
-  'Luxemburgo', 'Nueva Zelanda', 'Polonia', 'Portugal', 'República Checa', 'Suecia', 'Otro',
+  { value: 'Alemania',        labelKey: 'registro.pais_alemania' },
+  { value: 'Australia',       labelKey: 'registro.pais_australia' },
+  { value: 'Austria',         labelKey: 'registro.pais_austria' },
+  { value: 'Canadá',          labelKey: 'registro.pais_canada' },
+  { value: 'Chile',           labelKey: 'registro.pais_chile' },
+  { value: 'Corea del Sur',   labelKey: 'registro.pais_corea' },
+  { value: 'Dinamarca',       labelKey: 'registro.pais_dinamarca' },
+  { value: 'Francia',         labelKey: 'registro.pais_francia' },
+  { value: 'Hungría',         labelKey: 'registro.pais_hungria' },
+  { value: 'Irlanda',         labelKey: 'registro.pais_irlanda' },
+  { value: 'Islandia',        labelKey: 'registro.pais_islandia' },
+  { value: 'Japón',           labelKey: 'registro.pais_japon' },
+  { value: 'Luxemburgo',      labelKey: 'registro.pais_luxemburgo' },
+  { value: 'Nueva Zelanda',   labelKey: 'registro.pais_nueva_zelanda' },
+  { value: 'Polonia',         labelKey: 'registro.pais_polonia' },
+  { value: 'Portugal',        labelKey: 'registro.pais_portugal' },
+  { value: 'República Checa', labelKey: 'registro.pais_rep_checa' },
+  { value: 'Suecia',          labelKey: 'registro.pais_suecia' },
+  { value: 'Otro',            labelKey: 'registro.pais_otro' },
 ]
 
 const EMPTY = {
@@ -243,9 +266,9 @@ export default function RegistroProveedoresPage() {
                     <span className="ppg-form__hint">{t('registro.campo_categorias_hint')}</span>
                     <div className="ppg-form__checks ppg-form__checks--grid">
                       {CATEGORIES.map(c => (
-                        <label key={c} className="ppg-form__check">
-                          <input type="checkbox" checked={form.categories.includes(c)} onChange={() => toggle('categories', c)} />
-                          <span>{c}</span>
+                        <label key={c.value} className="ppg-form__check">
+                          <input type="checkbox" checked={form.categories.includes(c.value)} onChange={() => toggle('categories', c.value)} />
+                          <span>{t(c.labelKey)}</span>
                         </label>
                       ))}
                     </div>
@@ -266,9 +289,9 @@ export default function RegistroProveedoresPage() {
                     <span className="ppg-form__label">{t('registro.campo_idiomas')} <em>*</em></span>
                     <div className="ppg-form__checks ppg-form__checks--inline">
                       {LANGUAGES.map(l => (
-                        <label key={l} className="ppg-form__check">
-                          <input type="checkbox" checked={form.languages.includes(l)} onChange={() => toggle('languages', l)} />
-                          <span>{l}</span>
+                        <label key={l.value} className="ppg-form__check">
+                          <input type="checkbox" checked={form.languages.includes(l.value)} onChange={() => toggle('languages', l.value)} />
+                          <span>{t(l.labelKey)}</span>
                         </label>
                       ))}
                     </div>
@@ -278,9 +301,9 @@ export default function RegistroProveedoresPage() {
                     <span className="ppg-form__label">{t('registro.campo_paises')} <em>*</em></span>
                     <div className="ppg-form__checks ppg-form__checks--grid">
                       {COUNTRIES.map(c => (
-                        <label key={c} className="ppg-form__check">
-                          <input type="checkbox" checked={form.countries.includes(c)} onChange={() => toggle('countries', c)} />
-                          <span>{c}</span>
+                        <label key={c.value} className="ppg-form__check">
+                          <input type="checkbox" checked={form.countries.includes(c.value)} onChange={() => toggle('countries', c.value)} />
+                          <span>{t(c.labelKey)}</span>
                         </label>
                       ))}
                     </div>
