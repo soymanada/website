@@ -30,7 +30,7 @@ export default function ProviderCard({ provider: rawProvider }) {
   const { user }    = useAuth()
   const { t, i18n } = useTranslation()
   const provider    = resolveProvider(rawProvider, i18n.language)
-  const { id, name, service, description, countries, verified, contact, testimonial, benefit } = provider
+  const { id, name, service, description, countries, verified, contact, testimonial, benefit, price_clp, price_cad } = provider
   const location    = useLocation()
 
   const [isConnecting,   setIsConnecting]   = useState(false)
@@ -111,6 +111,23 @@ export default function ProviderCard({ provider: rawProvider }) {
         )}
 
         <p className="pcard__desc t-sm">{description}</p>
+
+        {(price_clp || price_cad) && (
+          <div className="pcard__prices">
+            {price_clp && (
+              <span className="pcard__price">
+                <span className="pcard__price-label">CLP</span>
+                <span className="pcard__price-value">${Number(price_clp).toLocaleString('es-CL')}</span>
+              </span>
+            )}
+            {price_cad && (
+              <span className="pcard__price">
+                <span className="pcard__price-label">CAD</span>
+                <span className="pcard__price-value">${Number(price_cad).toLocaleString('en-CA')}</span>
+              </span>
+            )}
+          </div>
+        )}
 
         {testimonial && (
           <div className="pcard__testimonial">

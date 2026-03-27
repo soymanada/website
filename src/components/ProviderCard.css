@@ -93,6 +93,33 @@
 
 .pcard__desc { color: var(--text-500); line-height: 1.7; }
 
+.pcard__prices {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.pcard__price {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--iris-50);
+  border: 1px solid var(--iris-200);
+  border-radius: var(--r-sm);
+  padding: 5px 10px;
+}
+.pcard__price-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--iris-500);
+  letter-spacing: 0.04em;
+}
+.pcard__price-value {
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-700);
+}
+
 .pcard__tags { display: flex; flex-direction: column; gap: 10px; }
 .pcard__tag-row { display: flex; flex-direction: column; gap: 6px; }
 .pcard__tag-label { color: var(--text-300); font-size: 0.68rem; }

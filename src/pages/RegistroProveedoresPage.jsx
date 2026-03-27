@@ -202,14 +202,17 @@ export default function RegistroProveedoresPage() {
         <div className="container">
           <div className="ppg-form__inner">
 
-            {submitted ? (
-              <div className="ppg-form__success">
-                <PawIcon size={52} className="ppg-form__success-icon" />
-                <h2 className="d-lg">¡Postulación enviada!</h2>
-                <p className="t-lg">Revisaremos tu información y te contactaremos al correo indicado si tu perfil encaja con el directorio. Gracias por querer ser parte de SoyManada.</p>
+            {submitted && (
+              <div className="ppg-success-overlay" onClick={() => setSubmitted(false)}>
+                <div className="ppg-success-modal" onClick={e => e.stopPropagation()}>
+                  <button className="ppg-success-modal__close" onClick={() => setSubmitted(false)} aria-label="Cerrar">✕</button>
+                  <PawIcon size={52} className="ppg-form__success-icon" />
+                  <h2 className="d-lg">¡Postulación enviada!</h2>
+                  <p className="t-lg">Revisaremos tu información y te contactaremos al correo indicado si tu perfil encaja con el directorio. Gracias por querer ser parte de SoyManada.</p>
+                </div>
               </div>
-            ) : (
-              <>
+            )}
+            <>
                 <div className="ppg-form__header">
                   <h2 className="d-lg ppg-form__title">Postúlate ahora</h2>
                   <p className="t-md ppg-form__subtitle">Completa el formulario — toma menos de 3 minutos. Revisaremos tu postulación y te contactaremos si encaja con el directorio.</p>
@@ -356,8 +359,7 @@ export default function RegistroProveedoresPage() {
                     )}
                   </button>
                 </form>
-              </>
-            )}
+            </>
           </div>
         </div>
       </section>

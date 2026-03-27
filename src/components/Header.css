@@ -63,13 +63,14 @@
   margin-left: 12px;
 }
 .hdr__link {
-  font-size: 0.875rem;
+  font-size: 0.82rem;
   font-weight: 500;
   color: var(--text-500);
-  padding: 6px 13px;
+  padding: 6px 9px;
   border-radius: 100px;
   transition: all var(--t-fast);
   text-decoration: none;
+  white-space: nowrap;
 }
 .hdr__link:hover        { color: var(--iris-700); background: var(--iris-50); }
 .hdr__link--active      { color: var(--iris-700); background: var(--iris-100); font-weight: 600; }

@@ -1,0 +1,115 @@
+/* Hero */
+.verif__hero { background: var(--ivory); }
+.verif__hero-inner {
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.verif__title { color: var(--iris-900); }
+.verif__title em {
+  font-style: italic;
+  background: linear-gradient(135deg, var(--iris-600), var(--iris-400));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.verif__lead { color: var(--text-500); max-width: 560px; }
+
+/* Process steps */
+.verif__process { background: var(--white); }
+.verif__steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 720px;
+}
+.verif__step {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  padding: 28px 0;
+  border-bottom: 1px solid var(--iris-100);
+}
+.verif__step:last-child { border-bottom: none; }
+.verif__step-icon {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  background: var(--iris-50);
+  border: 1px solid var(--iris-200);
+  border-radius: var(--r-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--iris-600);
+}
+.verif__step-content { flex: 1; }
+.verif__step-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--text-700);
+  margin-bottom: 6px;
+}
+
+/* Rejection */
+.verif__reject { background: var(--ivory); }
+.verif__reject-inner {
+  max-width: 600px;
+  background: var(--white);
+  border: 1px solid var(--iris-200);
+  border-radius: var(--r-xl);
+  padding: 36px 40px;
+}
+.verif__reject-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.verif__reject-icon { color: var(--text-300); flex-shrink: 0; }
+.verif__reject-lead { color: var(--text-500); margin-bottom: 20px; }
+.verif__reject-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.verif__reject-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-600);
+  font-size: 0.9rem;
+}
+.verif__reject-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--iris-400);
+  flex-shrink: 0;
+}
+
+/* Maintenance */
+.verif__maintain { background: var(--iris-900); }
+.verif__maintain-inner {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  max-width: 640px;
+}
+.verif__maintain-icon { color: var(--iris-300); flex-shrink: 0; margin-top: 4px; }
+.verif__maintain h2 { color: var(--white); margin-bottom: 10px; }
+.verif__maintain p  { color: rgba(255,255,255,0.70); }
+
+/* CTA */
+.verif__cta { background: var(--ivory); text-align: center; }
+.verif__cta-text { color: var(--text-600); margin-bottom: 16px; }
+
+@media (max-width: 600px) {
+  .verif__reject-inner { padding: 24px 20px; }
+  .verif__step { gap: 16px; }
+  .verif__maintain-inner { gap: 16px; }
+}

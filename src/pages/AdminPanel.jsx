@@ -101,13 +101,15 @@ function UsersPanel() {
                 <option value="admin">admin</option>
               </select>
             </label>
-            <label>Tier
-              <select value={invForm.tier} onChange={e => setInvForm(p => ({ ...p, tier: e.target.value }))}>
-                <option value="bronze">bronze</option>
-                <option value="silver">silver</option>
-                <option value="gold">gold</option>
-              </select>
-            </label>
+            {invForm.role !== 'migrant' && (
+              <label>Tier
+                <select value={invForm.tier} onChange={e => setInvForm(p => ({ ...p, tier: e.target.value }))}>
+                  <option value="bronze">bronze</option>
+                  <option value="silver">silver</option>
+                  <option value="gold">gold</option>
+                </select>
+              </label>
+            )}
             {invState === 'ok'    && <p className="adm-modal__ok">✓ Invitación enviada</p>}
             {invState === 'error' && <p className="adm-modal__err">Error: {invError}</p>}
             <div className="adm-modal__actions">
@@ -163,14 +165,16 @@ function UsersPanel() {
                 <option value="admin">admin</option>
               </select>
             </label>
-            <label>Tier
-              <select value={editing.tier}
-                onChange={e => setEditing(p => ({ ...p, tier: e.target.value }))}>
-                <option value="bronze">bronze</option>
-                <option value="silver">silver</option>
-                <option value="gold">gold</option>
-              </select>
-            </label>
+            {editing.role !== 'migrant' && (
+              <label>Tier
+                <select value={editing.tier}
+                  onChange={e => setEditing(p => ({ ...p, tier: e.target.value }))}>
+                  <option value="bronze">bronze</option>
+                  <option value="silver">silver</option>
+                  <option value="gold">gold</option>
+                </select>
+              </label>
+            )}
             <div className="adm-modal__actions">
               <button className="adm-btn adm-btn--ghost" onClick={() => setEditing(null)}>Cancelar</button>
               <button className="adm-btn adm-btn--primary" onClick={save}>Guardar</button>
