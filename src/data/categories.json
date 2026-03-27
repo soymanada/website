@@ -7,5 +7,7 @@
   { "slug": "idiomas",         "name": "Idiomas",             "oneLiner": "Clases, tutorías y práctica para integrarte mejor.",                        "icon": "book-open",   "order": 6 },
   { "slug": "banca",           "name": "Banca",               "oneLiner": "Ejecutivos bancarios que entienden tu realidad migratoria",                 "icon": "credit-card", "order": 7, "isHot": true },
   { "slug": "salud-mental",    "name": "Salud Mental",        "oneLiner": "Psicólogos y terapeutas que hablan tu idioma y entienden tu proceso",       "icon": "heart",       "order": 8, "isHot": false },
-  { "slug": "antes-de-viajar", "name": "Antes de viajar",    "oneLiner": "Lo que nadie te contó antes de emigrar",                                    "icon": "plane",       "order": 9, "isHot": true, "comingSoon": true, "comingSoonLink": "https://chat.whatsapp.com/CMIWk9cQkEIDso4Ll6JG8j" }
+  { "slug": "antes-de-viajar",  "name": "Antes de viajar",        "oneLiner": "Lo que nadie te contó antes de emigrar",                                    "icon": "plane",        "order": 9,  "isHot": true,  "comingSoon": true, "comingSoonLink": "https://chat.whatsapp.com/CMIWk9cQkEIDso4Ll6JG8j" },
+  { "slug": "salud-bienestar",  "name": "Salud y Bienestar",      "oneLiner": "Médicos, nutricionistas y especialistas para tu salud en el nuevo país.",   "icon": "activity",     "order": 10, "isHot": false },
+  { "slug": "taxes",            "name": "Taxes e Impuestos",      "oneLiner": "Asesores que entienden tus obligaciones fiscales como migrante.",            "icon": "file-text",    "order": 11, "isHot": true  }
 ]
