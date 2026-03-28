@@ -189,6 +189,7 @@ function UsersPanel() {
 const CATEGORY_SLUGS = [
   'seguros','migracion','traducciones','trabajo',
   'alojamiento','idiomas','banca','salud-mental','taxes','antes-de-viajar',
+  'comunidad','remesas',
 ]
 
 const EMPTY_PROVIDER = {
@@ -197,11 +198,42 @@ const EMPTY_PROVIDER = {
   whatsapp: '', instagram: '', website: '',
 }
 
+// Flatten a provider record into a flat form object
+function providerToForm(p) {
+  return {
+    name:                 p.name                ?? '',
+    slug:                 p.slug                ?? '',
+    category_slug:        p.category_slug       ?? 'seguros',
+    tier:                 p.tier                ?? 'bronze',
+    service:              p.service             ?? '',
+    service_en:           p.service_en          ?? '',
+    service_fr:           p.service_fr          ?? '',
+    description:          p.description         ?? '',
+    description_en:       p.description_en      ?? '',
+    description_fr:       p.description_fr      ?? '',
+    countries:            (p.countries  ?? []).join(', '),
+    languages:            (p.languages  ?? []).join(', '),
+    verified:             p.verified            ?? false,
+    active:               p.active              ?? true,
+    whatsapp:             p.contact?.whatsapp   ?? p.whatsapp ?? '',
+    instagram:            p.contact?.instagram  ?? '',
+    website:              p.contact?.website    ?? '',
+    benefit:              p.benefit             ?? '',
+    avatar_url:           p.avatar_url          ?? '',
+    payment_link:         p.payment_link        ?? '',
+    calendar_link:        p.calendar_link       ?? '',
+    redirect_email:       p.redirect_email      ?? '',
+    predefined_responses: (p.predefined_responses ?? []).join('\n'),
+    user_id:              p.user_id             ?? '',
+  }
+}
+
 // ── Proveedores ───────────────────────────────────────────────────────────────
 function ProvidersPanel() {
   const [providers, setProviders] = useState([])
   const [loading,   setLoading]   = useState(true)
   const [creating,  setCreating]  = useState(false)
+  const [editing,   setEditing]   = useState(null)   // { id, ...form }
   const [form,      setForm]      = useState(EMPTY_PROVIDER)
   const [saving,    setSaving]    = useState(false)
 
@@ -255,7 +287,46 @@ function ProvidersPanel() {
     else alert('Error al crear: ' + error.message)
   }
 
-  const set = (k, v) => setForm(p => ({ ...p, [k]: v }))
+  const set    = (k, v) => setForm(p => ({ ...p, [k]: v }))
+  const setEd  = (k, v) => setEditing(p => ({ ...p, [k]: v }))
+
+  const openEdit = (p) => setEditing({ id: p.id, ...providerToForm(p) })
+
+  const saveEdit = async () => {
+    setSaving(true)
+    const { id, ...f } = editing
+    const { error } = await supabase.from('providers').update({
+      name:                 f.name.trim(),
+      slug:                 f.slug.trim() || null,
+      category_slug:        f.category_slug,
+      tier:                 f.tier,
+      service:              f.service.trim(),
+      service_en:           f.service_en.trim()    || null,
+      service_fr:           f.service_fr.trim()    || null,
+      description:          f.description.trim(),
+      description_en:       f.description_en.trim()|| null,
+      description_fr:       f.description_fr.trim()|| null,
+      countries:            f.countries.split(',').map(s => s.trim()).filter(Boolean),
+      languages:            f.languages.split(',').map(s => s.trim()).filter(Boolean),
+      verified:             f.verified,
+      active:               f.active,
+      contact: {
+        whatsapp:  f.whatsapp.trim()  || null,
+        instagram: f.instagram.trim() || null,
+        website:   f.website.trim()   || null,
+      },
+      benefit:              f.benefit.trim()        || null,
+      avatar_url:           f.avatar_url.trim()     || null,
+      payment_link:         f.payment_link.trim()   || null,
+      calendar_link:        f.calendar_link.trim()  || null,
+      redirect_email:       f.redirect_email.trim() || null,
+      predefined_responses: f.predefined_responses.split('\n').map(s => s.trim()).filter(Boolean),
+      user_id:              f.user_id.trim()        || null,
+    }).eq('id', id)
+    setSaving(false)
+    if (error) alert('Error al guardar: ' + error.message)
+    else { setEditing(null); load() }
+  }
 
   return (
     <div className="adm-section">
@@ -320,6 +391,141 @@ function ProvidersPanel() {
         </div>
       )}
 
+      {/* ── Modal edición completa ── */}
+      {editing && (
+        <div className="adm-overlay" onClick={() => setEditing(null)}>
+          <div className="adm-modal adm-modal--xl" onClick={e => e.stopPropagation()}>
+            <h3>Editar proveedor — {editing.name}</h3>
+
+            <div className="adm-edit-sections">
+
+              {/* Identidad */}
+              <div className="adm-edit-section">
+                <p className="adm-edit-section__title">Identidad</p>
+                <div className="adm-form-grid">
+                  <label>Nombre / Marca
+                    <input value={editing.name} onChange={e => setEd('name', e.target.value)} />
+                  </label>
+                  <label>Slug (URL)
+                    <input value={editing.slug} onChange={e => setEd('slug', e.target.value)} placeholder="ej: daniela-valenzuela" />
+                  </label>
+                  <label>Categoría
+                    <select value={editing.category_slug} onChange={e => setEd('category_slug', e.target.value)}>
+                      {CATEGORY_SLUGS.map(s => <option key={s} value={s}>{s}</option>)}
+                    </select>
+                  </label>
+                  <label>Tier
+                    <select value={editing.tier} onChange={e => setEd('tier', e.target.value)}>
+                      <option value="bronze">bronze</option>
+                      <option value="silver">silver</option>
+                      <option value="gold">gold</option>
+                    </select>
+                  </label>
+                  <label>Avatar URL
+                    <input value={editing.avatar_url} onChange={e => setEd('avatar_url', e.target.value)} placeholder="https://..." />
+                  </label>
+                  <label>user_id (auth)
+                    <input value={editing.user_id} onChange={e => setEd('user_id', e.target.value)} placeholder="uuid del usuario" />
+                  </label>
+                  <label className="adm-form-grid--inline">
+                    <input type="checkbox" checked={editing.verified} onChange={e => setEd('verified', e.target.checked)} />
+                    Verificado
+                  </label>
+                  <label className="adm-form-grid--inline">
+                    <input type="checkbox" checked={editing.active} onChange={e => setEd('active', e.target.checked)} />
+                    Activo
+                  </label>
+                </div>
+              </div>
+
+              {/* Servicio y descripción */}
+              <div className="adm-edit-section">
+                <p className="adm-edit-section__title">Servicio y descripción</p>
+                <div className="adm-form-grid">
+                  <label>Servicio (ES)
+                    <input value={editing.service} onChange={e => setEd('service', e.target.value)} />
+                  </label>
+                  <label>Servicio (EN)
+                    <input value={editing.service_en} onChange={e => setEd('service_en', e.target.value)} />
+                  </label>
+                  <label>Servicio (FR)
+                    <input value={editing.service_fr} onChange={e => setEd('service_fr', e.target.value)} />
+                  </label>
+                  <label className="adm-form-grid--full">Descripción (ES)
+                    <textarea rows={3} value={editing.description} onChange={e => setEd('description', e.target.value)} />
+                  </label>
+                  <label className="adm-form-grid--full">Descripción (EN)
+                    <textarea rows={2} value={editing.description_en} onChange={e => setEd('description_en', e.target.value)} />
+                  </label>
+                  <label className="adm-form-grid--full">Descripción (FR)
+                    <textarea rows={2} value={editing.description_fr} onChange={e => setEd('description_fr', e.target.value)} />
+                  </label>
+                  <label className="adm-form-grid--full">Beneficio exclusivo
+                    <input value={editing.benefit} onChange={e => setEd('benefit', e.target.value)} placeholder="Texto que aparece en la sección de beneficio" />
+                  </label>
+                </div>
+              </div>
+
+              {/* Ubicación e idiomas */}
+              <div className="adm-edit-section">
+                <p className="adm-edit-section__title">Ubicación e idiomas</p>
+                <div className="adm-form-grid">
+                  <label>Países (separados por coma)
+                    <input value={editing.countries} onChange={e => setEd('countries', e.target.value)} placeholder="Canadá, Chile" />
+                  </label>
+                  <label>Idiomas (separados por coma)
+                    <input value={editing.languages} onChange={e => setEd('languages', e.target.value)} placeholder="Español, Inglés" />
+                  </label>
+                </div>
+              </div>
+
+              {/* Contacto */}
+              <div className="adm-edit-section">
+                <p className="adm-edit-section__title">Contacto</p>
+                <div className="adm-form-grid">
+                  <label>WhatsApp (con código país)
+                    <input value={editing.whatsapp} onChange={e => setEd('whatsapp', e.target.value)} placeholder="16047009832" />
+                  </label>
+                  <label>Instagram (sin @)
+                    <input value={editing.instagram} onChange={e => setEd('instagram', e.target.value)} />
+                  </label>
+                  <label>Sitio web
+                    <input value={editing.website} onChange={e => setEd('website', e.target.value)} placeholder="https://..." />
+                  </label>
+                </div>
+              </div>
+
+              {/* Herramientas */}
+              <div className="adm-edit-section">
+                <p className="adm-edit-section__title">Herramientas (Silver / Gold)</p>
+                <div className="adm-form-grid">
+                  <label>Link de pago (Gold)
+                    <input value={editing.payment_link} onChange={e => setEd('payment_link', e.target.value)} placeholder="https://wise.com/pay/..." />
+                  </label>
+                  <label>Link de agenda (Silver+)
+                    <input value={editing.calendar_link} onChange={e => setEd('calendar_link', e.target.value)} placeholder="https://calendly.com/..." />
+                  </label>
+                  <label>Email de redirección (Gold)
+                    <input type="email" value={editing.redirect_email} onChange={e => setEd('redirect_email', e.target.value)} />
+                  </label>
+                  <label className="adm-form-grid--full">Respuestas predefinidas (una por línea, Gold)
+                    <textarea rows={3} value={editing.predefined_responses} onChange={e => setEd('predefined_responses', e.target.value)} />
+                  </label>
+                </div>
+              </div>
+
+            </div>{/* end adm-edit-sections */}
+
+            <div className="adm-modal__actions">
+              <button className="adm-btn adm-btn--ghost" onClick={() => setEditing(null)}>Cancelar</button>
+              <button className="adm-btn adm-btn--primary" onClick={saveEdit} disabled={saving || !editing.name}>
+                {saving ? 'Guardando…' : 'Guardar cambios'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {loading ? <p className="adm-loading">Cargando...</p> : (
         <div className="adm-table-wrap">
           <table className="adm-table">
@@ -341,6 +547,10 @@ function ProvidersPanel() {
                   <td><span className={`adm-dot ${p.active   ? 'adm-dot--on' : 'adm-dot--off'}`} /></td>
                   <td>{fmt(p.created_at)}</td>
                   <td className="adm-td--actions">
+                    <button className="adm-btn adm-btn--sm adm-btn--ghost"
+                      onClick={() => openEdit(p)}>
+                      Editar
+                    </button>
                     <button
                       className={`adm-btn adm-btn--sm ${p.verified ? 'adm-btn--ghost' : 'adm-btn--primary'}`}
                       onClick={() => toggleVerified(p)}>

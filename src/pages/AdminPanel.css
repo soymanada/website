@@ -179,7 +179,28 @@
 .adm-modal__ok    { font-size: 0.875rem; color: #16a34a; font-weight: 600; }
 .adm-modal__err   { font-size: 0.875rem; color: #dc2626; }
 
-.adm-modal--lg { width: min(680px, 96vw); }
+.adm-modal--lg  { width: min(680px, 96vw); }
+.adm-modal--xl  {
+  width: min(820px, 96vw);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* Edit sections */
+.adm-edit-sections { display: flex; flex-direction: column; gap: 24px; }
+.adm-edit-section {
+  border: 1px solid var(--iris-100);
+  border-radius: var(--r-md);
+  padding: 16px 18px;
+}
+.adm-edit-section__title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--iris-500);
+  margin-bottom: 12px;
+}
 
 .adm-form-grid {
   display: grid;

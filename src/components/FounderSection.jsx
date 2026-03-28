@@ -14,7 +14,11 @@ export default function FounderSection() {
           <div className="founder__photo-col" aria-hidden="true">
             <div className="founder__photo-wrap">
               <div className="founder__avatar">
-                <span className="founder__initials">FA</span>
+                <img
+                  src="/images/francisco-aleuy.jpg"
+                  alt="Francisco Aleuy — Okanagan, BC, Canada"
+                  className="founder__avatar-img"
+                />
               </div>
               <div className="founder__photo-orb" />
             </div>
