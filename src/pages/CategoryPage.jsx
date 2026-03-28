@@ -1,11 +1,12 @@
 import { useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import categories   from '../data/categories.json'
-import providers    from '../data/providers.json'
-import ProviderCard from '../components/ProviderCard'
-import CategoryIcon from '../components/CategoryIcon'
-import PawIcon from '../components/PawIcon'
+import categories          from '../data/categories.json'
+import providers           from '../data/providers.json'
+import ProviderCard        from '../components/ProviderCard'
+import CategoryIcon        from '../components/CategoryIcon'
+import PawIcon             from '../components/PawIcon'
+import RemesasComparator   from '../components/RemesasComparator'
 import { trackEvent, Events } from '../utils/analytics'
 import './CategoryPage.css'
 
@@ -66,6 +67,7 @@ export default function CategoryPage() {
       {/* Providers */}
       <section className="catpage__providers section">
         <div className="container">
+          {slug === 'remesas' && <RemesasComparator />}
           {cat.comingSoon ? (
             <div className="catpage__empty">
               <span className="catpage__empty-icon" aria-hidden="true">🧳</span>

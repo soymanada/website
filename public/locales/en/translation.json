@@ -17,7 +17,9 @@
     "cta_proveedor": "I'm a provider",
     "cta_explorar": "Browse directory",
     "cta_ingresar": "Sign in",
-    "menu_label": "Menu"
+    "menu_label": "Menu",
+    "nav_comunidad": "Community",
+    "nav_remesas": "Remittances"
   },
   "footer": {
     "trust_title": "Why trust Manada?",
@@ -406,5 +408,19 @@
     "reviews_be_first": "Leave my review",
     "your_review_title": "Your review",
     "meta_title": "{{name}} — SoyManada"
+  },
+  "remesas_comp": {
+    "title": "Compare rates in real time",
+    "updated": "Rates updated hourly",
+    "amount_label": "You send from Canada",
+    "to_currency_label": "Destination",
+    "col_platform": "Platform",
+    "col_receive": "You receive",
+    "cta": "Send with {{name}}",
+    "best_badge": "Best rate",
+    "loading": "Fetching rates…",
+    "error": "We couldn't fetch the rates. Please try again.",
+    "retry": "Retry",
+    "disclaimer": "Rates are estimates based on the interbank reference exchange rate and may differ from actual rates at the time of your transfer. Verify the exact amount on each platform before transferring. SoyManada may receive a commission if you complete a transaction through these links, at no additional cost to you."
   }
 }

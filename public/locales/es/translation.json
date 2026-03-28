@@ -15,7 +15,9 @@
     "cta_proveedor": "Soy proveedor",
     "cta_explorar": "Explorar directorio",
     "cta_ingresar": "Ingresar",
-    "menu_label": "Menú"
+    "menu_label": "Menú",
+    "nav_comunidad": "Comunidad",
+    "nav_remesas": "Remesas"
   },
   "footer": {
     "trust_title": "¿Por qué confiar en Manada?",
@@ -403,5 +405,19 @@
     "reviews_be_first": "Dejar mi opinión",
     "your_review_title": "Tu evaluación",
     "meta_title": "{{name}} — SoyManada"
+  },
+  "remesas_comp": {
+    "title": "Compara tasas en tiempo real",
+    "updated": "Tasas actualizadas cada hora",
+    "amount_label": "Envías desde Canadá",
+    "to_currency_label": "Destino",
+    "col_platform": "Plataforma",
+    "col_receive": "Recibes",
+    "cta": "Enviar con {{name}}",
+    "best_badge": "Mejor tasa",
+    "loading": "Obteniendo tasas…",
+    "error": "No pudimos obtener las tasas. Intenta de nuevo.",
+    "retry": "Reintentar",
+    "disclaimer": "Las tasas son estimaciones sobre el tipo de cambio interbancario de referencia y pueden diferir de las tasas reales al momento de tu transferencia. Verifica el monto exacto en cada plataforma antes de transferir. SoyManada puede recibir una comisión si realizas una operación desde estos links, sin costo adicional para ti."
   }
 }
