@@ -50,7 +50,12 @@
     "members": "community members",
     "years": "years supporting migrants",
     "categories": "active categories",
-    "providers": "verified providers"
+    "providers": "verified providers",
+    "ticker_0": "💬 Reviews verified by real migrants",
+    "ticker_1": "✅ Every provider goes through manual verification",
+    "ticker_2": "👥 The community grows every week",
+    "ticker_3": "🐾 Your review helps the next migrant",
+    "ticker_4": "🌎 Active providers across Canada"
   },
   "value_props": {
     "eyebrow": "Why SoyManada?",
