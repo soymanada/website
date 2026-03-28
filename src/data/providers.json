@@ -28,7 +28,8 @@
     "service_en": "Certified translations and interpretation",
     "service_fr": "Traductions certifiées et interprétation",
     "description_en": "I offer translation and interpretation services. I can guide you through the process, advantages, disadvantages and practical considerations. Personalized attention in Spanish and English.",
-    "description_fr": "Je propose des services de traduction et d'interprétation. Je peux vous guider à travers le processus, les avantages, les inconvénients et les aspects pratiques. Attention personnalisée en espagnol et en anglais."
+    "description_fr": "Je propose des services de traduction et d'interprétation. Je peux vous guider à travers le processus, les avantages, les inconvénients et les aspects pratiques. Attention personnalisée en espagnol et en anglais.",
+    "slug": "daniela-valenzuela"
   },
   {
     "id": "p002",
@@ -64,7 +65,8 @@
     "service_en": "Insurance and Visas",
     "service_fr": "Assurances et visas",
     "description_en": "We offer the most competitive prices on the market for migrant insurance.",
-    "description_fr": "Nous offrons les prix les plus compétitifs du marché pour les assurances des migrants."
+    "description_fr": "Nous offrons les prix les plus compétitifs du marché pour les assurances des migrants.",
+    "slug": "tripeandovoy"
   },
   {
     "id": "p003",
@@ -91,7 +93,8 @@
     "service_en": "Strategic immigration roadmap to Canada",
     "service_fr": "Feuille de route stratégique d'immigration au Canada",
     "description_en": "I help Latin Americans build their path to Canada legally and intelligently. I combine French preparation, professional positioning and immigration strategy so they arrive with a competitive profile, a real job offer and the right route to permanent residence.",
-    "description_fr": "J'aide les Latino-Américains à construire leur chemin vers le Canada de manière légale et intelligente. Je combine la préparation en français, le positionnement professionnel et la stratégie migratoire pour qu'ils arrivent avec un profil compétitif, une vraie offre d'emploi et la bonne voie vers la résidence permanente."
+    "description_fr": "J'aide les Latino-Américains à construire leur chemin vers le Canada de manière légale et intelligente. Je combine la préparation en français, le positionnement professionnel et la stratégie migratoire pour qu'ils arrivent avec un profil compétitif, une vraie offre d'emploi et la bonne voie vers la résidence permanente.",
+    "slug": "objetivo-canada"
   },
   {
     "id": "p004",
@@ -119,7 +122,8 @@
     "service_en": "Translations for immigration processes",
     "service_fr": "Traductions pour processus migratoires",
     "description_en": "Translations for immigration processes and other needs.",
-    "description_fr": "Traductions pour les processus migratoires et autres besoins."
+    "description_fr": "Traductions pour les processus migratoires et autres besoins.",
+    "slug": "av-traducciones"
   },
   {
     "id": "p006",
@@ -145,7 +149,8 @@
     "service_en": "Cognitive behavioral psychotherapy",
     "service_fr": "Psychothérapie cognitivo-comportementale",
     "description_en": "Psychotherapy focused on migration processes. Psychological support for those going through the experience of migrating.",
-    "description_fr": "Psychothérapie axée sur les processus migratoires. Accompagnement psychologique pour ceux qui vivent l'expérience de la migration."
+    "description_fr": "Psychothérapie axée sur les processus migratoires. Accompagnement psychologique pour ceux qui vivent l'expérience de la migration.",
+    "slug": "terapia-para-migrantes"
   },
   {
     "id": "p007",
@@ -189,7 +194,8 @@
     "service_en": "Insurance and advisory for Working Holiday visas",
     "service_fr": "Assurances et conseils pour visas Working Holiday",
     "description_en": "Travel insurance, guidance and phone plans for Working Holiday visas to Canada and the world. Coverage in more than 15 countries.",
-    "description_fr": "Assurances voyage, orientation et forfaits téléphoniques pour les visas Working Holiday au Canada et dans le monde. Couverture dans plus de 15 pays."
+    "description_fr": "Assurances voyage, orientation et forfaits téléphoniques pour les visas Working Holiday au Canada et dans le monde. Couverture dans plus de 15 pays.",
+    "slug": "aseguratuwh"
   },
   {
     "id": "remesas-001",
@@ -359,6 +365,7 @@
     "service_en": "Customer Service Representative, BMO Toronto",
     "service_fr": "Représentante du service à la clientèle, BMO Toronto",
     "description_en": "Spanish-speaking banking executive at BMO, Yonge Street branch in Toronto. She can guide you through opening accounts, credits and financial services for newly arrived migrants to Canada.",
-    "description_fr": "Dirigeante bancaire hispanophone chez BMO, succursale Yonge Street à Toronto. Elle peut vous guider pour ouvrir un compte, obtenir un crédit et accéder aux services financiers pour les nouveaux arrivants au Canada."
+    "description_fr": "Dirigeante bancaire hispanophone chez BMO, succursale Yonge Street à Toronto. Elle peut vous guider pour ouvrir un compte, obtenir un crédit et accéder aux services financiers pour les nouveaux arrivants au Canada.",
+    "slug": "patricia-gomez-bmo"
   }
 ]
