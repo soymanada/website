@@ -7,53 +7,54 @@ export const REMESAS_PLATFORMS = [
     name: 'Wise',
     spread: 0.005,
     label: null,
-    color: '#2ECC71',
     affiliateUrl: 'https://wise.com/invite', // reemplazar con link Partnerize cuando llegue
-    logo: 'wise',
   },
   {
     id: 'global66',
     name: 'Global66',
     spread: 0.01,
     label: null,
-    color: '#1A1A2E',
     affiliateUrl: 'https://global66.com', // reemplazar con link afiliado cuando llegue
-    logo: 'global66',
   },
   {
     id: 'remitly',
     name: 'Remitly',
     spread: 0.015,
     label: 'Promo primer envío',
-    color: '#003087',
     affiliateUrl: 'https://remitly.com',
-    logo: 'remitly',
   },
   {
     id: 'currencybird',
     name: 'CurrencyBird',
     spread: 0.012,
     label: null,
-    color: '#00A86B',
     affiliateUrl: 'https://currencybird.cl',
-    logo: 'currencybird',
   },
   {
     id: 'westernunion',
     name: 'Western Union',
     spread: 0.025,
     label: 'Comisión incluida',
-    color: '#C8960C',
     affiliateUrl: 'https://westernunion.com',
-    logo: 'westernunion',
   },
 ]
 
 export const CURRENCY_PAIRS = [
-  { from: 'CAD', to: 'CLP', label: 'Chile' },
-  { from: 'CAD', to: 'COP', label: 'Colombia' },
-  { from: 'CAD', to: 'ARS', label: 'Argentina' },
-  { from: 'CAD', to: 'MXN', label: 'México' },
-  { from: 'CAD', to: 'VES', label: 'Venezuela' },
-  { from: 'CAD', to: 'PEN', label: 'Perú' },
+  // Destinos principales LatAm
+  { code: 'CLP', label: 'Chile',         flag: 'CL' },
+  { code: 'COP', label: 'Colombia',      flag: 'CO' },
+  { code: 'ARS', label: 'Argentina',     flag: 'AR' },
+  { code: 'MXN', label: 'México',        flag: 'MX' },
+  { code: 'VES', label: 'Venezuela',     flag: 'VE' },
+  { code: 'PEN', label: 'Perú',          flag: 'PE' },
+  // Destinos WH adicionales
+  { code: 'AUD', label: 'Australia',     flag: 'AU' },
+  { code: 'NZD', label: 'Nueva Zelanda', flag: 'NZ' },
+  { code: 'EUR', label: 'Europa',        flag: 'EU' },
+]
+
+// Monedas de origen disponibles
+export const ORIGIN_CURRENCIES = [
+  { code: 'CAD', label: 'Dólares canadienses', flag: 'CA' },
+  { code: 'CLP', label: 'Pesos chilenos',      flag: 'CL' },
 ]

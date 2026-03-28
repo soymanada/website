@@ -107,7 +107,9 @@
     "contact_phone": "Call the office",
     "contact_instagram": "Instagram",
     "gate_text": "Sign up for free to see contact details",
-    "gate_cta": "View contact"
+    "gate_cta": "View contact",
+    "profile_link": "View full profile →",
+    "profile_link_remesas": "View reviews →"
   },
   "providers_page": {
     "title": "Provider directory",
@@ -421,6 +423,7 @@
     "loading": "Fetching rates…",
     "error": "We couldn't fetch the rates. Please try again.",
     "retry": "Retry",
-    "disclaimer": "Rates are estimates based on the interbank reference exchange rate and may differ from actual rates at the time of your transfer. Verify the exact amount on each platform before transferring. SoyManada may receive a commission if you complete a transaction through these links, at no additional cost to you."
+    "disclaimer": "Rates are estimates based on the interbank reference exchange rate and may differ from actual rates at the time of your transfer. Verify the exact amount on each platform before transferring. SoyManada may receive a commission if you complete a transaction through these links, at no additional cost to you.",
+    "from_currency_label": "Origin currency"
   }
 }

@@ -30,7 +30,7 @@ export default function ProviderCard({ provider: rawProvider }) {
   const { user }    = useAuth()
   const { t, i18n } = useTranslation()
   const provider    = resolveProvider(rawProvider, i18n.language)
-  const { id, slug, name, service, description, countries, verified, contact, testimonial, benefit, price_clp, price_cad, avatar_url } = provider
+  const { id, slug, name, service, description, countries, verified, contact, testimonial, benefit, price_clp, price_cad, avatar_url, categorySlug } = provider
   const location    = useLocation()
 
   const [isConnecting,   setIsConnecting]   = useState(false)
@@ -142,7 +142,9 @@ export default function ProviderCard({ provider: rawProvider }) {
         )}
 
         <Link to={`/proveedor/${slug ?? id}`} className="pcard__profile-link">
-          Ver perfil completo →
+          {categorySlug === 'remesas'
+            ? t('provider_card.profile_link_remesas')
+            : t('provider_card.profile_link')}
         </Link>
 
         {user ? (

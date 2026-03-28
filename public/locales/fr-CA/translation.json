@@ -107,7 +107,9 @@
     "contact_phone": "Appeler le bureau",
     "contact_instagram": "Instagram",
     "gate_text": "Inscrivez-vous gratuitement pour voir les coordonnées",
-    "gate_cta": "Voir les coordonnées"
+    "gate_cta": "Voir les coordonnées",
+    "profile_link": "Voir le profil complet →",
+    "profile_link_remesas": "Voir les avis →"
   },
   "providers_page": {
     "title": "Répertoire des fournisseurs",
@@ -421,6 +423,7 @@
     "loading": "Récupération des taux…",
     "error": "Impossible d'obtenir les taux. Réessayez.",
     "retry": "Réessayer",
-    "disclaimer": "Les taux sont des estimations basées sur le taux de change interbancaire de référence et peuvent différer des taux réels au moment de votre transfert. Vérifiez le montant exact sur chaque plateforme avant de transférer. SoyManada peut recevoir une commission si vous effectuez une opération depuis ces liens, sans frais supplémentaires pour vous."
+    "disclaimer": "Les taux sont des estimations basées sur le taux de change interbancaire de référence et peuvent différer des taux réels au moment de votre transfert. Vérifiez le montant exact sur chaque plateforme avant de transférer. SoyManada peut recevoir une commission si vous effectuez une opération depuis ces liens, sans frais supplémentaires pour vous.",
+    "from_currency_label": "Devise d'origine"
   }
 }

@@ -1,7 +1,7 @@
 // src/components/RemesasComparator.jsx
 import { useState, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import { REMESAS_PLATFORMS, CURRENCY_PAIRS } from '../data/remesas.config'
+import { REMESAS_PLATFORMS, CURRENCY_PAIRS, ORIGIN_CURRENCIES } from '../data/remesas.config'
 import './RemesasComparator.css'
 
 function SkeletonRow() {
@@ -17,15 +17,18 @@ function SkeletonRow() {
 
 export default function RemesasComparator() {
   const { t } = useTranslation()
-  const [rates,      setRates]      = useState(null)
-  const [status,     setStatus]     = useState('loading') // loading | error | ready
-  const [amount,     setAmount]     = useState(500)
-  const [toCurrency, setToCurrency] = useState(CURRENCY_PAIRS[0].to)
 
+  const [fromCurrency, setFromCurrency] = useState('CAD')
+  const [toCurrency,   setToCurrency]   = useState(CURRENCY_PAIRS[0].code)
+  const [amount,       setAmount]       = useState(500)
+  const [rates,        setRates]        = useState(null)
+  const [status,       setStatus]       = useState('loading') // loading | error | ready
+
+  // Fetch se repite solo cuando cambia la moneda de origen
   const fetchRates = useCallback(async () => {
     setStatus('loading')
     try {
-      const res = await fetch('https://open.er-api.com/v6/latest/CAD')
+      const res = await fetch(`https://open.er-api.com/v6/latest/${fromCurrency}`)
       if (!res.ok) throw new Error('fetch failed')
       const data = await res.json()
       setRates(data.rates)
@@ -33,7 +36,7 @@ export default function RemesasComparator() {
     } catch {
       setStatus('error')
     }
-  }, [])
+  }, [fromCurrency])
 
   useEffect(() => { fetchRates() }, [fetchRates])
 
@@ -55,6 +58,8 @@ export default function RemesasComparator() {
   const fmtRate = (rate) =>
     new Intl.NumberFormat('es-CL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(rate)
 
+  const originLabel = ORIGIN_CURRENCIES.find(c => c.code === fromCurrency)?.code ?? fromCurrency
+
   return (
     <div className="remcomp">
       <div className="remcomp__header">
@@ -65,9 +70,22 @@ export default function RemesasComparator() {
       {/* Controles */}
       <div className="remcomp__controls">
         <div className="remcomp__control-group">
+          <label className="remcomp__label t-xs">{t('remesas_comp.from_currency_label')}</label>
+          <select
+            className="remcomp__select"
+            value={fromCurrency}
+            onChange={e => setFromCurrency(e.target.value)}
+          >
+            {ORIGIN_CURRENCIES.map(c => (
+              <option key={c.code} value={c.code}>{c.label} ({c.code})</option>
+            ))}
+          </select>
+        </div>
+
+        <div className="remcomp__control-group">
           <label className="remcomp__label t-xs">{t('remesas_comp.amount_label')}</label>
           <div className="remcomp__amount-wrap">
-            <span className="remcomp__prefix">CAD $</span>
+            <span className="remcomp__prefix">{fromCurrency} $</span>
             <input
               type="number"
               className="remcomp__amount-input"
@@ -78,6 +96,7 @@ export default function RemesasComparator() {
             />
           </div>
         </div>
+
         <div className="remcomp__control-group">
           <label className="remcomp__label t-xs">{t('remesas_comp.to_currency_label')}</label>
           <select
@@ -86,7 +105,7 @@ export default function RemesasComparator() {
             onChange={e => setToCurrency(e.target.value)}
           >
             {CURRENCY_PAIRS.map(p => (
-              <option key={p.to} value={p.to}>{p.label} ({p.to})</option>
+              <option key={p.code} value={p.code}>{p.label} ({p.code})</option>
             ))}
           </select>
         </div>
@@ -98,7 +117,7 @@ export default function RemesasComparator() {
           <thead>
             <tr>
               <th>{t('remesas_comp.col_platform')}</th>
-              <th>1 CAD =</th>
+              <th>1 {originLabel} =</th>
               <th>{t('remesas_comp.col_receive')}</th>
               <th />
             </tr>
@@ -142,7 +161,6 @@ export default function RemesasComparator() {
                     target="_blank"
                     rel="noopener noreferrer sponsored"
                     className="remcomp__cta-btn"
-                    style={{ '--btn-color': p.color }}
                   >
                     {t('remesas_comp.cta', { name: p.name })}
                   </a>

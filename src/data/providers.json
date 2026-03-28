@@ -197,15 +197,28 @@
     "categorySlug": "remesas",
     "service": "Transferencias al tipo de cambio real",
     "description": "Sin comisiones ocultas. La tasa que ves es la que recibes. Disponible en Canadá para transferencias a más de 80 países.",
-    "countries": ["Canadá"],
-    "languages": ["Español", "Inglés", "Francés"],
+    "countries": [
+      "Canadá"
+    ],
+    "languages": [
+      "Español",
+      "Inglés",
+      "Francés"
+    ],
     "verified": true,
-    "contact": { "whatsapp": null, "instagram": null, "website": "https://wise.com/invite" },
-    "disclaimerTag": null, "price_clp": null, "price_cad": null,
+    "contact": {
+      "whatsapp": null,
+      "instagram": null,
+      "website": "https://wise.com/invite"
+    },
+    "disclaimerTag": null,
+    "price_clp": null,
+    "price_cad": null,
     "service_en": "Transfers at the real exchange rate",
     "service_fr": "Transferts au taux de change réel",
     "description_en": "No hidden fees. The rate you see is the rate you get. Available in Canada for transfers to over 80 countries.",
-    "description_fr": "Sans frais cachés. Le taux affiché est celui que vous obtenez. Disponible au Canada pour des transferts vers plus de 80 pays."
+    "description_fr": "Sans frais cachés. Le taux affiché est celui que vous obtenez. Disponible au Canada pour des transferts vers plus de 80 pays.",
+    "slug": "wise-remesas"
   },
   {
     "id": "remesas-002",
@@ -213,15 +226,27 @@
     "categorySlug": "remesas",
     "service": "Plataforma de cambio de divisas para Latinoamérica",
     "description": "Plataforma chilena especializada en transferencias CAD a CLP, COP, ARS, PEN y más. Tasas competitivas sin comisiones escondidas.",
-    "countries": ["Canadá", "Chile"],
-    "languages": ["Español"],
+    "countries": [
+      "Canadá",
+      "Chile"
+    ],
+    "languages": [
+      "Español"
+    ],
     "verified": true,
-    "contact": { "whatsapp": null, "instagram": null, "website": "https://global66.com" },
-    "disclaimerTag": null, "price_clp": null, "price_cad": null,
+    "contact": {
+      "whatsapp": null,
+      "instagram": null,
+      "website": "https://global66.com"
+    },
+    "disclaimerTag": null,
+    "price_clp": null,
+    "price_cad": null,
     "service_en": "Currency exchange platform for Latin America",
     "service_fr": "Plateforme de change pour l'Amérique latine",
     "description_en": "Chilean platform specialized in CAD transfers to CLP, COP, ARS, PEN and more. Competitive rates with no hidden fees.",
-    "description_fr": "Plateforme chilienne spécialisée dans les transferts CAD vers CLP, COP, ARS, PEN et plus. Taux compétitifs sans frais cachés."
+    "description_fr": "Plateforme chilienne spécialisée dans les transferts CAD vers CLP, COP, ARS, PEN et plus. Taux compétitifs sans frais cachés.",
+    "slug": "global66-remesas"
   },
   {
     "id": "remesas-003",
@@ -229,16 +254,27 @@
     "categorySlug": "remesas",
     "service": "Envíos internacionales con promo para primer envío",
     "description": "App de transferencias con tarifa promocional en el primer envío. Cobertura amplia a Latinoamérica desde Canadá.",
-    "countries": ["Canadá"],
-    "languages": ["Español", "Inglés"],
+    "countries": [
+      "Canadá"
+    ],
+    "languages": [
+      "Español",
+      "Inglés"
+    ],
     "verified": true,
-    "contact": { "whatsapp": null, "instagram": null, "website": "https://remitly.com" },
+    "contact": {
+      "whatsapp": null,
+      "instagram": null,
+      "website": "https://remitly.com"
+    },
     "disclaimerTag": "Tarifa promocional aplica solo al primer envío. Condiciones en el sitio oficial.",
-    "price_clp": null, "price_cad": null,
+    "price_clp": null,
+    "price_cad": null,
     "service_en": "International transfers with first-send promotion",
     "service_fr": "Envois internationaux avec promotion premier envoi",
     "description_en": "Transfer app with a promotional rate on the first send. Wide coverage to Latin America from Canada.",
-    "description_fr": "Application de transfert avec tarif promotionnel au premier envoi. Large couverture vers l'Amérique latine depuis le Canada."
+    "description_fr": "Application de transfert avec tarif promotionnel au premier envoi. Large couverture vers l'Amérique latine depuis le Canada.",
+    "slug": "remitly-remesas"
   },
   {
     "id": "remesas-004",
@@ -246,15 +282,27 @@
     "categorySlug": "remesas",
     "service": "Cambio de divisas con tasa interbancaria",
     "description": "Plataforma regulada y especializada en cambio de divisas para migrantes latinoamericanos. Tasa cercana a la interbancaria.",
-    "countries": ["Canadá", "Chile"],
-    "languages": ["Español"],
+    "countries": [
+      "Canadá",
+      "Chile"
+    ],
+    "languages": [
+      "Español"
+    ],
     "verified": true,
-    "contact": { "whatsapp": null, "instagram": null, "website": "https://currencybird.cl" },
-    "disclaimerTag": null, "price_clp": null, "price_cad": null,
+    "contact": {
+      "whatsapp": null,
+      "instagram": null,
+      "website": "https://currencybird.cl"
+    },
+    "disclaimerTag": null,
+    "price_clp": null,
+    "price_cad": null,
     "service_en": "Currency exchange at interbank rate",
     "service_fr": "Change de devises au taux interbancaire",
     "description_en": "Regulated platform specialized in currency exchange for Latin American migrants. Rate close to the interbank rate.",
-    "description_fr": "Plateforme réglementée spécialisée dans le change pour les migrants latino-américains. Taux proche du taux interbancaire."
+    "description_fr": "Plateforme réglementée spécialisée dans le change pour les migrants latino-américains. Taux proche du taux interbancaire.",
+    "slug": "currencybird-remesas"
   },
   {
     "id": "remesas-005",
@@ -262,16 +310,28 @@
     "categorySlug": "remesas",
     "service": "Red global de transferencias internacionales",
     "description": "Cobertura en más de 200 países y territorios. Opción de pago en efectivo en el destino. Red amplia con sucursales presenciales.",
-    "countries": ["Canadá"],
-    "languages": ["Español", "Inglés", "Francés"],
+    "countries": [
+      "Canadá"
+    ],
+    "languages": [
+      "Español",
+      "Inglés",
+      "Francés"
+    ],
     "verified": true,
-    "contact": { "whatsapp": null, "instagram": null, "website": "https://westernunion.com" },
+    "contact": {
+      "whatsapp": null,
+      "instagram": null,
+      "website": "https://westernunion.com"
+    },
     "disclaimerTag": "Las comisiones varía según monto y destino. Verifica el total antes de confirmar.",
-    "price_clp": null, "price_cad": null,
+    "price_clp": null,
+    "price_cad": null,
     "service_en": "Global international money transfer network",
     "service_fr": "Réseau mondial de transferts d'argent internationaux",
     "description_en": "Coverage in over 200 countries and territories. Cash pickup option at destination. Wide network with physical branches.",
-    "description_fr": "Couverture dans plus de 200 pays et territoires. Option de retrait en espèces à destination. Large réseau avec agences physiques."
+    "description_fr": "Couverture dans plus de 200 pays et territoires. Option de retrait en espèces à destination. Large réseau avec agences physiques.",
+    "slug": "westernunion-remesas"
   },
   {
     "id": "p005",

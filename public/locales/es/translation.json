@@ -105,7 +105,9 @@
     "contact_phone": "Llamar a sucursal",
     "contact_instagram": "Instagram",
     "gate_text": "Regístrate gratis para ver los datos de contacto",
-    "gate_cta": "Ver contacto"
+    "gate_cta": "Ver contacto",
+    "profile_link": "Ver perfil completo →",
+    "profile_link_remesas": "Ver opiniones y evaluaciones →"
   },
   "providers_page": {
     "title": "Directorio de proveedores",
@@ -418,6 +420,7 @@
     "loading": "Obteniendo tasas…",
     "error": "No pudimos obtener las tasas. Intenta de nuevo.",
     "retry": "Reintentar",
-    "disclaimer": "Las tasas son estimaciones sobre el tipo de cambio interbancario de referencia y pueden diferir de las tasas reales al momento de tu transferencia. Verifica el monto exacto en cada plataforma antes de transferir. SoyManada puede recibir una comisión si realizas una operación desde estos links, sin costo adicional para ti."
+    "disclaimer": "Las tasas son estimaciones sobre el tipo de cambio interbancario de referencia y pueden diferir de las tasas reales al momento de tu transferencia. Verifica el monto exacto en cada plataforma antes de transferir. SoyManada puede recibir una comisión si realizas una operación desde estos links, sin costo adicional para ti.",
+    "from_currency_label": "Moneda de origen"
   }
 }
