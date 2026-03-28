@@ -1,11 +1,16 @@
 // src/pages/ProviderPage.jsx
 import { useEffect, useState } from 'react'
-import { useParams, Link, useLocation } from 'react-router-dom'
+import { useParams, Link, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../hooks/useAuth'
 import { resolveProvider } from '../utils/providerI18n'
-import { useProviderRating, useUserReview } from '../hooks/useReviews'
+import {
+  useProviderRating,
+  useUserReview,
+  useReviewReactions,
+  submitProviderReply,
+} from '../hooks/useReviews'
 import { trackEvent, Events } from '../utils/analytics'
 import VerificationBadge from '../components/VerificationBadge'
 import PawRating from '../components/PawRating'
@@ -21,20 +26,146 @@ const COUNTRY_ISO = {
   'Japón': 'jp', 'República Checa': 'cz', 'Suecia': 'se',
 }
 
-function ReviewsList({ providerId, user, userReview, onReviewClick }) {
+// ── Rating bars (Componente 2) ────────────────────────────────────
+function RatingBars({ sub, recommendPct }) {
+  const { t } = useTranslation()
+  const rows = [
+    ['speed',       t('reviews.speed_label')],
+    ['reliability', t('reviews.reliability_label')],
+    ['clarity',     t('reviews.clarity_label')],
+    ['value',       t('reviews.value_label')],
+  ].filter(([key]) => sub[key] != null)
+
+  if (!rows.length && recommendPct == null) return null
+
+  return (
+    <div className="ppage__rating-bars">
+      {rows.map(([key, label]) => (
+        <div key={key} className="ppage__bar-row">
+          <span className="ppage__bar-label t-xs">{label}</span>
+          <div className="ppage__bar-track">
+            <div className="ppage__bar-fill" style={{ width: `${(sub[key] / 5) * 100}%` }} />
+          </div>
+          <span className="ppage__bar-val t-xs">{sub[key].toFixed(1)}</span>
+        </div>
+      ))}
+      {recommendPct != null && (
+        <p className="ppage__recommend t-sm">
+          {t('reviews.recommend_pct', { pct: recommendPct })}
+        </p>
+      )}
+    </div>
+  )
+}
+
+// ── Tarjeta de reseña individual (Componentes 3 + 4) ─────────────
+function ReviewCard({ review, user, canReply, onReviewUpdate }) {
+  const { t }        = useTranslation()
+  const navigate     = useNavigate()
+  const { count, hasReacted, toggle } = useReviewReactions(review.id, user?.id)
+  const [replyText,  setReplyText]  = useState(review.provider_reply ?? '')
+  const [submitting, setSubmitting] = useState(false)
+  // Track if the reply was just submitted in this session
+  const [localReply, setLocalReply] = useState(review.provider_reply ?? null)
+
+  const handlePaw = () => {
+    if (!user) { navigate('/login'); return }
+    toggle()
+  }
+
+  const handleReplySubmit = async () => {
+    if (!replyText.trim()) return
+    setSubmitting(true)
+    const { error } = await submitProviderReply(review.id, replyText)
+    if (!error) {
+      setLocalReply(replyText.trim())
+      onReviewUpdate?.()
+    }
+    setSubmitting(false)
+  }
+
+  return (
+    <div className="ppage__review">
+      <div className="ppage__review-header">
+        <span className="ppage__review-stars">
+          {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
+        </span>
+        <span className="ppage__review-date">
+          {new Date(review.created_at).toLocaleDateString('es-CL')}
+        </span>
+      </div>
+
+      {review.comment && (
+        <p className="ppage__review-comment t-sm">"{review.comment}"</p>
+      )}
+
+      {/* Componente 3 — reacción de huella */}
+      <button
+        className={`ppage__reaction${hasReacted ? ' ppage__reaction--active' : ''}`}
+        onClick={handlePaw}
+        title={t('reviews.reaction_tooltip')}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor" width="14" height="14" aria-hidden="true">
+          <ellipse cx="16" cy="25" rx="8" ry="5.5"/>
+          <ellipse cx="4.5" cy="15" rx="3.2" ry="4" transform="rotate(-25,4.5,15)"/>
+          <ellipse cx="11" cy="8" rx="3.2" ry="4" transform="rotate(-10,11,8)"/>
+          <ellipse cx="21" cy="8" rx="3.2" ry="4" transform="rotate(10,21,8)"/>
+          <ellipse cx="27.5" cy="15" rx="3.2" ry="4" transform="rotate(25,27.5,15)"/>
+        </svg>
+        <span>{count > 0 ? count : ''}</span>
+      </button>
+
+      {/* Componente 4 — respuesta del proveedor (si existe) */}
+      {localReply && (
+        <div className="ppage__provider-reply">
+          <span className="ppage__reply-badge t-xs">{t('reviews.provider_reply_badge')}</span>
+          <p className="ppage__reply-text t-sm">{localReply}</p>
+        </div>
+      )}
+
+      {/* Componente 4 — textarea de respuesta para proveedor elegible */}
+      {canReply && !localReply && (
+        <div className="ppage__reply-form">
+          <textarea
+            className="ppage__reply-textarea"
+            placeholder={t('reviews.provider_reply_placeholder')}
+            value={replyText}
+            onChange={e => setReplyText(e.target.value)}
+            rows={2}
+            maxLength={500}
+          />
+          <button
+            className="ppage__reply-submit"
+            onClick={handleReplySubmit}
+            disabled={!replyText.trim() || submitting}
+          >
+            {submitting
+              ? t('reviews.provider_reply_publishing')
+              : t('reviews.provider_reply_submit')}
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ── Lista de reseñas ──────────────────────────────────────────────
+function ReviewsList({ providerId, user, userReview, canReply, onReviewClick }) {
   const [reviews, setReviews] = useState([])
   const [loading, setLoading] = useState(true)
   const { t } = useTranslation()
 
-  useEffect(() => {
+  const load = () => {
     supabase
       .from('reviews')
-      .select('rating, comment, created_at')
+      .select('id, rating, comment, created_at, provider_reply, provider_reply_at')
       .eq('provider_id', providerId)
       .eq('status', 'published')
       .order('created_at', { ascending: false })
       .then(({ data }) => { setReviews(data ?? []); setLoading(false) })
-  }, [providerId])
+  }
+
+  useEffect(() => { load() }, [providerId]) // eslint-disable-line react-hooks/exhaustive-deps
 
   if (loading) return null
 
@@ -43,21 +174,21 @@ function ReviewsList({ providerId, user, userReview, onReviewClick }) {
       <section className="ppage__reviews">
         <h2 className="ppage__section-title">{t('provider_page.reviews_title')}</h2>
         <div className="ppage__reviews-list">
-          {reviews.map((r, i) => (
-            <div key={i} className="ppage__review">
-              <div className="ppage__review-header">
-                <span className="ppage__review-stars">{'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}</span>
-                <span className="ppage__review-date">{new Date(r.created_at).toLocaleDateString('es-CL')}</span>
-              </div>
-              {r.comment && <p className="ppage__review-comment t-sm">"{r.comment}"</p>}
-            </div>
+          {reviews.map(r => (
+            <ReviewCard
+              key={r.id}
+              review={r}
+              user={user}
+              canReply={canReply}
+              onReviewUpdate={load}
+            />
           ))}
         </div>
       </section>
     )
   }
 
-  // < 3 reviews: show notice + CTA if logged in and hasn't reviewed yet
+  // < 3 reviews
   return (
     <section className="ppage__reviews ppage__reviews--empty">
       <h2 className="ppage__section-title">{t('provider_page.reviews_title')}</h2>
@@ -71,11 +202,12 @@ function ReviewsList({ providerId, user, userReview, onReviewClick }) {
   )
 }
 
+// ── Página principal ──────────────────────────────────────────────
 export default function ProviderPage() {
-  const { slug }       = useParams()
-  const { user }       = useAuth()
-  const { t, i18n }   = useTranslation()
-  const location       = useLocation()
+  const { slug }     = useParams()
+  const { user }     = useAuth()
+  const { t, i18n } = useTranslation()
+  const location     = useLocation()
 
   const [rawProvider, setRawProvider] = useState(null)
   const [loading,     setLoading]     = useState(true)
@@ -93,15 +225,27 @@ export default function ProviderPage() {
       .maybeSingle()
       .then(({ data }) => {
         if (!data) setNotFound(true)
-        else setRawProvider(data)
+        else {
+          // Encoding diagnostic — check browser console for corrupt characters
+          console.log('[ProviderPage] raw data from Supabase:', data)
+          setRawProvider(data)
+        }
         setLoading(false)
       })
   }, [slug])
 
   const provider   = rawProvider ? resolveProvider(rawProvider, i18n.language) : null
   const providerId = rawProvider?.id ?? null
-  const { avg, count, visible: ratingVisible } = useProviderRating(providerId)
+
+  const { avg, count, visible: ratingVisible, sub, recommendPct } = useProviderRating(providerId)
   const { review: userReview, reload: reloadReview } = useUserReview(providerId, user?.id)
+
+  // Provider can reply if they own this page and have tier silver or gold
+  const canReply = !!(
+    user?.id &&
+    rawProvider?.user_id === user.id &&
+    ['silver', 'gold'].includes(rawProvider?.tier)
+  )
 
   // Dynamic meta title
   useEffect(() => {
@@ -163,6 +307,11 @@ export default function ProviderPage() {
                 </div>
               </div>
 
+              {/* Componente 2 — barras por categoría */}
+              {ratingVisible && sub && (
+                <RatingBars sub={sub} recommendPct={recommendPct} />
+              )}
+
               {description && (
                 <section className="ppage__section">
                   <h2 className="ppage__section-title">{t('provider_page.about_service')}</h2>
@@ -181,6 +330,7 @@ export default function ProviderPage() {
                 providerId={providerId}
                 user={user}
                 userReview={userReview}
+                canReply={canReply}
                 onReviewClick={() => setShowReview(true)}
               />
             </div>
@@ -231,7 +381,6 @@ export default function ProviderPage() {
                         </a>
                       )}
 
-                      {/* Review button — shows user's existing review if already rated */}
                       {userReview ? (
                         <div className="ppage__your-review">
                           <p className="ppage__your-review-title t-xs">{t('provider_page.your_review_title')}</p>

@@ -298,7 +298,18 @@
     "submit": "Soumettre l'évaluation",
     "submitting": "Envoi en cours…",
     "success": "Merci! Votre évaluation a été soumise.",
-    "error": "Une erreur s'est produite. Veuillez réessayer."
+    "error": "Une erreur s'est produite. Veuillez réessayer.",
+    "speed_label": "Rapidité de réponse",
+    "reliability_label": "A tenu ses promesses",
+    "clarity_label": "Clarté des explications",
+    "value_label": "Rapport qualité-prix",
+    "subcategories_hint": "Facultatif — aide les autres migrants",
+    "recommend_pct": "{{pct}}% le recommanderaient",
+    "reaction_tooltip": "Utile",
+    "provider_reply_badge": "Fournisseur",
+    "provider_reply_placeholder": "Écrivez votre réponse… (max. 500 caractères)",
+    "provider_reply_submit": "Publier la réponse",
+    "provider_reply_publishing": "Publication…"
   },
   "pricing_page": {
     "eyebrow": "Plans pour les fournisseurs",

@@ -103,6 +103,24 @@
 
 .rmodal__error { color: #dc2626; }
 
+/* Sub-categorías opcionales */
+.rmodal__sub-header { margin-bottom: 8px; }
+.rmodal__sub-list { display: flex; flex-direction: column; gap: 8px; }
+.rmodal__sub-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 12px;
+  background: var(--iris-50);
+  border-radius: var(--r-sm);
+}
+.rmodal__sub-label {
+  color: var(--text-600);
+  flex: 1;
+  min-width: 0;
+}
+
 .rmodal__success {
   text-align: center;
   padding: 32px 0 16px;

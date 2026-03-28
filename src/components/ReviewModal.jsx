@@ -5,12 +5,28 @@ import PawRating from './PawRating'
 import { submitReview } from '../hooks/useReviews'
 import './ReviewModal.css'
 
+const SUB_FIELDS = [
+  { key: 'speed',       labelKey: 'reviews.speed_label' },
+  { key: 'reliability', labelKey: 'reviews.reliability_label' },
+  { key: 'clarity',     labelKey: 'reviews.clarity_label' },
+  { key: 'value',       labelKey: 'reviews.value_label' },
+]
+
+const EMPTY_SUB = { speed: 0, reliability: 0, clarity: 0, value: 0 }
+
 export default function ReviewModal({ provider, userId, existingReview, onClose, onSuccess }) {
   const { t } = useTranslation()
-  const [rating,   setRating]   = useState(existingReview?.rating   ?? 0)
-  const [hovered,  setHovered]  = useState(0)
-  const [comment,  setComment]  = useState(existingReview?.comment  ?? '')
-  const [status,   setStatus]   = useState('idle') // idle | loading | success | error
+  const [rating,  setRating]  = useState(existingReview?.rating  ?? 0)
+  const [hovered, setHovered] = useState(0)
+  const [comment, setComment] = useState(existingReview?.comment ?? '')
+  const [sub,     setSub]     = useState({
+    speed:       existingReview?.rating_speed        ?? 0,
+    reliability: existingReview?.rating_reliability  ?? 0,
+    clarity:     existingReview?.rating_clarity      ?? 0,
+    value:       existingReview?.rating_value        ?? 0,
+  })
+  const [subHov, setSubHov] = useState(EMPTY_SUB)
+  const [status, setStatus] = useState('idle') // idle | loading | success | error
 
   // Cerrar con Escape
   useEffect(() => {
@@ -19,15 +35,22 @@ export default function ReviewModal({ provider, userId, existingReview, onClose,
     return () => window.removeEventListener('keydown', fn)
   }, [onClose])
 
+  const setSR  = (key, val) => setSub(prev => ({ ...prev, [key]: val }))
+  const setHov = (key, val) => setSubHov(prev => ({ ...prev, [key]: val }))
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!rating) return
     setStatus('loading')
     const { error } = await submitReview({
-      providerId: provider.id,
+      providerId:        provider.id,
       userId,
       rating,
       comment,
+      ratingSpeed:       sub.speed       || null,
+      ratingReliability: sub.reliability || null,
+      ratingClarity:     sub.clarity     || null,
+      ratingValue:       sub.value       || null,
     })
     if (error) { setStatus('error'); return }
     setStatus('success')
@@ -62,7 +85,7 @@ export default function ReviewModal({ provider, userId, existingReview, onClose,
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="rmodal__form">
-            {/* Puntuación */}
+            {/* Puntuación general — requerida */}
             <div className="rmodal__field">
               <label className="rmodal__label">{t('reviews.rating_label')}</label>
               <PawRating
@@ -75,6 +98,29 @@ export default function ReviewModal({ provider, userId, existingReview, onClose,
                 onLeave={() => setHovered(0)}
               />
               {!rating && <span className="rmodal__hint t-xs">{t('reviews.rating_hint')}</span>}
+            </div>
+
+            {/* Sub-categorías — opcionales */}
+            <div className="rmodal__field">
+              <div className="rmodal__sub-header">
+                <span className="rmodal__label">{t('reviews.subcategories_hint')}</span>
+              </div>
+              <div className="rmodal__sub-list">
+                {SUB_FIELDS.map(({ key, labelKey }) => (
+                  <div key={key} className="rmodal__sub-row">
+                    <span className="rmodal__sub-label t-xs">{t(labelKey)}</span>
+                    <PawRating
+                      rating={subHov[key] || sub[key]}
+                      size="sm"
+                      interactive
+                      hovered={subHov[key] || sub[key]}
+                      onSelect={(n) => setSR(key, n)}
+                      onHover={(n)  => setHov(key, n)}
+                      onLeave={() => setHov(key, 0)}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* Comentario */}

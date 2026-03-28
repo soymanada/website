@@ -298,7 +298,18 @@
     "submit": "Submit review",
     "submitting": "Submitting…",
     "success": "Thank you! Your review has been submitted.",
-    "error": "Something went wrong. Please try again."
+    "error": "Something went wrong. Please try again.",
+    "speed_label": "Response speed",
+    "reliability_label": "Delivered on promises",
+    "clarity_label": "Clarity of explanation",
+    "value_label": "Price-value ratio",
+    "subcategories_hint": "Optional — helps other migrants",
+    "recommend_pct": "{{pct}}% would recommend",
+    "reaction_tooltip": "Helpful",
+    "provider_reply_badge": "Provider",
+    "provider_reply_placeholder": "Write your reply… (max. 500 characters)",
+    "provider_reply_submit": "Post reply",
+    "provider_reply_publishing": "Publishing…"
   },
   "pricing_page": {
     "eyebrow": "Plans for providers",

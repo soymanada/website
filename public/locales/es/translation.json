@@ -295,7 +295,18 @@
     "submit": "Enviar evaluación",
     "submitting": "Enviando…",
     "success": "¡Gracias! Tu evaluación fue enviada.",
-    "error": "Hubo un error. Intenta de nuevo."
+    "error": "Hubo un error. Intenta de nuevo.",
+    "speed_label": "Velocidad de respuesta",
+    "reliability_label": "Cumplió lo prometido",
+    "clarity_label": "Claridad en la explicación",
+    "value_label": "Relación precio-valor",
+    "subcategories_hint": "Opcional — ayuda a otros migrantes",
+    "recommend_pct": "{{pct}}% lo recomendarían",
+    "reaction_tooltip": "Útil",
+    "provider_reply_badge": "Proveedor",
+    "provider_reply_placeholder": "Escribe tu respuesta… (máx. 500 caracteres)",
+    "provider_reply_submit": "Publicar respuesta",
+    "provider_reply_publishing": "Publicando…"
   },
   "pricing_page": {
     "eyebrow": "Planes para proveedores",
