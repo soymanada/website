@@ -478,12 +478,14 @@ export default function ProviderDashboard() {
   useEffect(() => {
     const load = async () => {
       setLoading(true)
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('providers')
         .select('*')
         .eq('user_id', user.id)
         .single()
+      if (error) console.error('[ProviderDashboard] load error:', error)
       if (data) setProvider(data)
+      else console.warn('[ProviderDashboard] No provider found for user_id:', user.id)
       setLoading(false)
 
       // Métricas solo para silver/gold
@@ -612,6 +614,16 @@ export default function ProviderDashboard() {
             <div className="pdash__loading">
               <div className="pdash__spinner" />
               <p className="t-sm" style={{ color: 'var(--text-300)' }}>Cargando tu perfil…</p>
+            </div>
+          ) : !provider ? (
+            <div className="pdash__no-provider">
+              <p className="t-md" style={{ fontWeight: 600 }}>Tu cuenta no está vinculada a ningún perfil de proveedor.</p>
+              <p className="t-sm" style={{ color: 'var(--text-400)', marginTop: 8 }}>
+                ID de usuario: <code style={{ fontSize: '0.75rem', background: 'var(--iris-50)', padding: '2px 6px', borderRadius: 4 }}>{user?.id}</code>
+              </p>
+              <p className="t-sm" style={{ color: 'var(--text-400)', marginTop: 4 }}>
+                Pide al administrador que vincule este ID al proveedor correspondiente en la tabla <code>providers</code> (columna <code>user_id</code>).
+              </p>
             </div>
           ) : (
             <>
