@@ -1,0 +1,141 @@
+.bcal {
+  background: var(--white);
+  border: 1.5px solid var(--iris-200);
+  border-radius: var(--r-xl);
+  padding: 24px;
+  margin-top: 24px;
+}
+
+.bcal__title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-900);
+  margin-bottom: 16px;
+}
+
+/* ── Date pills ── */
+.bcal__dates {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  scrollbar-width: none;
+  margin-bottom: 16px;
+}
+.bcal__dates::-webkit-scrollbar { display: none; }
+
+.bcal__date-btn {
+  flex-shrink: 0;
+  padding: 7px 14px;
+  border: 1.5px solid var(--iris-200);
+  border-radius: 999px;
+  background: var(--white);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-600);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.bcal__date-btn:hover { border-color: var(--iris-400); color: var(--iris-700); }
+.bcal__date-btn--active {
+  background: var(--iris-600);
+  border-color: var(--iris-600);
+  color: #fff;
+}
+
+/* ── Slot grid ── */
+.bcal__slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.bcal__slot {
+  padding: 8px 16px;
+  border: 1.5px solid var(--iris-200);
+  border-radius: var(--r-md);
+  background: var(--white);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-700);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.bcal__slot:hover { border-color: var(--iris-400); background: var(--iris-50); }
+.bcal__slot--active {
+  background: var(--iris-600);
+  border-color: var(--iris-600);
+  color: #fff;
+}
+
+/* ── Booking form ── */
+.bcal__form {
+  border-top: 1px solid var(--iris-100);
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bcal__selected-info {
+  color: var(--text-700);
+}
+
+.bcal__notes {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid var(--iris-200);
+  border-radius: var(--r-md);
+  font-size: 0.875rem;
+  color: var(--text-700);
+  resize: vertical;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+.bcal__notes:focus { outline: none; border-color: var(--iris-500); }
+
+.bcal__confirm { width: 100%; }
+
+.bcal__auth-notice {
+  color: var(--iris-600);
+}
+.bcal__error {
+  color: #e53e3e;
+}
+.bcal__empty {
+  color: var(--text-400);
+  text-align: center;
+  padding: 16px 0;
+}
+
+/* ── States ── */
+.bcal--loading {
+  display: flex;
+  justify-content: center;
+  padding: 24px;
+}
+.bcal__spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid var(--iris-200);
+  border-top-color: var(--iris-600);
+  border-radius: 50%;
+  animation: bcal-spin 0.7s linear infinite;
+}
+@keyframes bcal-spin { to { transform: rotate(360deg); } }
+
+.bcal--success {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--white);
+  border: 1.5px solid #86efac;
+  border-radius: var(--r-xl);
+  padding: 20px 24px;
+  margin-top: 24px;
+}
+.bcal__success-icon { font-size: 1.5rem; }
+.bcal__success-sub  { color: var(--text-400); margin-top: 4px; }

@@ -8,6 +8,8 @@ import { supabase } from '../lib/supabase'
 import MetricsSummary      from '../components/dashboard/MetricsSummary'
 import WeeklyActivity      from '../components/dashboard/WeeklyActivity'
 import AutoRecommendations from '../components/dashboard/AutoRecommendations'
+import AvailabilityEditor  from '../components/AvailabilityEditor'
+import { useDashboardBookings, updateBookingStatus } from '../hooks/useBookings'
 import './ProviderDashboard.css'
 
 // ── Avatar uploader ───────────────────────────────────────────────
@@ -263,17 +265,7 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
           <span className="pdash__badge pdash__badge--silver">Silver+</span>
         </div>
         {isSilverPlus ? (
-          <div className="pdash__form">
-            <div className="pdash__field pdash__field--full">
-              <label className="pdash__label t-sm">Link de agenda (Calendly, Cal.com, etc.)</label>
-              <input className="pdash__input" value={form.calendar_link}
-                onChange={e => set('calendar_link', e.target.value)}
-                placeholder="https://calendly.com/tu-nombre" />
-              <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 4 }}>
-                Los migrantes verán un botón "Reservar cita" en tu perfil público.
-              </p>
-            </div>
-          </div>
+          <AvailabilityEditor providerId={provider?.id} />
         ) : (
           <div className="pdash__tool-card pdash__tool-card--locked">
             <span className="pdash__tool-icon">📅</span>
@@ -399,6 +391,131 @@ function SectionMetricas({ tier, metrics, activity, hourlyActivity, feedback, pr
         feedback={feedback}
         provider={provider}
       />
+    </div>
+  )
+}
+
+// ── Sección Reservas ─────────────────────────────────────────────
+const STATUS_LABELS = {
+  pending:   '⏳ Pendiente',
+  confirmed: '✅ Confirmada',
+  cancelled: '❌ Cancelada',
+  completed: '✔ Completada',
+}
+
+function SectionReservas({ provider, tier }) {
+  const { bookings, loading, reload } = useDashboardBookings(provider?.id)
+  const [updating, setUpdating] = useState(null)
+  const isSilverPlus = tier === 'silver' || tier === 'gold'
+
+  if (!isSilverPlus) return (
+    <div className="pdash__section">
+      <div className="pdash__section-header">
+        <h2 className="pdash__section-title d-md">Reservas</h2>
+        <p className="t-sm pdash__section-sub">Gestiona las citas con migrantes.</p>
+      </div>
+      <div className="pdash__locked">
+        <div className="pdash__upgrade-cta">
+          <p className="t-sm"><strong>Activa Silver</strong> para recibir y gestionar reservas de citas.</p>
+          <a href="mailto:hola@soymanada.com?subject=Quiero Silver" className="btn btn-primary btn-sm">
+            <span>Activar Silver — $10 USD/mes</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  )
+
+  const handleStatus = async (id, status) => {
+    setUpdating(id)
+    await updateBookingStatus(id, status)
+    await reload()
+    setUpdating(null)
+  }
+
+  const fmtDt = (dt) => new Date(dt).toLocaleDateString('es-CL', {
+    weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit',
+  })
+
+  const pending   = bookings.filter(b => b.status === 'pending')
+  const confirmed = bookings.filter(b => b.status === 'confirmed')
+  const past      = bookings.filter(b => b.status === 'completed' || b.status === 'cancelled')
+
+  if (loading) return (
+    <div className="pdash__section">
+      <div className="pdash__spinner" style={{ margin: '40px auto' }} />
+    </div>
+  )
+
+  return (
+    <div className="pdash__section">
+      <div className="pdash__section-header">
+        <h2 className="pdash__section-title d-md">Reservas</h2>
+        <p className="t-sm pdash__section-sub">Citas solicitadas por migrantes.</p>
+      </div>
+
+      {bookings.length === 0 ? (
+        <p className="t-sm" style={{ color: 'var(--text-300)', textAlign: 'center', padding: '40px 0' }}>
+          Aún no tienes reservas. Configura tu disponibilidad en la pestaña <strong>Herramientas</strong>.
+        </p>
+      ) : (
+        <>
+          {pending.length > 0 && (
+            <div className="pdash__bookings-group">
+              <h3 className="pdash__bookings-group-title t-sm">⏳ Pendientes de confirmar ({pending.length})</h3>
+              {pending.map(b => (
+                <div key={b.id} className="pdash__booking-card pdash__booking-card--pending">
+                  <div className="pdash__booking-info">
+                    <strong className="t-sm">{fmtDt(b.start_at)}</strong>
+                    {b.notes && <p className="t-xs pdash__booking-notes">"{b.notes}"</p>}
+                  </div>
+                  <div className="pdash__booking-actions">
+                    <button className="btn btn-primary btn-sm" disabled={updating === b.id}
+                      onClick={() => handleStatus(b.id, 'confirmed')}>
+                      <span>Confirmar</span>
+                    </button>
+                    <button className="btn btn-ghost btn-sm" disabled={updating === b.id}
+                      onClick={() => handleStatus(b.id, 'cancelled')}>
+                      <span>Rechazar</span>
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {confirmed.length > 0 && (
+            <div className="pdash__bookings-group">
+              <h3 className="pdash__bookings-group-title t-sm">✅ Confirmadas ({confirmed.length})</h3>
+              {confirmed.map(b => (
+                <div key={b.id} className="pdash__booking-card pdash__booking-card--confirmed">
+                  <div className="pdash__booking-info">
+                    <strong className="t-sm">{fmtDt(b.start_at)}</strong>
+                    {b.notes && <p className="t-xs pdash__booking-notes">"{b.notes}"</p>}
+                  </div>
+                  <button className="btn btn-ghost btn-sm" disabled={updating === b.id}
+                    onClick={() => handleStatus(b.id, 'completed')}>
+                    <span>Marcar completada</span>
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {past.length > 0 && (
+            <div className="pdash__bookings-group">
+              <h3 className="pdash__bookings-group-title t-sm">Historial</h3>
+              {past.map(b => (
+                <div key={b.id} className="pdash__booking-card pdash__booking-card--past">
+                  <span className="t-xs" style={{ color: 'var(--text-400)' }}>{fmtDt(b.start_at)}</span>
+                  <span className={`pdash__booking-status pdash__booking-status--${b.status}`}>
+                    {STATUS_LABELS[b.status]}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
+      )}
     </div>
   )
 }
@@ -630,6 +747,7 @@ export default function ProviderDashboard() {
     { id: 'perfil',       label: '👤 Mi perfil' },
     { id: 'metricas',     label: '📊 Métricas' },
     { id: 'herramientas', label: '🛠 Herramientas' },
+    { id: 'reservas',     label: '📅 Reservas' },
     { id: 'miplan',       label: '💎 Mi plan' },
   ]
 
@@ -706,6 +824,9 @@ export default function ProviderDashboard() {
               )}
               {activeTab === 'herramientas' && (
                 <SectionHerramientas tier={tier} provider={provider} onSave={handleSave} saving={saving} />
+              )}
+              {activeTab === 'reservas' && (
+                <SectionReservas provider={provider} tier={tier} />
               )}
               {activeTab === 'miplan' && (
                 <SectionMiPlan tier={tier} />

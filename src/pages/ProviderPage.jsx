@@ -14,7 +14,8 @@ import {
 import { trackEvent, Events } from '../utils/analytics'
 import VerificationBadge from '../components/VerificationBadge'
 import PawRating from '../components/PawRating'
-import ReviewModal from '../components/ReviewModal'
+import ReviewModal      from '../components/ReviewModal'
+import BookingCalendar  from '../components/BookingCalendar'
 import Interstitial from '../components/Interstitial'
 import './ProviderPage.css'
 
@@ -326,6 +327,14 @@ export default function ProviderPage() {
                 </div>
               )}
 
+              {['silver', 'gold'].includes(rawProvider?.tier) && (
+                <BookingCalendar
+                  providerId={providerId}
+                  userId={user?.id}
+                  providerName={name}
+                />
+              )}
+
               <ReviewsList
                 providerId={providerId}
                 user={user}
@@ -378,12 +387,6 @@ export default function ProviderPage() {
                         <a className="ppage__btn ppage__btn--web"
                           href={contact.website} target="_blank" rel="noopener noreferrer">
                           {t('provider_page.website')}
-                        </a>
-                      )}
-                      {rawProvider?.calendar_link && (
-                        <a className="ppage__btn ppage__btn--cal"
-                          href={rawProvider.calendar_link} target="_blank" rel="noopener noreferrer">
-                          {t('provider_page.calendar_cta')}
                         </a>
                       )}
 
