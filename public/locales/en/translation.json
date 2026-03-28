@@ -419,7 +419,7 @@
   "remesas_comp": {
     "title": "Compare rates in real time",
     "updated": "Rates updated hourly",
-    "amount_label": "You send from Canada",
+    "amount_label": "You send in {{currency}}",
     "to_currency_label": "Destination",
     "col_platform": "Platform",
     "col_receive": "You receive",

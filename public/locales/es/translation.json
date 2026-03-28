@@ -416,7 +416,7 @@
   "remesas_comp": {
     "title": "Compara tasas en tiempo real",
     "updated": "Tasas actualizadas cada hora",
-    "amount_label": "Envías desde Canadá",
+    "amount_label": "Envías en {{currency}}",
     "to_currency_label": "Destino",
     "col_platform": "Plataforma",
     "col_receive": "Recibes",

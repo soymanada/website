@@ -83,7 +83,7 @@ export default function RemesasComparator() {
         </div>
 
         <div className="remcomp__control-group">
-          <label className="remcomp__label t-xs">{t('remesas_comp.amount_label')}</label>
+          <label className="remcomp__label t-xs">{t('remesas_comp.amount_label', { currency: fromCurrency })}</label>
           <div className="remcomp__amount-wrap">
             <span className="remcomp__prefix">{fromCurrency} $</span>
             <input

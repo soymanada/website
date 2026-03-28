@@ -419,7 +419,7 @@
   "remesas_comp": {
     "title": "Comparez les taux en temps réel",
     "updated": "Taux mis à jour chaque heure",
-    "amount_label": "Vous envoyez depuis le Canada",
+    "amount_label": "Vous envoyez en {{currency}}",
     "to_currency_label": "Destination",
     "col_platform": "Plateforme",
     "col_receive": "Vous recevez",
