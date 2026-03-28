@@ -1,32 +1,38 @@
 .avail__hint {
   color: var(--text-400);
   margin-bottom: 16px;
+  line-height: 1.5;
 }
 
 .avail__grid {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
   margin-bottom: 20px;
 }
 
+/* ── Day row ── */
 .avail__row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 14px;
+  padding: 12px 14px;
   background: var(--white);
   border: 1.5px solid var(--iris-200);
   border-radius: var(--r-md);
   transition: border-color 0.15s;
 }
-.avail__row:has(input[type="checkbox"]:checked) {
+.avail__row:has(.avail__toggle input:checked) {
   border-color: var(--iris-400);
   background: var(--iris-50);
 }
-.avail__row--off {
-  opacity: 0.6;
+.avail__row--off { opacity: 0.6; }
+
+/* ── Day header (toggle + "+ rango" button) ── */
+.avail__day-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
 }
+.avail__row--off .avail__day-header { margin-bottom: 0; }
 
 .avail__toggle {
   display: flex;
@@ -34,7 +40,6 @@
   gap: 8px;
   cursor: pointer;
   user-select: none;
-  min-width: 110px;
 }
 .avail__toggle input[type="checkbox"] {
   width: 16px;
@@ -44,16 +49,41 @@
 }
 .avail__day {
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-700);
+  min-width: 95px;
 }
 
-.avail__times {
+.avail__add-range {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--iris-600);
+  background: none;
+  border: 1px dashed var(--iris-400);
+  border-radius: var(--r-sm);
+  padding: 3px 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.avail__add-range:hover {
+  background: var(--iris-100);
+  border-style: solid;
+}
+
+/* ── Ranges stack ── */
+.avail__ranges {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.avail__range {
   display: flex;
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
 }
+
 .avail__time {
   padding: 5px 8px;
   border: 1.5px solid var(--iris-300);
@@ -61,16 +91,12 @@
   font-size: 0.85rem;
   color: var(--text-700);
   background: var(--white);
-  width: 110px;
+  width: 108px;
 }
-.avail__time:focus {
-  outline: none;
-  border-color: var(--iris-600);
-}
-.avail__dash {
-  color: var(--text-300);
-  font-size: 0.85rem;
-}
+.avail__time:focus { outline: none; border-color: var(--iris-600); }
+
+.avail__dash { color: var(--text-300); font-size: 0.85rem; }
+
 .avail__dur {
   padding: 5px 8px;
   border: 1.5px solid var(--iris-300);
@@ -82,15 +108,28 @@
 }
 .avail__dur:focus { outline: none; border-color: var(--iris-600); }
 
-.avail__off {
+.avail__remove-range {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
   color: var(--text-300);
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: var(--r-sm);
+  transition: all 0.15s;
+  flex-shrink: 0;
 }
+.avail__remove-range:hover { color: #e53e3e; background: #fff5f5; }
 
-.avail__save {
-  width: 100%;
-}
+.avail__off { color: var(--text-300); }
+
+.avail__save { width: 100%; margin-top: 4px; }
 
 @media (max-width: 600px) {
-  .avail__row { flex-direction: column; align-items: flex-start; }
-  .avail__toggle { min-width: unset; }
+  .avail__range { gap: 6px; }
+  .avail__time  { width: 96px; }
 }
