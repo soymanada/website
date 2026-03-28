@@ -8,5 +8,7 @@
   { "slug": "banca",           "name": "Banca",               "oneLiner": "Ejecutivos bancarios que entienden tu realidad migratoria",                 "icon": "credit-card", "order": 7,  "isHot": true },
   { "slug": "salud-mental",    "name": "Bienestar",           "oneLiner": "Salud mental, teleterapia y apoyo emocional para migrantes.",               "icon": "heart",       "order": 8 },
   { "slug": "taxes",           "name": "Taxes",               "oneLiner": "Asesores que entienden tus obligaciones fiscales como migrante.",           "icon": "file-text",   "order": 9,  "isHot": true },
-  { "slug": "antes-de-viajar", "name": "Antes de viajar",    "oneLiner": "Lo que nadie te contó antes de emigrar",                                    "icon": "plane",       "order": 10, "isHot": true, "comingSoon": true, "comingSoonLink": "https://chat.whatsapp.com/CMIWk9cQkEIDso4Ll6JG8j" }
+  { "slug": "antes-de-viajar", "name": "Antes de viajar",    "oneLiner": "Lo que nadie te contó antes de emigrar",                                    "icon": "plane",       "order": 10, "isHot": true, "comingSoon": true, "comingSoonLink": "https://chat.whatsapp.com/CMIWk9cQkEIDso4Ll6JG8j" },
+  { "slug": "comunidad",       "name": "Comunidad",           "oneLiner": "Eventos, encuentros y conexión con tu manada.",                             "icon": "comunidad",   "order": 11, "isHot": false, "comingSoon": true },
+  { "slug": "remesas",         "name": "Remesas",             "oneLiner": "Envía y recibe dinero sin perder en el cambio.",                            "icon": "remesas",     "order": 12, "isHot": true,  "comingSoon": true }
 ]

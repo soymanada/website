@@ -385,7 +385,11 @@
     "salud-mental_oneliner": "Mental health, teletherapy and emotional support for migrants.",
     "antes-de-viajar_oneliner": "What nobody told you before emigrating",
     "taxes": "Taxes",
-    "taxes_oneliner": "Advisors who help you with taxes in your country of residence."
+    "taxes_oneliner": "Advisors who help you with taxes in your country of residence.",
+    "comunidad": "Community",
+    "comunidad_oneliner": "Events, meetups and connection with your pack.",
+    "remesas": "Remittances",
+    "remesas_oneliner": "Send money home without losing it in fees."
   },
   "provider_page": {
     "loading": "Loading…",

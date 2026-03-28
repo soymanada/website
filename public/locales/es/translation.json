@@ -382,7 +382,11 @@
     "salud-mental_oneliner": "Salud mental, teleterapia y apoyo emocional para migrantes.",
     "antes-de-viajar_oneliner": "Lo que nadie te contó antes de emigrar",
     "taxes": "Taxes",
-    "taxes_oneliner": "Asesores que te ayudan con impuestos en tu país de residencia."
+    "taxes_oneliner": "Asesores que te ayudan con impuestos en tu país de residencia.",
+    "comunidad": "Comunidad",
+    "comunidad_oneliner": "Eventos, encuentros y conexión con tu manada.",
+    "remesas": "Remesas",
+    "remesas_oneliner": "Envía y recibe dinero sin perder en el cambio."
   },
   "provider_page": {
     "loading": "Cargando…",

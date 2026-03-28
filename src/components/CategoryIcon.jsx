@@ -88,6 +88,24 @@ const paths = {
       <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" />
     </>
   ),
+  // Grupo de personas (comunidad)
+  comunidad: (
+    <>
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+    </>
+  ),
+  // Flechas de transferencia (remesas)
+  remesas: (
+    <>
+      <line x1="5" y1="8" x2="19" y2="8" />
+      <polyline points="15 4 19 8 15 12" />
+      <line x1="19" y1="16" x2="5" y2="16" />
+      <polyline points="9 12 5 16 9 20" />
+    </>
+  ),
 }
 
 export default function CategoryIcon({ name, size = 24 }) {
