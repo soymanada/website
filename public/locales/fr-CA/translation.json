@@ -425,5 +425,13 @@
     "retry": "Réessayer",
     "disclaimer": "Les taux sont des estimations basées sur le taux de change interbancaire de référence et peuvent différer des taux réels au moment de votre transfert. Vérifiez le montant exact sur chaque plateforme avant de transférer. SoyManada peut recevoir une commission si vous effectuez une opération depuis ces liens, sans frais supplémentaires pour vous.",
     "from_currency_label": "Devise d'origine"
+  },
+  "founder": {
+    "eyebrow": "L'histoire derrière le groupe",
+    "quote": "Migrer seul est difficile. Le faire avec le bon groupe change tout.",
+    "bio": "Je suis un migrant. Je sais ce que ça coûte d'arriver dans un nouveau pays sans connaître personne — sans savoir à qui confier son visa, son argent ou sa santé mentale. SoyManada est né de cette frustration, pour que le prochain migrant n'ait pas à chercher seul.",
+    "name": "Francisco Aleuy",
+    "role": "Fondateur · Migrant",
+    "tiktok_stat": "+20K sur TikTok"
   }
 }

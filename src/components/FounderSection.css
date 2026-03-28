@@ -1,0 +1,144 @@
+/* src/components/FounderSection.css */
+
+.founder {
+  background: linear-gradient(160deg, var(--iris-50) 0%, #fff 60%);
+  overflow: hidden;
+}
+
+/* Layout */
+.founder__layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 64px;
+  align-items: center;
+}
+@media (max-width: 768px) {
+  .founder__layout {
+    grid-template-columns: 1fr;
+    gap: 36px;
+    text-align: center;
+  }
+}
+
+/* Foto */
+.founder__photo-col {
+  display: flex;
+  justify-content: center;
+}
+.founder__photo-wrap {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  flex-shrink: 0;
+}
+.founder__avatar {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--iris-600) 0%, var(--iris-400) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 16px 48px rgba(91, 45, 158, 0.25);
+}
+.founder__initials {
+  font-family: var(--font-display);
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.92);
+  letter-spacing: -0.02em;
+  user-select: none;
+}
+.founder__photo-orb {
+  position: absolute;
+  bottom: -20px;
+  right: -20px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: var(--iris-100);
+  z-index: 0;
+}
+
+/* Contenido */
+.founder__eyebrow {
+  color: var(--iris-500);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0 0 16px;
+}
+
+.founder__quote {
+  color: var(--iris-900);
+  font-style: italic;
+  margin: 0 0 20px;
+  line-height: 1.35;
+  border: none;
+  padding: 0;
+}
+
+.founder__bio {
+  color: var(--text-600);
+  line-height: 1.75;
+  margin: 0 0 28px;
+}
+
+/* Meta: nombre + badges */
+.founder__meta {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+@media (max-width: 768px) {
+  .founder__meta { justify-content: center; }
+}
+
+.founder__name-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.founder__name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--iris-900);
+}
+.founder__role {
+  color: var(--text-400);
+}
+
+.founder__badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+@media (max-width: 768px) {
+  .founder__badges { justify-content: center; }
+}
+
+.founder__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 99px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--iris-100);
+  color: var(--iris-700);
+}
+.founder__badge--link {
+  background: transparent;
+  border: 1.5px solid var(--iris-200);
+  color: var(--iris-600);
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s;
+}
+.founder__badge--link:hover {
+  background: var(--iris-50);
+  border-color: var(--iris-400);
+}

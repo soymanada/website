@@ -422,5 +422,13 @@
     "retry": "Reintentar",
     "disclaimer": "Las tasas son estimaciones sobre el tipo de cambio interbancario de referencia y pueden diferir de las tasas reales al momento de tu transferencia. Verifica el monto exacto en cada plataforma antes de transferir. SoyManada puede recibir una comisión si realizas una operación desde estos links, sin costo adicional para ti.",
     "from_currency_label": "Moneda de origen"
+  },
+  "founder": {
+    "eyebrow": "La historia detrás de la manada",
+    "quote": "Migrar solo es difícil. Hacerlo con la manada correcta, cambia todo.",
+    "bio": "Soy migrante. Sé lo que cuesta llegar a un país nuevo sin conocer a nadie, sin saber a quién confiarle tu visa, tu plata o tu salud mental. SoyManada nació de esa frustración — para que el próximo migrante no tenga que buscar solo.",
+    "name": "Francisco Aleuy",
+    "role": "Fundador · Migrante",
+    "tiktok_stat": "+20K en TikTok"
   }
 }

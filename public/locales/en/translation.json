@@ -425,5 +425,13 @@
     "retry": "Retry",
     "disclaimer": "Rates are estimates based on the interbank reference exchange rate and may differ from actual rates at the time of your transfer. Verify the exact amount on each platform before transferring. SoyManada may receive a commission if you complete a transaction through these links, at no additional cost to you.",
     "from_currency_label": "Origin currency"
+  },
+  "founder": {
+    "eyebrow": "The story behind the pack",
+    "quote": "Migrating alone is hard. Doing it with the right pack changes everything.",
+    "bio": "I'm a migrant. I know what it costs to arrive in a new country without knowing anyone — not knowing who to trust with your visa, your money, or your mental health. SoyManada was born from that frustration, so the next migrant doesn't have to search alone.",
+    "name": "Francisco Aleuy",
+    "role": "Founder · Migrant",
+    "tiktok_stat": "+20K on TikTok"
   }
 }

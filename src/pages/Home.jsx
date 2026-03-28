@@ -1,10 +1,11 @@
-import Hero         from '../components/Hero'
-import StatsSection  from '../components/StatsSection'
-import ValueProps    from '../components/ValueProps'
-import CategoryGrid  from '../components/CategoryGrid'
-import HowItWorks    from '../components/HowItWorks'
-import TrustBadge    from '../components/TrustBadge'
-import CTASection    from '../components/CTASection'
+import Hero           from '../components/Hero'
+import StatsSection    from '../components/StatsSection'
+import ValueProps      from '../components/ValueProps'
+import CategoryGrid    from '../components/CategoryGrid'
+import HowItWorks      from '../components/HowItWorks'
+import FounderSection  from '../components/FounderSection'
+import TrustBadge      from '../components/TrustBadge'
+import CTASection      from '../components/CTASection'
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <ValueProps />
       <CategoryGrid />
       <HowItWorks />
+      <FounderSection />
       <TrustBadge />
       <CTASection />
     </main>
