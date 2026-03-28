@@ -401,6 +401,6 @@
     "reviews_min_notice": "Les avis s'afficheront dès qu'il y en aura au moins 3. Faites partie de la communauté !",
     "reviews_be_first": "Laisser mon avis",
     "your_review_title": "Votre avis",
-    "meta_title": "{name} — SoyManada"
+    "meta_title": "{{name}} — SoyManada"
   }
 }

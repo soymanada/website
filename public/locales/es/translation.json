@@ -398,6 +398,6 @@
     "reviews_min_notice": "Las evaluaciones se mostrarán cuando haya al menos 3. ¡Sé parte de la comunidad!",
     "reviews_be_first": "Dejar mi opinión",
     "your_review_title": "Tu evaluación",
-    "meta_title": "{name} — SoyManada"
+    "meta_title": "{{name}} — SoyManada"
   }
 }

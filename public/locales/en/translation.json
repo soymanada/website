@@ -401,6 +401,6 @@
     "reviews_min_notice": "Reviews will be displayed once there are at least 3. Be part of the community!",
     "reviews_be_first": "Leave my review",
     "your_review_title": "Your review",
-    "meta_title": "{name} — SoyManada"
+    "meta_title": "{{name}} — SoyManada"
   }
 }
