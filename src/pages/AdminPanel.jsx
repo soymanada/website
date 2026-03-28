@@ -411,7 +411,8 @@ function SubmissionsPanel() {
       countries:     s.countries      ?? [],
       languages:     s.languages      ?? [],
       verified:      false,
-      active:        true,
+      active:        false,
+      tier:          'bronze',
       contact: {
         whatsapp:  waNumber || null,
         instagram: s.instagram || null,
