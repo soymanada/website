@@ -395,9 +395,16 @@ function SubmissionsPanel() {
     if (!window.confirm(`¿Aprobar y crear proveedor para "${s.business_name}"?`)) return
     setActing(s.id)
     const categorySlug = CAT_SLUG[s.categories?.[0]] ?? 'seguros'
-    const waNumber = (s.whatsapp ?? '').replace(/^\+/, '')
+    const waNumber     = (s.whatsapp ?? '').replace(/^\+/, '')
+    const providerSlug = s.business_name
+      .toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '')
+
     const { error } = await supabase.from('providers').insert({
       name:          s.business_name,
+      slug:          providerSlug,
       category_slug: categorySlug,
       service:       s.service_title ?? '',
       description:   s.description   ?? '',
@@ -412,7 +419,20 @@ function SubmissionsPanel() {
       },
     })
     if (error) { alert('Error al crear proveedor: ' + error.message); setActing(null); return }
+
     await supabase.from('provider_applications').update({ status: 'approved' }).eq('id', s.id)
+
+    // Notificar al proveedor por email (fire-and-forget)
+    if (s.contact_email) {
+      supabase.functions.invoke('send-welcome-email', {
+        body: {
+          contact_email: s.contact_email,
+          business_name: s.business_name,
+          contact_name:  s.contact_name ?? s.business_name,
+        },
+      }).catch(console.error)
+    }
+
     setActing(null)
     load()
   }

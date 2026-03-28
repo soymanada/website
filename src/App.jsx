@@ -58,7 +58,7 @@ function Layout() {
         <Route path="/registro-proveedores" element={<RegistroProveedoresPage />} />
         <Route path="/planes"               element={<PricingPage />} />
         <Route path="/verificacion"         element={<VerificacionPage />} />
-        <Route path="/proveedor/:id"        element={<ProviderPage />} />
+        <Route path="/proveedor/:slug"      element={<ProviderPage />} />
         <Route path="/login"                element={<LoginPage />} />
         <Route path="/reset-password"       element={<ResetPasswordPage />} />
         <Route path="/mi-perfil"            element={

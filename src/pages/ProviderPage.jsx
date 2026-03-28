@@ -56,7 +56,7 @@ function ReviewsList({ providerId }) {
 }
 
 export default function ProviderPage() {
-  const { id }         = useParams()
+  const { slug }       = useParams()
   const { user }       = useAuth()
   const { t, i18n }   = useTranslation()
   const location       = useLocation()
@@ -72,7 +72,7 @@ export default function ProviderPage() {
     supabase
       .from('providers')
       .select('*')
-      .eq('id', id)
+      .eq('slug', slug)
       .eq('active', true)
       .maybeSingle()
       .then(({ data }) => {
@@ -80,14 +80,15 @@ export default function ProviderPage() {
         else setRawProvider(data)
         setLoading(false)
       })
-  }, [id])
+  }, [slug])
 
-  const provider = rawProvider ? resolveProvider(rawProvider, i18n.language) : null
-  const { avg, count, visible: ratingVisible } = useProviderRating(id)
-  const { review: userReview, reload: reloadReview } = useUserReview(id, user?.id)
+  const provider   = rawProvider ? resolveProvider(rawProvider, i18n.language) : null
+  const providerId = rawProvider?.id ?? null
+  const { avg, count, visible: ratingVisible } = useProviderRating(providerId)
+  const { review: userReview, reload: reloadReview } = useUserReview(providerId, user?.id)
 
   const handleContact = (platform, url) => {
-    trackEvent(Events.CLICK_WHATSAPP, { proveedor_id: id, proveedor_nombre: provider?.name, plataforma: platform })
+    trackEvent(Events.CLICK_WHATSAPP, { proveedor_id: providerId, proveedor_nombre: provider?.name, plataforma: platform })
     setTargetPlatform(platform === 'whatsapp' ? 'WhatsApp' : 'Instagram')
     setIsConnecting(true)
     setTimeout(() => { window.open(url, '_blank', 'noopener,noreferrer'); setIsConnecting(false) }, 1500)
@@ -108,7 +109,7 @@ export default function ProviderPage() {
       {isConnecting && <Interstitial providerName={name} platform={targetPlatform} />}
       {showReview && (
         <ReviewModal
-          provider={{ id, name }}
+          provider={{ id: providerId, name }}
           userId={user?.id}
           existingReview={userReview}
           onClose={() => setShowReview(false)}
@@ -152,7 +153,7 @@ export default function ProviderPage() {
                 </div>
               )}
 
-              <ReviewsList providerId={id} />
+              <ReviewsList providerId={providerId} />
             </div>
 
             {/* ── Sidebar de contacto ── */}
