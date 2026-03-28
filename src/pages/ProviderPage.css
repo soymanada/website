@@ -176,3 +176,48 @@
 
 .ppage__gate { display: flex; flex-direction: column; gap: 10px; text-align: center; }
 .ppage__gate .t-sm { color: var(--text-500); margin: 0; }
+
+/* Reviews — empty/notice state */
+.ppage__reviews--empty .ppage__reviews-notice {
+  color: var(--text-500);
+  font-style: italic;
+  margin: 8px 0 14px;
+}
+.ppage__reviews-cta {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 18px;
+  border-radius: var(--r-md);
+  border: 1.5px solid var(--iris-300);
+  background: transparent;
+  color: var(--iris-600);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.ppage__reviews-cta:hover { background: var(--iris-50); }
+
+/* Your review (already rated) block in sidebar */
+.ppage__your-review {
+  padding: 14px 16px;
+  background: var(--iris-50);
+  border: 1px solid var(--iris-100);
+  border-radius: var(--r-md);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ppage__your-review-title {
+  color: var(--iris-600);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0;
+}
+.ppage__your-review .ppage__review-stars { font-size: 1rem; }
+.ppage__your-review-comment {
+  color: var(--text-600);
+  font-style: italic;
+  margin: 0;
+}

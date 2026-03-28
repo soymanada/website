@@ -375,5 +375,21 @@
     "antes-de-viajar_oneliner": "What nobody told you before emigrating",
     "taxes": "Taxes",
     "taxes_oneliner": "Advisors who help you with taxes in your country of residence."
+  },
+  "provider_page": {
+    "loading": "Loading…",
+    "not_found_title": "Provider not found",
+    "not_found_cta": "View directory",
+    "back": "← Directory",
+    "about_service": "About the service",
+    "exclusive_benefit": "Exclusive benefit:",
+    "operates_in": "Operates in",
+    "languages": "Languages",
+    "website": "Website",
+    "reviews_title": "Community reviews",
+    "reviews_min_notice": "Reviews will be displayed once there are at least 3. Be part of the community!",
+    "reviews_be_first": "Leave my review",
+    "your_review_title": "Your review",
+    "meta_title": "{name} — SoyManada"
   }
 }

@@ -21,9 +21,10 @@ const COUNTRY_ISO = {
   'Japón': 'jp', 'República Checa': 'cz', 'Suecia': 'se',
 }
 
-function ReviewsList({ providerId }) {
+function ReviewsList({ providerId, user, userReview, onReviewClick }) {
   const [reviews, setReviews] = useState([])
   const [loading, setLoading] = useState(true)
+  const { t } = useTranslation()
 
   useEffect(() => {
     supabase
@@ -35,22 +36,37 @@ function ReviewsList({ providerId }) {
       .then(({ data }) => { setReviews(data ?? []); setLoading(false) })
   }, [providerId])
 
-  if (loading || reviews.length < 3) return null
+  if (loading) return null
 
-  return (
-    <section className="ppage__reviews">
-      <h2 className="ppage__section-title">Evaluaciones de la comunidad</h2>
-      <div className="ppage__reviews-list">
-        {reviews.map((r, i) => (
-          <div key={i} className="ppage__review">
-            <div className="ppage__review-header">
-              <span className="ppage__review-stars">{'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}</span>
-              <span className="ppage__review-date">{new Date(r.created_at).toLocaleDateString('es-CL')}</span>
+  if (reviews.length >= 3) {
+    return (
+      <section className="ppage__reviews">
+        <h2 className="ppage__section-title">{t('provider_page.reviews_title')}</h2>
+        <div className="ppage__reviews-list">
+          {reviews.map((r, i) => (
+            <div key={i} className="ppage__review">
+              <div className="ppage__review-header">
+                <span className="ppage__review-stars">{'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}</span>
+                <span className="ppage__review-date">{new Date(r.created_at).toLocaleDateString('es-CL')}</span>
+              </div>
+              {r.comment && <p className="ppage__review-comment t-sm">"{r.comment}"</p>}
             </div>
-            {r.comment && <p className="ppage__review-comment t-sm">"{r.comment}"</p>}
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  // < 3 reviews: show notice + CTA if logged in and hasn't reviewed yet
+  return (
+    <section className="ppage__reviews ppage__reviews--empty">
+      <h2 className="ppage__section-title">{t('provider_page.reviews_title')}</h2>
+      <p className="ppage__reviews-notice t-sm">{t('provider_page.reviews_min_notice')}</p>
+      {user && !userReview && (
+        <button className="ppage__reviews-cta" onClick={onReviewClick}>
+          {t('provider_page.reviews_be_first')}
+        </button>
+      )}
     </section>
   )
 }
@@ -87,6 +103,14 @@ export default function ProviderPage() {
   const { avg, count, visible: ratingVisible } = useProviderRating(providerId)
   const { review: userReview, reload: reloadReview } = useUserReview(providerId, user?.id)
 
+  // Dynamic meta title
+  useEffect(() => {
+    if (provider?.name) {
+      document.title = t('provider_page.meta_title', { name: provider.name })
+    }
+    return () => { document.title = 'SoyManada' }
+  }, [provider?.name, t])
+
   const handleContact = (platform, url) => {
     trackEvent(Events.CLICK_WHATSAPP, { proveedor_id: providerId, proveedor_nombre: provider?.name, plataforma: platform })
     setTargetPlatform(platform === 'whatsapp' ? 'WhatsApp' : 'Instagram')
@@ -94,11 +118,11 @@ export default function ProviderPage() {
     setTimeout(() => { window.open(url, '_blank', 'noopener,noreferrer'); setIsConnecting(false) }, 1500)
   }
 
-  if (loading) return <main className="ppage ppage--loading"><p>Cargando…</p></main>
+  if (loading) return <main className="ppage ppage--loading"><p>{t('provider_page.loading')}</p></main>
   if (notFound) return (
     <main className="ppage ppage--notfound">
-      <h1>Proveedor no encontrado</h1>
-      <Link to="/proveedores" className="btn btn-primary"><span>Ver directorio</span></Link>
+      <h1>{t('provider_page.not_found_title')}</h1>
+      <Link to="/proveedores" className="btn btn-primary"><span>{t('provider_page.not_found_cta')}</span></Link>
     </main>
   )
 
@@ -120,7 +144,7 @@ export default function ProviderPage() {
       <main className="ppage">
         <div className="container">
           <nav className="ppage__breadcrumb">
-            <Link to="/proveedores">← Directorio</Link>
+            <Link to="/proveedores">{t('provider_page.back')}</Link>
           </nav>
 
           <div className="ppage__layout">
@@ -141,7 +165,7 @@ export default function ProviderPage() {
 
               {description && (
                 <section className="ppage__section">
-                  <h2 className="ppage__section-title">Sobre el servicio</h2>
+                  <h2 className="ppage__section-title">{t('provider_page.about_service')}</h2>
                   <p className="ppage__desc t-md">{description}</p>
                 </section>
               )}
@@ -149,11 +173,16 @@ export default function ProviderPage() {
               {benefit && (
                 <div className="ppage__benefit">
                   <span>🎁</span>
-                  <span><strong>Beneficio exclusivo:</strong> {benefit}</span>
+                  <span><strong>{t('provider_page.exclusive_benefit')}</strong> {benefit}</span>
                 </div>
               )}
 
-              <ReviewsList providerId={providerId} />
+              <ReviewsList
+                providerId={providerId}
+                user={user}
+                userReview={userReview}
+                onReviewClick={() => setShowReview(true)}
+              />
             </div>
 
             {/* ── Sidebar de contacto ── */}
@@ -161,7 +190,7 @@ export default function ProviderPage() {
               <div className="ppage__contact-card">
                 {countries?.length > 0 && (
                   <div className="ppage__meta-row">
-                    <span className="ppage__meta-label">Opera en</span>
+                    <span className="ppage__meta-label">{t('provider_page.operates_in')}</span>
                     <div className="ppage__flags">
                       {countries.filter(c => COUNTRY_ISO[c]).map(c => (
                         <span key={c} className={`fi fi-${COUNTRY_ISO[c]} ppage__flag`} title={c} />
@@ -175,7 +204,7 @@ export default function ProviderPage() {
 
                 {languages?.length > 0 && (
                   <div className="ppage__meta-row">
-                    <span className="ppage__meta-label">Idiomas</span>
+                    <span className="ppage__meta-label">{t('provider_page.languages')}</span>
                     <span className="t-sm">{languages.join(' · ')}</span>
                   </div>
                 )}
@@ -198,15 +227,26 @@ export default function ProviderPage() {
                       {contact?.website && (
                         <a className="ppage__btn ppage__btn--web"
                           href={contact.website} target="_blank" rel="noopener noreferrer">
-                          Sitio web
+                          {t('provider_page.website')}
                         </a>
                       )}
-                      <button
-                        className={`ppage__rate-btn${userReview ? ' ppage__rate-btn--done' : ''}`}
-                        onClick={() => !userReview && setShowReview(true)}
-                        disabled={!!userReview}>
-                        {userReview ? t('reviews.already_rated') : t('reviews.rate_cta')}
-                      </button>
+
+                      {/* Review button — shows user's existing review if already rated */}
+                      {userReview ? (
+                        <div className="ppage__your-review">
+                          <p className="ppage__your-review-title t-xs">{t('provider_page.your_review_title')}</p>
+                          <span className="ppage__review-stars">
+                            {'★'.repeat(userReview.rating)}{'☆'.repeat(5 - userReview.rating)}
+                          </span>
+                          {userReview.comment && (
+                            <p className="ppage__your-review-comment t-xs">"{userReview.comment}"</p>
+                          )}
+                        </div>
+                      ) : (
+                        <button className="ppage__rate-btn" onClick={() => setShowReview(true)}>
+                          {t('reviews.rate_cta')}
+                        </button>
+                      )}
                     </>
                   ) : (
                     <div className="ppage__gate">

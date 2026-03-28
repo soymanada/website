@@ -375,5 +375,21 @@
     "antes-de-viajar_oneliner": "Ce que personne ne vous a dit avant d'émigrer",
     "taxes": "Impôts",
     "taxes_oneliner": "Conseillers qui vous aident avec vos impôts dans votre pays de résidence."
+  },
+  "provider_page": {
+    "loading": "Chargement…",
+    "not_found_title": "Fournisseur introuvable",
+    "not_found_cta": "Voir le répertoire",
+    "back": "← Répertoire",
+    "about_service": "À propos du service",
+    "exclusive_benefit": "Avantage exclusif :",
+    "operates_in": "Opère dans",
+    "languages": "Langues",
+    "website": "Site web",
+    "reviews_title": "Avis de la communauté",
+    "reviews_min_notice": "Les avis s'afficheront dès qu'il y en aura au moins 3. Faites partie de la communauté !",
+    "reviews_be_first": "Laisser mon avis",
+    "your_review_title": "Votre avis",
+    "meta_title": "{name} — SoyManada"
   }
 }
