@@ -364,7 +364,10 @@
     "bottom_title": "Ready to reach your community?",
     "bottom_body": "Thousands of Spanish-speaking migrants search for trusted services every week.",
     "bottom_cta": "Submit my application",
-    "link_pricing": "Plans & pricing"
+    "link_pricing": "Plans & pricing",
+    "feature_replies": "Reply to user reviews",
+    "feature_calendar": "Booking calendar with migrants",
+    "feature_tools_adv": "Predefined replies and email redirect"
   },
   "verification": {
     "verified": "VERIFIED",
@@ -414,7 +417,8 @@
     "reviews_min_notice": "Reviews will be displayed once there are at least 3. Be part of the community!",
     "reviews_be_first": "Leave my review",
     "your_review_title": "Your review",
-    "meta_title": "{{name}} — SoyManada"
+    "meta_title": "{{name}} — SoyManada",
+    "calendar_cta": "📅 Book a call"
   },
   "remesas_comp": {
     "title": "Compare rates in real time",

@@ -193,6 +193,9 @@
 }
 
 /* Tools */
+.pdash__tools-block { border: 1px solid var(--iris-200); border-radius: var(--r-lg); padding: 20px; }
+.pdash__tools-block-header { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+.pdash__tools-block-title { font-weight: 600; color: var(--text-700); }
 .pdash__tools-preview { display: flex; flex-direction: column; gap: 12px; }
 .pdash__tool-card {
   display: flex; align-items: flex-start; gap: 14px;

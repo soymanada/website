@@ -64,14 +64,5 @@ export const CURRENCY_PAIRS = [
   { code: 'USD', label: 'Estados Unidos',   flag: 'US' },
 ]
 
-// Monedas de origen disponibles
-export const ORIGIN_CURRENCIES = [
-  { code: 'CAD', label: 'Dólares canadienses', flag: 'CA' },
-  { code: 'CLP', label: 'Pesos chilenos',       flag: 'CL' },
-  { code: 'COP', label: 'Pesos colombianos',    flag: 'CO' },
-  { code: 'ARS', label: 'Pesos argentinos',     flag: 'AR' },
-  { code: 'MXN', label: 'Pesos mexicanos',      flag: 'MX' },
-  { code: 'PEN', label: 'Soles peruanos',       flag: 'PE' },
-  { code: 'VES', label: 'Bolívares venezolanos', flag: 'VE' },
-  { code: 'USD', label: 'Dólares americanos',   flag: 'US' },
-]
+// Monedas de origen — misma lista que destino
+export const ORIGIN_CURRENCIES = CURRENCY_PAIRS

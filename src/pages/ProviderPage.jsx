@@ -380,6 +380,12 @@ export default function ProviderPage() {
                           {t('provider_page.website')}
                         </a>
                       )}
+                      {rawProvider?.calendar_link && (
+                        <a className="ppage__btn ppage__btn--cal"
+                          href={rawProvider.calendar_link} target="_blank" rel="noopener noreferrer">
+                          {t('provider_page.calendar_cta')}
+                        </a>
+                      )}
 
                       {userReview ? (
                         <div className="ppage__your-review">

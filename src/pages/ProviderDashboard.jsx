@@ -124,17 +124,32 @@ function ProviderProfileEditor({ provider, tier, onSave, saving, onAvatarUpload,
         </div>
 
         <div className="pdash__field pdash__field--full pdash__divider-section">
-          <p className="label pdash__section-label">Herramientas de atención
+          <p className="label pdash__section-label">
+            📅 Calendario de citas
+            <span className="pdash__badge pdash__badge--silver" style={{ marginLeft: 10 }}>Silver+</span>
+          </p>
+        </div>
+
+        <div className="pdash__field pdash__field--full">
+          <label className="pdash__label t-sm">Link de agenda (Calendly, Cal.com, etc.)</label>
+          <input className="pdash__input" value={form.calendar_link}
+            onChange={e => set('calendar_link', e.target.value)}
+            placeholder="https://calendly.com/tu-nombre"
+            disabled={!['silver', 'gold'].includes(tier)} />
+          {!['silver', 'gold'].includes(tier) && (
+            <span className="t-xs" style={{ color: 'var(--text-300)', marginTop: 4, display: 'block' }}>
+              Disponible desde Silver. <a href="mailto:hola@soymanada.com?subject=Quiero Silver" style={{ color: 'var(--iris-500)' }}>Activar Silver →</a>
+            </span>
+          )}
+        </div>
+
+        <div className="pdash__field pdash__field--full pdash__divider-section">
+          <p className="label pdash__section-label">
+            Herramientas avanzadas
             <span className="pdash__badge pdash__badge--gold" style={{ marginLeft: 10 }}>Gold</span>
           </p>
         </div>
 
-        <div className="pdash__field">
-          <label className="pdash__label t-sm">📅 Link de agenda</label>
-          <input className="pdash__input" value={form.calendar_link}
-            onChange={e => set('calendar_link', e.target.value)}
-            placeholder="https://calendly.com/..." disabled={tier !== 'gold'} />
-        </div>
         <div className="pdash__field">
           <label className="pdash__label t-sm">✉️ Email de redirección</label>
           <input className="pdash__input" type="email" value={form.redirect_email}
@@ -151,7 +166,7 @@ function ProviderProfileEditor({ provider, tier, onSave, saving, onAvatarUpload,
 
         {tier !== 'gold' && (
           <div className="pdash__field--full pdash__upgrade-inline">
-            <p className="t-sm">Las herramientas de atención están disponibles en <strong>Gold ($15/mes)</strong>.</p>
+            <p className="t-sm">Las herramientas avanzadas (email + respuestas predefinidas) están disponibles en <strong>Gold ($20 USD/mes)</strong>.</p>
             <a href="mailto:hola@soymanada.com?subject=Quiero Gold" className="btn btn-primary btn-sm">
               <span>Activar Gold</span>
             </a>
@@ -223,9 +238,10 @@ function ProviderProfileEditor({ provider, tier, onSave, saving, onAvatarUpload,
   )
 }
 
-// ── Sección Herramientas (Gold) ─────────────────────────────────
+// ── Sección Herramientas (Silver/Gold) ──────────────────────────
 function SectionHerramientas({ tier, provider, onSave, saving }) {
-  const locked = tier !== 'gold'
+  const isSilverPlus = tier === 'silver' || tier === 'gold'
+  const isGold       = tier === 'gold'
   const [form, setForm] = useState({
     calendar_link:        provider?.calendar_link        ?? '',
     redirect_email:       provider?.redirect_email       ?? '',
@@ -236,65 +252,104 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
   return (
     <div className="pdash__section">
       <div className="pdash__section-header">
-        <h2 className="pdash__section-title d-md">
-          Herramientas
-          {locked && <span className="pdash__badge pdash__badge--gold">Gold</span>}
-        </h2>
+        <h2 className="pdash__section-title d-md">Herramientas</h2>
         <p className="t-sm pdash__section-sub">Automatiza tu atención y ahorra tiempo.</p>
       </div>
 
-      {locked ? (
-        <div className="pdash__locked">
-          <div className="pdash__tools-preview">
-            {[
-              { icon: '📅', name: 'Agenda de llamada',       desc: 'Los migrantes reservan un horario contigo directamente.' },
-              { icon: '💬', name: 'Respuestas predefinidas',  desc: 'Responde preguntas frecuentes con un click.' },
-              { icon: '✉️',  name: 'Redirección a email',      desc: 'Recibe consultas con asunto pre-llenado en tu correo.' },
-            ].map(t => (
-              <div key={t.name} className="pdash__tool-card pdash__tool-card--locked">
-                <span className="pdash__tool-icon">{t.icon}</span>
-                <div>
-                  <strong className="t-sm">{t.name}</strong>
-                  <p className="t-xs" style={{ color: 'var(--text-300)' }}>{t.desc}</p>
+      {/* ── Calendario — Silver+ ── */}
+      <div className="pdash__tools-block">
+        <div className="pdash__tools-block-header">
+          <span className="pdash__tools-block-title t-sm">📅 Calendario de citas</span>
+          <span className="pdash__badge pdash__badge--silver">Silver+</span>
+        </div>
+        {isSilverPlus ? (
+          <div className="pdash__form">
+            <div className="pdash__field pdash__field--full">
+              <label className="pdash__label t-sm">Link de agenda (Calendly, Cal.com, etc.)</label>
+              <input className="pdash__input" value={form.calendar_link}
+                onChange={e => set('calendar_link', e.target.value)}
+                placeholder="https://calendly.com/tu-nombre" />
+              <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 4 }}>
+                Los migrantes verán un botón "Reservar cita" en tu perfil público.
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="pdash__tool-card pdash__tool-card--locked">
+            <span className="pdash__tool-icon">📅</span>
+            <div>
+              <strong className="t-sm">Agenda de llamada</strong>
+              <p className="t-xs" style={{ color: 'var(--text-300)' }}>Los migrantes reservan un horario contigo directamente desde tu perfil.</p>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* ── Herramientas avanzadas — Gold ── */}
+      <div className="pdash__tools-block" style={{ marginTop: 24 }}>
+        <div className="pdash__tools-block-header">
+          <span className="pdash__tools-block-title t-sm">🛠 Herramientas avanzadas</span>
+          <span className="pdash__badge pdash__badge--gold">Gold</span>
+        </div>
+        {isGold ? (
+          <div className="pdash__form">
+            <div className="pdash__field pdash__field--full">
+              <label className="pdash__label t-sm">✉️ Email para redirección de consultas</label>
+              <input className="pdash__input" type="email" value={form.redirect_email}
+                onChange={e => set('redirect_email', e.target.value)} placeholder="tu@email.com" />
+            </div>
+            <div className="pdash__field pdash__field--full">
+              <label className="pdash__label t-sm">💬 Respuestas predefinidas (una por línea)</label>
+              <textarea className="pdash__textarea" rows={5}
+                value={form.predefined_responses}
+                onChange={e => set('predefined_responses', e.target.value)}
+                placeholder="¿Cuánto cuesta una consulta?\nMi primera sesión es gratuita." />
+            </div>
+          </div>
+        ) : (
+          <div className="pdash__locked">
+            <div className="pdash__tools-preview">
+              {[
+                { icon: '💬', name: 'Respuestas predefinidas', desc: 'Responde preguntas frecuentes con un click.' },
+                { icon: '✉️', name: 'Redirección a email',      desc: 'Recibe consultas con asunto pre-llenado en tu correo.' },
+              ].map(tool => (
+                <div key={tool.name} className="pdash__tool-card pdash__tool-card--locked">
+                  <span className="pdash__tool-icon">{tool.icon}</span>
+                  <div>
+                    <strong className="t-sm">{tool.name}</strong>
+                    <p className="t-xs" style={{ color: 'var(--text-300)' }}>{tool.desc}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+            <div className="pdash__upgrade-cta">
+              <p className="t-sm"><strong>Activa Gold</strong> por $20 USD/mes y desbloquea las herramientas avanzadas.</p>
+              <a href="mailto:hola@soymanada.com?subject=Quiero Gold" className="btn btn-primary btn-sm">
+                <span>Activar Gold — $20 USD/mes</span>
+              </a>
+            </div>
           </div>
-          <div className="pdash__upgrade-cta">
-            <p className="t-sm"><strong>Activa Gold</strong> por $20 USD/mes y desbloquea todas las herramientas.</p>
-            <a href="mailto:hola@soymanada.com?subject=Quiero Gold" className="btn btn-primary btn-sm">
-              <span>Activar Gold — $20 USD/mes</span>
-            </a>
-          </div>
+        )}
+      </div>
+
+      {!tier && (
+        <div className="pdash__upgrade-cta" style={{ marginTop: 24 }}>
+          <p className="t-sm"><strong>Activa Silver</strong> por $10 USD/mes para desbloquear el calendario de citas.</p>
+          <a href="mailto:hola@soymanada.com?subject=Quiero Silver" className="btn btn-primary btn-sm">
+            <span>Activar Silver — $10 USD/mes</span>
+          </a>
         </div>
-      ) : (
-        <div className="pdash__form">
-          <div className="pdash__field pdash__field--full">
-            <label className="pdash__label t-sm">📅 Link de agenda (Calendly, Cal.com, etc.)</label>
-            <input className="pdash__input" value={form.calendar_link}
-              onChange={e => set('calendar_link', e.target.value)} placeholder="https://calendly.com/tu-nombre" />
-          </div>
-          <div className="pdash__field pdash__field--full">
-            <label className="pdash__label t-sm">✉️ Email para redirección de consultas</label>
-            <input className="pdash__input" type="email" value={form.redirect_email}
-              onChange={e => set('redirect_email', e.target.value)} placeholder="tu@email.com" />
-          </div>
-          <div className="pdash__field pdash__field--full">
-            <label className="pdash__label t-sm">💬 Respuestas predefinidas (una por línea)</label>
-            <textarea className="pdash__textarea" rows={5}
-              value={form.predefined_responses}
-              onChange={e => set('predefined_responses', e.target.value)}
-              placeholder="¿Cuánto cuesta una consulta?\nMi primera sesión es gratuita." />
-          </div>
-          <button className="btn btn-primary pdash__save-btn" onClick={() => onSave({
-            ...provider,
-            calendar_link:        form.calendar_link,
-            redirect_email:       form.redirect_email,
-            predefined_responses: form.predefined_responses,
-          })} disabled={saving}>
-            <span>{saving ? 'Guardando…' : 'Guardar herramientas'}</span>
-          </button>
-        </div>
+      )}
+
+      {(isSilverPlus) && (
+        <button className="btn btn-primary pdash__save-btn" style={{ marginTop: 24 }} onClick={() => onSave({
+          ...provider,
+          calendar_link:        form.calendar_link,
+          redirect_email:       form.redirect_email,
+          predefined_responses: form.predefined_responses,
+        })} disabled={saving}>
+          <span>{saving ? 'Guardando…' : 'Guardar herramientas'}</span>
+        </button>
       )}
     </div>
   )
@@ -366,13 +421,24 @@ const TIERS_DEF = [
   {
     key: 'silver', icon: '🥈', label: 'Silver',
     price: '$10 USD', priceLocal: '$9.500 CLP',
-    features: ['Perfil en el directorio', 'Hasta 2 categorías', 'Contacto visible a usuarios registrados', 'Badge verificado garantizado', 'Posición prioritaria en resultados', 'Métricas básicas (vistas y clics)', 'Soporte por email'],
+    features: [
+      'Perfil en el directorio', 'Hasta 2 categorías', 'Contacto visible a usuarios registrados',
+      'Badge verificado garantizado', 'Posición prioritaria en resultados',
+      'Métricas básicas (vistas y clics)', 'Responder a reseñas de usuarios',
+      'Calendario de citas con migrantes', 'Soporte por email',
+    ],
     ctaLabel: 'Activar Silver — $10 USD/mes',
   },
   {
     key: 'gold', icon: '🥇', label: 'Gold',
     price: '$20 USD', priceLocal: '$19.000 CLP',
-    features: ['Perfil en el directorio', 'Todas las categorías', 'Contacto visible a usuarios registrados', 'Badge verificado garantizado', 'Top 3 garantizado siempre', 'Métricas completas', 'Beneficio exclusivo para usuarios', 'Soporte prioritario', 'Herramientas de atención (agenda, email, respuestas)'],
+    features: [
+      'Perfil en el directorio', 'Todas las categorías', 'Contacto visible a usuarios registrados',
+      'Badge verificado garantizado', 'Top 3 garantizado siempre', 'Métricas completas',
+      'Beneficio exclusivo para usuarios', 'Responder a reseñas de usuarios',
+      'Calendario de citas con migrantes', 'Respuestas predefinidas y redirección de email',
+      'Soporte prioritario',
+    ],
     ctaLabel: 'Activar Gold — $20 USD/mes',
   },
 ]
@@ -400,7 +466,7 @@ function SectionMiPlan({ tier }) {
         )}
         {current === 'silver' && (
           <p className="t-xs" style={{ color: 'var(--text-400)', marginTop: 8 }}>
-            Estás en Silver. Pasa a Gold para desbloquear herramientas de atención y el top 3 garantizado.
+            Estás en Silver. Ya tienes calendario de citas y respuestas a reseñas. Pasa a Gold para el top 3 garantizado, respuestas predefinidas y redirección de email.
           </p>
         )}
         {current === 'gold' && (

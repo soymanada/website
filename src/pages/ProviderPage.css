@@ -158,6 +158,7 @@
 .ppage__btn--wa  { background: #25D366; color: #fff; }
 .ppage__btn--ig  { background: #e1306c; color: #fff; }
 .ppage__btn--web { background: var(--iris-100); color: var(--iris-800); }
+.ppage__btn--cal  { background: var(--iris-600); color: #fff; }
 .ppage__btn--gate { background: var(--iris-600); color: #fff; }
 
 .ppage__rate-btn {

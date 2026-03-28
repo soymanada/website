@@ -361,7 +361,10 @@
     "bottom_title": "¿Listo para llegar a tu comunidad?",
     "bottom_body": "Miles de migrantes hispanohablantes buscan servicios de confianza cada semana.",
     "bottom_cta": "Enviar mi solicitud",
-    "link_pricing": "Planes y precios"
+    "link_pricing": "Planes y precios",
+    "feature_replies": "Responder a reseñas de usuarios",
+    "feature_calendar": "Calendario de citas con migrantes",
+    "feature_tools_adv": "Respuestas predefinidas y redirección de email"
   },
   "verification": {
     "verified": "VERIFICADO",
@@ -411,7 +414,8 @@
     "reviews_min_notice": "Las evaluaciones se mostrarán cuando haya al menos 3. ¡Sé parte de la comunidad!",
     "reviews_be_first": "Dejar mi opinión",
     "your_review_title": "Tu evaluación",
-    "meta_title": "{{name}} — SoyManada"
+    "meta_title": "{{name}} — SoyManada",
+    "calendar_cta": "📅 Reservar cita"
   },
   "remesas_comp": {
     "title": "Compara tasas en tiempo real",
