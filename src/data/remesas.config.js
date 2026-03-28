@@ -41,16 +41,27 @@ export const REMESAS_PLATFORMS = [
 
 export const CURRENCY_PAIRS = [
   // Destinos principales LatAm
-  { code: 'CLP', label: 'Chile',         flag: 'CL' },
-  { code: 'COP', label: 'Colombia',      flag: 'CO' },
-  { code: 'ARS', label: 'Argentina',     flag: 'AR' },
-  { code: 'MXN', label: 'México',        flag: 'MX' },
-  { code: 'VES', label: 'Venezuela',     flag: 'VE' },
-  { code: 'PEN', label: 'Perú',          flag: 'PE' },
-  // Destinos WH adicionales
-  { code: 'AUD', label: 'Australia',     flag: 'AU' },
-  { code: 'NZD', label: 'Nueva Zelanda', flag: 'NZ' },
-  { code: 'EUR', label: 'Europa',        flag: 'EU' },
+  { code: 'CLP', label: 'Chile',            flag: 'CL' },
+  { code: 'COP', label: 'Colombia',         flag: 'CO' },
+  { code: 'ARS', label: 'Argentina',        flag: 'AR' },
+  { code: 'MXN', label: 'México',           flag: 'MX' },
+  { code: 'VES', label: 'Venezuela',        flag: 'VE' },
+  { code: 'PEN', label: 'Perú',             flag: 'PE' },
+  // Destinos WH — moneda única (Europa: DE, AT, ES, FR, LU, PT, IE)
+  { code: 'EUR', label: 'Europa (€)',        flag: 'EU' },
+  { code: 'AUD', label: 'Australia',        flag: 'AU' },
+  { code: 'NZD', label: 'Nueva Zelanda',    flag: 'NZ' },
+  { code: 'JPY', label: 'Japón',            flag: 'JP' },
+  { code: 'KRW', label: 'Corea del Sur',    flag: 'KR' },
+  { code: 'SEK', label: 'Suecia',           flag: 'SE' },
+  { code: 'DKK', label: 'Dinamarca',        flag: 'DK' },
+  { code: 'PLN', label: 'Polonia',          flag: 'PL' },
+  { code: 'CZK', label: 'Rep. Checa',       flag: 'CZ' },
+  { code: 'HUF', label: 'Hungría',          flag: 'HU' },
+  { code: 'ISK', label: 'Islandia',         flag: 'IS' },
+  // Otros destinos frecuentes
+  { code: 'GBP', label: 'Reino Unido',      flag: 'GB' },
+  { code: 'USD', label: 'Estados Unidos',   flag: 'US' },
 ]
 
 // Monedas de origen disponibles
