@@ -512,6 +512,7 @@ export default function ProviderDashboard() {
 
   const handleAvatarUpload = async (file) => {
     if (!provider?.id) return
+    if (file.size > 2 * 1024 * 1024) { showToast('La imagen debe ser menor a 2 MB.', 'error'); return }
     setAvatarUploading(true)
     const ext = file.name.split('.').pop().toLowerCase()
     const path = `${provider.id}/avatar.${ext}`
@@ -519,7 +520,8 @@ export default function ProviderDashboard() {
       .from('avatars')
       .upload(path, file, { upsert: true, contentType: file.type })
     if (error) {
-      showToast('Error al subir la foto.', 'error')
+      console.error('[Avatar upload error]', error)
+      showToast(`Error al subir: ${error.message}`, 'error')
     } else {
       const { data: { publicUrl } } = supabase.storage.from('avatars').getPublicUrl(path)
       await supabase.from('providers').update({ avatar_url: publicUrl }).eq('id', provider.id)
