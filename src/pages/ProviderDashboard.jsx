@@ -54,7 +54,7 @@ function ProviderProfileEditor({ provider, tier, onSave, saving, onAvatarUpload,
     service:             provider?.service             ?? '',
     languages:           (provider?.languages ?? []).join(', '),
     countries:           (provider?.countries ?? []).join(', '),
-    whatsapp:            provider?.whatsapp            ?? '',
+    whatsapp:            provider?.contact_whatsapp    ?? '',
     payment_link:        provider?.payment_link        ?? '',
     calendar_link:       provider?.calendar_link       ?? '',
     redirect_email:      provider?.redirect_email      ?? '',
@@ -335,7 +335,6 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
 
       {(isSilverPlus) && (
         <button className="btn btn-primary pdash__save-btn" style={{ marginTop: 24 }} onClick={() => onSave({
-          ...provider,
           calendar_link:        form.calendar_link,
           redirect_email:       form.redirect_email,
           predefined_responses: form.predefined_responses,
@@ -727,7 +726,7 @@ export default function ProviderDashboard() {
     if (form.name        !== undefined) payload.name        = form.name
     if (form.description !== undefined) payload.description = form.description
     if (form.service     !== undefined) payload.service     = form.service
-    if (form.whatsapp    !== undefined) payload.whatsapp    = form.whatsapp || null
+    if (form.whatsapp    !== undefined) payload.contact_whatsapp = form.whatsapp || null
     if (form.payment_link  !== undefined) payload.payment_link  = form.payment_link
     if (form.calendar_link !== undefined) payload.calendar_link = form.calendar_link
     if (form.redirect_email !== undefined) payload.redirect_email = form.redirect_email
