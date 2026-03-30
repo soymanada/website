@@ -297,31 +297,29 @@ function ProvidersPanel() {
     const { id, ...f } = editing
     const { error } = await supabase.from('providers').update({
       name:                 f.name.trim(),
-      slug:                 f.slug.trim() || null,
+      slug:                 f.slug.trim()           || null,
       category_slug:        f.category_slug,
-      tier:                 f.tier,
       service:              f.service.trim(),
-      service_en:           f.service_en.trim()    || null,
-      service_fr:           f.service_fr.trim()    || null,
+      service_en:           f.service_en?.trim()    || null,
+      service_fr:           f.service_fr?.trim()    || null,
       description:          f.description.trim(),
-      description_en:       f.description_en.trim()|| null,
-      description_fr:       f.description_fr.trim()|| null,
+      description_en:       f.description_en?.trim()|| null,
+      description_fr:       f.description_fr?.trim()|| null,
       countries:            f.countries.split(',').map(s => s.trim()).filter(Boolean),
       languages:            f.languages.split(',').map(s => s.trim()).filter(Boolean),
       verified:             f.verified,
       active:               f.active,
-      contact: {
-        whatsapp:  f.whatsapp.trim()  || null,
-        instagram: f.instagram.trim() || null,
-        website:   f.website.trim()   || null,
-      },
-      benefit:              f.benefit.trim()        || null,
-      avatar_url:           f.avatar_url.trim()     || null,
-      payment_link:         f.payment_link.trim()   || null,
-      calendar_link:        f.calendar_link.trim()  || null,
-      redirect_email:       f.redirect_email.trim() || null,
-      predefined_responses: f.predefined_responses.split('\n').map(s => s.trim()).filter(Boolean),
-      user_id:              f.user_id.trim()        || null,
+      // Columnas reales de contacto en Supabase (no objeto anidado)
+      contact_whatsapp:     f.whatsapp?.trim()      || null,
+      contact_instagram:    f.instagram?.trim()     || null,
+      contact_website:      f.website?.trim()       || null,
+      avatar_url:           f.avatar_url?.trim()    || null,
+      payment_link:         f.payment_link?.trim()  || null,
+      calendar_link:        f.calendar_link?.trim() || null,
+      redirect_email:       f.redirect_email?.trim()|| null,
+      predefined_responses: f.predefined_responses?.split('\n').map(s => s.trim()).filter(Boolean) ?? [],
+      user_id:              f.user_id?.trim()       || null,
+      // NOTA: tier vive en profiles, no en providers — se actualiza por separado
     }).eq('id', id)
     setSaving(false)
     if (error) alert('Error al guardar: ' + error.message)
