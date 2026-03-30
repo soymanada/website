@@ -718,29 +718,49 @@ export default function ProviderDashboard() {
 
   const handleSave = async (form) => {
     setSaving(true)
+
+    // Construir el payload con SOLO los campos que existen en la tabla providers de Supabase.
+    // Nunca usar spread del objeto provider completo — puede incluir campos del JSON local
+    // (benefit, testimonial, contact, etc.) que no existen en la DB y rompen el UPDATE.
+    const payload = {}
+
+    if (form.name        !== undefined) payload.name        = form.name
+    if (form.description !== undefined) payload.description = form.description
+    if (form.service     !== undefined) payload.service     = form.service
+    if (form.whatsapp    !== undefined) payload.whatsapp    = form.whatsapp || null
+    if (form.payment_link  !== undefined) payload.payment_link  = form.payment_link
+    if (form.calendar_link !== undefined) payload.calendar_link = form.calendar_link
+    if (form.redirect_email !== undefined) payload.redirect_email = form.redirect_email
+
+    if (form.languages !== undefined)
+      payload.languages = typeof form.languages === 'string'
+        ? form.languages.split(',').map(s => s.trim()).filter(Boolean)
+        : form.languages
+
+    if (form.countries !== undefined)
+      payload.countries = typeof form.countries === 'string'
+        ? form.countries.split(',').map(s => s.trim()).filter(Boolean)
+        : form.countries
+
+    if (form.predefined_responses !== undefined)
+      payload.predefined_responses = typeof form.predefined_responses === 'string'
+        ? form.predefined_responses.split('\n').filter(Boolean)
+        : form.predefined_responses
+
+    // Traducciones manuales
+    if (form.service_en     !== undefined) payload.service_en     = form.service_en
+    if (form.service_fr     !== undefined) payload.service_fr     = form.service_fr
+    if (form.description_en !== undefined) payload.description_en = form.description_en
+    if (form.description_fr !== undefined) payload.description_fr = form.description_fr
+
     const { error } = await supabase
       .from('providers')
-      .update({
-        name:                 form.name,
-        description:          form.description,
-        service:              form.service,
-        languages:            form.languages?.split(',').map(s => s.trim()).filter(Boolean),
-        countries:            form.countries?.split(',').map(s => s.trim()).filter(Boolean),
-        whatsapp:             form.whatsapp || null,
-        payment_link:         form.payment_link,
-        calendar_link:        form.calendar_link,
-        redirect_email:       form.redirect_email,
-        predefined_responses: form.predefined_responses?.split('\n').filter(Boolean),
-        // Traducciones manuales (el trigger de DeepL las sobrescribe si están vacías)
-        ...(form.service_en     !== undefined && { service_en:     form.service_en }),
-        ...(form.service_fr     !== undefined && { service_fr:     form.service_fr }),
-        ...(form.description_en !== undefined && { description_en: form.description_en }),
-        ...(form.description_fr !== undefined && { description_fr: form.description_fr }),
-      })
+      .update(payload)
       .eq('user_id', user.id)
+
     setSaving(false)
-    if (error) showToast('Error al guardar.', 'error')
-    else { showToast('Perfil guardado correctamente.'); setProvider(p => ({ ...p, ...form })) }
+    if (error) showToast(`Error al guardar: ${error.message}`, 'error')
+    else { showToast('Perfil guardado correctamente.'); setProvider(p => ({ ...p, ...payload })) }
   }
 
   const tabs = [
