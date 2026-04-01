@@ -239,11 +239,20 @@ function ProvidersPanel() {
 
   const load = useCallback(async () => {
     setLoading(true)
-    const { data } = await supabase
+    const { data: provs } = await supabase
       .from('providers')
       .select('*')
       .order('created_at', { ascending: false })
-    setProviders(data ?? [])
+    const userIds = (provs ?? []).map(p => p.user_id).filter(Boolean)
+    let tierMap = {}
+    if (userIds.length) {
+      const { data: profs } = await supabase
+        .from('profiles')
+        .select('id, tier')
+        .in('id', userIds)
+      ;(profs ?? []).forEach(pr => { tierMap[pr.id] = pr.tier })
+    }
+    setProviders((provs ?? []).map(p => ({ ...p, tier: tierMap[p.user_id] ?? null })))
     setLoading(false)
   }, [])
 
@@ -545,6 +554,7 @@ function ProvidersPanel() {
                 <tr key={p.id}>
                   <td>
                     <strong>{p.name}</strong>
+                    {p.tier && <span className={`adm-pill adm-pill--${p.tier}`} style={{ marginLeft: '6px', fontSize: '0.7rem' }}>{p.tier}</span>}
                     <br /><span className="adm-td--sub">{p.service}</span>
                   </td>
                   <td>{p.category_slug ?? p.categorySlug ?? '—'}</td>

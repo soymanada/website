@@ -95,6 +95,9 @@
 .adm-pill--admin    { background: var(--iris-100); color: var(--iris-700); }
 .adm-pill--provider { background: #e8f5e9; color: #2e7d32; }
 .adm-pill--migrant  { background: var(--ivory); color: var(--text-500); }
+.adm-pill--bronze   { background: #f3e8d0; color: #7c5020; }
+.adm-pill--silver   { background: #e8eaed; color: #444c56; }
+.adm-pill--gold     { background: #fef9c3; color: #854d0e; }
 .adm-pill--pending  { background: #fff8e1; color: #e65100; }
 .adm-pill--approved { background: #e8f5e9; color: #2e7d32; }
 .adm-pill--rejected { background: #fce4ec; color: #c62828; }
