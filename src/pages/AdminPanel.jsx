@@ -239,20 +239,11 @@ function ProvidersPanel() {
 
   const load = useCallback(async () => {
     setLoading(true)
-    const { data: provs } = await supabase
+    const { data } = await supabase
       .from('providers')
       .select('*')
       .order('created_at', { ascending: false })
-    const userIds = (provs ?? []).map(p => p.user_id).filter(Boolean)
-    let tierMap = {}
-    if (userIds.length) {
-      const { data: profs } = await supabase
-        .from('profiles')
-        .select('id, tier')
-        .in('id', userIds)
-      ;(profs ?? []).forEach(pr => { tierMap[pr.id] = pr.tier })
-    }
-    setProviders((provs ?? []).map(p => ({ ...p, tier: tierMap[p.user_id] ?? null })))
+    setProviders(data ?? [])
     setLoading(false)
   }, [])
 
@@ -328,6 +319,7 @@ function ProvidersPanel() {
       redirect_email:       f.redirect_email?.trim()|| null,
       predefined_responses: f.predefined_responses?.split('\n').map(s => s.trim()).filter(Boolean) ?? [],
       user_id:              f.user_id?.trim()       || null,
+      tier:                 f.tier,
     }).eq('id', id)
 
     // tier vive en profiles — sincronizar si el proveedor tiene user_id vinculado
