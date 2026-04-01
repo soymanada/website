@@ -319,8 +319,15 @@ function ProvidersPanel() {
       redirect_email:       f.redirect_email?.trim()|| null,
       predefined_responses: f.predefined_responses?.split('\n').map(s => s.trim()).filter(Boolean) ?? [],
       user_id:              f.user_id?.trim()       || null,
-      // NOTA: tier vive en profiles, no en providers — se actualiza por separado
     }).eq('id', id)
+
+    // tier vive en profiles — sincronizar si el proveedor tiene user_id vinculado
+    if (!error && f.user_id?.trim()) {
+      await supabase.from('profiles')
+        .update({ tier: f.tier })
+        .eq('id', f.user_id.trim())
+    }
+
     setSaving(false)
     if (error) alert('Error al guardar: ' + error.message)
     else { setEditing(null); load() }
