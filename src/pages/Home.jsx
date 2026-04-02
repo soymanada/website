@@ -6,6 +6,7 @@ import HowItWorks      from '../components/HowItWorks'
 import FounderSection  from '../components/FounderSection'
 import TrustBadge      from '../components/TrustBadge'
 import CTASection      from '../components/CTASection'
+import Testimonials    from '../components/Testimonials'
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
       <ValueProps />
       <CategoryGrid />
       <HowItWorks />
+      <Testimonials />
       <FounderSection />
       <TrustBadge />
       <CTASection />

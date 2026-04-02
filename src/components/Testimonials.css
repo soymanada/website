@@ -1,0 +1,121 @@
+/* ── Testimonials ─────────────────────────────────────────────────── */
+.tst {
+  padding: 72px 0 80px;
+  background: var(--ivory);
+  border-top: 1px solid var(--iris-200);
+  border-bottom: 1px solid var(--iris-200);
+}
+
+.tst__eyebrow {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--iris-500);
+  margin-bottom: 10px;
+}
+
+.tst__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  color: var(--iris-900);
+  margin-bottom: 40px;
+}
+
+/* Scroll-snap track */
+.tst__track {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 8px;
+}
+.tst__track::-webkit-scrollbar { display: none; }
+
+/* Cards */
+.tst__card {
+  scroll-snap-align: start;
+  flex: 0 0 min(82vw, 320px);
+  background: var(--white);
+  border: 1.5px solid var(--iris-200);
+  border-radius: var(--r-xl);
+  padding: 28px 24px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+  box-shadow: var(--shadow-md);
+  transition: transform var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out);
+}
+.tst__card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.tst__text {
+  font-size: 0.97rem;
+  line-height: 1.7;
+  color: var(--text-500);
+  margin: 0;
+  flex: 1;
+}
+
+.tst__footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-top: 1px solid var(--iris-100);
+  padding-top: 16px;
+}
+
+.tst__paw {
+  font-size: 1.3rem;
+  opacity: 0.7;
+}
+
+.tst__name {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--iris-900);
+  font-weight: 600;
+}
+
+.tst__city {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--iris-500);
+  margin-top: 1px;
+}
+
+/* Dot indicators (decorative) */
+.tst__dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 24px;
+}
+.tst__dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--iris-300);
+  opacity: 0.5;
+}
+.tst__dot:first-child { opacity: 1; background: var(--iris-600, var(--iris-500)); }
+
+/* Desktop: show as grid when enough space */
+@media (min-width: 900px) {
+  .tst__track {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    overflow-x: unset;
+    scroll-snap-type: unset;
+  }
+  .tst__card { flex: unset; }
+  .tst__dots { display: none; }
+}
+
+@media (min-width: 640px) and (max-width: 899px) {
+  .tst__card { flex: 0 0 min(60vw, 280px); }
+}
