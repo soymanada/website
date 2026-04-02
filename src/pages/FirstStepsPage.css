@@ -28,6 +28,7 @@
   font-size: clamp(2rem, 5vw, 3.2rem);
   color: var(--white);
   line-height: 1.15;
+  letter-spacing: -0.02em;
   margin-bottom: 16px;
 }
 .fsp__title em { font-style: italic; color: var(--iris-300); }
@@ -43,25 +44,28 @@
   padding-bottom: 80px;
 }
 
-/* Tabs */
+/* Tabs — pill container */
 .fsp__tabs {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  gap: 4px;
   margin-bottom: 32px;
+  background: #f8f9fa;
+  border-radius: 50px;
+  padding: 4px;
 }
 .fsp__tab {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  height: 48px;
-  padding: 0 20px;
-  border: 1.5px solid var(--iris-200);
-  border-radius: var(--r-xl);
-  background: var(--white);
+  height: 44px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 50px;
+  background: transparent;
   color: var(--text-500);
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 500;
   cursor: pointer;
   transition: all var(--t-med) var(--ease-out);
@@ -71,21 +75,20 @@
   grid-column: span 2;
 }
 .fsp__tab:hover {
-  border-color: var(--iris-400);
   color: var(--iris-700);
-  box-shadow: var(--shadow-md);
 }
 .fsp__tab--active {
-  background: var(--iris-900);
-  border-color: var(--iris-900);
-  color: var(--white);
-  box-shadow: var(--shadow-md);
+  background: #ffffff;
+  color: var(--iris-900);
+  font-weight: 600;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
 }
 .fsp__tab-icon { font-size: 1rem; }
 
 @media (min-width: 640px) {
   .fsp__tabs {
     grid-template-columns: repeat(5, 1fr);
+    border-radius: 50px;
   }
   .fsp__tab:nth-child(5) {
     grid-column: span 1;
@@ -101,13 +104,15 @@
   box-shadow: var(--shadow-md);
 }
 @media (max-width: 640px) {
-  .fsp__panel { padding: 24px 20px; }
+  .fsp__panel { padding: 24px 2rem; }
+  .fsp__body  { padding-left: 2rem; padding-right: 2rem; }
 }
 
 /* Content */
 .fsp__content-title {
   font-family: var(--font-display);
-  font-size: 1.6rem;
+  font-size: 1.4rem;
+  font-weight: 600;
   color: var(--iris-900);
   margin-bottom: 12px;
 }
@@ -136,13 +141,13 @@
   width: 40px; height: 40px;
   border-radius: 50%;
   background: var(--iris-100);
-  color: var(--iris-700);
+  color: var(--iris-500);
   font-weight: 700;
   font-size: 0.8rem;
   display: flex; align-items: center; justify-content: center;
 }
-.fsp__step strong { display: block; color: var(--iris-900); margin-bottom: 4px; }
-.fsp__step p { color: var(--text-500); font-size: 0.95rem; line-height: 1.6; margin: 0; }
+.fsp__step strong { display: block; color: var(--iris-900); margin-bottom: 4px; font-weight: 600; }
+.fsp__step p { color: var(--text-500); font-size: 0.95rem; line-height: 1.8; margin: 0; }
 
 /* Tip */
 .fsp__tip {
@@ -178,7 +183,7 @@
   transform: translateY(-3px);
 }
 .fsp__bank-header { display: flex; flex-direction: column; gap: 2px; }
-.fsp__bank-name { font-family: var(--font-display); font-size: 1.2rem; color: var(--iris-900); font-weight: 700; }
+.fsp__bank-name { font-family: var(--font-display); font-size: 1.2rem; color: var(--iris-900); font-weight: 600; }
 .fsp__bank-full { font-size: 0.8rem; color: var(--text-300); }
 .fsp__bank-body p { font-size: 0.88rem; color: var(--text-500); line-height: 1.6; margin: 0 0 6px; }
 .fsp__bank-link {
@@ -205,7 +210,7 @@
   padding: 24px;
   border: 1.5px solid transparent;
 }
-.fsp__box h3 { font-size: 1rem; margin-bottom: 12px; color: var(--iris-900); }
+.fsp__box h3 { font-size: 1rem; font-weight: 600; margin-bottom: 12px; color: var(--iris-900); }
 .fsp__box ul { margin: 0; padding-left: 20px; }
 .fsp__box li { font-size: 0.9rem; color: var(--text-500); line-height: 1.7; }
 .fsp__box--danger { background: #fff5f5; border-color: #fecaca; }
