@@ -248,13 +248,48 @@ export default function ProviderPage() {
     ['silver', 'gold'].includes(rawProvider?.tier)
   )
 
-  // Dynamic meta title
+  // Dynamic meta title + OG tags
   useEffect(() => {
-    if (provider?.name) {
-      document.title = t('provider_page.meta_title', { name: provider.name })
+    if (!provider?.name) return
+    const title = `${provider.name} | SoyManada`
+    const description = provider.service
+      ? `${provider.service} — Proveedor verificado en SoyManada, el directorio de confianza para la comunidad migrante.`
+      : 'Proveedor verificado en SoyManada, el directorio de confianza para la comunidad migrante.'
+    const url  = window.location.href
+    const image = provider.avatar_url || 'https://soymanada.com/og-image.png'
+
+    document.title = title
+
+    const setMeta = (sel, val) => {
+      let el = document.querySelector(sel)
+      if (!el) { el = document.createElement('meta'); document.head.appendChild(el) }
+      el.setAttribute(sel.includes('name=') ? 'name' : 'property', sel.match(/["']([^"']+)["']/)[1])
+      el.setAttribute('content', val)
     }
-    return () => { document.title = 'SoyManada' }
-  }, [provider?.name, t])
+
+    setMeta('[property="og:title"]',       title)
+    setMeta('[property="og:description"]', description)
+    setMeta('[property="og:url"]',         url)
+    setMeta('[property="og:image"]',       image)
+    setMeta('[property="og:type"]',        'profile')
+    setMeta('[name="description"]',        description)
+
+    return () => {
+      document.title = 'SoyManada – Directorio para la comunidad migrante'
+      const defaults = {
+        '[property="og:title"]':       'SoyManada – Directorio para la comunidad migrante',
+        '[property="og:description"]': 'Encuentra proveedores verificados de seguros, migración, traducciones, banca y más.',
+        '[property="og:url"]':         'https://soymanada.com/',
+        '[property="og:image"]':       'https://soymanada.com/og-image.png',
+        '[property="og:type"]':        'website',
+        '[name="description"]':        'SoyManada – El directorio de confianza para la comunidad migrante. Conecta con servicios verificados.',
+      }
+      Object.entries(defaults).forEach(([sel, val]) => {
+        const el = document.querySelector(sel)
+        if (el) el.setAttribute('content', val)
+      })
+    }
+  }, [provider?.name, provider?.service, provider?.avatar_url])
 
   const handleContact = (platform, url) => {
     trackEvent(Events.CLICK_WHATSAPP, { proveedor_id: providerId, proveedor_nombre: provider?.name, plataforma: platform })
