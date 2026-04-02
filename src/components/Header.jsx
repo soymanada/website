@@ -65,6 +65,9 @@ export default function Header() {
         </nav>
 
         <div className="hdr__actions">
+          <NavLink to="/primeros-pasos" className={({ isActive }) => `hdr__first-steps${isActive ? ' hdr__first-steps--active' : ''}`}>
+            🐾 Primeros pasos
+          </NavLink>
           <Link to="/registro-proveedores" className="btn btn-ghost btn-sm hdr__provider-btn">
             {t('header.cta_proveedor')}
           </Link>
@@ -97,6 +100,7 @@ export default function Header() {
       <div className={`hdr__drawer${menuOpen ? ' hdr__drawer--open' : ''}`}>
         <nav className="hdr__drawer-nav">
           <NavLink to="/" end>{t('header.nav_inicio')}</NavLink>
+          <NavLink to="/primeros-pasos">🐾 Primeros pasos</NavLink>
           {navLinks.map(l => <NavLink key={l.to} to={l.to}>{l.label}</NavLink>)}
         </nav>
         <div className="hdr__drawer-actions">

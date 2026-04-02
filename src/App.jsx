@@ -14,6 +14,7 @@ import AdminPanel           from './pages/AdminPanel'
 import PricingPage          from './pages/PricingPage'
 import VerificacionPage     from './pages/VerificacionPage'
 import ProviderPage         from './pages/ProviderPage'
+import FirstStepsPage       from './pages/FirstStepsPage'
 import ProtectedRoute       from './components/ProtectedRoute'
 import { AuthProvider }     from './hooks/useAuth'
 // IMPORTANTE: Se eliminó initScrollTracking de la siguiente línea
@@ -59,6 +60,7 @@ function Layout() {
         <Route path="/planes"               element={<PricingPage />} />
         <Route path="/verificacion"         element={<VerificacionPage />} />
         <Route path="/proveedor/:slug"      element={<ProviderPage />} />
+        <Route path="/primeros-pasos"       element={<FirstStepsPage />} />
         <Route path="/login"                element={<LoginPage />} />
         <Route path="/reset-password"       element={<ResetPasswordPage />} />
         <Route path="/mi-perfil"            element={

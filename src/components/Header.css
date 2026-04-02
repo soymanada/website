@@ -189,3 +189,26 @@
   align-items: center;
   gap: 8px;
 }
+
+/* Primeros Pasos featured link */
+.hdr__first-steps {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--iris-700);
+  background: var(--iris-100);
+  border: 1.5px solid var(--iris-200);
+  border-radius: 99px;
+  padding: 5px 14px;
+  text-decoration: none;
+  transition: all var(--t-fast);
+  white-space: nowrap;
+}
+.hdr__first-steps:hover,
+.hdr__first-steps--active {
+  background: var(--iris-900);
+  border-color: var(--iris-900);
+  color: var(--white);
+}
