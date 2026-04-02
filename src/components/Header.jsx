@@ -12,6 +12,7 @@ export default function Header() {
   const { t, i18n } = useTranslation()
 
   const darkHero = ['/proveedores', '/mi-perfil'].includes(location.pathname)
+  const darkPage = ['/primeros-pasos'].includes(location.pathname)
   const { user, isProvider } = useAuth()
 
   useEffect(() => {
@@ -38,7 +39,7 @@ export default function Header() {
   ]
 
   return (
-    <header className={`hdr${(scrolled || darkHero) ? ' hdr--scrolled' : ''}${menuOpen ? ' hdr--open' : ''}`}>
+    <header className={`hdr${(scrolled || darkHero) ? ' hdr--scrolled' : ''}${darkPage && !scrolled ? ' hdr--dark' : ''}${menuOpen ? ' hdr--open' : ''}`}>
       <div className="hdr__bar container">
         <Link to="/" className="hdr__logo">
           <svg className="hdr__logo-glyph" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor" width="22" height="22" aria-hidden="true">

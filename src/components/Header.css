@@ -212,3 +212,16 @@
   border-color: var(--iris-900);
   color: var(--white);
 }
+
+/* Dark hero pages (e.g. /primeros-pasos) */
+.hdr--dark {
+  background: var(--iris-900);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.08);
+}
+.hdr--dark .hdr__logo          { color: var(--white); }
+.hdr--dark .hdr__logo-word     { color: var(--white); }
+.hdr--dark .hdr__link          { color: var(--iris-200); }
+.hdr--dark .hdr__link:hover    { color: var(--white); background: rgba(255,255,255,0.08); }
+.hdr--dark .hdr__first-steps   { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.2); color: var(--white); }
+.hdr--dark .hdr__provider-btn  { color: var(--iris-200); }
+.hdr--dark .hdr__burger span   { background: var(--white); }
