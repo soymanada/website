@@ -45,16 +45,18 @@
 
 /* Tabs */
 .fsp__tabs {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
   margin-bottom: 32px;
 }
 .fsp__tab {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  padding: 10px 20px;
+  height: 48px;
+  padding: 0 20px;
   border: 1.5px solid var(--iris-200);
   border-radius: var(--r-xl);
   background: var(--white);
@@ -63,6 +65,10 @@
   font-weight: 500;
   cursor: pointer;
   transition: all var(--t-med) var(--ease-out);
+  text-align: center;
+}
+.fsp__tab:nth-child(5) {
+  grid-column: span 2;
 }
 .fsp__tab:hover {
   border-color: var(--iris-400);
@@ -76,6 +82,15 @@
   box-shadow: var(--shadow-md);
 }
 .fsp__tab-icon { font-size: 1rem; }
+
+@media (min-width: 640px) {
+  .fsp__tabs {
+    grid-template-columns: repeat(5, 1fr);
+  }
+  .fsp__tab:nth-child(5) {
+    grid-column: span 1;
+  }
+}
 
 /* Panel */
 .fsp__panel {

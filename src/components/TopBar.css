@@ -4,7 +4,7 @@
   top: 0;
   right: 0;
   z-index: 300; /* sobre todo */
-  padding: 6px 16px;
+  padding: 20px 16px 6px;
   background: var(--ivory);
   border-bottom-left-radius: var(--r-md);
   border-left: 1px solid var(--iris-200);
