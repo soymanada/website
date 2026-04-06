@@ -561,7 +561,7 @@ function ProvidersPanel() {
 
             <div className="adm-modal__actions">
               <button className="adm-btn adm-btn--ghost" onClick={() => setEditing(null)}>Cancelar</button>
-              <button className="adm-btn adm-btn--primary" onClick={saveEdit} disabled={saving || !editing.name}>
+              <button className="adm-btn adm-btn--primary" onClick={saveEdit} disabled={saving || !editing.name || !editing.slug || !SLUG_RE.test(editing.slug)}>
                 {saving ? 'Guardando…' : 'Guardar cambios'}
               </button>
             </div>
