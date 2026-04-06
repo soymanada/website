@@ -70,7 +70,10 @@
     "visas_step4": "Consultez la liste mise à jour sur Canada.ca en recherchant «IEC Recognized Organizations». Vérifiez toujours que l'organisation figure sur cette liste officielle avant de payer.",
     "visas_tip": "Les OR ne garantissent pas le visa, elles facilitent seulement le processus. Le résultat final dépend de l'IRCC. Méfiez-vous de ceux qui promettent une approbation garantie.",
     "visas_cta_text": "Vous cherchez une aide professionnelle pour votre démarche d'immigration ?",
-    "visas_cta_btn": "Voir les conseillers en migration vérifiés"
+    "visas_cta_btn": "Voir les conseillers en migration vérifiés",
+    "cta_community": "Consulter la Communauté",
+    "cta_groups": "Voir les Groupes de Soutien",
+    "cta_advisor": "Contacter un Conseiller en Migration"
   },
   "brand_name": "MonTroupeau",
   "header": {

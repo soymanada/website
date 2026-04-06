@@ -230,3 +230,54 @@
   flex-wrap: wrap;
 }
 .fsp__cta-block p { margin: 0; color: var(--iris-900); font-weight: 500; }
+
+/* ── CTA Buttons ──────────────────────────────────────────────────── */
+.fsp__cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 28px;
+  padding: 14px 28px;
+  border-radius: 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+  width: 100%;
+  justify-content: center;
+  box-sizing: border-box;
+}
+.fsp__cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgb(0 0 0 / 0.15);
+  filter: brightness(1.06);
+}
+.fsp__cta-btn-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+/* Community (WhatsApp group) */
+.fsp__cta-btn--community {
+  background: var(--iris-600, #5b2d9e);
+  color: #fff;
+}
+
+/* Groups (subgroups list) */
+.fsp__cta-btn--groups {
+  background: var(--iris-600, #5b2d9e);
+  color: #fff;
+}
+
+/* Advisor (migration category) */
+.fsp__cta-btn--advisor {
+  background: var(--iris-900);
+  color: #fff;
+}
+
+@media (min-width: 640px) {
+  .fsp__cta-btn {
+    width: auto;
+    min-width: 260px;
+  }
+}

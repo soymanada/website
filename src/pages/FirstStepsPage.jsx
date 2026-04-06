@@ -4,6 +4,15 @@ import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import './FirstStepsPage.css'
 
+const WA_GROUP    = 'https://chat.whatsapp.com/CMIWk9cQkEIDso4Ll6JG8j'
+const WA_SUBGROUPS = 'https://chat.whatsapp.com/CMIWk9cQkEIDso4Ll6JG8j'
+
+function CtaButton({ href, to, icon = '→', label, variant = 'community' }) {
+  const cls = `fsp__cta-btn fsp__cta-btn--${variant}`
+  if (to) return <Link to={to} className={cls}><span className="fsp__cta-btn-icon">{icon}</span>{label}</Link>
+  return <a href={href} target="_blank" rel="noopener noreferrer" className={cls}><span className="fsp__cta-btn-icon">{icon}</span>{label}</a>
+}
+
 export default function FirstStepsPage() {
   const { t } = useTranslation()
   const country = t('common.currentCountry')
@@ -88,6 +97,7 @@ function SinContent({ t }) {
         <Step n="04" title={t('first_steps.sin_step4_title')} body={t('first_steps.sin_step4')} />
       </div>
       <Tip text={t('first_steps.sin_tip')} />
+      <CtaButton href={WA_GROUP} icon="💬" label={t('first_steps.cta_community')} variant="community" />
     </div>
   )
 }
@@ -118,6 +128,7 @@ function BancaContent({ t }) {
         ))}
       </div>
       <Tip text={t('first_steps.banca_tip')} />
+      <CtaButton href={WA_GROUP} icon="💬" label={t('first_steps.cta_community')} variant="community" />
     </div>
   )
 }
@@ -140,6 +151,7 @@ function ArriendoContent({ t, country }) {
         </div>
       </div>
       <Tip text={t('first_steps.arriendo_tip')} />
+      <CtaButton href={WA_SUBGROUPS} icon="🤝" label={t('first_steps.cta_groups')} variant="groups" />
     </div>
   )
 }
@@ -156,6 +168,7 @@ function TrabajoContent({ t, country }) {
         <Step n="04" title={t('first_steps.trabajo_step4_title')} body={t('first_steps.trabajo_step4', { country })} />
       </div>
       <Tip text={t('first_steps.trabajo_tip')} />
+      <CtaButton href={WA_SUBGROUPS} icon="🤝" label={t('first_steps.cta_groups')} variant="groups" />
     </div>
   )
 }
@@ -172,10 +185,7 @@ function VisasContent({ t, country }) {
         <Step n="04" title={t('first_steps.visas_step4_title')} body={t('first_steps.visas_step4')} />
       </div>
       <Tip text={t('first_steps.visas_tip')} />
-      <div className="fsp__cta-block">
-        <p>{t('first_steps.visas_cta_text')}</p>
-        <Link to="/categoria/migracion" className="btn btn-primary"><span>{t('first_steps.visas_cta_btn')}</span></Link>
-      </div>
+      <CtaButton to="/categoria/migracion" icon="🛂" label={t('first_steps.cta_advisor')} variant="advisor" />
     </div>
   )
 }

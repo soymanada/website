@@ -70,7 +70,10 @@
     "visas_step4": "Check the updated list on Canada.ca by searching \"IEC Recognized Organizations\". Always verify the organization appears on that official list before paying any fee.",
     "visas_tip": "ROs do not guarantee the visa, they only facilitate the process. The final outcome depends on IRCC. Be wary of anyone promising guaranteed approval.",
     "visas_cta_text": "Looking for professional help with your immigration process?",
-    "visas_cta_btn": "See verified migration advisors"
+    "visas_cta_btn": "See verified migration advisors",
+    "cta_community": "Ask the Community",
+    "cta_groups": "See Support Groups",
+    "cta_advisor": "Contact a Migration Advisor"
   },
   "brand_name": "MyPack",
   "header": {

@@ -69,7 +69,10 @@
     "visas_step4": "Consulta la lista actualizada en Canada.ca buscando «IEC Recognized Organizations». Verifica siempre que la organización aparezca en esa lista oficial antes de pagar cualquier tarifa.",
     "visas_tip": "Las RO no garantizan la visa, solo facilitan el proceso. El resultado final depende de IRCC. Desconfía de quienes prometan aprobación segura.",
     "visas_cta_text": "¿Buscas ayuda profesional para tu proceso migratorio?",
-    "visas_cta_btn": "Ver asesores de migración verificados"
+    "visas_cta_btn": "Ver asesores de migración verificados",
+    "cta_community": "Consultar en la Comunidad",
+    "cta_groups": "Ver Grupos de Apoyo",
+    "cta_advisor": "Contactar Asesor Migratorio"
   },
   "header": {
     "nav_inicio": "Inicio",
