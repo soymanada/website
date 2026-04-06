@@ -9,12 +9,12 @@ export function AuthProvider({ children }) {
   const [profile,        setProfile]        = useState(null)      // { role, tier, ... }
   const [profileLoading, setProfileLoading] = useState(true)      // espera a que el perfil llegue
 
-  // Carga el perfil desde la tabla profiles
+  // Carga el perfil desde la vista profiles_with_effective_tier (aplica lógica de 90 días)
   const loadProfile = async (userId) => {
     setProfileLoading(true)
     if (!userId) { setProfile(null); setProfileLoading(false); return }
     const { data, error } = await supabase
-      .from('profiles')
+      .from('profiles_with_effective_tier')
       .select('role, tier')
       .eq('id', userId)
       .single()

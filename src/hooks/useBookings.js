@@ -45,8 +45,8 @@ export function generateSlots(availability, takenBookings, daysAhead = 14) {
     const dayAvail = availability.filter(a => a.day_of_week === dow)
 
     for (const avail of dayAvail) {
-      const [sh, sm] = avail.start_time.slice(0, 5).split(':').map(Number)
-      const [eh, em] = avail.end_time.slice(0, 5).split(':').map(Number)
+      const [sh, sm] = avail.start_at.slice(0, 5).split(':').map(Number)
+      const [eh, em] = avail.end_at.slice(0, 5).split(':').map(Number)
       const startM = sh * 60 + sm
       const endM   = eh * 60 + em
       const dur    = avail.slot_minutes
@@ -100,7 +100,21 @@ export async function createBooking({ providerId, userId, start, end, notes }) {
     notes:       notes || null,
     status:      'pending',
   }).select().single()
-  return { data, error }
+
+  if (error) {
+    // Exclusion constraint (GIST overlap) → código 23P01
+    const isOverlap = error.code === '23P01' || error.message?.includes('overlap') || error.message?.includes('exclusion')
+    return {
+      data: null,
+      error: {
+        ...error,
+        userMessage: isOverlap
+          ? 'Este horario ya ha sido reservado por otra persona. Por favor, elige uno diferente.'
+          : 'Error al crear la reserva. Intenta de nuevo.',
+      },
+    }
+  }
+  return { data, error: null }
 }
 
 // ── Dashboard: all bookings for a provider ────────────────────────

@@ -19,6 +19,7 @@ export default function BookingCalendar({ providerId, userId, providerName }) {
   const [selectedSlot, setSelectedSlot] = useState(null)
   const [notes,        setNotes]        = useState('')
   const [status,       setStatus]       = useState('idle') // idle | submitting | success | error
+  const [errorMsg,     setErrorMsg]     = useState('')
 
   if (loading) return (
     <div className="bcal bcal--loading" aria-label="Cargando calendario">
@@ -51,7 +52,12 @@ export default function BookingCalendar({ providerId, userId, providerName }) {
       end:   selectedSlot.end,
       notes,
     })
-    setStatus(error ? 'error' : 'success')
+    if (error) {
+      setErrorMsg(error.userMessage ?? 'Error al enviar la reserva. Intenta de nuevo.')
+      setStatus('error')
+    } else {
+      setStatus('success')
+    }
   }
 
   if (status === 'success') return (
@@ -129,7 +135,7 @@ export default function BookingCalendar({ providerId, userId, providerName }) {
                     rows={3}
                   />
                   {status === 'error' && (
-                    <p className="t-xs bcal__error">Error al enviar la reserva. Intenta de nuevo.</p>
+                    <p className="t-xs bcal__error">{errorMsg}</p>
                   )}
                   <button
                     className="btn btn-primary bcal__confirm"

@@ -34,8 +34,8 @@ export default function AvailabilityEditor({ providerId }) {
         s[d.value] = {
           enabled: true,
           ranges: rows.map(r => ({
-            start: r.start_time.slice(0, 5),
-            end:   r.end_time.slice(0, 5),
+            start: r.start_at.slice(0, 5),
+            end:   r.end_at.slice(0, 5),
             slot:  r.slot_minutes,
           })),
         }
@@ -80,8 +80,8 @@ export default function AvailabilityEditor({ providerId }) {
       day.ranges.forEach(r => {
         slots.push({
           day_of_week:  Number(dow),
-          start_time:   r.start,
-          end_time:     r.end,
+          start_at:   r.start,
+          end_at:     r.end,
           slot_minutes: r.slot,
           timezone:     tz,
         })
