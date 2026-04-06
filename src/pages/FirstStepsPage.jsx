@@ -1,11 +1,18 @@
 // src/pages/FirstStepsPage.jsx
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import './FirstStepsPage.css'
 
-const WA_GROUP    = 'https://chat.whatsapp.com/CMIWk9cQkEIDso4Ll6JG8j'
+const WA_GROUP     = 'https://chat.whatsapp.com/CMIWk9cQkEIDso4Ll6JG8j'
 const WA_SUBGROUPS = 'https://chat.whatsapp.com/CMIWk9cQkEIDso4Ll6JG8j'
+
+const setMeta = (sel, val) => {
+  let el = document.querySelector(sel)
+  if (!el) { el = document.createElement('meta'); document.head.appendChild(el) }
+  el.setAttribute(sel.includes('name=') ? 'name' : 'property', sel.match(/["']([^"']+)["']/)[1])
+  el.setAttribute('content', val)
+}
 
 function CtaButton({ href, to, icon = '→', label, variant = 'community' }) {
   const cls = `fsp__cta-btn fsp__cta-btn--${variant}`
@@ -16,6 +23,25 @@ function CtaButton({ href, to, icon = '→', label, variant = 'community' }) {
 export default function FirstStepsPage() {
   const { t } = useTranslation()
   const country = t('common.currentCountry')
+
+  useEffect(() => {
+    const title = `Guía de Llegada a ${country} | SoyManada`
+    const description = `Todo lo que necesitas saber en tu primer mes en ${country}: SIN Number, banca, arriendo, trabajo y visas RO. Sin rodeos.`
+    document.title = title
+    setMeta('[property="og:title"]',       title)
+    setMeta('[property="og:description"]', description)
+    setMeta('[property="og:url"]',         'https://soymanada.com/primeros-pasos')
+    setMeta('[property="og:type"]',        'article')
+    setMeta('[name="description"]',        description)
+    return () => {
+      document.title = 'SoyManada – Directorio para la comunidad migrante'
+      setMeta('[property="og:title"]',       'SoyManada – Directorio para la comunidad migrante')
+      setMeta('[property="og:description"]', 'Encuentra proveedores verificados de seguros, migración, traducciones, banca y más.')
+      setMeta('[property="og:url"]',         'https://soymanada.com/')
+      setMeta('[property="og:type"]',        'website')
+      setMeta('[name="description"]',        'SoyManada – El directorio de confianza para la comunidad migrante. Conecta con servicios verificados.')
+    }
+  }, [country])
 
   const TABS = [
     { id: 'sin',      icon: '🪪', label: t('first_steps.tab_sin') },

@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Rutas privadas y de administración
+Disallow: /admin
+Disallow: /mi-perfil
+Disallow: /reset-password
+Disallow: /login
+
+# Sitemap
+Sitemap: https://soymanada.com/sitemap.xml
