@@ -192,8 +192,16 @@ const CATEGORY_SLUGS = [
   'comunidad','remesas',
 ]
 
+const toSlug = (str) =>
+  str.toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+
+const SLUG_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/
+
 const EMPTY_PROVIDER = {
-  name: '', category_slug: 'seguros', service: '', description: '',
+  name: '', slug: '', category_slug: 'seguros', service: '', description: '',
   countries: '', languages: '', verified: false, active: true,
   whatsapp: '', instagram: '', website: '',
 }
@@ -266,9 +274,11 @@ function ProvidersPanel() {
   const openCreate = () => { setForm(EMPTY_PROVIDER); setCreating(true) }
 
   const saveNew = async () => {
+    if (!SLUG_RE.test(form.slug)) return alert('El slug tiene caracteres no permitidos.')
     setSaving(true)
     const { error } = await supabase.from('providers').insert({
       name:          form.name.trim(),
+      slug:          form.slug.trim(),
       category_slug: form.category_slug,
       service:       form.service.trim(),
       description:   form.description.trim(),
@@ -354,7 +364,22 @@ function ProvidersPanel() {
             <h3>Nuevo proveedor</h3>
             <div className="adm-form-grid">
               <label>Nombre / Marca
-                <input value={form.name} onChange={e => set('name', e.target.value)} placeholder="Ej: Objetivo Canadá" />
+                <input value={form.name} onChange={e => {
+                  set('name', e.target.value)
+                  set('slug', toSlug(e.target.value))
+                }} placeholder="Ej: Objetivo Canadá" />
+              </label>
+              <label>
+                Slug (URL) <span style={{ fontSize: '0.75rem', color: form.slug && !SLUG_RE.test(form.slug) ? '#ef4444' : 'var(--text-300)' }}>
+                  {form.slug && !SLUG_RE.test(form.slug) ? '⚠ Solo minúsculas, números y guiones' : form.slug ? `✓ /proveedor/${form.slug}` : ''}
+                </span>
+                <input
+                  required
+                  value={form.slug}
+                  onChange={e => set('slug', e.target.value)}
+                  placeholder="ej: objetivo-canada"
+                  style={{ borderColor: form.slug && !SLUG_RE.test(form.slug) ? '#ef4444' : '' }}
+                />
               </label>
               <label>Categoría
                 <select value={form.category_slug} onChange={e => set('category_slug', e.target.value)}>
@@ -389,7 +414,7 @@ function ProvidersPanel() {
             </div>
             <div className="adm-modal__actions">
               <button className="adm-btn adm-btn--ghost" onClick={() => setCreating(false)}>Cancelar</button>
-              <button className="adm-btn adm-btn--primary" onClick={saveNew} disabled={saving || !form.name}>
+              <button className="adm-btn adm-btn--primary" onClick={saveNew} disabled={saving || !form.name || !form.slug || !SLUG_RE.test(form.slug)}>
                 {saving ? 'Guardando…' : 'Crear proveedor'}
               </button>
             </div>
@@ -410,10 +435,22 @@ function ProvidersPanel() {
                 <p className="adm-edit-section__title">Identidad</p>
                 <div className="adm-form-grid">
                   <label>Nombre / Marca
-                    <input value={editing.name} onChange={e => setEd('name', e.target.value)} />
+                    <input value={editing.name} onChange={e => {
+                      setEd('name', e.target.value)
+                      if (!editing.slug) setEd('slug', toSlug(e.target.value))
+                    }} />
                   </label>
-                  <label>Slug (URL)
-                    <input value={editing.slug} onChange={e => setEd('slug', e.target.value)} placeholder="ej: daniela-valenzuela" />
+                  <label>
+                    Slug (URL) <span style={{ fontSize: '0.75rem', color: editing.slug && !SLUG_RE.test(editing.slug) ? '#ef4444' : 'var(--text-300)' }}>
+                      {editing.slug && !SLUG_RE.test(editing.slug) ? '⚠ Solo minúsculas, números y guiones' : editing.slug ? `✓ /proveedor/${editing.slug}` : ''}
+                    </span>
+                    <input
+                      required
+                      value={editing.slug}
+                      onChange={e => setEd('slug', e.target.value)}
+                      placeholder="ej: daniela-valenzuela"
+                      style={{ borderColor: editing.slug && !SLUG_RE.test(editing.slug) ? '#ef4444' : '' }}
+                    />
                   </label>
                   <label>Categoría
                     <select value={editing.category_slug} onChange={e => setEd('category_slug', e.target.value)}>

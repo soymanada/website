@@ -141,7 +141,7 @@ export default function ProviderCard({ provider: rawProvider }) {
           </div>
         )}
 
-        <Link to={`/proveedor/${slug ?? id}`} className="pcard__profile-link">
+        <Link to={slug ? `/proveedor/${slug}` : '#'} className="pcard__profile-link" aria-disabled={!slug}>
           {categorySlug === 'remesas'
             ? t('provider_card.profile_link_remesas')
             : t('provider_card.profile_link')}
