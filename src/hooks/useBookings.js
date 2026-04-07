@@ -31,17 +31,29 @@ export async function saveAvailability(providerId, slots) {
   return { error }
 }
 
+// ── Timezone-aware date builder ───────────────────────────────────
+const pad2 = n => String(n).padStart(2, '0')
+
+// Returns a Date whose UTC value represents HH:MM on dateStr (YYYY-MM-DD) in the given tz
+function makeTZDate(dateStr, h, m, tz) {
+  const local = new Date(`${dateStr}T${pad2(h)}:${pad2(m)}:00`)
+  const inTZ  = new Date(local.toLocaleString('en-US', { timeZone: tz }))
+  return new Date(local.getTime() + (local.getTime() - inTZ.getTime()))
+}
+
 // ── Generate free slots for next N days ──────────────────────────
 export function generateSlots(availability, takenBookings, daysAhead = 14) {
   const slots = []
-  const now = new Date()
+  const now   = new Date()
+  const tz    = availability[0]?.timezone || 'UTC'
 
   for (let d = 1; d <= daysAhead; d++) {
-    const date = new Date()
-    date.setDate(now.getDate() + d)
-    date.setHours(0, 0, 0, 0)
+    const probe   = new Date(now.getTime() + d * 24 * 3600 * 1000)
+    // Date string (YYYY-MM-DD) in provider's timezone — 'sv' locale gives ISO format
+    const dateStr = new Intl.DateTimeFormat('sv', { timeZone: tz }).format(probe)
+    // Day-of-week in provider's timezone
+    const dow     = new Date(new Date(probe).toLocaleString('en-US', { timeZone: tz })).getDay()
 
-    const dow = date.getDay()
     const dayAvail = availability.filter(a => a.day_of_week === dow)
 
     for (const avail of dayAvail) {
@@ -52,10 +64,10 @@ export function generateSlots(availability, takenBookings, daysAhead = 14) {
       const dur    = avail.slot_minutes
 
       for (let m = startM; m + dur <= endM; m += dur) {
-        const slotStart = new Date(date)
-        slotStart.setHours(Math.floor(m / 60), m % 60, 0, 0)
-        const slotEnd = new Date(slotStart)
-        slotEnd.setMinutes(slotEnd.getMinutes() + dur)
+        const slotStart = makeTZDate(dateStr, Math.floor(m / 60), m % 60, tz)
+        const slotEnd   = new Date(slotStart.getTime() + dur * 60000)
+
+        if (slotStart <= now) continue
 
         const taken = takenBookings.some(b => {
           const bs = new Date(b.start_at)

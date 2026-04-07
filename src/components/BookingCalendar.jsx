@@ -1,5 +1,6 @@
 // src/components/BookingCalendar.jsx
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useAvailableSlots, createBooking } from '../hooks/useBookings'
 import './BookingCalendar.css'
 
@@ -13,6 +14,7 @@ const fmtDateKey = (dk) =>
   new Date(dk + 'T12:00:00').toLocaleDateString('es-CL', { weekday: 'short', month: 'short', day: 'numeric' })
 
 export default function BookingCalendar({ providerId, userId, providerName }) {
+  const { t } = useTranslation()
   const { byDate, hasAvailability, loading } = useAvailableSlots(providerId)
 
   const [selectedDate, setSelectedDate] = useState(null)
@@ -27,20 +29,12 @@ export default function BookingCalendar({ providerId, userId, providerName }) {
     </div>
   )
 
-  // Don't render if provider has no availability configured
   if (!hasAvailability) return null
 
   const dates = Object.keys(byDate).sort()
 
-  const handleDateClick = (dk) => {
-    setSelectedDate(dk)
-    setSelectedSlot(null)
-  }
-
-  const handleSlotClick = (slot) => {
-    setSelectedSlot(slot)
-    setStatus('idle')
-  }
+  const handleDateClick = (dk) => { setSelectedDate(dk); setSelectedSlot(null) }
+  const handleSlotClick = (slot) => { setSelectedSlot(slot); setStatus('idle') }
 
   const handleBook = async () => {
     if (!selectedSlot || !userId) return
@@ -53,7 +47,8 @@ export default function BookingCalendar({ providerId, userId, providerName }) {
       notes,
     })
     if (error) {
-      setErrorMsg(error.userMessage ?? 'Error al enviar la reserva. Intenta de nuevo.')
+      const isOverlap = error.code === '23P01' || error.message?.includes('overlap') || error.message?.includes('exclusion')
+      setErrorMsg(isOverlap ? t('booking.error_overlap') : t('booking.error_generic'))
       setStatus('error')
     } else {
       setStatus('success')
@@ -64,23 +59,20 @@ export default function BookingCalendar({ providerId, userId, providerName }) {
     <div className="bcal bcal--success">
       <span className="bcal__success-icon">✅</span>
       <div>
-        <strong className="t-sm">¡Reserva enviada!</strong>
-        <p className="t-xs bcal__success-sub">
-          {providerName} recibirá tu solicitud y te confirmará pronto.
-        </p>
+        <strong className="t-sm">{t('booking.success_title')}</strong>
+        <p className="t-xs bcal__success-sub">{t('booking.success_sub', { name: providerName })}</p>
       </div>
     </div>
   )
 
   return (
     <section className="bcal">
-      <h3 className="bcal__title">📅 Reservar cita</h3>
+      <h3 className="bcal__title">{t('booking.title')}</h3>
 
       {dates.length === 0 ? (
-        <p className="t-sm bcal__empty">No hay horarios disponibles en los próximos 14 días.</p>
+        <p className="t-sm bcal__empty">{t('booking.no_slots')}</p>
       ) : (
         <>
-          {/* Date pills */}
           <div className="bcal__dates" role="list">
             {dates.map(dk => (
               <button
@@ -94,25 +86,20 @@ export default function BookingCalendar({ providerId, userId, providerName }) {
             ))}
           </div>
 
-          {/* Slot grid */}
           {selectedDate && (
             <div className="bcal__slots">
-              {byDate[selectedDate].map((slot, i) => {
-                const isActive = selectedSlot === slot
-                return (
-                  <button
-                    key={i}
-                    className={`bcal__slot${isActive ? ' bcal__slot--active' : ''}`}
-                    onClick={() => handleSlotClick(slot)}
-                  >
-                    {fmtTime(slot.start)}
-                  </button>
-                )
-              })}
+              {byDate[selectedDate].map((slot, i) => (
+                <button
+                  key={i}
+                  className={`bcal__slot${selectedSlot === slot ? ' bcal__slot--active' : ''}`}
+                  onClick={() => handleSlotClick(slot)}
+                >
+                  {fmtTime(slot.start)}
+                </button>
+              ))}
             </div>
           )}
 
-          {/* Booking confirmation */}
           {selectedSlot && (
             <div className="bcal__form">
               <p className="bcal__selected-info t-sm">
@@ -122,14 +109,12 @@ export default function BookingCalendar({ providerId, userId, providerName }) {
               </p>
 
               {!userId ? (
-                <p className="t-xs bcal__auth-notice">
-                  Inicia sesión para reservar esta cita.
-                </p>
+                <p className="t-xs bcal__auth-notice">{t('booking.login_notice')}</p>
               ) : (
                 <>
                   <textarea
                     className="bcal__notes"
-                    placeholder="Mensaje opcional para el proveedor (motivo de la cita, preguntas, etc.)…"
+                    placeholder={t('booking.notes_placeholder')}
                     value={notes}
                     onChange={e => setNotes(e.target.value)}
                     rows={3}
@@ -142,7 +127,7 @@ export default function BookingCalendar({ providerId, userId, providerName }) {
                     onClick={handleBook}
                     disabled={status === 'submitting'}
                   >
-                    <span>{status === 'submitting' ? 'Enviando…' : 'Confirmar reserva'}</span>
+                    <span>{status === 'submitting' ? t('booking.sending') : t('booking.confirm')}</span>
                   </button>
                 </>
               )}

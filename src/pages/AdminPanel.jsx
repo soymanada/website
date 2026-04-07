@@ -303,11 +303,12 @@ function ProvidersPanel() {
   const openEdit = (p) => setEditing({ id: p.id, ...providerToForm(p) })
 
   const saveEdit = async () => {
-    setSaving(true)
     const { id, ...f } = editing
+    if (!f.slug.trim() || !SLUG_RE.test(f.slug.trim())) return
+    setSaving(true)
     const { error } = await supabase.from('providers').update({
       name:                 f.name.trim(),
-      slug:                 f.slug.trim()           || null,
+      slug:                 f.slug.trim(),
       category_slug:        f.category_slug,
       service:              f.service.trim(),
       service_en:           f.service_en?.trim()    || null,

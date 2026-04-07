@@ -507,6 +507,18 @@
     "disclaimer": "Las tasas son estimaciones sobre el tipo de cambio interbancario de referencia y pueden diferir de las tasas reales al momento de tu transferencia. Verifica el monto exacto en cada plataforma antes de transferir. SoyManada puede recibir una comisión si realizas una operación desde estos links, sin costo adicional para ti.",
     "from_currency_label": "Moneda de origen"
   },
+  "booking": {
+    "title": "📅 Reservar cita",
+    "no_slots": "No hay horarios disponibles en los próximos 14 días.",
+    "success_title": "¡Reserva enviada!",
+    "success_sub": "{{name}} recibirá tu solicitud y te confirmará pronto.",
+    "login_notice": "Inicia sesión para reservar esta cita.",
+    "notes_placeholder": "Mensaje opcional para el proveedor (motivo de la cita, preguntas, etc.)…",
+    "confirm": "Confirmar reserva",
+    "sending": "Enviando…",
+    "error_overlap": "Este horario ya no está disponible. Por favor, elige uno diferente.",
+    "error_generic": "Error al enviar la reserva. Intenta de nuevo."
+  },
   "founder": {
     "eyebrow": "La historia detrás de la manada",
     "quote": "Migrar solo es difícil. Hacerlo con la manada correcta, cambia todo.",
