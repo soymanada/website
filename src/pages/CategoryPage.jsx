@@ -18,8 +18,12 @@ export default function CategoryPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0)
-    if (cat) trackEvent(Events.VIEW_CATEGORY_PAGE, { category: slug })
-  }, [slug, cat])
+    if (cat) {
+      trackEvent(Events.VIEW_CATEGORY_PAGE, { category: slug })
+      document.title = `${t(`categories.${cat.slug}`, cat.name)} | SoyManada`
+    }
+    return () => { document.title = 'SoyManada – Directorio para la comunidad migrante' }
+  }, [slug, cat, t])
 
   if (!cat) return (
     <main className="cat-404">

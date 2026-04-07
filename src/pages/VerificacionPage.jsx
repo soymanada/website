@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { ShieldCheck, Search, Users, MessageCircle, XCircle, RefreshCw } from 'lucide-react'
 import './VerificacionPage.css'
@@ -34,6 +35,11 @@ const rejectionReasons = [
 ]
 
 export default function VerificacionPage() {
+  useEffect(() => {
+    document.title = 'Verificación de proveedores | SoyManada'
+    return () => { document.title = 'SoyManada – Directorio para la comunidad migrante' }
+  }, [])
+
   return (
     <main className="verif">
 

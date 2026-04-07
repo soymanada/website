@@ -14,6 +14,11 @@ export default function LoginPage() {
   // Si viene de una ruta protegida o del gate, volver ahí tras el login
   const from        = location.state?.from?.pathname ?? '/proveedores'
 
+  useEffect(() => {
+    document.title = 'Iniciar sesión | SoyManada'
+    return () => { document.title = 'SoyManada – Directorio para la comunidad migrante' }
+  }, [])
+
   const [mode,      setMode]      = useState('login')   // 'login' | 'register'
   const [email,     setEmail]     = useState('')
   const [password,  setPassword]  = useState('')

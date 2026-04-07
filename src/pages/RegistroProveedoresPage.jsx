@@ -68,7 +68,11 @@ export default function RegistroProveedoresPage() {
   const [submitted, setSubmitted]   = useState(false)
   const [error, setError]           = useState('')
 
-  useEffect(() => { window.scrollTo(0, 0) }, [])
+  useEffect(() => {
+    window.scrollTo(0, 0)
+    document.title = 'Registro de proveedores | SoyManada'
+    return () => { document.title = 'SoyManada – Directorio para la comunidad migrante' }
+  }, [])
 
   const scrollToForm = () => {
     trackEvent(Events.CLICK_APPLY_PROVIDER, { from: 'providers_page' })

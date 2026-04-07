@@ -658,6 +658,11 @@ export default function ProviderDashboard() {
   const [activeTab,      setActiveTab]      = useState('perfil')
 
   useEffect(() => {
+    document.title = 'Mi perfil | SoyManada'
+    return () => { document.title = 'SoyManada – Directorio para la comunidad migrante' }
+  }, [])
+
+  useEffect(() => {
     const load = async () => {
       setLoading(true)
       const { data, error } = await supabase

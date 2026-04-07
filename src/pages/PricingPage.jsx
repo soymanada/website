@@ -1,5 +1,5 @@
 // src/pages/PricingPage.jsx — Planes para proveedores
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { trackEvent, Events } from '../utils/analytics'
@@ -17,6 +17,11 @@ const FAQS = ['faq1', 'faq2', 'faq3', 'faq4']
 export default function PricingPage() {
   const { t } = useTranslation()
   const [openFaq, setOpenFaq] = useState(null)
+
+  useEffect(() => {
+    document.title = 'Planes y precios | SoyManada'
+    return () => { document.title = 'SoyManada – Directorio para la comunidad migrante' }
+  }, [])
 
   const tiers = [
     {

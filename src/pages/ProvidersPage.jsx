@@ -19,6 +19,12 @@ const ALL_COUNTRIES = [
 
 export default function ProvidersPage() {
   const { t, i18n } = useTranslation()
+
+  useEffect(() => {
+    document.title = 'Directorio de proveedores | SoyManada'
+    return () => { document.title = 'SoyManada – Directorio para la comunidad migrante' }
+  }, [])
+
   const [query,        setQuery]        = useState('')
   const [activeSlug,   setActiveSlug]   = useState('todas')
   const [activeCountry,setActiveCountry]= useState('todos')

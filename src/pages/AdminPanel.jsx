@@ -815,6 +815,11 @@ const TABS = [
 export default function AdminPanel() {
   const [tab, setTab] = useState('users')
 
+  useEffect(() => {
+    document.title = 'Admin | SoyManada'
+    return () => { document.title = 'SoyManada – Directorio para la comunidad migrante' }
+  }, [])
+
   return (
     <main className="adm">
       <div className="container">

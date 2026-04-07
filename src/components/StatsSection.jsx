@@ -1,14 +1,17 @@
 import { useEffect, useState } from 'react'
 import { Users, CalendarDays, LayoutGrid, ShieldCheck } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import categories from '../data/categories.json'
+import { supabase } from '../lib/supabase'
 import './StatsSection.css'
 
 const TICKER_COUNT = 5
 
 export default function StatsSection() {
   const { t } = useTranslation()
-  const [tickerIdx, setTickerIdx] = useState(0)
-  const [fade, setFade] = useState(true)
+  const [tickerIdx,      setTickerIdx]      = useState(0)
+  const [fade,           setFade]           = useState(true)
+  const [providerCount,  setProviderCount]  = useState(null)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -21,11 +24,19 @@ export default function StatsSection() {
     return () => clearInterval(interval)
   }, [])
 
+  useEffect(() => {
+    supabase
+      .from('providers')
+      .select('*', { count: 'exact', head: true })
+      .eq('active', true)
+      .then(({ count }) => { if (count != null) setProviderCount(count) })
+  }, [])
+
   const stats = [
-    { value: '+500', labelKey: 'stats.members',   Icon: Users        },
-    { value: '2',    labelKey: 'stats.years',      Icon: CalendarDays },
-    { value: '11',   labelKey: 'stats.categories', Icon: LayoutGrid   },
-    { value: '12',   labelKey: 'stats.providers',  Icon: ShieldCheck  },
+    { value: '+500',                      labelKey: 'stats.members',   Icon: Users        },
+    { value: '2',                         labelKey: 'stats.years',      Icon: CalendarDays },
+    { value: `${categories.length}`,      labelKey: 'stats.categories', Icon: LayoutGrid   },
+    { value: providerCount ?? '…',        labelKey: 'stats.providers',  Icon: ShieldCheck  },
   ]
 
   return (
