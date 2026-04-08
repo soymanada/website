@@ -1,10 +1,10 @@
 .hero {
   position: relative;
-  min-height: 80vh; /* Ajustado al no haber elemento visual pesado */
+  min-height: 72vh;
   display: flex;
   align-items: center;
   overflow: hidden;
-  padding: 140px 0 80px;
+  padding: 150px 0 90px;
   background: var(--ivory);
 }
 
@@ -39,12 +39,12 @@
   animation: float-gentle 12s ease-in-out infinite 1.5s;
 }
 
-/* Grid editorial: contenido anclado a la izquierda, aire a la derecha */
+/* Grid editorial: columna izquierda fija, aire deliberado a la derecha */
 .hero__inner {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: 3fr 2fr;
+  grid-template-columns: minmax(0, 540px) 1fr;
   align-items: center;
 }
 
@@ -53,7 +53,7 @@
   display: flex;
   flex-direction: column;
   gap: 26px;
-  max-width: 620px;
+  max-width: 460px;
 }
 
 .hero__headline {
@@ -70,7 +70,7 @@
 
 .hero__sub {
   color: var(--text-500);
-  max-width: 520px;
+  max-width: 400px;
 }
 
 .hero__actions {
