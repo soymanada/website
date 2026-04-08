@@ -1,6 +1,9 @@
 import { useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+// NOTE: providers and categories are served from static JSON (not Supabase).
+// This is intentional for initial load speed. Update the JSON files when
+// provider data changes, or migrate to a Supabase query in a future sprint.
 import categories          from '../data/categories.json'
 import providers           from '../data/providers.json'
 import ProviderCard        from '../components/ProviderCard'

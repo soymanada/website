@@ -2,6 +2,8 @@
 import { useState, useMemo, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+// NOTE: providers and categories are served from static JSON (not Supabase).
+// Intentional for initial load speed. Update the JSON when provider data changes.
 import providers   from '../data/providers.json'
 import categories  from '../data/categories.json'
 import ProviderCard from '../components/ProviderCard'
@@ -123,7 +125,7 @@ export default function ProvidersPage() {
       </div>
 
       {/* Filtros + resultados */}
-      <section className="dirpage__body section">
+      <section className="dirpage__body">
         <div className="container">
           <div className="dirpage__layout">
 

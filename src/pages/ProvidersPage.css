@@ -74,7 +74,7 @@
 }
 
 /* Layout */
-.dirpage__body { padding-top: 48px; }
+.dirpage__body { padding: 48px 0 100px; }
 .dirpage__layout {
   display: grid;
   grid-template-columns: 240px 1fr;

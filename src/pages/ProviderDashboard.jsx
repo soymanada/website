@@ -247,7 +247,8 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
   const [form, setForm] = useState({
     calendar_link:        provider?.calendar_link        ?? '',
     redirect_email:       provider?.redirect_email       ?? '',
-    predefined_responses: (provider?.predefined_responses ?? []).join('\n'),
+    predefined_responses: (Array.isArray(provider?.predefined_responses)
+      ? provider.predefined_responses : []).join('\n'),
   })
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
 
@@ -670,9 +671,7 @@ export default function ProviderDashboard() {
         .select('*')
         .eq('user_id', user.id)
         .single()
-      if (error) console.error('[ProviderDashboard] load error:', error)
       if (data) setProvider(data)
-      else console.warn('[ProviderDashboard] No provider found for user_id:', user.id)
       setLoading(false)
 
       // Métricas solo para silver/gold
@@ -709,7 +708,6 @@ export default function ProviderDashboard() {
       .from('avatars')
       .upload(path, file, { upsert: true, contentType: file.type })
     if (error) {
-      console.error('[Avatar upload error]', error)
       showToast(`Error al subir: ${error.message}`, 'error')
     } else {
       const { data: { publicUrl } } = supabase.storage.from('avatars').getPublicUrl(path)

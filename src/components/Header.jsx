@@ -72,6 +72,7 @@ export default function Header() {
           <Link to="/registro-proveedores" className="btn btn-ghost btn-sm hdr__provider-btn">
             {t('header.cta_proveedor')}
           </Link>
+          <LanguageSwitcher />
           {user ? (
             <Link
               to={isProvider ? '/mi-perfil' : '/proveedores'}

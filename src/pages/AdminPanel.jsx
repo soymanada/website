@@ -1,5 +1,6 @@
 // src/pages/AdminPanel.jsx
 import { useState, useEffect, useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import { supabase } from '../lib/supabase'
 import './AdminPanel.css'
 
@@ -806,14 +807,15 @@ function SubmissionsPanel() {
 }
 
 // ── Panel principal ───────────────────────────────────────────────────────────
-const TABS = [
-  { id: 'users',       label: 'Usuarios'    },
-  { id: 'providers',   label: 'Proveedores' },
-  { id: 'submissions', label: 'Solicitudes' },
-]
-
 export default function AdminPanel() {
+  const { t } = useTranslation()
   const [tab, setTab] = useState('users')
+
+  const TABS = [
+    { id: 'users',       label: t('admin.tabs.users')       },
+    { id: 'providers',   label: t('admin.tabs.providers')   },
+    { id: 'submissions', label: t('admin.tabs.submissions') },
+  ]
 
   useEffect(() => {
     document.title = 'Admin | SoyManada'
@@ -824,16 +826,16 @@ export default function AdminPanel() {
     <main className="adm">
       <div className="container">
         <div className="adm__header">
-          <h1 className="d-lg adm__title">Panel de Administración</h1>
-          <p className="t-sm adm__sub">SoyManada · acceso restringido</p>
+          <h1 className="d-lg adm__title">{t('admin.title')}</h1>
+          <p className="t-sm adm__sub">{t('admin.subtitle')}</p>
         </div>
 
         <nav className="adm__tabs">
-          {TABS.map(t => (
-            <button key={t.id}
-              className={`adm__tab ${tab === t.id ? 'adm__tab--active' : ''}`}
-              onClick={() => setTab(t.id)}>
-              {t.label}
+          {TABS.map(tab_item => (
+            <button key={tab_item.id}
+              className={`adm__tab ${tab === tab_item.id ? 'adm__tab--active' : ''}`}
+              onClick={() => setTab(tab_item.id)}>
+              {tab_item.label}
             </button>
           ))}
         </nav>

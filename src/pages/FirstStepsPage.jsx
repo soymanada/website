@@ -154,14 +154,23 @@ function BancaContent({ t }) {
         ))}
       </div>
       <Tip text={t('first_steps.banca_tip')} />
-      <CtaButton href={WA_GROUP} icon="💬" label={t('first_steps.cta_community')} variant="community" />
+      <div className="fsp__cta-row">
+        <CtaButton to="/categoria/banca" icon="🏦" label={t('first_steps.cta_banca')} variant="advisor" />
+        <CtaButton href={WA_GROUP} icon="💬" label={t('first_steps.cta_community')} variant="community" />
+      </div>
     </div>
   )
 }
 
 function ArriendoContent({ t, country }) {
   const scams = ['arriendo_scam1','arriendo_scam2','arriendo_scam3','arriendo_scam4','arriendo_scam5']
-  const portals = ['Kijiji.ca','Rentals.ca','PadMapper','Facebook Marketplace','Grupos Manada']
+  const portals = [
+    { label: 'Kijiji.ca',          href: 'https://www.kijiji.ca' },
+    { label: 'Rentals.ca',         href: 'https://www.rentals.ca' },
+    { label: 'PadMapper',          href: 'https://www.padmapper.com' },
+    { label: 'Facebook Marketplace', href: 'https://www.facebook.com/marketplace' },
+    { label: 'Grupos Manada',      href: WA_GROUP },
+  ]
   return (
     <div className="fsp__content">
       <h2 className="fsp__content-title">{t('first_steps.arriendo_title')}</h2>
@@ -173,11 +182,18 @@ function ArriendoContent({ t, country }) {
         </div>
         <div className="fsp__box fsp__box--safe">
           <h3>{t('first_steps.arriendo_safe_title')}</h3>
-          <ul>{portals.map(p => <li key={p}><strong>{p}</strong></li>)}</ul>
+          <ul>{portals.map(p => (
+            <li key={p.label}>
+              <a href={p.href} target="_blank" rel="noopener noreferrer"><strong>{p.label}</strong></a>
+            </li>
+          ))}</ul>
         </div>
       </div>
       <Tip text={t('first_steps.arriendo_tip')} />
-      <CtaButton href={WA_SUBGROUPS} icon="🤝" label={t('first_steps.cta_groups')} variant="groups" />
+      <div className="fsp__cta-row">
+        <CtaButton to="/categoria/alojamiento" icon="🏠" label={t('first_steps.cta_alojamiento')} variant="advisor" />
+        <CtaButton href={WA_SUBGROUPS} icon="🤝" label={t('first_steps.cta_groups')} variant="groups" />
+      </div>
     </div>
   )
 }
@@ -194,7 +210,10 @@ function TrabajoContent({ t, country }) {
         <Step n="04" title={t('first_steps.trabajo_step4_title')} body={t('first_steps.trabajo_step4', { country })} />
       </div>
       <Tip text={t('first_steps.trabajo_tip')} />
-      <CtaButton href={WA_SUBGROUPS} icon="🤝" label={t('first_steps.cta_groups')} variant="groups" />
+      <div className="fsp__cta-row">
+        <CtaButton to="/categoria/trabajo" icon="💼" label={t('first_steps.cta_trabajo')} variant="advisor" />
+        <CtaButton href={WA_SUBGROUPS} icon="🤝" label={t('first_steps.cta_groups')} variant="groups" />
+      </div>
     </div>
   )
 }

@@ -60,7 +60,7 @@ export default function ReviewModal({ provider, userId, existingReview, onClose,
   return (
     <div className="rmodal__overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div className="rmodal" role="dialog" aria-modal="true">
-        <button className="rmodal__close" onClick={onClose} aria-label="Cerrar">✕</button>
+        <button className="rmodal__close" onClick={onClose} aria-label={t('reviews.close')}>✕</button>
 
         <div className="rmodal__header">
           <div className="rmodal__provider-avatar">

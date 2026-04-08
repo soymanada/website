@@ -226,11 +226,7 @@ export default function ProviderPage() {
       .maybeSingle()
       .then(({ data }) => {
         if (!data) setNotFound(true)
-        else {
-          // Encoding diagnostic — check browser console for corrupt characters
-          console.log('[ProviderPage] raw data from Supabase:', data)
-          setRawProvider(data)
-        }
+        else setRawProvider(data)
         setLoading(false)
       })
   }, [slug])
@@ -253,8 +249,8 @@ export default function ProviderPage() {
     if (!provider?.name) return
     const title = `${provider.name} | SoyManada`
     const description = provider.service
-      ? `${provider.service} — Proveedor verificado en SoyManada, el directorio de confianza para la comunidad migrante.`
-      : 'Proveedor verificado en SoyManada, el directorio de confianza para la comunidad migrante.'
+      ? t('provider.og_description', { service: provider.service })
+      : t('provider.og_description_empty')
     const url  = window.location.href
     const image = provider.avatar_url || 'https://soymanada.com/og-image.png'
 

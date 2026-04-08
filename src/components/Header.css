@@ -84,11 +84,22 @@
 }
 .hdr__provider-btn { color: var(--iris-600) !important; }
 
-/* Lang mobile — oculto en desktop, visible en mobile dentro de la barra */
+/* Lang — desktop: inside actions; mobile: in the top bar */
 .hdr__lang-mobile {
   display: none;
   margin-left: auto;
   align-items: center;
+}
+
+/* Tighten the switcher when inside the desktop actions row */
+.hdr__actions .lang-sw {
+  background: transparent;
+  padding: 0;
+  gap: 1px;
+}
+.hdr__actions .lang-sw__btn {
+  padding: 4px 7px;
+  font-size: 0.72rem;
 }
 
 /* Burger */

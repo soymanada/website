@@ -281,3 +281,14 @@
     min-width: 260px;
   }
 }
+
+.fsp__cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+.fsp__cta-row .fsp__cta-btn {
+  flex: 1 1 auto;
+  margin-top: 0;
+}

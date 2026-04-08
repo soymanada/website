@@ -73,7 +73,10 @@
     "visas_cta_btn": "See verified migration advisors",
     "cta_community": "Ask the Community",
     "cta_groups": "See Support Groups",
-    "cta_advisor": "Contact a Migration Advisor"
+    "cta_advisor": "Contact a Migration Advisor",
+    "cta_banca": "Find banking advisors on Manada →",
+    "cta_alojamiento": "Find housing advisors →",
+    "cta_trabajo": "Find employment advisors →"
   },
   "brand_name": "MyPack",
   "header": {
@@ -393,7 +396,8 @@
     "provider_reply_badge": "Provider",
     "provider_reply_placeholder": "Write your reply… (max. 500 characters)",
     "provider_reply_submit": "Post reply",
-    "provider_reply_publishing": "Publishing…"
+    "provider_reply_publishing": "Publishing…",
+    "close": "Close"
   },
   "pricing_page": {
     "eyebrow": "Plans for providers",
@@ -529,5 +533,18 @@
     "name": "Francisco Aleuy",
     "role": "Founder · Migrant",
     "tiktok_stat": "+20K on TikTok"
+  },
+  "provider": {
+    "og_description": "{{service}} — Verified provider on SoyManada, the trusted directory for the Hispanic migrant community.",
+    "og_description_empty": "Verified provider on SoyManada, the trusted directory for the Hispanic migrant community."
+  },
+  "admin": {
+    "title": "Admin Panel",
+    "subtitle": "SoyManada · restricted access",
+    "tabs": {
+      "users": "Users",
+      "providers": "Providers",
+      "submissions": "Applications"
+    }
   }
 }

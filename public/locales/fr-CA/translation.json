@@ -73,7 +73,10 @@
     "visas_cta_btn": "Voir les conseillers en migration vérifiés",
     "cta_community": "Consulter la Communauté",
     "cta_groups": "Voir les Groupes de Soutien",
-    "cta_advisor": "Contacter un Conseiller en Migration"
+    "cta_advisor": "Contacter un Conseiller en Migration",
+    "cta_banca": "Trouver des conseillers bancaires →",
+    "cta_alojamiento": "Trouver des conseillers en logement →",
+    "cta_trabajo": "Trouver des conseillers en emploi →"
   },
   "brand_name": "MonTroupeau",
   "header": {
@@ -393,7 +396,8 @@
     "provider_reply_badge": "Fournisseur",
     "provider_reply_placeholder": "Écrivez votre réponse… (max. 500 caractères)",
     "provider_reply_submit": "Publier la réponse",
-    "provider_reply_publishing": "Publication…"
+    "provider_reply_publishing": "Publication…",
+    "close": "Fermer"
   },
   "pricing_page": {
     "eyebrow": "Plans pour les fournisseurs",
@@ -529,5 +533,18 @@
     "name": "Francisco Aleuy",
     "role": "Fondateur · Migrant",
     "tiktok_stat": "+20K sur TikTok"
+  },
+  "provider": {
+    "og_description": "{{service}} — Fournisseur vérifié sur SoyManada, le répertoire de confiance pour la communauté migrante hispanophone.",
+    "og_description_empty": "Fournisseur vérifié sur SoyManada, le répertoire de confiance pour la communauté migrante hispanophone."
+  },
+  "admin": {
+    "title": "Panneau d'administration",
+    "subtitle": "SoyManada · accès restreint",
+    "tabs": {
+      "users": "Utilisateurs",
+      "providers": "Fournisseurs",
+      "submissions": "Demandes"
+    }
   }
 }

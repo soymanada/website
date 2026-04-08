@@ -72,7 +72,10 @@
     "visas_cta_btn": "Ver asesores de migración verificados",
     "cta_community": "Consultar en la Comunidad",
     "cta_groups": "Ver Grupos de Apoyo",
-    "cta_advisor": "Contactar Asesor Migratorio"
+    "cta_advisor": "Contactar Asesor Migratorio",
+    "cta_banca": "Ver asesores bancarios en Manada →",
+    "cta_alojamiento": "Ver asesores de alojamiento →",
+    "cta_trabajo": "Ver asesores de empleo →"
   },
   "header": {
     "nav_inicio": "Inicio",
@@ -390,7 +393,8 @@
     "provider_reply_badge": "Proveedor",
     "provider_reply_placeholder": "Escribe tu respuesta… (máx. 500 caracteres)",
     "provider_reply_submit": "Publicar respuesta",
-    "provider_reply_publishing": "Publicando…"
+    "provider_reply_publishing": "Publicando…",
+    "close": "Cerrar"
   },
   "pricing_page": {
     "eyebrow": "Planes para proveedores",
@@ -526,5 +530,18 @@
     "name": "Francisco Aleuy",
     "role": "Fundador · Migrante",
     "tiktok_stat": "+20K en TikTok"
+  },
+  "provider": {
+    "og_description": "{{service}} — Proveedor verificado en SoyManada, el directorio de confianza para la comunidad migrante.",
+    "og_description_empty": "Proveedor verificado en SoyManada, el directorio de confianza para la comunidad migrante."
+  },
+  "admin": {
+    "title": "Panel de Administración",
+    "subtitle": "SoyManada · acceso restringido",
+    "tabs": {
+      "users": "Usuarios",
+      "providers": "Proveedores",
+      "submissions": "Solicitudes"
+    }
   }
 }

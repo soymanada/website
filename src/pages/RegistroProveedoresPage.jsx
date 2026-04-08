@@ -109,7 +109,6 @@ export default function RegistroProveedoresPage() {
       terms_accepted: form.terms_accepted,
     })
     if (dbErr) {
-      console.error('provider_applications insert error:', dbErr)
       setError(`${t('registro.error_generico')} (${dbErr.message})`)
       setSubmitting(false)
     } else {
