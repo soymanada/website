@@ -4,7 +4,19 @@
   position: relative;
   overflow: hidden;
   background: linear-gradient(160deg, var(--iris-900) 0%, var(--iris-700) 100%);
-  padding: 140px 24px 72px;
+  padding: 140px 24px 96px;
+  margin-bottom: 0;
+}
+
+/* soft arch at the bottom of the hero so the break from dark to light feels designed */
+.fsp__hero::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0; right: 0;
+  height: 48px;
+  background: var(--ivory);
+  clip-path: ellipse(55% 100% at 50% 100%);
 }
 .fsp__hero-orb {
   position: absolute;
@@ -40,7 +52,7 @@
 
 /* Body */
 .fsp__body {
-  padding-top: 48px;
+  padding-top: 72px;
   padding-bottom: 80px;
 }
 

@@ -12,11 +12,10 @@ export default function RemesasTeaser() {
         {/* Left: identity */}
         <div className="remtease__identity">
           <div className="remtease__badge-icon" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" width="52" height="52">
-              <circle cx="24" cy="24" r="24" fill="rgba(255,255,255,0.12)" />
-              <path d="M10 24h28M30 17l7 7-7 7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M14 19c0-2.2 1.8-4 4-4h4" stroke="rgba(255,255,255,0.6)" strokeWidth="2" strokeLinecap="round"/>
-              <path d="M34 29c0 2.2-1.8 4-4 4h-4" stroke="rgba(255,255,255,0.6)" strokeWidth="2" strokeLinecap="round"/>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" width="36" height="36">
+              <path d="M8 24h32M28 14l12 10-12 10" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M16 18c0-2.8 2.2-5 5-5h5" stroke="rgba(255,255,255,0.7)" strokeWidth="2.5" strokeLinecap="round"/>
+              <path d="M32 30c0 2.8-2.2 5-5 5h-5" stroke="rgba(255,255,255,0.7)" strokeWidth="2.5" strokeLinecap="round"/>
             </svg>
           </div>
           <div>
