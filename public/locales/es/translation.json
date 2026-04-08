@@ -512,6 +512,13 @@
     "disclaimer": "Las tasas son estimaciones sobre el tipo de cambio interbancario de referencia y pueden diferir de las tasas reales al momento de tu transferencia. Verifica el monto exacto en cada plataforma antes de transferir. SoyManada puede recibir una comisión si realizas una operación desde estos links, sin costo adicional para ti.",
     "from_currency_label": "Moneda de origen"
   },
+  "remesas_teaser": {
+    "aria": "Comparador de remesas",
+    "eyebrow": "Herramienta gratuita",
+    "title": "Comparador de remesas",
+    "sub": "Encontrá el mejor tipo de cambio en segundos. Sin registro.",
+    "cta": "Comparar precios"
+  },
   "booking": {
     "title": "📅 Reservar cita",
     "no_slots": "No hay horarios disponibles en los próximos 14 días.",

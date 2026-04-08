@@ -515,6 +515,13 @@
     "disclaimer": "Rates are estimates based on the interbank reference exchange rate and may differ from actual rates at the time of your transfer. Verify the exact amount on each platform before transferring. SoyManada may receive a commission if you complete a transaction through these links, at no additional cost to you.",
     "from_currency_label": "Origin currency"
   },
+  "remesas_teaser": {
+    "aria": "Money transfer comparator",
+    "eyebrow": "Free tool",
+    "title": "Remittance comparator",
+    "sub": "Find the best exchange rate in seconds. No sign-up needed.",
+    "cta": "Compare rates"
+  },
   "booking": {
     "title": "📅 Book a session",
     "no_slots": "No available slots in the next 14 days.",

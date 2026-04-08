@@ -515,6 +515,13 @@
     "disclaimer": "Les taux sont des estimations basées sur le taux de change interbancaire de référence et peuvent différer des taux réels au moment de votre transfert. Vérifiez le montant exact sur chaque plateforme avant de transférer. SoyManada peut recevoir une commission si vous effectuez une opération depuis ces liens, sans frais supplémentaires pour vous.",
     "from_currency_label": "Devise d'origine"
   },
+  "remesas_teaser": {
+    "aria": "Comparateur de transferts d'argent",
+    "eyebrow": "Outil gratuit",
+    "title": "Comparateur de remises",
+    "sub": "Trouvez le meilleur taux de change en quelques secondes. Sans inscription.",
+    "cta": "Comparer les prix"
+  },
   "booking": {
     "title": "📅 Réserver une séance",
     "no_slots": "Aucun créneau disponible dans les 14 prochains jours.",

@@ -44,56 +44,43 @@
   padding-bottom: 80px;
 }
 
-/* Tabs — pill container */
+/* Tabs — individual pill tabs */
 .fsp__tabs {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 4px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
   margin-bottom: 32px;
-  background: #f8f9fa;
-  border-radius: 50px;
-  padding: 4px;
+  padding: 0;
+  background: transparent;
 }
 .fsp__tab {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
-  height: 44px;
-  padding: 0 16px;
-  border: none;
-  border-radius: 50px;
+  gap: 7px;
+  height: 40px;
+  padding: 0 18px;
+  border: 1.5px solid var(--iris-200);
+  border-radius: 100px;
   background: transparent;
   color: var(--text-500);
   font-size: 0.88rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all var(--t-med) var(--ease-out);
-  text-align: center;
-}
-.fsp__tab:nth-child(5) {
-  grid-column: span 2;
+  transition: all var(--t-fast);
+  white-space: nowrap;
 }
 .fsp__tab:hover {
+  border-color: var(--iris-400);
   color: var(--iris-700);
+  background: var(--iris-50);
 }
 .fsp__tab--active {
-  background: #ffffff;
-  color: var(--iris-900);
+  background: var(--iris-900);
+  border-color: var(--iris-900);
+  color: var(--white);
   font-weight: 600;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
 }
 .fsp__tab-icon { font-size: 1rem; }
-
-@media (min-width: 640px) {
-  .fsp__tabs {
-    grid-template-columns: repeat(5, 1fr);
-    border-radius: 50px;
-  }
-  .fsp__tab:nth-child(5) {
-    grid-column: span 1;
-  }
-}
 
 /* Panel */
 .fsp__panel {

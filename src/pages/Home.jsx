@@ -3,6 +3,7 @@ import Hero           from '../components/Hero'
 import StatsSection    from '../components/StatsSection'
 import ValueProps      from '../components/ValueProps'
 import CategoryGrid    from '../components/CategoryGrid'
+import RemesasTeaser   from '../components/RemesasTeaser'
 import HowItWorks      from '../components/HowItWorks'
 import FounderSection  from '../components/FounderSection'
 import TrustBadge      from '../components/TrustBadge'
@@ -23,6 +24,7 @@ export default function Home() {
       <StatsSection />
       <ValueProps />
       <CategoryGrid />
+      <RemesasTeaser />
       <HowItWorks />
       <Testimonials />
       <FounderSection />
