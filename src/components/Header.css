@@ -18,7 +18,7 @@
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: 0;
+  gap: 0 28px;
 }
 
 /* Logo */
@@ -56,14 +56,15 @@
   line-height: 1;
 }
 
-/* Nav — center column, scrolls horizontally if needed */
+/* Nav — center column, hard-clipped to its own column */
 .hdr__nav {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 2px;
-  padding: 0 16px;
+  padding: 0;
   overflow: hidden;
+  min-width: 0;  /* allow 1fr to shrink below content width */
 }
 .hdr__link {
   font-size: 0.82rem;
@@ -161,7 +162,7 @@
   padding: 0 20px 20px;
 }
 @media (max-width: 960px) {
-  .hdr__bar            { grid-template-columns: auto 1fr auto auto; }
+  .hdr__bar            { grid-template-columns: auto 1fr auto auto; gap: 0; }
   .hdr__nav            { display: none; }
   .hdr__actions        { display: none; }
   .hdr__lang-mobile    { display: flex; }
