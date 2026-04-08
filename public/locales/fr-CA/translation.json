@@ -76,7 +76,8 @@
     "cta_advisor": "Contacter un Conseiller en Migration",
     "cta_banca": "Trouver des conseillers bancaires →",
     "cta_alojamiento": "Trouver des conseillers en logement →",
-    "cta_trabajo": "Trouver des conseillers en emploi →"
+    "cta_trabajo": "Trouver des conseillers en emploi →",
+    "meta_title": "Premiers pas au {{country}} | SoyManada"
   },
   "brand_name": "MonTroupeau",
   "header": {

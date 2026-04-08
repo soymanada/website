@@ -76,7 +76,8 @@
     "cta_advisor": "Contact a Migration Advisor",
     "cta_banca": "Find banking advisors on Manada →",
     "cta_alojamiento": "Find housing advisors →",
-    "cta_trabajo": "Find employment advisors →"
+    "cta_trabajo": "Find employment advisors →",
+    "meta_title": "Getting started in {{country}} | SoyManada"
   },
   "brand_name": "MyPack",
   "header": {

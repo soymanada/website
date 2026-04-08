@@ -1,6 +1,7 @@
 // src/pages/LoginPage.jsx — Login con Google OAuth + Email/Password
 import { useEffect, useState } from 'react'
 import { useNavigate, useLocation, Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../hooks/useAuth'
 import { trackEvent, Events } from '../utils/analytics'
@@ -11,6 +12,7 @@ export default function LoginPage() {
   const { user }    = useAuth()
   const navigate    = useNavigate()
   const location    = useLocation()
+  const { t }       = useTranslation()
   // Si viene de una ruta protegida o del gate, volver ahí tras el login
   const from        = location.state?.from?.pathname ?? '/proveedores'
 
@@ -74,7 +76,7 @@ export default function LoginPage() {
         })
         if (error) throw error
         trackEvent(Events.SIGN_UP, { method: 'email' })
-        setSuccess('¡Cuenta creada! Revisa tu email para confirmar tu registro.')
+        setSuccess(t('login_page.success_register'))
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password })
         if (error) throw error
@@ -83,10 +85,10 @@ export default function LoginPage() {
       }
     } catch (err) {
       const msg = err.message
-      if (msg.includes('Invalid login credentials'))    setError('Email o contraseña incorrectos.')
-      else if (msg.includes('Email not confirmed'))     setError('Confirma tu email antes de ingresar.')
-      else if (msg.includes('User already registered')) setError('Ya existe una cuenta con ese email.')
-      else if (msg.includes('Password should be'))      setError('La contraseña debe tener al menos 6 caracteres.')
+      if (msg.includes('Invalid login credentials'))    setError(t('login_page.error_credentials'))
+      else if (msg.includes('Email not confirmed'))     setError(t('login_page.error_not_confirmed'))
+      else if (msg.includes('User already registered')) setError(t('login_page.error_already_registered'))
+      else if (msg.includes('Password should be'))      setError(t('login_page.error_password_length'))
       else setError(msg)
     } finally {
       setLoading(false)
@@ -117,20 +119,18 @@ export default function LoginPage() {
             className={`lgp__tab${mode === 'login' ? ' lgp__tab--active' : ''}`}
             onClick={() => switchMode('login')}
           >
-            Ingresar
+            {t('login_page.tab_login')}
           </button>
           <button
             className={`lgp__tab${mode === 'register' ? ' lgp__tab--active' : ''}`}
             onClick={() => switchMode('register')}
           >
-            Registrarse
+            {t('login_page.tab_register')}
           </button>
         </div>
 
         <p className="lgp__subtitle t-sm">
-          {mode === 'login'
-            ? 'Ingresa para ver los datos de contacto de los proveedores.'
-            : 'Crea tu cuenta gratis para contactar proveedores directamente.'}
+          {mode === 'login' ? t('login_page.subtitle_login') : t('login_page.subtitle_register')}
         </p>
 
         {/* Botón Google */}
@@ -145,13 +145,13 @@ export default function LoginPage() {
               <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
             </svg>
           )}
-          <span>{googleLoading ? 'Redirigiendo…' : 'Continuar con Google'}</span>
+          <span>{t(googleLoading ? 'login_page.google_loading' : 'login_page.google_btn')}</span>
         </button>
 
         {/* Divisor */}
         <div className="lgp__divider">
           <span className="lgp__divider-line" />
-          <span className="lgp__divider-text t-xs">o con tu email</span>
+          <span className="lgp__divider-text t-xs">{t('login_page.divider')}</span>
           <span className="lgp__divider-line" />
         </div>
 
@@ -159,36 +159,36 @@ export default function LoginPage() {
         <form className="lgp__form" onSubmit={handleSubmit} noValidate>
           {mode === 'register' && (
             <div className="lgp__field">
-              <label className="lgp__label t-sm" htmlFor="name">Nombre completo</label>
+              <label className="lgp__label t-sm" htmlFor="name">{t('login_page.field_name')}</label>
               <input
                 id="name" className="lgp__input" type="text"
-                placeholder="María González"
+                placeholder={t('login_page.field_name_placeholder')}
                 value={name} onChange={e => setName(e.target.value)}
                 required autoComplete="name"
               />
             </div>
           )}
           <div className="lgp__field">
-            <label className="lgp__label t-sm" htmlFor="email">Email</label>
+            <label className="lgp__label t-sm" htmlFor="email">{t('login_page.field_email')}</label>
             <input
               id="email" className="lgp__input" type="email"
-              placeholder="tu@email.com"
+              placeholder={t('login_page.field_email_placeholder')}
               value={email} onChange={e => setEmail(e.target.value)}
               required autoComplete="email"
             />
           </div>
           <div className="lgp__field">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <label className="lgp__label t-sm" htmlFor="password">Contraseña</label>
+              <label className="lgp__label t-sm" htmlFor="password">{t('login_page.field_password')}</label>
               {mode === 'login' && (
                 <Link to="/reset-password" className="t-xs" style={{ color: 'var(--iris-500)', fontWeight: 600 }}>
-                  ¿Olvidaste tu contraseña?
+                  {t('login_page.forgot_password')}
                 </Link>
               )}
             </div>
             <input
               id="password" className="lgp__input" type="password"
-              placeholder={mode === 'register' ? 'Mínimo 6 caracteres' : '••••••••'}
+              placeholder={t(mode === 'register' ? 'login_page.field_password_placeholder_new' : 'login_page.field_password_placeholder')}
               value={password} onChange={e => setPassword(e.target.value)}
               required autoComplete={mode === 'register' ? 'new-password' : 'current-password'}
             />
@@ -198,14 +198,11 @@ export default function LoginPage() {
           {success && <p className="lgp__success t-sm">{success}</p>}
 
           <button className="btn btn-primary btn-full" type="submit" disabled={loading || googleLoading}>
-            <span>{loading ? 'Un momento…' : mode === 'login' ? 'Ingresar' : 'Crear cuenta'}</span>
+            <span>{t(loading ? 'login_page.btn_loading' : mode === 'login' ? 'login_page.btn_login' : 'login_page.btn_register')}</span>
           </button>
         </form>
 
-        <p className="lgp__footer t-xs">
-          Al ingresar aceptas que SoyManada es un directorio informativo
-          y no provee asesoría legal ni migratoria.
-        </p>
+        <p className="lgp__footer t-xs">{t('login_page.footer_disclaimer')}</p>
       </div>
     </main>
   )

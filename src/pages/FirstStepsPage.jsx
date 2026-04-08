@@ -25,8 +25,8 @@ export default function FirstStepsPage() {
   const country = t('common.currentCountry')
 
   useEffect(() => {
-    const title = `Guía de Llegada a ${country} | SoyManada`
-    const description = `Todo lo que necesitas saber en tu primer mes en ${country}: SIN Number, banca, arriendo, trabajo y visas RO. Sin rodeos.`
+    const title = t('first_steps.meta_title', { country })
+    const description = t('first_steps.sub')
     document.title = title
     setMeta('[property="og:title"]',       title)
     setMeta('[property="og:description"]', description)

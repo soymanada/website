@@ -75,7 +75,8 @@
     "cta_advisor": "Contactar Asesor Migratorio",
     "cta_banca": "Ver asesores bancarios en Manada →",
     "cta_alojamiento": "Ver asesores de alojamiento →",
-    "cta_trabajo": "Ver asesores de empleo →"
+    "cta_trabajo": "Ver asesores de empleo →",
+    "meta_title": "Guía de llegada a {{country}} | SoyManada"
   },
   "header": {
     "nav_inicio": "Inicio",
