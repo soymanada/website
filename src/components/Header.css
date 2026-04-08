@@ -56,21 +56,21 @@
   line-height: 1;
 }
 
-/* Nav — center column, hard-clipped to its own column */
+/* Nav — center column, left-anchored, clips cleanly on the right */
 .hdr__nav {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 2px;
   padding: 0;
   overflow: hidden;
-  min-width: 0;  /* allow 1fr to shrink below content width */
+  min-width: 0;
 }
 .hdr__link {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 500;
   color: var(--text-500);
-  padding: 6px 9px;
+  padding: 5px 8px;
   border-radius: 100px;
   transition: all var(--t-fast);
   text-decoration: none;

@@ -58,7 +58,7 @@ export default function Header() {
         </Link>
 
         <nav className="hdr__nav">
-          {navLinks.map(l => (
+          {navLinks.slice(0, 6).map(l => (
             <NavLink key={l.to} to={l.to} className={({ isActive }) => `hdr__link${isActive ? ' hdr__link--active' : ''}`}>
               {l.label}
             </NavLink>
