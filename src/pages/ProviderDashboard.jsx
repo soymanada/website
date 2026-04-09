@@ -10,6 +10,7 @@ import MetricsSummary      from '../components/dashboard/MetricsSummary'
 import WeeklyActivity      from '../components/dashboard/WeeklyActivity'
 import AutoRecommendations from '../components/dashboard/AutoRecommendations'
 import AvailabilityEditor  from '../components/AvailabilityEditor'
+import ProviderInbox       from '../components/ProviderInbox'
 import { useDashboardBookings, updateBookingStatus } from '../hooks/useBookings'
 import './ProviderDashboard.css'
 
@@ -263,6 +264,9 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
         <p className="t-sm pdash__section-sub">{t('pdash.herramientas_sub')}</p>
       </div>
 
+      {/* ── WhatsApp visibility — Silver+ ── */}
+      <WAVisibilityToggle tier={tier} provider={provider} onSave={onSave} />
+
       {/* ── Calendario — Silver+ ── */}
       <div className="pdash__tools-block">
         <div className="pdash__tools-block-header">
@@ -406,6 +410,73 @@ const STATUS_LABELS = {
   confirmed: '✅ Confirmada',
   cancelled: '❌ Cancelada',
   completed: '✔ Completada',
+}
+
+// ── WhatsApp visibility toggle (Silver+) ─────────────────────────
+function WAVisibilityToggle({ tier, provider, onSave }) {
+  const { t } = useTranslation()
+  const isSilverPlus = tier === 'silver' || tier === 'gold'
+  const [enabled, setEnabled] = useState(provider?.show_whatsapp ?? false)
+  const [saved,   setSaved]   = useState(false)
+
+  const toggle = async (val) => {
+    setEnabled(val)
+    // TODO: include show_whatsapp in providers table, then call onSave({ show_whatsapp: val })
+    setSaved(true)
+    setTimeout(() => setSaved(false), 2000)
+  }
+
+  return (
+    <div className="pdash__tools-block">
+      <div className="pdash__tools-block-header">
+        <span className="pdash__tools-block-title t-sm">📱 {t('messaging.whatsapp_toggle_section')}</span>
+        <span className="pdash__badge pdash__badge--silver">Silver+</span>
+      </div>
+      {isSilverPlus ? (
+        <div className="pdash__wa-toggle-row">
+          <div>
+            <strong className="t-sm">{t('messaging.whatsapp_toggle')}</strong>
+            <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 2 }}>
+              {t('messaging.whatsapp_toggle_hint')}
+            </p>
+          </div>
+          <div className="pdash__wa-toggle-right">
+            {saved && <span className="t-xs pdash__saved-tag">✓ {t('messaging.saved')}</span>}
+            <label className="pdash__switch-label">
+              <input type="checkbox" checked={enabled} onChange={e => toggle(e.target.checked)}
+                style={{ display: 'none' }} />
+              <span className={`pdash__switch${enabled ? ' pdash__switch--on' : ''}`}
+                onClick={() => toggle(!enabled)}>
+                <span className="pdash__switch-thumb" />
+              </span>
+            </label>
+          </div>
+        </div>
+      ) : (
+        <div className="pdash__tool-card pdash__tool-card--locked">
+          <span className="pdash__tool-icon">📱</span>
+          <div>
+            <strong className="t-sm">{t('messaging.whatsapp_toggle')}</strong>
+            <p className="t-xs" style={{ color: 'var(--text-300)' }}>{t('messaging.whatsapp_tier_lock')}</p>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ── Mensajes tab ──────────────────────────────────────────────────
+function SectionMensajes({ provider }) {
+  const { t } = useTranslation()
+  return (
+    <div className="pdash__section">
+      <div className="pdash__section-header">
+        <h2 className="pdash__section-title d-md">{t('messaging.inbox_title')}</h2>
+        <p className="t-sm pdash__section-sub">{t('messaging.inbox_sub')}</p>
+      </div>
+      <ProviderInbox providerId={provider?.id} />
+    </div>
+  )
 }
 
 function SectionReservas({ provider, tier }) {
@@ -776,6 +847,7 @@ export default function ProviderDashboard() {
 
   const tabs = [
     { id: 'perfil',       label: `👤 ${t('pdash.tab_perfil')}` },
+    { id: 'mensajes',     label: `💬 ${t('pdash.tab_mensajes')}` },
     { id: 'metricas',     label: `📊 ${t('pdash.tab_metricas')}` },
     { id: 'herramientas', label: `🛠 ${t('pdash.tab_herramientas')}` },
     { id: 'reservas',     label: `📅 ${t('pdash.tab_reservas')}` },
@@ -845,6 +917,9 @@ export default function ProviderDashboard() {
               {activeTab === 'perfil' && (
                 <ProviderProfileEditor provider={provider} tier={tier} onSave={handleSave} saving={saving}
                   onAvatarUpload={handleAvatarUpload} avatarUploading={avatarUploading} />
+              )}
+              {activeTab === 'mensajes' && (
+                <SectionMensajes provider={provider} />
               )}
               {activeTab === 'metricas' && (
                 <SectionMetricas

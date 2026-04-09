@@ -155,6 +155,7 @@
   transition: opacity 0.15s;
 }
 .ppage__btn:hover { opacity: 0.88; }
+.ppage__btn--msg  { background: var(--iris-600); color: #fff; }
 .ppage__btn--wa  { background: #25D366; color: #fff; }
 .ppage__btn--ig  { background: #e1306c; color: #fff; }
 .ppage__btn--web { background: var(--iris-100); color: var(--iris-800); }

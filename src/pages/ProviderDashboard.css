@@ -194,6 +194,34 @@
 
 /* Tools */
 .pdash__tools-block { border: 1px solid var(--iris-200); border-radius: var(--r-lg); padding: 20px; }
+
+/* WhatsApp toggle row */
+.pdash__wa-toggle-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.pdash__wa-toggle-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.pdash__saved-tag { color: var(--iris-500); font-weight: 600; }
+
+/* Toggle switch (reused in inbox notifications too) */
+.pdash__switch {
+  width: 42px; height: 24px;
+  background: var(--border-200, #d1d5db);
+  border-radius: 100px;
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+.pdash__switch--on { background: var(--iris-600, #4f46e5); }
+.pdash__switch-thumb {
+  position: absolute;
+  top: 4px; left: 4px;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
+}
+.pdash__switch--on .pdash__switch-thumb { transform: translateX(18px); }
 .pdash__tools-block-header { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
 .pdash__tools-block-title { font-weight: 600; color: var(--text-700); }
 .pdash__tools-preview { display: flex; flex-direction: column; gap: 12px; }

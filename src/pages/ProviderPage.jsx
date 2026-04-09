@@ -15,6 +15,7 @@ import { trackEvent, Events } from '../utils/analytics'
 import VerificationBadge from '../components/VerificationBadge'
 import PawRating from '../components/PawRating'
 import ReviewModal      from '../components/ReviewModal'
+import MessageModal     from '../components/MessageModal'
 import BookingCalendar  from '../components/BookingCalendar'
 import Interstitial from '../components/Interstitial'
 import './ProviderPage.css'
@@ -214,6 +215,7 @@ export default function ProviderPage() {
   const [loading,     setLoading]     = useState(true)
   const [notFound,    setNotFound]    = useState(false)
   const [showReview,  setShowReview]  = useState(false)
+  const [showMsg,     setShowMsg]     = useState(false)
   const [isConnecting,   setIsConnecting]   = useState(false)
   const [targetPlatform, setTargetPlatform] = useState('')
 
@@ -317,6 +319,15 @@ export default function ProviderPage() {
         />
       )}
 
+      {showMsg && (
+        <MessageModal
+          providerId={providerId}
+          providerName={provider?.name}
+          userId={user?.id}
+          onClose={() => setShowMsg(false)}
+        />
+      )}
+
       <main className="ppage">
         <div className="container">
           <nav className="ppage__breadcrumb">
@@ -402,12 +413,22 @@ export default function ProviderPage() {
                 <div className="ppage__contact-actions">
                   {user ? (
                     <>
-                      {contact?.whatsapp && (
-                        <button className="ppage__btn ppage__btn--wa"
-                          onClick={() => handleContact('whatsapp', `https://wa.me/${contact.whatsapp}`)}>
-                          {t('provider_card.contact_whatsapp')}
-                        </button>
-                      )}
+                      {/* Primary CTA: internal messaging — always visible */}
+                      <button className="ppage__btn ppage__btn--msg"
+                        onClick={() => setShowMsg(true)}>
+                        {t('messaging.cta')}
+                      </button>
+
+                      {/* WhatsApp — Silver/Gold only AND provider has enabled it */}
+                      {contact?.whatsapp &&
+                        rawProvider?.tier !== 'bronze' &&
+                        rawProvider?.show_whatsapp && (
+                          <button className="ppage__btn ppage__btn--wa"
+                            onClick={() => handleContact('whatsapp', `https://wa.me/${contact.whatsapp}`)}>
+                            {t('provider_card.contact_whatsapp')}
+                          </button>
+                        )}
+
                       {contact?.instagram && (
                         <button className="ppage__btn ppage__btn--ig"
                           onClick={() => handleContact('instagram', `https://instagram.com/${contact.instagram}`)}>
