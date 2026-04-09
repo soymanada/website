@@ -1,0 +1,228 @@
+/* src/components/ManadaStories.css */
+
+.mstories {
+  padding: 80px 0 96px;
+  background: linear-gradient(180deg, #faf9f7 0%, #fff 100%);
+  overflow: hidden;
+}
+
+.mstories__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+}
+
+/* ── Header ──────────────────────────────────────────────── */
+.mstories__header {
+  text-align: center;
+  max-width: 560px;
+}
+
+.mstories__eyebrow {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--iris-600, #4f46e5);
+  margin-bottom: 10px;
+}
+
+.mstories__title {
+  font-size: clamp(1.55rem, 3vw, 2.1rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-900, #111);
+  margin: 0 0 12px;
+}
+
+.mstories__sub {
+  font-size: 1rem;
+  color: var(--text-500, #6b7280);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* ── Group photo ─────────────────────────────────────────── */
+.mstories__photo-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 860px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.10);
+}
+
+.mstories__group-photo {
+  width: 100%;
+  height: 340px;
+  object-fit: cover;
+  object-position: center 30%;
+  display: block;
+}
+
+.mstories__photo-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 20px 14px;
+  background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 100%);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+/* ── Cards — desktop 3-col grid ──────────────────────────── */
+.mstories__cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  width: 100%;
+  max-width: 980px;
+}
+
+.mstories__card {
+  background: #fff;
+  border: 1.5px solid var(--border-100, #e5e7eb);
+  border-radius: 14px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.mstories__card:hover {
+  box-shadow: 0 6px 24px rgba(0,0,0,0.09);
+  border-color: var(--iris-200, #c7d2fe);
+  transform: translateY(-2px);
+}
+
+/* ── Card internals ──────────────────────────────────────── */
+.mstories__card-top {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.mstories__avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 2px solid var(--iris-100, #e0e7ff);
+}
+
+.mstories__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mstories__name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-900, #111);
+  line-height: 1.2;
+}
+
+.mstories__city {
+  font-size: 0.78rem;
+  color: var(--text-400, #9ca3af);
+}
+
+.mstories__handle {
+  font-size: 0.72rem;
+  color: var(--iris-500, #6366f1);
+}
+
+.mstories__quote {
+  margin: 0;
+  padding: 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text-600, #4b5563);
+  position: relative;
+  padding-left: 4px;
+}
+
+.mstories__quote-mark {
+  font-size: 2.5rem;
+  line-height: 0;
+  vertical-align: -0.6rem;
+  margin-right: 2px;
+  color: var(--iris-300, #a5b4fc);
+  font-family: Georgia, serif;
+}
+
+/* ── Mobile indicators (hidden on desktop) ───────────────── */
+.mstories__indicators {
+  display: none;
+  gap: 8px;
+  justify-content: center;
+  margin-top: -16px;
+}
+
+.mstories__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: var(--border-200, #d1d5db);
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.mstories__dot--on {
+  background: var(--iris-600, #4f46e5);
+  transform: scale(1.3);
+}
+
+/* ── Mobile: horizontal scroll carousel ──────────────────── */
+@media (max-width: 760px) {
+  .mstories {
+    padding: 60px 0 72px;
+  }
+
+  .mstories__inner {
+    gap: 36px;
+  }
+
+  .mstories__group-photo {
+    height: 220px;
+  }
+
+  /* Carousel */
+  .mstories__cards {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 16px;
+    padding: 4px 24px 12px;
+    /* Hide scrollbar */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .mstories__cards::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mstories__card {
+    flex: 0 0 82vw;
+    max-width: 320px;
+    scroll-snap-align: center;
+  }
+
+  .mstories__indicators {
+    display: flex;
+  }
+}
