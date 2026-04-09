@@ -1,6 +1,7 @@
 // src/pages/ProviderDashboard.jsx
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import PhoneInput from 'react-phone-number-input'
 import 'react-phone-number-input/style.css'
 import { useAuth } from '../hooks/useAuth'
@@ -14,6 +15,7 @@ import './ProviderDashboard.css'
 
 // ── Avatar uploader ───────────────────────────────────────────────
 function AvatarUploader({ provider, onUpload, uploading }) {
+  const { t } = useTranslation()
   const inputRef = React.useRef()
   const src = provider?.avatar_url
 
@@ -29,11 +31,11 @@ function AvatarUploader({ provider, onUpload, uploading }) {
         </div>
       </div>
       <div>
-        <p className="t-sm" style={{ fontWeight: 600, color: 'var(--text-700)' }}>Foto de perfil</p>
-        <p className="t-xs" style={{ color: 'var(--text-300)' }}>JPG o PNG · máx. 2 MB</p>
+        <p className="t-sm" style={{ fontWeight: 600, color: 'var(--text-700)' }}>{t('pdash.avatar_label')}</p>
+        <p className="t-xs" style={{ color: 'var(--text-300)' }}>{t('pdash.avatar_hint')}</p>
         <button className="btn btn-ghost btn-sm" style={{ marginTop: 8 }}
           onClick={() => inputRef.current?.click()} disabled={uploading}>
-          {uploading ? 'Subiendo…' : 'Cambiar foto'}
+          {uploading ? t('pdash.saving') : t('pdash.avatar_change')}
         </button>
       </div>
       <input ref={inputRef} type="file" accept="image/jpeg,image/png,image/webp"
@@ -48,6 +50,7 @@ function AvatarUploader({ provider, onUpload, uploading }) {
 
 // ── Editor de perfil ─────────────────────────────────────────────
 function ProviderProfileEditor({ provider, tier, onSave, saving, onAvatarUpload, avatarUploading }) {
+  const { t } = useTranslation()
   const [form, setForm] = useState({
     name:                provider?.name                ?? '',
     description:         provider?.description         ?? '',
@@ -65,8 +68,8 @@ function ProviderProfileEditor({ provider, tier, onSave, saving, onAvatarUpload,
   return (
     <div className="pdash__section">
       <div className="pdash__section-header">
-        <h2 className="pdash__section-title d-md">Mi perfil</h2>
-        <p className="t-sm pdash__section-sub">Esto es exactamente lo que los migrantes ven de ti.</p>
+        <h2 className="pdash__section-title d-md">{t('pdash.tab_perfil_label')}</h2>
+        <p className="t-sm pdash__section-sub">{t('pdash.perfil_sub')}</p>
       </div>
 
       <AvatarUploader provider={provider} onUpload={onAvatarUpload} uploading={avatarUploading} />
@@ -188,7 +191,7 @@ function ProviderProfileEditor({ provider, tier, onSave, saving, onAvatarUpload,
         </div>
 
         <button className="btn btn-primary pdash__save-btn" onClick={() => onSave(form)} disabled={saving}>
-          <span>{saving ? 'Guardando…' : 'Guardar cambios'}</span>
+          <span>{saving ? t('pdash.saving') : t('pdash.save_changes')}</span>
         </button>
       </div>
 
@@ -233,7 +236,7 @@ function ProviderProfileEditor({ provider, tier, onSave, saving, onAvatarUpload,
         ))}
 
         <button className="btn btn-secondary pdash__save-btn" onClick={() => onSave({ ...form })} disabled={saving}>
-          <span>{saving ? 'Guardando…' : 'Guardar traducciones'}</span>
+          <span>{saving ? t('pdash.saving') : t('pdash.save_translations')}</span>
         </button>
       </div>
     </div>
@@ -242,6 +245,7 @@ function ProviderProfileEditor({ provider, tier, onSave, saving, onAvatarUpload,
 
 // ── Sección Herramientas (Silver/Gold) ──────────────────────────
 function SectionHerramientas({ tier, provider, onSave, saving }) {
+  const { t } = useTranslation()
   const isSilverPlus = tier === 'silver' || tier === 'gold'
   const isGold       = tier === 'gold'
   const [form, setForm] = useState({
@@ -255,8 +259,8 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
   return (
     <div className="pdash__section">
       <div className="pdash__section-header">
-        <h2 className="pdash__section-title d-md">Herramientas</h2>
-        <p className="t-sm pdash__section-sub">Automatiza tu atención y ahorra tiempo.</p>
+        <h2 className="pdash__section-title d-md">{t('pdash.tab_herramientas_label')}</h2>
+        <p className="t-sm pdash__section-sub">{t('pdash.herramientas_sub')}</p>
       </div>
 
       {/* ── Calendario — Silver+ ── */}
@@ -340,7 +344,7 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
           redirect_email:       form.redirect_email,
           predefined_responses: form.predefined_responses,
         })} disabled={saving}>
-          <span>{saving ? 'Guardando…' : 'Guardar herramientas'}</span>
+          <span>{saving ? t('pdash.saving') : t('pdash.save_herramientas')}</span>
         </button>
       )}
     </div>
@@ -349,13 +353,14 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
 
 // ── Sección métricas completa ────────────────────────────────────
 function SectionMetricas({ tier, metrics, activity, hourlyActivity, feedback, provider, metricsLoading }) {
+  const { t } = useTranslation()
   const locked = tier === 'bronze' || !tier
 
   if (locked) return (
     <div className="pdash__section">
       <div className="pdash__section-header">
         <h2 className="pdash__section-title d-md">
-          Métricas <span className="pdash__badge pdash__badge--silver">Silver</span>
+          {t('pdash.tab_metricas_label')} <span className="pdash__badge pdash__badge--silver">Silver</span>
         </h2>
         <p className="t-sm pdash__section-sub">Entiende cómo los migrantes interactúan con tu perfil.</p>
       </div>
@@ -374,16 +379,16 @@ function SectionMetricas({ tier, metrics, activity, hourlyActivity, feedback, pr
   return (
     <div className="pdash__section">
       <div className="pdash__section-header">
-        <h2 className="pdash__section-title d-md">Métricas</h2>
-        <p className="t-sm pdash__section-sub">Últimos 7 días.</p>
+        <h2 className="pdash__section-title d-md">{t('pdash.tab_metricas_label')}</h2>
+        <p className="t-sm pdash__section-sub">{t('pdash.metricas_sub')}</p>
       </div>
 
       <MetricsSummary metrics={metrics} loading={metricsLoading} />
 
-      <div className="pdash__subsection-title label" style={{ marginTop: 8 }}>Actividad por día</div>
+      <div className="pdash__subsection-title label" style={{ marginTop: 8 }}>{t('pdash.activity_by_day')}</div>
       <WeeklyActivity activity={activity} loading={metricsLoading} />
 
-      <div className="pdash__subsection-title label" style={{ marginTop: 8 }}>Recomendaciones</div>
+      <div className="pdash__subsection-title label" style={{ marginTop: 8 }}>{t('pdash.recommendations')}</div>
       <AutoRecommendations
         metrics={metrics}
         activity={activity}
@@ -404,6 +409,7 @@ const STATUS_LABELS = {
 }
 
 function SectionReservas({ provider, tier }) {
+  const { t } = useTranslation()
   const { bookings, loading, reload } = useDashboardBookings(provider?.id)
   const [updating, setUpdating] = useState(null)
   const isSilverPlus = tier === 'silver' || tier === 'gold'
@@ -411,8 +417,8 @@ function SectionReservas({ provider, tier }) {
   if (!isSilverPlus) return (
     <div className="pdash__section">
       <div className="pdash__section-header">
-        <h2 className="pdash__section-title d-md">Reservas</h2>
-        <p className="t-sm pdash__section-sub">Gestiona las citas con migrantes.</p>
+        <h2 className="pdash__section-title d-md">{t('pdash.tab_reservas_label')}</h2>
+        <p className="t-sm pdash__section-sub">{t('pdash.reservas_manage_sub')}</p>
       </div>
       <div className="pdash__locked">
         <div className="pdash__upgrade-cta">
@@ -449,8 +455,8 @@ function SectionReservas({ provider, tier }) {
   return (
     <div className="pdash__section">
       <div className="pdash__section-header">
-        <h2 className="pdash__section-title d-md">Reservas</h2>
-        <p className="t-sm pdash__section-sub">Citas solicitadas por migrantes.</p>
+        <h2 className="pdash__section-title d-md">{t('pdash.tab_reservas_label')}</h2>
+        <p className="t-sm pdash__section-sub">{t('pdash.reservas_sub')}</p>
       </div>
 
       {bookings.length === 0 ? (
@@ -461,7 +467,7 @@ function SectionReservas({ provider, tier }) {
         <>
           {pending.length > 0 && (
             <div className="pdash__bookings-group">
-              <h3 className="pdash__bookings-group-title t-sm">⏳ Pendientes de confirmar ({pending.length})</h3>
+              <h3 className="pdash__bookings-group-title t-sm">⏳ {t('pdash.reservas_pending', { count: pending.length })}</h3>
               {pending.map(b => (
                 <div key={b.id} className="pdash__booking-card pdash__booking-card--pending">
                   <div className="pdash__booking-info">
@@ -471,11 +477,11 @@ function SectionReservas({ provider, tier }) {
                   <div className="pdash__booking-actions">
                     <button className="btn btn-primary btn-sm" disabled={updating === b.id}
                       onClick={() => handleStatus(b.id, 'confirmed')}>
-                      <span>Confirmar</span>
+                      <span>{t('pdash.reservas_confirm')}</span>
                     </button>
                     <button className="btn btn-ghost btn-sm" disabled={updating === b.id}
                       onClick={() => handleStatus(b.id, 'cancelled')}>
-                      <span>Rechazar</span>
+                      <span>{t('pdash.reservas_reject')}</span>
                     </button>
                   </div>
                 </div>
@@ -485,7 +491,7 @@ function SectionReservas({ provider, tier }) {
 
           {confirmed.length > 0 && (
             <div className="pdash__bookings-group">
-              <h3 className="pdash__bookings-group-title t-sm">✅ Confirmadas ({confirmed.length})</h3>
+              <h3 className="pdash__bookings-group-title t-sm">✅ {t('pdash.reservas_confirmed', { count: confirmed.length })}</h3>
               {confirmed.map(b => (
                 <div key={b.id} className="pdash__booking-card pdash__booking-card--confirmed">
                   <div className="pdash__booking-info">
@@ -494,7 +500,7 @@ function SectionReservas({ provider, tier }) {
                   </div>
                   <button className="btn btn-ghost btn-sm" disabled={updating === b.id}
                     onClick={() => handleStatus(b.id, 'completed')}>
-                    <span>Marcar completada</span>
+                    <span>{t('pdash.reservas_complete')}</span>
                   </button>
                 </div>
               ))}
@@ -503,7 +509,7 @@ function SectionReservas({ provider, tier }) {
 
           {past.length > 0 && (
             <div className="pdash__bookings-group">
-              <h3 className="pdash__bookings-group-title t-sm">Historial</h3>
+              <h3 className="pdash__bookings-group-title t-sm">{t('pdash.reservas_history')}</h3>
               {past.map(b => (
                 <div key={b.id} className="pdash__booking-card pdash__booking-card--past">
                   <span className="t-xs" style={{ color: 'var(--text-400)' }}>{fmtDt(b.start_at)}</span>
@@ -561,18 +567,19 @@ const TIERS_DEF = [
 ]
 
 function SectionMiPlan({ tier }) {
+  const { t } = useTranslation()
   const current = tier ?? 'bronze'
 
   return (
     <div className="pdash__section">
       <div className="pdash__section-header">
-        <h2 className="pdash__section-title d-md">Mi plan</h2>
-        <p className="t-sm pdash__section-sub">Tu plan actual y lo que puedes desbloquear.</p>
+        <h2 className="pdash__section-title d-md">{t('pdash.tab_miplan_label')}</h2>
+        <p className="t-sm pdash__section-sub">{t('pdash.miplan_sub')}</p>
       </div>
 
       {/* Plan actual badge */}
       <div className="pdash__plan-current">
-        <span className="pdash__plan-current-label t-xs">Tu plan actual</span>
+        <span className="pdash__plan-current-label t-xs">{t('pdash.miplan_current_label')}</span>
         <div className={`pdash__plan-current-badge pdash__plan-current-badge--${current}`}>
           {TIERS_DEF.find(t => t.key === current)?.icon} {current.charAt(0).toUpperCase() + current.slice(1)}
         </div>
@@ -602,7 +609,7 @@ function SectionMiPlan({ tier }) {
           return (
             <div key={t.key} className={`pdash__plan-card${isCurrent ? ' pdash__plan-card--active' : ''}${isLocked ? ' pdash__plan-card--upgrade' : ''}`}>
               {isCurrent && (
-                <div className="pdash__plan-card-current-tag">Tu plan</div>
+                <div className="pdash__plan-card-current-tag">{t('pdash.miplan_your_plan')}</div>
               )}
               <div className="pdash__plan-card-top">
                 <span className="pdash__plan-card-icon">{t.icon}</span>
@@ -765,12 +772,14 @@ export default function ProviderDashboard() {
     else { showToast('Perfil guardado correctamente.'); setProvider(p => ({ ...p, ...payload })) }
   }
 
+  const { t } = useTranslation()
+
   const tabs = [
-    { id: 'perfil',       label: '👤 Mi perfil' },
-    { id: 'metricas',     label: '📊 Métricas' },
-    { id: 'herramientas', label: '🛠 Herramientas' },
-    { id: 'reservas',     label: '📅 Reservas' },
-    { id: 'miplan',       label: '💎 Mi plan' },
+    { id: 'perfil',       label: `👤 ${t('pdash.tab_perfil')}` },
+    { id: 'metricas',     label: `📊 ${t('pdash.tab_metricas')}` },
+    { id: 'herramientas', label: `🛠 ${t('pdash.tab_herramientas')}` },
+    { id: 'reservas',     label: `📅 ${t('pdash.tab_reservas')}` },
+    { id: 'miplan',       label: `💎 ${t('pdash.tab_miplan')}` },
   ]
 
   return (
@@ -788,7 +797,7 @@ export default function ProviderDashboard() {
                   <ellipse cx="21" cy="8" rx="3.2" ry="4" transform="rotate(10, 21, 8)"/>
                   <ellipse cx="27.5" cy="15" rx="3.2" ry="4" transform="rotate(25, 27.5, 15)"/>
                 </svg>
-                Panel de proveedor
+                {t('pdash.hero_eyebrow')}
               </p>
               <h1 className="d-lg pdash__hero-title">
                 {provider?.name ?? user?.user_metadata?.full_name ?? 'Mi perfil'}
@@ -799,7 +808,7 @@ export default function ProviderDashboard() {
                 <span className="pdash__tier-dot" />
                 {tier ? tier.charAt(0).toUpperCase() + tier.slice(1) : 'Bronze'}
               </div>
-              <button className="pdash__signout t-sm" onClick={signOut}>Cerrar sesión</button>
+              <button className="pdash__signout t-sm" onClick={signOut}>{t('pdash.signout')}</button>
             </div>
           </div>
           <div className="pdash__tabs">
@@ -819,7 +828,7 @@ export default function ProviderDashboard() {
           {loading ? (
             <div className="pdash__loading">
               <div className="pdash__spinner" />
-              <p className="t-sm" style={{ color: 'var(--text-300)' }}>Cargando tu perfil…</p>
+              <p className="t-sm" style={{ color: 'var(--text-300)' }}>{t('pdash.loading')}</p>
             </div>
           ) : !provider ? (
             <div className="pdash__no-provider">
