@@ -265,7 +265,7 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
       </div>
 
       {/* ── WhatsApp visibility — Silver+ ── */}
-      <WAVisibilityToggle tier={tier} provider={provider} onSave={onSave} />
+      <WAVisibilityToggle tier={tier} provider={provider} />
 
       {/* ── Calendario — Silver+ ── */}
       <div className="pdash__tools-block">
@@ -413,17 +413,29 @@ const STATUS_LABELS = {
 }
 
 // ── WhatsApp visibility toggle (Silver+) ─────────────────────────
-function WAVisibilityToggle({ tier, provider, onSave }) {
-  const { t } = useTranslation()
-  const isSilverPlus = tier === 'silver' || tier === 'gold'
+function WAVisibilityToggle({ tier, provider }) {
+  const { t }          = useTranslation()
+  const { user }       = useAuth()
+  const isSilverPlus   = tier === 'silver' || tier === 'gold'
   const [enabled, setEnabled] = useState(provider?.show_whatsapp ?? false)
   const [saved,   setSaved]   = useState(false)
+  const [saving,  setSaving]  = useState(false)
 
   const toggle = async (val) => {
     setEnabled(val)
-    // TODO: include show_whatsapp in providers table, then call onSave({ show_whatsapp: val })
-    setSaved(true)
-    setTimeout(() => setSaved(false), 2000)
+    setSaving(true)
+    const { error } = await supabase
+      .from('providers')
+      .update({ show_whatsapp: val })
+      .eq('user_id', user.id)
+    setSaving(false)
+    if (!error) {
+      setSaved(true)
+      setTimeout(() => setSaved(false), 2000)
+    } else {
+      setEnabled(!val) // revert on error
+      console.warn('[WAVisibilityToggle]', error.message)
+    }
   }
 
   return (

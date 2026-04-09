@@ -170,7 +170,45 @@
     "whatsapp_toggle_section": "Visibilité WhatsApp",
     "whatsapp_toggle": "Afficher WhatsApp sur mon profil public",
     "whatsapp_toggle_hint": "Quand actif, les migrants voient votre numéro directement sur votre profil.",
-    "whatsapp_tier_lock": "Disponible avec le plan Activa ou Pro."
+    "whatsapp_tier_lock": "Disponible avec le plan Activa ou Pro.",
+    "send_error": "Nous n'avons pas pu envoyer votre message. Veuillez réessayer."
+  },
+  "forms": {
+    "submit": "Envoyer",
+    "submit_error": "Nous n'avons pas pu l'envoyer. Veuillez réessayer plus tard.",
+    "email_optional": "Email (optionnel)",
+    "email_placeholder": "votre@email.com",
+    "role_label": "Êtes-vous migrant ou prestataire ?",
+    "role_placeholder": "Sélectionnez une option",
+    "role_migrant": "Migrant",
+    "role_provider": "Prestataire",
+    "name_label": "Nom ou nom de l'entreprise",
+    "name_placeholder": "Votre nom",
+    "city_label": "Ville / Province au Canada",
+    "city_placeholder": "ex. : Vancouver, C.-B.",
+    "suggest_title": "Vous ne voyez pas votre catégorie ?",
+    "suggest_hint": "Dites-nous quel service vous cherchez ou offrez. Votre suggestion parvient directement à l'équipe.",
+    "suggest_message_label": "Quelle catégorie ou service manque ?",
+    "suggest_message_placeholder": "ex. : Je cherche un comptable hispanophone qui connaît les impôts canadiens...",
+    "suggest_sent_title": "Merci pour votre suggestion !",
+    "suggest_sent_body": "Votre message a été reçu par l'équipe SoyManada. Nous en tiendrons compte.",
+    "feedback_title": "Commentaires et suggestions",
+    "feedback_hint": "Votre avis aide à améliorer SoyManada pour tout le monde.",
+    "feedback_type_label": "Type de commentaire",
+    "feedback_idea": "Idée ou suggestion",
+    "feedback_bug": "Quelque chose ne fonctionne pas",
+    "feedback_praise": "Félicitation",
+    "feedback_other": "Autre",
+    "feedback_message_label": "Dites-nous",
+    "feedback_message_placeholder": "Écrivez votre commentaire, idée ou problème ici...",
+    "feedback_sent_title": "Merci !",
+    "feedback_sent_body": "Votre commentaire a été reçu par l'équipe. Nous lisons et prenons en compte tous les retours."
+  },
+  "feedback": {
+    "footer_cta": "Commentaires et suggestions"
+  },
+  "categories": {
+    "suggest_cta": "Vous ne voyez pas votre catégorie ?"
   },
   "value_props": {
     "eyebrow": "Pourquoi SoyManada?",

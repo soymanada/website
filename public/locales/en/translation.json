@@ -170,7 +170,45 @@
     "whatsapp_toggle_section": "WhatsApp visibility",
     "whatsapp_toggle": "Show WhatsApp on my public profile",
     "whatsapp_toggle_hint": "When active, migrants see your number directly on your profile.",
-    "whatsapp_tier_lock": "Available on Activa or Pro plan."
+    "whatsapp_tier_lock": "Available on Activa or Pro plan.",
+    "send_error": "We couldn't send your message. Please try again."
+  },
+  "forms": {
+    "submit": "Send",
+    "submit_error": "We couldn't send it. Please try again later.",
+    "email_optional": "Email (optional)",
+    "email_placeholder": "your@email.com",
+    "role_label": "Are you a migrant or a provider?",
+    "role_placeholder": "Select an option",
+    "role_migrant": "Migrant",
+    "role_provider": "Provider",
+    "name_label": "Name or business name",
+    "name_placeholder": "Your name",
+    "city_label": "City / Province in Canada",
+    "city_placeholder": "e.g. Vancouver, BC",
+    "suggest_title": "Don't see your category?",
+    "suggest_hint": "Tell us what service you're looking for or what you offer. Your suggestion goes straight to the team.",
+    "suggest_message_label": "What category or service is missing?",
+    "suggest_message_placeholder": "e.g. I'm looking for a Spanish-speaking accountant who knows Canadian taxes...",
+    "suggest_sent_title": "Thanks for your suggestion!",
+    "suggest_sent_body": "Your message reached the SoyManada team. We'll take it into account.",
+    "feedback_title": "Feedback & suggestions",
+    "feedback_hint": "Your opinion helps improve SoyManada for everyone.",
+    "feedback_type_label": "Type of comment",
+    "feedback_idea": "Idea or suggestion",
+    "feedback_bug": "Something isn't working",
+    "feedback_praise": "Praise",
+    "feedback_other": "Other",
+    "feedback_message_label": "Tell us",
+    "feedback_message_placeholder": "Write your comment, idea or issue here...",
+    "feedback_sent_title": "Thank you!",
+    "feedback_sent_body": "Your comment reached the team. We read and consider all feedback."
+  },
+  "feedback": {
+    "footer_cta": "Feedback & suggestions"
+  },
+  "categories": {
+    "suggest_cta": "Don't see your category?"
   },
   "value_props": {
     "eyebrow": "Why SoyManada?",

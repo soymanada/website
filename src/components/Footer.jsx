@@ -1,12 +1,16 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import categories from '../data/categories.json'
 import CategoryIcon from './CategoryIcon'
 import PawIcon from './PawIcon'
+import FeedbackModal from './FeedbackModal'
 import './Footer.css'
 
 export default function Footer() {
   const { t } = useTranslation()
+  const [showFeedback, setShowFeedback] = useState(false)
+
   return (
     <footer className="footer">
       <div className="container">
@@ -64,6 +68,9 @@ export default function Footer() {
               <Link to="/verificacion">{t('footer.link_verificacion')}</Link>
               <Link to="/planes">{t('pricing_page.link_pricing')}</Link>
               <a href="https://chat.whatsapp.com/CMIWk9cQkEIDso4Ll6JG8j" target="_blank" rel="noopener noreferrer">{t('footer.link_whatsapp')}</a>
+              <button className="footer__feedback-btn" onClick={() => setShowFeedback(true)}>
+                {t('feedback.footer_cta')}
+              </button>
             </nav>
           </div>
         </div>
@@ -73,6 +80,8 @@ export default function Footer() {
           <p className="t-xs footer__disc">{t('footer.disclaimer')}</p>
         </div>
       </div>
+
+      {showFeedback && <FeedbackModal onClose={() => setShowFeedback(false)} />}
     </footer>
   )
 }

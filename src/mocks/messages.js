@@ -1,126 +1,125 @@
 // src/mocks/messages.js
-// Mock data layer — mirrors future Supabase schema exactly.
-// Replace each exported function body with a real Supabase query when backend is ready.
+// Real Supabase data layer.
+// Signatures are identical to the previous mock so no component changes needed.
+import { supabase } from '../lib/supabase'
 
-const delay = (ms = 600) => new Promise(r => setTimeout(r, ms))
+// ── Conversations ─────────────────────────────────────────────────
 
-// ── Mock data ─────────────────────────────────────────────────────
-const MOCK_CONVERSATIONS = [
-  {
-    id: 'conv_demo_1',
-    migrant_id:   'user_demo_1',
-    migrant_name: 'Ana García',
-    subject:      'Consulta sobre traducciones certificadas',
-    last_message_at: new Date(Date.now() - 2 * 3600000).toISOString(),
-    unread_count: 2,
-    status:       'open',
-  },
-  {
-    id: 'conv_demo_2',
-    migrant_id:   'user_demo_2',
-    migrant_name: 'Martín López',
-    subject:      'Disponibilidad para esta semana',
-    last_message_at: new Date(Date.now() - 26 * 3600000).toISOString(),
-    unread_count: 0,
-    status:       'replied',
-  },
-]
-
-const MOCK_MESSAGES = {
-  conv_demo_1: [
-    {
-      id: 'msg_1',
-      conversation_id: 'conv_demo_1',
-      sender_role: 'migrant',
-      sender_name: 'Ana García',
-      body: 'Hola, necesito traducción certificada de mi título universitario al inglés para visa de trabajo. ¿Cuánto tiempo tarda y cuál es el costo aproximado?',
-      created_at: new Date(Date.now() - 5 * 3600000).toISOString(),
-      read_at: null,
-    },
-    {
-      id: 'msg_2',
-      conversation_id: 'conv_demo_1',
-      sender_role: 'migrant',
-      sender_name: 'Ana García',
-      body: '¿También pueden certificar acta de nacimiento?',
-      created_at: new Date(Date.now() - 2 * 3600000).toISOString(),
-      read_at: null,
-    },
-  ],
-  conv_demo_2: [
-    {
-      id: 'msg_3',
-      conversation_id: 'conv_demo_2',
-      sender_role: 'migrant',
-      sender_name: 'Martín López',
-      body: '¿Tienen disponibilidad esta semana? Necesito asesoría para mi proceso de residencia permanente.',
-      created_at: new Date(Date.now() - 30 * 3600000).toISOString(),
-      read_at: new Date(Date.now() - 29 * 3600000).toISOString(),
-    },
-    {
-      id: 'msg_4',
-      conversation_id: 'conv_demo_2',
-      sender_role: 'provider',
-      sender_name: 'Tú',
-      body: 'Hola Martín, tenemos citas disponibles el jueves y viernes de 14:00 a 18:00. ¿Te acomoda alguno de esos horarios?',
-      created_at: new Date(Date.now() - 24 * 3600000).toISOString(),
-      read_at: new Date(Date.now() - 23 * 3600000).toISOString(),
-    },
-  ],
-}
-
-// ── API contract — replace bodies with Supabase when ready ────────
-
-/** Fetch conversation list for a provider */
 export async function fetchConversations(providerId) {
-  await delay()
-  // TODO: supabase.from('conversations').select('*').eq('provider_id', providerId).order('last_message_at', { ascending: false })
-  return { data: MOCK_CONVERSATIONS, error: null }
+  const { data, error } = await supabase
+    .from('conversations')
+    .select('id, provider_id, migrant_id, migrant_name, subject, status, unread_count, last_message_at')
+    .eq('provider_id', providerId)
+    .order('last_message_at', { ascending: false })
+  if (error) console.warn('[fetchConversations]', error.message)
+  return { data: data ?? [], error }
 }
 
-/** Fetch messages for a conversation */
 export async function fetchMessages(conversationId) {
-  await delay(300)
-  // TODO: supabase.from('messages').select('*').eq('conversation_id', conversationId).order('created_at')
-  return { data: MOCK_MESSAGES[conversationId] ?? [], error: null }
+  const { data, error } = await supabase
+    .from('messages')
+    .select('id, conversation_id, sender_role, sender_name, body, read_at, created_at')
+    .eq('conversation_id', conversationId)
+    .order('created_at', { ascending: true })
+  if (error) console.warn('[fetchMessages]', error.message)
+  return { data: data ?? [], error }
 }
 
-/** Send a new message from migrant to provider (creates conversation if none exists) */
+// ── Send (migrant → provider, creates or reuses conversation) ─────
+
 export async function sendMessage({ providerId, userId, body }) {
-  await delay(800)
-  // TODO: supabase.rpc('send_or_reply_message', { p_provider_id, p_user_id, p_body })
+  const { data, error } = await supabase.rpc('send_or_reply_message', {
+    p_provider_id: providerId,
+    p_body:        body,
+    p_subject:     null,
+  })
+  if (error) console.warn('[sendMessage]', error.message)
+  return { data, error }
+}
+
+// ── Reply (provider → migrant, uses existing conversation) ────────
+
+export async function replyMessage({ conversationId, body }) {
+  // Insert message from provider
+  const { data: msg, error: msgErr } = await supabase
+    .from('messages')
+    .insert({
+      conversation_id: conversationId,
+      sender_role:     'provider',
+      body,
+    })
+    .select('id, conversation_id, sender_role, sender_name, body, read_at, created_at')
+    .single()
+
+  if (msgErr) {
+    console.warn('[replyMessage] insert', msgErr.message)
+    return { data: null, error: msgErr }
+  }
+
+  // Update conversation metadata
+  await supabase
+    .from('conversations')
+    .update({ status: 'replied', last_message_at: new Date().toISOString() })
+    .eq('id', conversationId)
+
+  return { data: msg, error: null }
+}
+
+// ── Mark conversation as read ─────────────────────────────────────
+
+export async function markConversationRead(conversationId) {
+  const now = new Date().toISOString()
+  await supabase
+    .from('messages')
+    .update({ read_at: now })
+    .is('read_at', null)
+    .eq('conversation_id', conversationId)
+    .eq('sender_role', 'migrant')
+
+  await supabase
+    .from('conversations')
+    .update({ unread_count: 0 })
+    .eq('id', conversationId)
+
   return { error: null }
 }
 
-/** Send a reply from provider to migrant */
-export async function replyMessage({ conversationId, body }) {
-  await delay(600)
-  // TODO: supabase.from('messages').insert({ conversation_id, sender_role: 'provider', body })
+// ── Unread count badge ────────────────────────────────────────────
+
+export async function fetchUnreadCount(providerId) {
+  const { data, error } = await supabase
+    .from('conversations')
+    .select('unread_count')
+    .eq('provider_id', providerId)
+    .gt('unread_count', 0)
+  if (error) return { data: 0, error }
+  const total = (data ?? []).reduce((s, c) => s + (c.unread_count ?? 0), 0)
+  return { data: total, error: null }
+}
+
+// ── Notification preferences ──────────────────────────────────────
+
+export async function fetchNotifPrefs(providerId) {
+  const { data, error } = await supabase
+    .from('providers')
+    .select('notif_new_message, notif_new_review')
+    .eq('id', providerId)
+    .single()
+  if (error) console.warn('[fetchNotifPrefs]', error.message)
   return {
     data: {
-      id: `msg_${Date.now()}`,
-      conversation_id: conversationId,
-      sender_role: 'provider',
-      sender_name: 'Tú',
-      body,
-      created_at: new Date().toISOString(),
-      read_at: null,
+      notif_new_message: data?.notif_new_message ?? true,
+      notif_new_review:  data?.notif_new_review  ?? true,
     },
-    error: null,
+    error,
   }
 }
 
-/** Mark conversation as read */
-export async function markConversationRead(conversationId) {
-  await delay(200)
-  // TODO: supabase.from('messages').update({ read_at: new Date().toISOString() }).eq('conversation_id', conversationId).is('read_at', null)
-  return { error: null }
-}
-
-/** Fetch total unread count for a provider (for tab badge) */
-export async function fetchUnreadCount(providerId) {
-  await delay(300)
-  // TODO: supabase.from('conversations').select('unread_count').eq('provider_id', providerId).gt('unread_count', 0)
-  const total = MOCK_CONVERSATIONS.reduce((s, c) => s + c.unread_count, 0)
-  return { data: total, error: null }
+export async function saveNotifPrefs(providerId, { notif_new_message, notif_new_review }) {
+  const { error } = await supabase
+    .from('providers')
+    .update({ notif_new_message, notif_new_review })
+    .eq('id', providerId)
+  if (error) console.warn('[saveNotifPrefs]', error.message)
+  return { error }
 }

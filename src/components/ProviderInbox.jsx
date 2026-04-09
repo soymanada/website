@@ -6,6 +6,8 @@ import {
   fetchMessages,
   replyMessage,
   markConversationRead,
+  fetchNotifPrefs,
+  saveNotifPrefs,
 } from '../mocks/messages'
 import './ProviderInbox.css'
 
@@ -79,12 +81,17 @@ function ThreadView({ conversation, onBack }) {
     markConversationRead(conversation.id)
   }, [conversation.id])
 
+  const [replyErr, setReplyErr] = useState(null)
+
   const handleReply = async () => {
     if (!reply.trim()) return
     setSending(true)
+    setReplyErr(null)
     const { data, error } = await replyMessage({ conversationId: conversation.id, body: reply.trim() })
     setSending(false)
-    if (!error && data) {
+    if (error) {
+      setReplyErr(t('messaging.send_error'))
+    } else if (data) {
       setMessages(m => [...m, data])
       setReply('')
     }
@@ -116,39 +123,58 @@ function ThreadView({ conversation, onBack }) {
       </div>
 
       <div className="pinbox__reply">
-        <textarea
-          className="pinbox__reply-input"
-          rows={3}
-          placeholder={t('messaging.reply_placeholder')}
-          value={reply}
-          onChange={e => setReply(e.target.value)}
-          onKeyDown={e => {
-            if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) handleReply()
-          }}
-        />
-        <button
-          className="btn btn-primary btn-sm pinbox__reply-btn"
-          onClick={handleReply}
-          disabled={sending || !reply.trim()}
-        >
-          <span>{sending ? t('messaging.sending') : t('messaging.reply_send')}</span>
-        </button>
+        {replyErr && <p className="pinbox__reply-err t-xs">{replyErr}</p>}
+        <div className="pinbox__reply-row">
+          <textarea
+            className="pinbox__reply-input"
+            rows={3}
+            placeholder={t('messaging.reply_placeholder')}
+            value={reply}
+            onChange={e => setReply(e.target.value)}
+            onKeyDown={e => {
+              if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) handleReply()
+            }}
+          />
+          <button
+            className="btn btn-primary btn-sm pinbox__reply-btn"
+            onClick={handleReply}
+            disabled={sending || !reply.trim()}
+          >
+            <span>{sending ? t('messaging.sending') : t('messaging.reply_send')}</span>
+          </button>
+        </div>
       </div>
     </div>
   )
 }
 
 // ── Notification settings ─────────────────────────────────────────
-function NotificationPanel() {
+function NotificationPanel({ providerId }) {
   const { t } = useTranslation()
   const [notifMsg,    setNotifMsg]    = useState(true)
   const [notifReview, setNotifReview] = useState(true)
   const [saved,       setSaved]       = useState(false)
+  const [saving,      setSaving]      = useState(false)
 
-  const handleSave = () => {
-    // TODO: supabase.from('provider_settings').upsert({ email_on_new_message: notifMsg, email_on_new_review: notifReview })
-    setSaved(true)
-    setTimeout(() => setSaved(false), 2500)
+  useEffect(() => {
+    if (!providerId) return
+    fetchNotifPrefs(providerId).then(({ data }) => {
+      setNotifMsg(data.notif_new_message)
+      setNotifReview(data.notif_new_review)
+    })
+  }, [providerId])
+
+  const handleSave = async () => {
+    setSaving(true)
+    const { error } = await saveNotifPrefs(providerId, {
+      notif_new_message: notifMsg,
+      notif_new_review:  notifReview,
+    })
+    setSaving(false)
+    if (!error) {
+      setSaved(true)
+      setTimeout(() => setSaved(false), 2500)
+    }
   }
 
   return (
@@ -168,8 +194,8 @@ function NotificationPanel() {
           </span>
         </label>
       ))}
-      <button className="btn btn-ghost btn-sm pinbox__notif-save" onClick={handleSave}>
-        {saved ? '✓ Guardado' : t('messaging.save_notif')}
+      <button className="btn btn-ghost btn-sm pinbox__notif-save" onClick={handleSave} disabled={saving}>
+        {saved ? `✓ ${t('messaging.saved')}` : saving ? t('messaging.sending') : t('messaging.save_notif')}
       </button>
     </div>
   )
@@ -219,7 +245,7 @@ export default function ProviderInbox({ providerId }) {
         </div>
       </div>
 
-      <NotificationPanel />
+      <NotificationPanel providerId={providerId} />
     </div>
   )
 }

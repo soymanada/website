@@ -3,6 +3,19 @@
   padding-bottom: 40px;
 }
 
+.footer__feedback-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  color: var(--iris-400, #818cf8);
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  transition: color 0.15s;
+}
+.footer__feedback-btn:hover { color: var(--iris-600); }
+
 .footer__trust-title {
   margin-bottom: 40px;
   text-align: center;

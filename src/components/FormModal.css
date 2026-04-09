@@ -1,6 +1,6 @@
-/* src/components/MessageModal.css */
+/* src/components/FormModal.css — shared by CategorySuggestionModal and FeedbackModal */
 
-.mmask {
+.fmask {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.45);
@@ -12,17 +12,19 @@
   backdrop-filter: blur(2px);
 }
 
-.mmодal {
+.fmodal {
   background: #fff;
   border-radius: 16px;
   padding: 32px;
   width: 100%;
-  max-width: 480px;
+  max-width: 500px;
   position: relative;
   box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
-.mmodal__close {
+.fmodal__close {
   position: absolute;
   top: 16px;
   right: 16px;
@@ -30,78 +32,91 @@
   border: none;
   font-size: 1.4rem;
   line-height: 1;
-  color: var(--text-300, #9ca3af);
+  color: var(--text-300);
   cursor: pointer;
   padding: 4px 8px;
   border-radius: 6px;
   transition: color 0.15s, background 0.15s;
 }
-.mmodal__close:hover { color: var(--text-700); background: var(--iris-50); }
+.fmodal__close:hover { color: var(--text-700); background: var(--iris-50); }
 
-.mmodal__title {
+.fmodal__title {
   font-size: 1.1rem;
   font-weight: 700;
-  color: var(--text-900, #111);
+  color: var(--text-900);
   margin: 0 0 4px;
   padding-right: 32px;
 }
 
-.mmodal__hint {
-  color: var(--text-400, #9ca3af);
+.fmodal__hint {
+  color: var(--text-400);
   margin: 0 0 20px;
 }
 
-.mmodal__textarea {
+.fmodal__form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.fmodal__row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fmodal__label {
+  font-weight: 600;
+  color: var(--text-600);
+}
+
+.fmodal__input,
+.fmodal__select,
+.fmodal__textarea {
   width: 100%;
   border: 1.5px solid var(--border-200, #d1d5db);
-  border-radius: 10px;
-  padding: 12px 14px;
-  font-size: 0.9rem;
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 0.88rem;
   font-family: inherit;
-  line-height: 1.55;
-  resize: vertical;
   color: var(--text-800);
   transition: border-color 0.15s;
   box-sizing: border-box;
 }
-.mmodal__textarea:focus {
+
+.fmodal__input:focus,
+.fmodal__select:focus,
+.fmodal__textarea:focus {
   outline: none;
   border-color: var(--iris-400, #818cf8);
-  box-shadow: 0 0 0 3px rgba(129,140,248,0.15);
+  box-shadow: 0 0 0 3px rgba(129,140,248,0.12);
 }
 
-.mmodal__footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 12px;
-  gap: 12px;
-}
+.fmodal__textarea { resize: vertical; line-height: 1.5; }
 
-.mmodal__error {
+.fmodal__error {
   color: var(--error, #e53e3e);
-  margin: 6px 0 0;
+  margin: 0 0 8px;
 }
 
-.mmodal__chars { color: var(--text-300); }
-
-.mmodal__actions {
+.fmodal__footer {
   display: flex;
+  justify-content: flex-end;
   gap: 8px;
-  align-items: center;
+  margin-top: 4px;
 }
 
-/* Success state */
-.mmodal__success {
+.fmodal__success {
   text-align: center;
-  padding: 16px 0 8px;
+  padding: 20px 0 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
 }
 
-.mmodal__success-icon {
+.fmodal__success-icon {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -115,20 +130,19 @@
   margin-bottom: 4px;
 }
 
-.mmodal__success-title {
-  font-size: 1.1rem;
+.fmodal__success h3 {
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--text-900);
   margin: 0;
 }
 
-.mmodal__success-body {
-  font-size: 0.9rem;
+.fmodal__success p {
   color: var(--text-500);
   margin: 0;
   max-width: 320px;
 }
 
 @media (max-width: 520px) {
-  .mmодал { padding: 24px 20px; }
+  .fmodal { padding: 24px 20px; }
 }

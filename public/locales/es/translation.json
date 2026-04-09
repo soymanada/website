@@ -168,7 +168,45 @@
     "whatsapp_toggle_section": "Visibilidad de WhatsApp",
     "whatsapp_toggle": "Mostrar WhatsApp en mi perfil público",
     "whatsapp_toggle_hint": "Cuando está activo, los migrantes ven tu número directamente en tu perfil.",
-    "whatsapp_tier_lock": "Disponible en plan Activa o Pro."
+    "whatsapp_tier_lock": "Disponible en plan Activa o Pro.",
+    "send_error": "No pudimos enviar tu mensaje. Inténtalo de nuevo."
+  },
+  "forms": {
+    "submit": "Enviar",
+    "submit_error": "No pudimos enviar. Inténtalo de nuevo más tarde.",
+    "email_optional": "Email (opcional)",
+    "email_placeholder": "tu@email.com",
+    "role_label": "¿Eres migrante o proveedor?",
+    "role_placeholder": "Selecciona una opción",
+    "role_migrant": "Migrante",
+    "role_provider": "Proveedor",
+    "name_label": "Nombre o nombre del negocio",
+    "name_placeholder": "Tu nombre",
+    "city_label": "Ciudad / Provincia en Canadá",
+    "city_placeholder": "Ej: Vancouver, BC",
+    "suggest_title": "¿No ves tu categoría?",
+    "suggest_hint": "Cuéntanos qué servicio buscas o qué ofreces. Tu sugerencia le llega directamente al equipo.",
+    "suggest_message_label": "¿Qué categoría o servicio falta?",
+    "suggest_message_placeholder": "Ej: Busco un contador que hable español y sepa de impuestos canadienses...",
+    "suggest_sent_title": "¡Gracias por tu sugerencia!",
+    "suggest_sent_body": "Tu mensaje le llega al equipo de SoyManada. Lo tomamos en cuenta.",
+    "feedback_title": "Comentarios y sugerencias",
+    "feedback_hint": "Tu opinión ayuda a mejorar SoyManada para todos.",
+    "feedback_type_label": "Tipo de comentario",
+    "feedback_idea": "Idea o sugerencia",
+    "feedback_bug": "Algo no funciona",
+    "feedback_praise": "Felicitación",
+    "feedback_other": "Otro",
+    "feedback_message_label": "Cuéntanos",
+    "feedback_message_placeholder": "Escribe aquí tu comentario, idea o problema...",
+    "feedback_sent_title": "¡Gracias!",
+    "feedback_sent_body": "Tu comentario llegó al equipo. Lo leemos y tomamos en cuenta."
+  },
+  "feedback": {
+    "footer_cta": "Comentarios y sugerencias"
+  },
+  "categories": {
+    "suggest_cta": "¿No ves tu categoría?"
   },
   "value_props": {
     "eyebrow": "¿Por qué SoyManada?",
