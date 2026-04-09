@@ -13,6 +13,26 @@
 .vp__title em { font-style: italic; color: var(--iris-500); }
 .vp__lead { color: var(--text-500); }
 
+.vp__wa-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #25d366;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 11px 22px;
+  border-radius: 100px;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.15s;
+  box-shadow: 0 2px 12px rgba(37,211,102,0.25);
+}
+
+.vp__wa-btn:hover {
+  background: #1ebe5d;
+  transform: translateY(-1px);
+}
+
 .vp__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
