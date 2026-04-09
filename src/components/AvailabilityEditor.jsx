@@ -27,23 +27,33 @@ export default function AvailabilityEditor({ providerId }) {
   // Initialize from DB once loaded
   useEffect(() => {
     if (loading) return
-    const s = {}
-    DAYS.forEach(d => {
-      const rows = availability.filter(a => a.day_of_week === d.value)
-      if (rows.length) {
-        s[d.value] = {
-          enabled: true,
-          ranges: rows.map(r => ({
-            start: r.start_at.slice(0, 5),
-            end:   r.end_at.slice(0, 5),
-            slot:  r.slot_minutes,
-          })),
+    try {
+      const s = {}
+      DAYS.forEach(d => {
+        // Only use rows that have valid start_at and end_at values
+        const rows = availability.filter(
+          a => a.day_of_week === d.value && a.start_at != null && a.end_at != null
+        )
+        if (rows.length) {
+          s[d.value] = {
+            enabled: true,
+            ranges: rows.map(r => ({
+              start: String(r.start_at).slice(0, 5),
+              end:   String(r.end_at).slice(0, 5),
+              slot:  r.slot_minutes ?? DEFAULT_RANGE.slot,
+            })),
+          }
+        } else {
+          s[d.value] = { enabled: false, ranges: [{ ...DEFAULT_RANGE }] }
         }
-      } else {
-        s[d.value] = { enabled: false, ranges: [{ ...DEFAULT_RANGE }] }
-      }
-    })
-    setSchedule(s)
+      })
+      setSchedule(s)
+    } catch (e) {
+      console.warn('[AvailabilityEditor] error initializing schedule:', e)
+      const empty = {}
+      DAYS.forEach(d => { empty[d.value] = { enabled: false, ranges: [{ ...DEFAULT_RANGE }] } })
+      setSchedule(empty)
+    }
   }, [loading]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Helpers ──────────────────────────────────────────────────────

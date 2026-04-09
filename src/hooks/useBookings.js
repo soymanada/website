@@ -9,12 +9,18 @@ export function useAvailability(providerId) {
 
   const load = useCallback(async () => {
     if (!providerId) { setLoading(false); return }
-    const { data } = await supabase
-      .from('provider_availability')
-      .select('*')
-      .eq('provider_id', providerId)
-      .eq('active', true)
-    setAvailability(data ?? [])
+    try {
+      const { data, error } = await supabase
+        .from('provider_availability')
+        .select('*')
+        .eq('provider_id', providerId)
+        .eq('active', true)
+      if (error) console.warn('[useAvailability]', error.message)
+      setAvailability(Array.isArray(data) ? data : [])
+    } catch (e) {
+      console.warn('[useAvailability] unexpected error:', e)
+      setAvailability([])
+    }
     setLoading(false)
   }, [providerId])
 
