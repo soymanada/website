@@ -75,6 +75,14 @@
   opacity: 0.7;
 }
 
+.tst__stars {
+  display: block;
+  font-size: 0.95rem;
+  color: #f59e0b;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+}
+
 .tst__name {
   display: block;
   font-size: 0.9rem;
