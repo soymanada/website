@@ -48,39 +48,31 @@ export default function ManadaStories() {
           </p>
         </div>
 
-        {/* Group photo */}
-        <div className="mstories__photo-wrap">
-          <img
-            src="/community/community-junta-2025.png"
-            alt="Encuentro de la comunidad SoyManada 2025"
-            className="mstories__group-photo"
-            loading="lazy"
-          />
-          <div className="mstories__photo-caption">Encuentro de la Manada · 2025</div>
-        </div>
-
-        {/* Story cards — desktop grid / mobile carousel */}
+        {/* Story cards */}
         <div className="mstories__cards" role="list">
           {STORIES.map((s, i) => (
             <article
               key={s.id}
-              className={`mstories__card${active === i ? ' mstories__card--active' : ''}`}
+              className="mstories__card"
               role="listitem"
               aria-label={`Historia de ${s.name}`}
             >
-              <div className="mstories__card-top">
+              {/* Full-bleed portrait */}
+              <div className="mstories__photo-wrap">
                 <img
                   src={s.photo}
-                  alt={`Foto de ${s.name}`}
-                  className="mstories__avatar"
+                  alt={`Foto de ${s.name}, ${s.city}`}
+                  className="mstories__photo"
                   loading="lazy"
                 />
-                <div className="mstories__meta">
+                <div className="mstories__photo-overlay">
                   <span className="mstories__name">{s.name}</span>
                   <span className="mstories__city">{s.city}</span>
                   {s.handle && <span className="mstories__handle">{s.handle}</span>}
                 </div>
               </div>
+
+              {/* Quote */}
               <blockquote className="mstories__quote">
                 <span className="mstories__quote-mark" aria-hidden="true">"</span>
                 {s.quote}
@@ -89,7 +81,7 @@ export default function ManadaStories() {
           ))}
         </div>
 
-        {/* Mobile carousel indicators */}
+        {/* Mobile indicators */}
         <div className="mstories__indicators" role="tablist" aria-label="Navegar historias">
           {STORIES.map((s, i) => (
             <button
