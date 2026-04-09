@@ -56,10 +56,11 @@
 
 .mstories__group-photo {
   width: 100%;
-  height: 340px;
+  height: 460px;
   object-fit: cover;
   object-position: center 30%;
   display: block;
+  image-rendering: auto;
 }
 
 .mstories__photo-caption {
@@ -109,8 +110,8 @@
 }
 
 .mstories__avatar {
-  width: 52px;
-  height: 52px;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
@@ -194,7 +195,7 @@
   }
 
   .mstories__group-photo {
-    height: 220px;
+    height: 280px;
   }
 
   /* Carousel */
