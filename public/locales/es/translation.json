@@ -516,8 +516,9 @@
     "aria": "Comparador de remesas",
     "eyebrow": "Herramienta gratuita",
     "title": "Comparador de remesas",
-    "sub": "Encontrá el mejor tipo de cambio en segundos. Sin registro.",
-    "cta": "Comparar precios"
+    "sub": "Encuentra el mejor tipo de cambio en segundos. Sin registro.",
+    "cta": "Comparar precios",
+    "float_label": "Tasas de envío · Wise, Remitly y más"
   },
   "pdash": {
     "hero_eyebrow": "Panel de proveedor",

@@ -520,7 +520,8 @@
     "eyebrow": "Outil gratuit",
     "title": "Comparateur de remises",
     "sub": "Trouvez le meilleur taux de change en quelques secondes. Sans inscription.",
-    "cta": "Comparer les prix"
+    "cta": "Comparer les prix",
+    "float_label": "Taux d'envoi · Wise, Remitly et plus"
   },
   "pdash": {
     "hero_eyebrow": "Tableau de bord prestataire",

@@ -520,7 +520,8 @@
     "eyebrow": "Free tool",
     "title": "Remittance comparator",
     "sub": "Find the best exchange rate in seconds. No sign-up needed.",
-    "cta": "Compare rates"
+    "cta": "Compare rates",
+    "float_label": "Exchange rates · Wise, Remitly & more"
   },
   "pdash": {
     "hero_eyebrow": "Provider panel",

@@ -20,8 +20,7 @@ export default function RemesasFloat() {
           <path d="M16 15c0 1.7-1.3 3-3 3h-1" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" opacity=".6"/>
         </svg>
       </span>
-      <span className="remfloat__label">{t('remesas_teaser.cta')}</span>
-      <span className="remfloat__chip">{t('remesas_teaser.eyebrow')}</span>
+      <span className="remfloat__label">{t('remesas_teaser.float_label')}</span>
     </Link>
   )
 }

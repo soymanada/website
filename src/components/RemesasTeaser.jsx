@@ -21,7 +21,7 @@ export default function RemesasTeaser() {
           <div>
             <p className="remtease__eyebrow">{t('remesas_teaser.eyebrow', 'Herramienta gratuita')}</p>
             <h2 className="remtease__title">{t('remesas_teaser.title', 'Comparador de remesas')}</h2>
-            <p className="remtease__sub">{t('remesas_teaser.sub', 'Encontrá el mejor tipo de cambio en segundos. Sin registro.')}</p>
+            <p className="remtease__sub">{t('remesas_teaser.sub')}</p>
           </div>
         </div>
 
