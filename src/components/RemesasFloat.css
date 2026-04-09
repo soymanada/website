@@ -1,0 +1,76 @@
+.remfloat {
+  position: fixed;
+  bottom: 32px;
+  right: 28px;
+  z-index: 88;               /* below modals/drawer but above content */
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 13px 18px 13px 14px;
+  border-radius: 100px;
+  background: #f59e0b;
+  color: #78350f;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.85rem;
+  white-space: nowrap;
+
+  box-shadow:
+    0 4px 16px rgba(245,158,11,0.45),
+    0 2px 6px  rgba(0,0,0,0.12);
+
+  /* entrance: slides up after 1.2s so it doesn't fight with page load */
+  animation: remfloat-in 0.45s cubic-bezier(0.34,1.56,0.64,1) 1.2s both;
+
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.remfloat:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow:
+    0 8px 28px rgba(245,158,11,0.55),
+    0 4px 10px rgba(0,0,0,0.14);
+}
+
+.remfloat__icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.remfloat__label {
+  line-height: 1;
+}
+
+/* "Gratuito" / "Free tool" small chip */
+.remfloat__chip {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: rgba(120,53,15,0.14);
+  border-radius: 100px;
+  padding: 2px 7px;
+  line-height: 1.6;
+  flex-shrink: 0;
+}
+
+@keyframes remfloat-in {
+  from { opacity: 0; transform: translateY(24px) scale(0.9); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);   }
+}
+
+/* Mobile: collapse to icon-only so it doesn't block content */
+@media (max-width: 600px) {
+  .remfloat {
+    bottom: 20px;
+    right: 16px;
+    padding: 14px;
+    border-radius: 50%;
+    gap: 0;
+  }
+  .remfloat__label,
+  .remfloat__chip { display: none; }
+}

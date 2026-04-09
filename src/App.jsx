@@ -15,6 +15,7 @@ import VerificacionPage     from './pages/VerificacionPage'
 import ProviderPage         from './pages/ProviderPage'
 import FirstStepsPage       from './pages/FirstStepsPage'
 import ProtectedRoute       from './components/ProtectedRoute'
+import RemesasFloat        from './components/RemesasFloat'
 import { AuthProvider }     from './hooks/useAuth'
 // IMPORTANTE: Se eliminó initScrollTracking de la siguiente línea
 import { useTranslation } from 'react-i18next'
@@ -74,6 +75,7 @@ function Layout() {
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
+      <RemesasFloat />
     </>
   )
 }
