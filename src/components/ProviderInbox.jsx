@@ -203,6 +203,7 @@ function NotificationPanel({ providerId }) {
 
 // ── Main component ────────────────────────────────────────────────
 export default function ProviderInbox({ providerId }) {
+  const { t } = useTranslation()
   const [conversations, setConversations] = useState([])
   const [loading,       setLoading]       = useState(true)
   const [selected,      setSelected]      = useState(null)
@@ -239,7 +240,7 @@ export default function ProviderInbox({ providerId }) {
           ) : (
             <div className="pinbox__no-selection">
               <span aria-hidden="true">←</span>
-              <p className="t-sm">Selecciona una conversación</p>
+              <p className="t-sm">{t('messaging.select_conversation')}</p>
             </div>
           )}
         </div>

@@ -108,7 +108,7 @@ function ProviderProfileEditor({ provider, tier, onSave, saving, onAvatarUpload,
         </div>
 
         <div className="pdash__field">
-          <label className="pdash__label t-sm">WhatsApp de contacto</label>
+          <label className="pdash__label t-sm">{t('pdash.whatsapp_label')}</label>
           <PhoneInput
             international
             defaultCountry="CL"
@@ -188,7 +188,7 @@ function ProviderProfileEditor({ provider, tier, onSave, saving, onAvatarUpload,
             </svg>
             Verificado por Manada
           </span>
-          <p className="t-xs" style={{ color: 'var(--text-500)' }}>Este badge lo asigna el equipo. No es editable.</p>
+          <p className="t-xs" style={{ color: 'var(--text-500)' }}>{t('pdash.badge_assigned_text')}</p>
         </div>
 
         <button className="btn btn-primary pdash__save-btn" onClick={() => onSave(form)} disabled={saving}>
@@ -311,8 +311,8 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
           <div className="pdash__locked">
             <div className="pdash__tools-preview">
               {[
-                { icon: '💬', name: 'Respuestas predefinidas', desc: 'Responde preguntas frecuentes con un click.' },
-                { icon: '✉️', name: 'Redirección a email',      desc: 'Recibe consultas con asunto pre-llenado en tu correo.' },
+                { icon: '💬', name: t('pdash.tool_canned_name'), desc: t('pdash.tool_canned_desc') },
+                { icon: '✉️', name: t('pdash.tool_redirect_name'), desc: t('pdash.tool_redirect_desc') },
               ].map(tool => (
                 <div key={tool.name} className="pdash__tool-card pdash__tool-card--locked">
                   <span className="pdash__tool-icon">{tool.icon}</span>
@@ -617,41 +617,30 @@ const CHECK_ICON = (
   </svg>
 )
 
-const TIERS_DEF = [
-  {
-    key: 'bronze', icon: '🥉', label: 'Bronze',
-    price: 'Gratis', priceLocal: null,
-    features: ['Perfil en el directorio', '1 categoría', 'Contacto visible a usuarios registrados', 'Badge verificado (si cumples criterios)'],
-    ctaLabel: null,
-  },
-  {
-    key: 'silver', icon: '🥈', label: 'Silver',
-    price: '$10 USD', priceLocal: '$9.500 CLP',
-    features: [
-      'Perfil en el directorio', 'Hasta 2 categorías', 'Contacto visible a usuarios registrados',
-      'Badge verificado garantizado', 'Posición prioritaria en resultados',
-      'Métricas básicas (vistas y clics)', 'Responder a reseñas de usuarios',
-      'Calendario de citas con migrantes', 'Soporte por email',
-    ],
-    ctaLabel: 'Activar Silver — $10 USD/mes',
-  },
-  {
-    key: 'gold', icon: '🥇', label: 'Gold',
-    price: '$20 USD', priceLocal: '$19.000 CLP',
-    features: [
-      'Perfil en el directorio', 'Todas las categorías', 'Contacto visible a usuarios registrados',
-      'Badge verificado garantizado', 'Top 3 garantizado siempre', 'Métricas completas',
-      'Beneficio exclusivo para usuarios', 'Responder a reseñas de usuarios',
-      'Calendario de citas con migrantes', 'Respuestas predefinidas y redirección de email',
-      'Soporte prioritario',
-    ],
-    ctaLabel: 'Activar Gold — $20 USD/mes',
-  },
-]
-
 function SectionMiPlan({ tier }) {
   const { t } = useTranslation()
   const current = tier ?? 'bronze'
+
+  const TIERS_DEF = [
+    {
+      key: 'bronze', icon: '🥉', label: 'Bronze',
+      price: 'Gratis', priceLocal: null,
+      features: t('pdash.tier_bronze_features', { returnObjects: true }),
+      ctaLabel: null,
+    },
+    {
+      key: 'silver', icon: '🥈', label: 'Silver',
+      price: '$10 USD', priceLocal: '$9.500 CLP',
+      features: t('pdash.tier_silver_features', { returnObjects: true }),
+      ctaLabel: t('pdash.tier_silver_cta'),
+    },
+    {
+      key: 'gold', icon: '🥇', label: 'Gold',
+      price: '$20 USD', priceLocal: '$19.000 CLP',
+      features: t('pdash.tier_gold_features', { returnObjects: true }),
+      ctaLabel: t('pdash.tier_gold_cta'),
+    },
+  ]
 
   return (
     <div className="pdash__section">
@@ -664,60 +653,60 @@ function SectionMiPlan({ tier }) {
       <div className="pdash__plan-current">
         <span className="pdash__plan-current-label t-xs">{t('pdash.miplan_current_label')}</span>
         <div className={`pdash__plan-current-badge pdash__plan-current-badge--${current}`}>
-          {TIERS_DEF.find(t => t.key === current)?.icon} {current.charAt(0).toUpperCase() + current.slice(1)}
+          {TIERS_DEF.find(td => td.key === current)?.icon} {current.charAt(0).toUpperCase() + current.slice(1)}
         </div>
         {current === 'bronze' && (
           <p className="t-xs" style={{ color: 'var(--text-400)', marginTop: 8 }}>
-            Actualiza tu plan para obtener más visibilidad, métricas y herramientas.
+            {t('pdash.miplan_upgrade_bronze')}
           </p>
         )}
         {current === 'silver' && (
           <p className="t-xs" style={{ color: 'var(--text-400)', marginTop: 8 }}>
-            Estás en Silver. Ya tienes calendario de citas y respuestas a reseñas. Pasa a Gold para el top 3 garantizado, respuestas predefinidas y redirección de email.
+            {t('pdash.miplan_upgrade_silver')}
           </p>
         )}
         {current === 'gold' && (
           <p className="t-xs" style={{ color: 'var(--text-400)', marginTop: 8 }}>
-            Estás en el plan máximo. Tienes acceso a todas las funcionalidades.
+            {t('pdash.miplan_max_gold')}
           </p>
         )}
       </div>
 
       {/* Comparación de tiers */}
       <div className="pdash__plan-grid">
-        {TIERS_DEF.map(t => {
-          const isCurrent = t.key === current
-          const isLocked  = (current === 'bronze' && t.key !== 'bronze') ||
-                            (current === 'silver' && t.key === 'gold')
+        {TIERS_DEF.map(td => {
+          const isCurrent = td.key === current
+          const isLocked  = (current === 'bronze' && td.key !== 'bronze') ||
+                            (current === 'silver' && td.key === 'gold')
           return (
-            <div key={t.key} className={`pdash__plan-card${isCurrent ? ' pdash__plan-card--active' : ''}${isLocked ? ' pdash__plan-card--upgrade' : ''}`}>
+            <div key={td.key} className={`pdash__plan-card${isCurrent ? ' pdash__plan-card--active' : ''}${isLocked ? ' pdash__plan-card--upgrade' : ''}`}>
               {isCurrent && (
                 <div className="pdash__plan-card-current-tag">{t('pdash.miplan_your_plan')}</div>
               )}
               <div className="pdash__plan-card-top">
-                <span className="pdash__plan-card-icon">{t.icon}</span>
+                <span className="pdash__plan-card-icon">{td.icon}</span>
                 <div>
-                  <strong className="t-sm" style={{ color: 'var(--iris-900)' }}>{t.label}</strong>
+                  <strong className="t-sm" style={{ color: 'var(--iris-900)' }}>{td.label}</strong>
                   <div className="pdash__plan-card-price">
-                    <span className="pdash__plan-card-price-main">{t.price}</span>
-                    {t.priceLocal && <span className="t-xs" style={{ color: 'var(--text-300)' }}> · {t.priceLocal}/mes</span>}
+                    <span className="pdash__plan-card-price-main">{td.price}</span>
+                    {td.priceLocal && <span className="t-xs" style={{ color: 'var(--text-300)' }}> · {td.priceLocal}/mes</span>}
                   </div>
                 </div>
               </div>
               <ul className="pdash__plan-card-features">
-                {t.features.map(f => (
+                {(Array.isArray(td.features) ? td.features : []).map(f => (
                   <li key={f} className="pdash__plan-card-feature">
                     {CHECK_ICON}
                     <span className="t-xs">{f}</span>
                   </li>
                 ))}
               </ul>
-              {!isCurrent && t.ctaLabel && (
+              {!isCurrent && td.ctaLabel && (
                 <a
-                  href={`mailto:hola@soymanada.com?subject=Quiero ${t.label}`}
-                  className={`btn btn-sm pdash__plan-card-cta ${t.key === 'gold' ? 'pdash__plan-card-cta--gold' : 'btn-primary'}`}
+                  href={`mailto:hola@soymanada.com?subject=Quiero ${td.label}`}
+                  className={`btn btn-sm pdash__plan-card-cta ${td.key === 'gold' ? 'pdash__plan-card-cta--gold' : 'btn-primary'}`}
                 >
-                  <span>{t.ctaLabel}</span>
+                  <span>{td.ctaLabel}</span>
                 </a>
               )}
             </div>
@@ -916,13 +905,12 @@ export default function ProviderDashboard() {
             </div>
           ) : !provider ? (
             <div className="pdash__no-provider">
-              <p className="t-md" style={{ fontWeight: 600 }}>Tu cuenta no está vinculada a ningún perfil de proveedor.</p>
+              <p className="t-md" style={{ fontWeight: 600 }}>{t('pdash.no_provider_title')}</p>
               <p className="t-sm" style={{ color: 'var(--text-400)', marginTop: 8 }}>
-                ID de usuario: <code style={{ fontSize: '0.75rem', background: 'var(--iris-50)', padding: '2px 6px', borderRadius: 4 }}>{user?.id}</code>
+                {t('pdash.no_provider_id')} <code style={{ fontSize: '0.75rem', background: 'var(--iris-50)', padding: '2px 6px', borderRadius: 4 }}>{user?.id}</code>
               </p>
-              <p className="t-sm" style={{ color: 'var(--text-400)', marginTop: 4 }}>
-                Pide al administrador que vincule este ID al proveedor correspondiente en la tabla <code>providers</code> (columna <code>user_id</code>).
-              </p>
+              <p className="t-sm" style={{ color: 'var(--text-400)', marginTop: 4 }}
+                dangerouslySetInnerHTML={{ __html: t('pdash.no_provider_admin_hint') }} />
             </div>
           ) : (
             <>

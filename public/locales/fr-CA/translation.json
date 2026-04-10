@@ -171,7 +171,8 @@
     "whatsapp_toggle": "Afficher WhatsApp sur mon profil public",
     "whatsapp_toggle_hint": "Quand actif, les migrants voient votre numéro directement sur votre profil.",
     "whatsapp_tier_lock": "Disponible avec le plan Activa ou Pro.",
-    "send_error": "Nous n'avons pas pu envoyer votre message. Veuillez réessayer."
+    "send_error": "Nous n'avons pas pu envoyer votre message. Veuillez réessayer.",
+    "select_conversation": "Sélectionnez une conversation"
   },
   "forms": {
     "submit": "Envoyer",
@@ -635,7 +636,24 @@
     "reservas_history": "Historique",
     "miplan_sub": "Votre forfait actuel et ce que vous pouvez débloquer.",
     "miplan_current_label": "Votre forfait actuel",
-    "miplan_your_plan": "Votre forfait"
+    "miplan_your_plan": "Votre forfait",
+    "whatsapp_label": "WhatsApp de contact",
+    "badge_assigned_text": "Ce badge est attribué par l'équipe. Non modifiable.",
+    "no_provider_title": "Votre compte n'est lié à aucun profil fournisseur.",
+    "no_provider_id": "ID utilisateur :",
+    "no_provider_admin_hint": "Demandez à l'administrateur de lier cet ID au fournisseur correspondant dans la table <code>providers</code> (colonne <code>user_id</code>).",
+    "tool_canned_name": "Réponses prédéfinies",
+    "tool_canned_desc": "Répondez aux questions fréquentes en un clic.",
+    "tool_redirect_name": "Redirection par courriel",
+    "tool_redirect_desc": "Recevez les demandes avec un objet pré-rempli dans votre boîte.",
+    "tier_silver_cta": "Activer Silver — 10 USD/mois",
+    "tier_gold_cta": "Activer Gold — 20 USD/mois",
+    "miplan_upgrade_bronze": "Améliorez votre forfait pour plus de visibilité, de métriques et d'outils.",
+    "miplan_upgrade_silver": "Vous êtes sur Silver. Vous avez déjà le calendrier et les réponses aux avis. Passez à Gold pour le top 3 garanti, les réponses prédéfinies et la redirection courriel.",
+    "miplan_max_gold": "Vous êtes sur le forfait maximum. Vous avez accès à toutes les fonctionnalités.",
+    "tier_bronze_features": ["Profil dans le répertoire", "1 catégorie", "Contact visible aux utilisateurs inscrits", "Badge vérifié (si vous remplissez les critères)"],
+    "tier_silver_features": ["Profil dans le répertoire", "Jusqu'à 2 catégories", "Contact visible aux utilisateurs inscrits", "Badge vérifié garanti", "Position prioritaire dans les résultats", "Métriques de base (vues et clics)", "Répondre aux avis d'utilisateurs", "Calendrier de rendez-vous avec les migrants", "Assistance par courriel"],
+    "tier_gold_features": ["Profil dans le répertoire", "Toutes les catégories", "Contact visible aux utilisateurs inscrits", "Badge vérifié garanti", "Top 3 garanti en tout temps", "Métriques complètes", "Avantage exclusif pour les utilisateurs", "Répondre aux avis d'utilisateurs", "Calendrier de rendez-vous avec les migrants", "Réponses prédéfinies et redirection courriel", "Assistance prioritaire"]
   },
   "booking": {
     "title": "📅 Réserver une séance",

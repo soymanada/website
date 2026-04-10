@@ -26,8 +26,8 @@ export default function MessageModal({ providerId, providerName, userId, onClose
 
   return (
     <div className="mmask" role="dialog" aria-modal="true" onClick={e => e.target === e.currentTarget && onClose()}>
-      <div className="mmодal">
-        <button className="mmodal__close" onClick={onClose} aria-label="Cerrar">×</button>
+      <div className="mmodal">
+        <button className="mmodal__close" onClick={onClose} aria-label={t('messaging.close')}>×</button>
 
         {sent ? (
           <div className="mmodal__success">
