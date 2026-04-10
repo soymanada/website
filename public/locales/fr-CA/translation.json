@@ -208,9 +208,6 @@
   "feedback": {
     "footer_cta": "Commentaires et suggestions"
   },
-  "categories": {
-    "suggest_cta": "Vous ne voyez pas votre catégorie ?"
-  },
   "value_props": {
     "eyebrow": "Pourquoi SoyManada?",
     "title": "L'information dont vous avez besoin,",
@@ -534,6 +531,7 @@
     "back_home": "Retour à l'accueil"
   },
   "categories": {
+    "suggest_cta": "Vous ne voyez pas votre catégorie ?",
     "seguros": "Assurances",
     "migracion": "Conseils en immigration",
     "traducciones": "Traductions",
@@ -653,7 +651,8 @@
     "miplan_max_gold": "Vous êtes sur le forfait maximum. Vous avez accès à toutes les fonctionnalités.",
     "tier_bronze_features": ["Profil dans le répertoire", "1 catégorie", "Contact visible aux utilisateurs inscrits", "Badge vérifié (si vous remplissez les critères)"],
     "tier_silver_features": ["Profil dans le répertoire", "Jusqu'à 2 catégories", "Contact visible aux utilisateurs inscrits", "Badge vérifié garanti", "Position prioritaire dans les résultats", "Métriques de base (vues et clics)", "Répondre aux avis d'utilisateurs", "Calendrier de rendez-vous avec les migrants", "Assistance par courriel"],
-    "tier_gold_features": ["Profil dans le répertoire", "Toutes les catégories", "Contact visible aux utilisateurs inscrits", "Badge vérifié garanti", "Top 3 garanti en tout temps", "Métriques complètes", "Avantage exclusif pour les utilisateurs", "Répondre aux avis d'utilisateurs", "Calendrier de rendez-vous avec les migrants", "Réponses prédéfinies et redirection courriel", "Assistance prioritaire"]
+    "tier_gold_features": ["Profil dans le répertoire", "Toutes les catégories", "Contact visible aux utilisateurs inscrits", "Badge vérifié garanti", "Top 3 garanti en tout temps", "Métriques complètes", "Avantage exclusif pour les utilisateurs", "Répondre aux avis d'utilisateurs", "Calendrier de rendez-vous avec les migrants", "Réponses prédéfinies et redirection courriel", "Assistance prioritaire"],
+    "predefined_replies_label": "💬 Réponses prédéfinies (une par ligne)"
   },
   "booking": {
     "title": "📅 Réserver une séance",

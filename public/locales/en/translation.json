@@ -208,9 +208,6 @@
   "feedback": {
     "footer_cta": "Feedback & suggestions"
   },
-  "categories": {
-    "suggest_cta": "Don't see your category?"
-  },
   "value_props": {
     "eyebrow": "Why SoyManada?",
     "title": "The information you need,",
@@ -534,6 +531,7 @@
     "back_home": "Back to home"
   },
   "categories": {
+    "suggest_cta": "Don't see your category?",
     "seguros": "Insurance",
     "migracion": "Immigration advisory",
     "traducciones": "Translations",
@@ -653,7 +651,8 @@
     "miplan_max_gold": "You're on the highest plan. You have access to all features.",
     "tier_bronze_features": ["Profile in the directory", "1 category", "Contact visible to registered users", "Verified badge (if you meet criteria)"],
     "tier_silver_features": ["Profile in the directory", "Up to 2 categories", "Contact visible to registered users", "Guaranteed verified badge", "Priority position in results", "Basic metrics (views and clicks)", "Reply to user reviews", "Appointment calendar with migrants", "Email support"],
-    "tier_gold_features": ["Profile in the directory", "All categories", "Contact visible to registered users", "Guaranteed verified badge", "Guaranteed top 3 always", "Full metrics", "Exclusive user benefit", "Reply to user reviews", "Appointment calendar with migrants", "Saved replies and email redirect", "Priority support"]
+    "tier_gold_features": ["Profile in the directory", "All categories", "Contact visible to registered users", "Guaranteed verified badge", "Guaranteed top 3 always", "Full metrics", "Exclusive user benefit", "Reply to user reviews", "Appointment calendar with migrants", "Saved replies and email redirect", "Priority support"],
+    "predefined_replies_label": "💬 Saved replies (one per line)"
   },
   "booking": {
     "title": "📅 Book a session",

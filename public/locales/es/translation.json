@@ -206,9 +206,6 @@
   "feedback": {
     "footer_cta": "Comentarios y sugerencias"
   },
-  "categories": {
-    "suggest_cta": "¿No ves tu categoría?"
-  },
   "value_props": {
     "eyebrow": "¿Por qué SoyManada?",
     "title": "La información que buscas,",
@@ -531,6 +528,7 @@
     "back_home": "Volver al inicio"
   },
   "categories": {
+    "suggest_cta": "¿No ves tu categoría?",
     "seguros": "Seguros",
     "migracion": "Asesoría migratoria",
     "traducciones": "Traducciones",
@@ -650,7 +648,8 @@
     "miplan_max_gold": "Estás en el plan máximo. Tienes acceso a todas las funcionalidades.",
     "tier_bronze_features": ["Perfil en el directorio", "1 categoría", "Contacto visible a usuarios registrados", "Badge verificado (si cumples criterios)"],
     "tier_silver_features": ["Perfil en el directorio", "Hasta 2 categorías", "Contacto visible a usuarios registrados", "Badge verificado garantizado", "Posición prioritaria en resultados", "Métricas básicas (vistas y clics)", "Responder a reseñas de usuarios", "Calendario de citas con migrantes", "Soporte por email"],
-    "tier_gold_features": ["Perfil en el directorio", "Todas las categorías", "Contacto visible a usuarios registrados", "Badge verificado garantizado", "Top 3 garantizado siempre", "Métricas completas", "Beneficio exclusivo para usuarios", "Responder a reseñas de usuarios", "Calendario de citas con migrantes", "Respuestas predefinidas y redirección de email", "Soporte prioritario"]
+    "tier_gold_features": ["Perfil en el directorio", "Todas las categorías", "Contacto visible a usuarios registrados", "Badge verificado garantizado", "Top 3 garantizado siempre", "Métricas completas", "Beneficio exclusivo para usuarios", "Responder a reseñas de usuarios", "Calendario de citas con migrantes", "Respuestas predefinidas y redirección de email", "Soporte prioritario"],
+    "predefined_replies_label": "💬 Respuestas predefinidas (una por línea)"
   },
   "booking": {
     "title": "📅 Reservar cita",

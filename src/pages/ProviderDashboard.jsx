@@ -163,7 +163,7 @@ function ProviderProfileEditor({ provider, tier, onSave, saving, onAvatarUpload,
             placeholder="tu@email.com" disabled={tier !== 'gold'} />
         </div>
         <div className="pdash__field pdash__field--full">
-          <label className="pdash__label t-sm">💬 Respuestas predefinidas (una por línea)</label>
+          <label className="pdash__label t-sm">{t('pdash.predefined_replies_label')}</label>
           <textarea className="pdash__textarea" rows={5}
             value={form.predefined_responses}
             onChange={e => set('predefined_responses', e.target.value)}
@@ -300,7 +300,7 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
                 onChange={e => set('redirect_email', e.target.value)} placeholder="tu@email.com" />
             </div>
             <div className="pdash__field pdash__field--full">
-              <label className="pdash__label t-sm">💬 Respuestas predefinidas (una por línea)</label>
+              <label className="pdash__label t-sm">{t('pdash.predefined_replies_label')}</label>
               <textarea className="pdash__textarea" rows={5}
                 value={form.predefined_responses}
                 onChange={e => set('predefined_responses', e.target.value)}
