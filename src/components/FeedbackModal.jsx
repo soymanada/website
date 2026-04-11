@@ -33,8 +33,8 @@ export default function FeedbackModal({ onClose }) {
     })
     setSending(false)
     if (error) {
-      console.warn('[FeedbackModal]', error.message)
-      setErr(t('forms.submit_error'))
+      console.warn('[FeedbackModal]', error.message, error.code, error.details)
+      setErr(error.message || t('forms.submit_error'))
     } else {
       setSent(true)
     }
