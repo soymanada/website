@@ -356,7 +356,7 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
 }
 
 // ── Sección métricas completa ────────────────────────────────────
-function SectionMetricas({ tier, metrics, activity, hourlyActivity, feedback, provider, metricsLoading }) {
+function SectionMetricas({ tier, metrics, activity, hourlyActivity, feedback, provider, metricsLoading, messagingStats }) {
   const { t } = useTranslation()
   const locked = tier === 'bronze' || !tier
 
@@ -387,7 +387,7 @@ function SectionMetricas({ tier, metrics, activity, hourlyActivity, feedback, pr
         <p className="t-sm pdash__section-sub">{t('pdash.metricas_sub')}</p>
       </div>
 
-      <MetricsSummary metrics={metrics} loading={metricsLoading} />
+      <MetricsSummary metrics={metrics} loading={metricsLoading} messagingStats={messagingStats} />
 
       <div className="pdash__subsection-title label" style={{ marginTop: 8 }}>{t('pdash.activity_by_day')}</div>
       <WeeklyActivity activity={activity} loading={metricsLoading} />
@@ -730,6 +730,7 @@ export default function ProviderDashboard() {
   const [activity,       setActivity]       = useState([])
   const [hourlyActivity, setHourlyActivity] = useState([])
   const [feedback,       setFeedback]       = useState([])
+  const [messagingStats, setMessagingStats] = useState(null)
   const [loading,        setLoading]        = useState(true)
   const [metricsLoading, setMetricsLoading] = useState(true)
   const [saving,         setSaving]         = useState(false)
@@ -752,6 +753,24 @@ export default function ProviderDashboard() {
         .single()
       if (data) setProvider(data)
       setLoading(false)
+
+      // Conversation stats — disponible para todos los tiers
+      if (data?.id) {
+        const cRes = await supabase
+          .from('conversations')
+          .select('status')
+          .eq('provider_id', data.id)
+        if (cRes.data) {
+          const total     = cRes.data.length
+          const responded = cRes.data.filter(c =>
+            c.status === 'replied' || c.status === 'closed'
+          ).length
+          setMessagingStats({
+            total,
+            replyRate: total > 0 ? Math.round((responded / total) * 100) : null,
+          })
+        }
+      }
 
       // Métricas solo para silver/gold
       if (tier === 'silver' || tier === 'gold') {
@@ -926,6 +945,7 @@ export default function ProviderDashboard() {
                   tier={tier} metrics={metrics} activity={activity}
                   hourlyActivity={hourlyActivity} feedback={feedback}
                   provider={provider} metricsLoading={metricsLoading}
+                  messagingStats={messagingStats}
                 />
               )}
               {activeTab === 'herramientas' && (

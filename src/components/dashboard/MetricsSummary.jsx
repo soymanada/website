@@ -1,6 +1,7 @@
 // src/components/dashboard/MetricsSummary.jsx
-// Componente 1 — 4 KPIs: visitas, contactos, conversión, puntaje
-// Mientras el backend no esté listo usa datos mock estructurados
+// 6 KPIs: descubrimiento (visitas, contactos, conversión)
+//         + confianza/respuesta (puntaje, mensajes, tasa de respuesta)
+import { useTranslation } from 'react-i18next'
 import './MetricsSummary.css'
 
 function KpiCard({ label, value, sub, accent, loading }) {
@@ -19,7 +20,9 @@ function KpiCard({ label, value, sub, accent, loading }) {
   )
 }
 
-export default function MetricsSummary({ metrics, loading }) {
+export default function MetricsSummary({ metrics, loading, messagingStats }) {
+  const { t } = useTranslation()
+
   const views    = metrics?.profile_views_week    ?? null
   const contacts = metrics?.contact_clicks_week   ?? null
   const rate     = (views && contacts && views > 0)
@@ -30,13 +33,20 @@ export default function MetricsSummary({ metrics, loading }) {
     : null
   const reviews  = metrics?.review_count ?? null
 
+  const messages  = messagingStats?.total ?? null
+  const replyRate = messagingStats?.replyRate != null
+    ? `${messagingStats.replyRate}%`
+    : null
+
   return (
-    <div className="metrics-summary">
-      <KpiCard loading={loading} label="Visitas esta semana"   value={views}    />
-      <KpiCard loading={loading} label="Clics en contacto"     value={contacts} />
-      <KpiCard loading={loading} label="Tasa de conversión"    value={rate}     accent />
-      <KpiCard loading={loading} label="Puntaje promedio"      value={score}
-        sub={reviews != null ? `${reviews} reseña${reviews !== 1 ? 's' : ''}` : null} />
+    <div className="metrics-summary metrics-summary--6">
+      <KpiCard loading={loading} label={t('pdash.metrics_visits')}    value={views}    />
+      <KpiCard loading={loading} label={t('pdash.metrics_contacts')}   value={contacts} />
+      <KpiCard loading={loading} label={t('pdash.metrics_conversion')} value={rate}     accent />
+      <KpiCard loading={loading} label={t('pdash.metrics_rating')}     value={score}
+        sub={reviews != null ? t('pdash.metrics_reviews_count', { count: reviews }) : null} />
+      <KpiCard loading={loading} label={t('pdash.metrics_messages')}   value={messages} />
+      <KpiCard loading={loading} label={t('pdash.metrics_reply_rate')} value={replyRate} accent />
     </div>
   )
 }

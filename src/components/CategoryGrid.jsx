@@ -5,12 +5,14 @@ import categories from '../data/categories.json'
 import { trackEvent, Events } from '../utils/analytics'
 import CategoryIcon from './CategoryIcon'
 import CategorySuggestionModal from './CategorySuggestionModal'
+import ServiceRequestModal from './ServiceRequestModal'
 import './CategoryGrid.css'
 
 export default function CategoryGrid() {
   const { t } = useTranslation()
   const sorted = [...categories].sort((a, b) => a.order - b.order)
-  const [showSuggest, setShowSuggest] = useState(false)
+  const [showSuggest,  setShowSuggest]  = useState(false)
+  const [showRequest,  setShowRequest]  = useState(false)
 
   return (
     <section id="categorias" className="catgrid section">
@@ -40,17 +42,24 @@ export default function CategoryGrid() {
           })}
         </div>
 
-        {/* Suggest a category CTA */}
+        {/* Bottom CTAs */}
         <div className="catgrid__suggest">
           <button className="catgrid__suggest-btn" onClick={() => setShowSuggest(true)}>
             <span>＋</span>
             {t('categories.suggest_cta')}
+          </button>
+          <button className="catgrid__request-btn" onClick={() => setShowRequest(true)}>
+            <span>🔍</span>
+            {t('categories.request_cta')}
           </button>
         </div>
       </div>
 
       {showSuggest && (
         <CategorySuggestionModal onClose={() => setShowSuggest(false)} />
+      )}
+      {showRequest && (
+        <ServiceRequestModal onClose={() => setShowRequest(false)} />
       )}
     </section>
   )

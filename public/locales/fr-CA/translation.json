@@ -203,7 +203,17 @@
     "feedback_message_label": "Dites-nous",
     "feedback_message_placeholder": "Écrivez votre commentaire, idée ou problème ici...",
     "feedback_sent_title": "Merci !",
-    "feedback_sent_body": "Votre commentaire a été reçu par l'équipe. Nous lisons et prenons en compte tous les retours."
+    "feedback_sent_body": "Votre commentaire a été reçu par l'équipe. Nous lisons et prenons en compte tous les retours.",
+    "request_title": "Demander un service",
+    "request_hint": "Dites-nous ce dont vous avez besoin. Nous l'utilisons pour vous connecter avec des fournisseurs et améliorer le répertoire.",
+    "request_service_label": "Quel service ou aide cherchez-vous ?",
+    "request_service_placeholder": "Ex : Je cherche un comptable hispanophone au Québec, ou une chambre à Calgary…",
+    "request_category_label": "Catégorie (optionnel)",
+    "request_category_placeholder": "La plus proche de ce que vous cherchez",
+    "request_city_label": "Ville ou province",
+    "request_city_placeholder": "Ex : Montréal, QC",
+    "request_sent_title": "Demande envoyée !",
+    "request_sent_body": "L'équipe de SoyManada l'examinera. Si nous trouvons un fournisseur adéquat, nous vous en informerons."
   },
   "feedback": {
     "footer_cta": "Commentaires et suggestions"
@@ -532,6 +542,7 @@
   },
   "categories": {
     "suggest_cta": "Vous ne voyez pas votre catégorie ?",
+    "request_cta": "Vous cherchez quelque chose de précis ?",
     "seguros": "Assurances",
     "migracion": "Conseils en immigration",
     "traducciones": "Traductions",
@@ -652,7 +663,15 @@
     "tier_bronze_features": ["Profil dans le répertoire", "1 catégorie", "Contact visible aux utilisateurs inscrits", "Badge vérifié (si vous remplissez les critères)"],
     "tier_silver_features": ["Profil dans le répertoire", "Jusqu'à 2 catégories", "Contact visible aux utilisateurs inscrits", "Badge vérifié garanti", "Position prioritaire dans les résultats", "Métriques de base (vues et clics)", "Répondre aux avis d'utilisateurs", "Calendrier de rendez-vous avec les migrants", "Assistance par courriel"],
     "tier_gold_features": ["Profil dans le répertoire", "Toutes les catégories", "Contact visible aux utilisateurs inscrits", "Badge vérifié garanti", "Top 3 garanti en tout temps", "Métriques complètes", "Avantage exclusif pour les utilisateurs", "Répondre aux avis d'utilisateurs", "Calendrier de rendez-vous avec les migrants", "Réponses prédéfinies et redirection courriel", "Assistance prioritaire"],
-    "predefined_replies_label": "💬 Réponses prédéfinies (une par ligne)"
+    "predefined_replies_label": "💬 Réponses prédéfinies (une par ligne)",
+    "metrics_visits": "Vues du profil cette semaine",
+    "metrics_contacts": "Clics de contact",
+    "metrics_conversion": "Taux de contact",
+    "metrics_rating": "Note moyenne",
+    "metrics_messages": "Messages reçus",
+    "metrics_reply_rate": "Taux de réponse",
+    "metrics_profile_score": "Complétude du profil",
+    "metrics_reviews_count": "{{count}} avis"
   },
   "booking": {
     "title": "📅 Réserver une séance",

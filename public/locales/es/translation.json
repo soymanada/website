@@ -201,7 +201,17 @@
     "feedback_message_label": "Cuéntanos",
     "feedback_message_placeholder": "Escribe aquí tu comentario, idea o problema...",
     "feedback_sent_title": "¡Gracias!",
-    "feedback_sent_body": "Tu comentario llegó al equipo. Lo leemos y tomamos en cuenta."
+    "feedback_sent_body": "Tu comentario llegó al equipo. Lo leemos y tomamos en cuenta.",
+    "request_title": "Solicita un servicio",
+    "request_hint": "Cuéntanos qué necesitas. Lo usamos para conectarte con proveedores y mejorar el directorio.",
+    "request_service_label": "¿Qué servicio o ayuda necesitas?",
+    "request_service_placeholder": "Ej: Busco contador que hable español en Quebec, o room en Calgary...",
+    "request_category_label": "Categoría (opcional)",
+    "request_category_placeholder": "La más cercana a lo que buscas",
+    "request_city_label": "Ciudad o provincia",
+    "request_city_placeholder": "Ej: Vancouver, BC",
+    "request_sent_title": "¡Solicitud enviada!",
+    "request_sent_body": "El equipo de SoyManada la revisará. Si encontramos un proveedor adecuado, te avisamos."
   },
   "feedback": {
     "footer_cta": "Comentarios y sugerencias"
@@ -529,6 +539,7 @@
   },
   "categories": {
     "suggest_cta": "¿No ves tu categoría?",
+    "request_cta": "¿Buscas algo específico?",
     "seguros": "Seguros",
     "migracion": "Asesoría migratoria",
     "traducciones": "Traducciones",
@@ -649,7 +660,15 @@
     "tier_bronze_features": ["Perfil en el directorio", "1 categoría", "Contacto visible a usuarios registrados", "Badge verificado (si cumples criterios)"],
     "tier_silver_features": ["Perfil en el directorio", "Hasta 2 categorías", "Contacto visible a usuarios registrados", "Badge verificado garantizado", "Posición prioritaria en resultados", "Métricas básicas (vistas y clics)", "Responder a reseñas de usuarios", "Calendario de citas con migrantes", "Soporte por email"],
     "tier_gold_features": ["Perfil en el directorio", "Todas las categorías", "Contacto visible a usuarios registrados", "Badge verificado garantizado", "Top 3 garantizado siempre", "Métricas completas", "Beneficio exclusivo para usuarios", "Responder a reseñas de usuarios", "Calendario de citas con migrantes", "Respuestas predefinidas y redirección de email", "Soporte prioritario"],
-    "predefined_replies_label": "💬 Respuestas predefinidas (una por línea)"
+    "predefined_replies_label": "💬 Respuestas predefinidas (una por línea)",
+    "metrics_visits": "Visitas esta semana",
+    "metrics_contacts": "Clics en contacto",
+    "metrics_conversion": "Tasa de contacto",
+    "metrics_rating": "Puntaje promedio",
+    "metrics_messages": "Mensajes recibidos",
+    "metrics_reply_rate": "Tasa de respuesta",
+    "metrics_profile_score": "Completitud del perfil",
+    "metrics_reviews_count": "{{count}} reseñas"
   },
   "booking": {
     "title": "📅 Reservar cita",
