@@ -123,6 +123,20 @@ function SinContent({ t }) {
         <Step n="04" title={t('first_steps.sin_step4_title')} body={t('first_steps.sin_step4')} />
       </div>
       <Tip text={t('first_steps.sin_tip')} />
+      <div className="fsp__office-finder">
+        <div className="fsp__office-finder__icon">📍</div>
+        <div className="fsp__office-finder__body">
+          <p className="fsp__office-finder__desc">{t('first_steps.sin_office_desc')}</p>
+          <a
+            href="https://offices.service.canada.ca/en"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="fsp__office-finder__btn"
+          >
+            {t('first_steps.sin_office_cta')}
+          </a>
+        </div>
+      </div>
       <CtaButton href={WA_GROUP} icon="💬" label={t('first_steps.cta_community')} variant="community" />
     </div>
   )
