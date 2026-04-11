@@ -41,6 +41,9 @@ export default function CategorySuggestionModal({ onClose }) {
       setErr(t('forms.submit_error'))
     } else {
       setSent(true)
+      supabase.functions.invoke('notify-admin', {
+        body: { type: 'suggestion', payload: { role: form.role || null, name: form.name.trim() || null, city: form.city.trim() || null, message: form.message.trim(), email: form.email.trim() || null } }
+      }).catch(() => {})
     }
   }
 

@@ -37,6 +37,10 @@ export default function FeedbackModal({ onClose }) {
       setErr(error.message || t('forms.submit_error'))
     } else {
       setSent(true)
+      // Notificación por email (fire-and-forget)
+      supabase.functions.invoke('notify-admin', {
+        body: { type: 'feedback', payload: { type: form.type, message: form.message.trim(), email: form.email.trim() || null } }
+      }).catch(() => {})
     }
   }
 

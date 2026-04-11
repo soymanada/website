@@ -36,6 +36,9 @@ export default function ServiceRequestModal({ onClose }) {
       setErr(t('forms.submit_error'))
     } else {
       setSent(true)
+      supabase.functions.invoke('notify-admin', {
+        body: { type: 'service_request', payload: { category: form.category || null, description: form.description.trim(), city: form.city.trim() || null, email: form.email.trim() || null } }
+      }).catch(() => {})
     }
   }
 
