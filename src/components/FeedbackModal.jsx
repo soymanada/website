@@ -34,7 +34,7 @@ export default function FeedbackModal({ onClose }) {
     setSending(false)
     if (error) {
       console.warn('[FeedbackModal]', error.message, error.code, error.details)
-      setErr(error.message || t('forms.submit_error'))
+      setErr(t('forms.submit_error'))
     } else {
       setSent(true)
       // Notificación por email (fire-and-forget)

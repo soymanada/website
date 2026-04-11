@@ -68,3 +68,30 @@ SELECT
 FROM public.events
 WHERE created_at > now() - interval '4 weeks'
 GROUP BY provider_id, EXTRACT(DOW FROM created_at)::INT;
+
+-- ── 4. provider_activity_hourly (vista) ──────────────────────────
+-- Actividad por hora UTC (últimas 4 semanas) para el gráfico de barras hourly.
+-- El dashboard lee con .eq('provider_id', uuid).
+
+CREATE OR REPLACE VIEW public.provider_activity_hourly AS
+SELECT
+  provider_id,
+  EXTRACT(HOUR FROM created_at AT TIME ZONE 'UTC')::INT AS hour_utc,
+  COUNT(*) FILTER (WHERE event_type = 'view')           AS views,
+  COUNT(*) FILTER (WHERE event_type = 'contact_click')  AS contacts
+FROM public.events
+WHERE created_at > now() - interval '4 weeks'
+GROUP BY provider_id,
+         EXTRACT(HOUR FROM created_at AT TIME ZONE 'UTC')::INT;
+
+-- ── 5. provider_feedback_keywords (vista stub) ───────────────────
+-- Palabras clave frecuentes extraídas de reseñas.
+-- Por ahora retorna vacío para evitar error 404; se puede poblar
+-- con lógica de NLP más adelante.
+
+CREATE OR REPLACE VIEW public.provider_feedback_keywords AS
+SELECT
+  NULL::UUID    AS provider_id,
+  NULL::TEXT    AS keyword,
+  NULL::INT     AS count
+WHERE false;
