@@ -21,7 +21,9 @@
   position: relative;
   box-shadow: 0 20px 60px rgba(0,0,0,0.2);
   max-height: 90vh;
-  overflow-y: auto;
+  /* overflow:clip clips without creating a scroll container,
+     so native <select> dropdowns are never clipped */
+  overflow: clip;
 }
 
 .fmodal__close {
@@ -49,7 +51,7 @@
 }
 
 .fmodal__hint {
-  color: var(--text-400);
+  color: var(--text-500);
   margin: 0 0 20px;
 }
 
@@ -68,19 +70,20 @@
 
 .fmodal__label {
   font-weight: 600;
-  color: var(--text-600);
+  color: var(--text-700);
 }
 
 .fmodal__input,
 .fmodal__select,
 .fmodal__textarea {
   width: 100%;
-  border: 1.5px solid var(--border-200, #d1d5db);
+  border: 1.5px solid #d1d5db;
   border-radius: 8px;
   padding: 9px 12px;
   font-size: 0.88rem;
   font-family: inherit;
-  color: var(--text-800);
+  color: var(--text-900);
+  background: #fff;
   transition: border-color 0.15s;
   box-sizing: border-box;
 }
