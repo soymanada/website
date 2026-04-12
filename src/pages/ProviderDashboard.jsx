@@ -514,9 +514,28 @@ function SectionReservas({ provider, tier }) {
     </div>
   )
 
-  const handleStatus = async (id, status) => {
+  const handleStatus = async (id, newStatus) => {
     setUpdating(id)
-    await updateBookingStatus(id, status)
+    await updateBookingStatus(id, newStatus)
+
+    // Cuando se marca completada → enviar email de solicitud de reseña al migrante
+    if (newStatus === 'completed') {
+      const booking = bookings.find(b => b.id === id)
+      if (booking?.user_id && provider?.slug && provider?.name) {
+        const bookingDate = new Date(booking.start_at).toLocaleDateString('es-CL', {
+          weekday: 'long', day: 'numeric', month: 'long',
+        })
+        supabase.functions.invoke('send-review-request', {
+          body: {
+            migrant_id:    booking.user_id,
+            provider_name: provider.name,
+            provider_slug: provider.slug,
+            booking_date:  bookingDate,
+          }
+        }).catch(() => {})
+      }
+    }
+
     await reload()
     setUpdating(null)
   }
