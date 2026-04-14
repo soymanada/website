@@ -27,11 +27,16 @@ const COUNTRY_ISO = {
 }
 
 export default function ProviderCard({ provider: rawProvider }) {
-  const { user }    = useAuth()
+  const { user, isProvider } = useAuth()
   const { t, i18n } = useTranslation()
   const provider    = resolveProvider(rawProvider, i18n.language)
   const { id, slug, name, service, description, countries, verified, contact, testimonial, benefit, price_clp, price_cad, avatar_url, categorySlug } = provider
   const location    = useLocation()
+  const isMigrantUser = !!user && !isProvider
+  const providerTier = String(rawProvider?.tier || 'bronze').toLowerCase()
+  const isBronzeProvider = providerTier === 'bronze'
+  const isSegurosCategory = categorySlug === 'seguros' || location.pathname.startsWith('/categoria/seguros')
+  const hideWhatsAppForMigrant = isMigrantUser && isSegurosCategory && isBronzeProvider
 
   const [isConnecting,   setIsConnecting]   = useState(false)
   const [targetPlatform, setTargetPlatform] = useState('')
@@ -150,7 +155,7 @@ export default function ProviderCard({ provider: rawProvider }) {
         {user ? (
           <>
             <div className="pcard__actions">
-              {contact.whatsapp && (
+              {contact.whatsapp && !hideWhatsAppForMigrant && (
                 <button className="pcard__btn pcard__btn--wa"
                   onClick={() => handleContact('whatsapp', `https://wa.me/${contact.whatsapp}`)}>
                   {t('provider_card.contact_whatsapp')}

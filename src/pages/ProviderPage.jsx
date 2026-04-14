@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../hooks/useAuth'
 import { resolveProvider } from '../utils/providerI18n'
+import { normalizeProvider } from '../utils/providerNormalize'
 import {
   useProviderRating,
   useUserReview,
@@ -226,9 +227,9 @@ export default function ProviderPage() {
       .eq('slug', slug)
       .eq('active', true)
       .maybeSingle()
-      .then(({ data }) => {
-        if (!data) setNotFound(true)
-        else setRawProvider(data)
+      .then(({ data, error }) => {
+        if (error || !data) setNotFound(true)
+        else setRawProvider(normalizeProvider(data))
         setLoading(false)
       })
   }, [slug])
@@ -419,10 +420,10 @@ export default function ProviderPage() {
                         {t('messaging.cta')}
                       </button>
 
-                      {/* WhatsApp — Silver/Gold only AND provider has enabled it */}
+                      {/* WhatsApp — visible for non-bronze; explicit false hides it */}
                       {contact?.whatsapp &&
                         rawProvider?.tier !== 'bronze' &&
-                        rawProvider?.show_whatsapp && (
+                        (rawProvider?.show_whatsapp ?? true) && (
                           <button className="ppage__btn ppage__btn--wa"
                             onClick={() => handleContact('whatsapp', `https://wa.me/${contact.whatsapp}`)}>
                             {t('provider_card.contact_whatsapp')}

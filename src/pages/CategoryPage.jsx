@@ -1,11 +1,9 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-// NOTE: providers and categories are served from static JSON (not Supabase).
-// This is intentional for initial load speed. Update the JSON files when
-// provider data changes, or migrate to a Supabase query in a future sprint.
 import categories          from '../data/categories.json'
-import providers           from '../data/providers.json'
+import { supabase }        from '../lib/supabase'
+import { normalizeProviders } from '../utils/providerNormalize'
 import ProviderCard        from '../components/ProviderCard'
 import CategoryIcon        from '../components/CategoryIcon'
 import PawIcon             from '../components/PawIcon'
@@ -16,8 +14,24 @@ import './CategoryPage.css'
 export default function CategoryPage() {
   const { slug } = useParams()
   const { t } = useTranslation()
+  const [providers, setProviders] = useState([])
   const cat  = categories.find(c => c.slug === slug)
   const list = providers.filter(p => p.categorySlug === slug)
+
+  useEffect(() => {
+    let mounted = true
+
+    supabase
+      .from('providers')
+      .select('*')
+      .eq('active', true)
+      .then(({ data, error }) => {
+        if (!mounted || error || !Array.isArray(data)) return
+        setProviders(normalizeProviders(data))
+      })
+
+    return () => { mounted = false }
+  }, [])
 
   useEffect(() => {
     window.scrollTo(0, 0)

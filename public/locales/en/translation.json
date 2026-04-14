@@ -100,7 +100,24 @@
     "menu_label": "Menu",
     "nav_comunidad": "Community",
     "nav_remesas": "Remittances",
-    "nav_primeros_pasos": "First steps"
+    "nav_primeros_pasos": "First steps",
+    "cta_mi_perfil": "My profile",
+    "cta_mi_cuenta": "My account",
+    "cta_cerrar_sesion": "Sign out"
+  },
+  "account_page": {
+    "meta_title": "My account | SoyManada",
+    "title": "My account",
+    "subtitle": "Your session details and sign out when you need to.",
+    "name_label": "Name",
+    "email_label": "Email",
+    "plan_label": "Plan",
+    "tier_bronze": "Bronze",
+    "tier_silver": "Silver",
+    "tier_gold": "Gold",
+    "sign_out": "Sign out",
+    "explore": "Browse directory",
+    "back_home": "Back to home"
   },
   "footer": {
     "trust_title": "Why trust Manada?",

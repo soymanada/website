@@ -14,6 +14,7 @@ import PricingPage          from './pages/PricingPage'
 import VerificacionPage     from './pages/VerificacionPage'
 import ProviderPage         from './pages/ProviderPage'
 import FirstStepsPage       from './pages/FirstStepsPage'
+import MigrantAccountPage   from './pages/MigrantAccountPage'
 import ProtectedRoute       from './components/ProtectedRoute'
 import RemesasFloat        from './components/RemesasFloat'
 import { AuthProvider }     from './hooks/useAuth'
@@ -62,6 +63,11 @@ function Layout() {
         <Route path="/primeros-pasos"       element={<FirstStepsPage />} />
         <Route path="/login"                element={<LoginPage />} />
         <Route path="/reset-password"       element={<ResetPasswordPage />} />
+        <Route path="/cuenta" element={
+          <ProtectedRoute>
+            <MigrantAccountPage />
+          </ProtectedRoute>
+        } />
         <Route path="/mi-perfil"            element={
           <ProtectedRoute requireRole="provider">
             <ProviderDashboard />

@@ -9,7 +9,8 @@ export default function RemesasFloat() {
   // Hide on the comparator page itself and on admin/dashboard pages
   if (pathname.startsWith('/categoria/remesas') ||
       pathname.startsWith('/admin') ||
-      pathname.startsWith('/mi-perfil')) return null
+      pathname.startsWith('/mi-perfil') ||
+      pathname.startsWith('/cuenta')) return null
 
   return (
     <Link to="/categoria/remesas" className="remfloat" aria-label={t('remesas_teaser.cta')}>

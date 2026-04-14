@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link, NavLink, useLocation } from 'react-router-dom'
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../hooks/useAuth'
 import LanguageSwitcher from './LanguageSwitcher'
@@ -9,11 +9,18 @@ export default function Header() {
   const [scrolled,  setScrolled]  = useState(false)
   const [menuOpen,  setMenuOpen]  = useState(false)
   const location = useLocation()
+  const navigate = useNavigate()
   const { t, i18n } = useTranslation()
 
-  const darkHero = ['/proveedores', '/mi-perfil'].includes(location.pathname)
+  const darkHero = ['/proveedores', '/mi-perfil', '/cuenta'].includes(location.pathname)
   const darkPage = ['/primeros-pasos'].includes(location.pathname)
-  const { user, isProvider } = useAuth()
+  const { user, isProvider, signOut } = useAuth()
+
+  const handleSignOut = async () => {
+    await signOut()
+    navigate('/', { replace: true })
+    setMenuOpen(false)
+  }
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 24)
@@ -74,15 +81,22 @@ export default function Header() {
           </Link>
           <LanguageSwitcher />
           {user ? (
-            <Link
-              to={isProvider ? '/mi-perfil' : '/proveedores'}
-              className="hdr__avatar"
-              title={user.user_metadata?.full_name || user.email}
-            >
-              <span className="hdr__avatar-initials">
-                {(user.user_metadata?.full_name?.split(' ')[0] || user.email?.split('@')[0] || '?')}
-              </span>
-            </Link>
+            <div className="hdr__user-group">
+              {!isProvider && (
+                <button type="button" className="btn btn-ghost btn-sm hdr__signout" onClick={handleSignOut}>
+                  {t('header.cta_cerrar_sesion')}
+                </button>
+              )}
+              <Link
+                to={isProvider ? '/mi-perfil' : '/cuenta'}
+                className="hdr__avatar"
+                title={user.user_metadata?.full_name || user.user_metadata?.name || user.email}
+              >
+                <span className="hdr__avatar-initials">
+                  {(user.user_metadata?.full_name?.split(' ')[0] || user.user_metadata?.name?.split(' ')[0] || user.email?.split('@')[0] || '?')}
+                </span>
+              </Link>
+            </div>
           ) : (
             <Link to="/login" className="btn btn-primary btn-sm">
               <span>{t('header.cta_ingresar')}</span>
@@ -109,9 +123,16 @@ export default function Header() {
           <Link to="/registro-proveedores" className="btn btn-secondary btn-full">{t('header.cta_proveedor')}</Link>
           <Link to="/proveedores" className="btn btn-primary btn-full"><span>{t('header.cta_explorar')}</span></Link>
           {user ? (
-            <Link to={isProvider ? '/mi-perfil' : '/proveedores'} className="btn btn-ghost btn-full">
-              {t('header.cta_mi_perfil', 'Mi perfil')}
-            </Link>
+            <>
+              <Link to={isProvider ? '/mi-perfil' : '/cuenta'} className="btn btn-ghost btn-full">
+                {isProvider ? t('header.cta_mi_perfil') : t('header.cta_mi_cuenta')}
+              </Link>
+              {!isProvider && (
+                <button type="button" className="btn btn-secondary btn-full" onClick={handleSignOut}>
+                  {t('header.cta_cerrar_sesion')}
+                </button>
+              )}
+            </>
           ) : (
             <Link to="/login" className="btn btn-ghost btn-full">
               {t('header.cta_ingresar')}

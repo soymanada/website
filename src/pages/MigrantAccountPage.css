@@ -1,0 +1,66 @@
+.macct--loading {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 100px;
+}
+.macct__spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--iris-200);
+  border-top-color: var(--iris-500);
+  border-radius: 50%;
+  animation: macct-spin 0.7s linear infinite;
+}
+@keyframes macct-spin {
+  to { transform: rotate(360deg); }
+}
+
+.macct__card {
+  max-width: 420px;
+}
+.macct__title {
+  text-align: center;
+  margin: 8px 0 0;
+  color: var(--iris-900);
+}
+.macct__subtitle {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.macct__panel {
+  border: 1px solid var(--iris-200);
+  border-radius: var(--r-md, 12px);
+  background: var(--white);
+  padding: 16px 18px;
+  margin-bottom: 20px;
+}
+.macct__row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--iris-100);
+}
+.macct__row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+.macct__row:first-child {
+  padding-top: 0;
+}
+.macct__label {
+  color: var(--text-500);
+  font-weight: 600;
+}
+.macct__value {
+  font-size: 0.9625rem;
+  color: var(--iris-900);
+  word-break: break-word;
+}
+.macct__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

@@ -2,10 +2,9 @@
 import { useState, useMemo, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-// NOTE: providers and categories are served from static JSON (not Supabase).
-// Intentional for initial load speed. Update the JSON when provider data changes.
-import providers   from '../data/providers.json'
 import categories  from '../data/categories.json'
+import { supabase } from '../lib/supabase'
+import { normalizeProviders } from '../utils/providerNormalize'
 import ProviderCard from '../components/ProviderCard'
 import CategoryIcon from '../components/CategoryIcon'
 import { resolveProvider } from '../utils/providerI18n'
@@ -21,10 +20,26 @@ const ALL_COUNTRIES = [
 
 export default function ProvidersPage() {
   const { t, i18n } = useTranslation()
+  const [providers, setProviders] = useState([])
 
   useEffect(() => {
     document.title = 'Directorio de proveedores | SoyManada'
     return () => { document.title = 'SoyManada – Directorio para la comunidad migrante' }
+  }, [])
+
+  useEffect(() => {
+    let mounted = true
+
+    supabase
+      .from('providers')
+      .select('*')
+      .eq('active', true)
+      .then(({ data, error }) => {
+        if (!mounted || error || !Array.isArray(data)) return
+        setProviders(normalizeProviders(data))
+      })
+
+    return () => { mounted = false }
   }, [])
 
   const [query,        setQuery]        = useState('')
@@ -78,7 +93,7 @@ export default function ProvidersPage() {
 
       return matchText && matchCat && matchCountry && matchVerified
     })
-  }, [query, activeSlug, activeCountry, onlyVerified])
+  }, [providers, query, activeSlug, activeCountry, onlyVerified, i18n.language])
 
   const clearFilters = () => {
     setQuery('')

@@ -209,6 +209,12 @@
   align-items: center;
   gap: 8px;
 }
+.hdr__signout {
+  white-space: nowrap;
+  color: var(--iris-700) !important;
+  font-weight: 600;
+  padding: 4px 10px;
+}
 
 /* Primeros Pasos featured link */
 .hdr__first-steps {

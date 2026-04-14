@@ -100,7 +100,24 @@
     "menu_label": "Menu",
     "nav_comunidad": "Communauté",
     "nav_remesas": "Transferts",
-    "nav_primeros_pasos": "Premiers pas"
+    "nav_primeros_pasos": "Premiers pas",
+    "cta_mi_perfil": "Mon profil",
+    "cta_mi_cuenta": "Mon compte",
+    "cta_cerrar_sesion": "Se déconnecter"
+  },
+  "account_page": {
+    "meta_title": "Mon compte | SoyManada",
+    "title": "Mon compte",
+    "subtitle": "Vos informations de session et la déconnexion.",
+    "name_label": "Nom",
+    "email_label": "Courriel",
+    "plan_label": "Forfait",
+    "tier_bronze": "Bronze",
+    "tier_silver": "Argent",
+    "tier_gold": "Or",
+    "sign_out": "Se déconnecter",
+    "explore": "Parcourir l'annuaire",
+    "back_home": "Retour à l'accueil"
   },
   "footer": {
     "trust_title": "Pourquoi faire confiance à Manada?",

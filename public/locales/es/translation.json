@@ -98,7 +98,24 @@
     "menu_label": "Menú",
     "nav_comunidad": "Comunidad",
     "nav_remesas": "Remesas",
-    "nav_primeros_pasos": "Primeros pasos"
+    "nav_primeros_pasos": "Primeros pasos",
+    "cta_mi_perfil": "Mi perfil",
+    "cta_mi_cuenta": "Mi cuenta",
+    "cta_cerrar_sesion": "Cerrar sesión"
+  },
+  "account_page": {
+    "meta_title": "Mi cuenta | SoyManada",
+    "title": "Mi cuenta",
+    "subtitle": "Aquí ves los datos de tu sesión y puedes cerrar sesión cuando quieras.",
+    "name_label": "Nombre",
+    "email_label": "Email",
+    "plan_label": "Plan",
+    "tier_bronze": "Bronce",
+    "tier_silver": "Plata",
+    "tier_gold": "Oro",
+    "sign_out": "Cerrar sesión",
+    "explore": "Explorar directorio",
+    "back_home": "Volver al inicio"
   },
   "footer": {
     "trust_title": "¿Por qué confiar en Manada?",
