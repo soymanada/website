@@ -149,12 +149,22 @@
     "eyebrow": "Simple et rapide",
     "title": "Comment ça fonctionne?",
     "lead": "De «je ne sais pas qui appeler» à parler avec quelqu'un de confiance en trois étapes.",
-    "step1_title": "Explorez les catégories",
-    "step1_body": "Assurances, immigration, travail, logement, langues. Tout est organisé, sans bruit.",
-    "step2_title": "Consultez le fournisseur",
-    "step2_body": "Nom, service, pays, langues et s'il est vérifié par la communauté Manada.",
-    "step3_title": "Contactez-les directement",
-    "step3_body": "Un clic ouvre WhatsApp. Sans formulaires. Sans attente. Parlez-leur aujourd'hui."
+    "step1_title": "Trouvez ce qu'il vous faut",
+    "step1_body": "Assurances, immigration, travail, logement. Des catégories réelles organisées par ceux qui ont déjà vécu ce que vous commencez.",
+    "step2_title": "Connaissez qui vous aide",
+    "step2_body": "Chaque fournisseur a un nom, une histoire et des pays d'expérience. Pas de profils anonymes. Vérifiés par la communauté.",
+    "step3_title": "Connectez-vous directement",
+    "step3_body": "Un clic et vous parlez à quelqu'un qui comprend votre situation. Sans formulaires. Sans attente. Aujourd'hui même.",
+    "img_nandy_work_alt": "Migrant portant un équipement de protection au travail au Canada",
+    "img_waterfall_alt": "Personne devant une grande cascade en hiver, Canada",
+    "img_person3_alt": "Migrant dans un quotidien ordinaire au Canada",
+    "img_fox_alt": "Renard parmi les arbres de la forêt canadienne",
+    "img_aurora_alt": "Aurores boréales sur le ciel du nord du Canada",
+    "img_owl_alt": "Hibou perché dans les branches d'un arbre au Canada",
+    "label_fox": "Renard",
+    "label_aurora": "Aurores boréales",
+    "label_owl": "Hibou",
+    "nature_strip_label": "Faune et paysages du Canada"
   },
   "cta_section": {
     "badge": "Pour les fournisseurs",
@@ -549,5 +559,36 @@
   "forms": {
     "submit_error": "Impossible d'envoyer votre message. Veuillez réessayer.",
     "sending": "Envoi…"
+  },
+  "manadaStories": {
+    "eyebrow": "Histoires vraies",
+    "title": "La Manada parle",
+    "subtitle": "Des migrants qui ont déjà parcouru le chemin que vous envisagez de faire.",
+    "items": {
+      "daniela": {
+        "name": "Daniela",
+        "location": "Toronto, Ontario",
+        "quote": "Nous sommes une famille venue de Santiago à Toronto il y a trois ans. L'un de nos plus grands défis au début était de trouver un logement — ce n'était vraiment pas simple — mais nous y sommes arrivés. Maintenant, nous sommes vraiment heureux, bien installés et plus unis que jamais en famille 💓",
+        "alt": "Daniela et sa famille, migrants de Santiago vivant à Toronto"
+      },
+      "hugo": {
+        "name": "Hugo",
+        "location": "Banff, Alberta",
+        "quote": "Je viens de Santiago, je suis arrivé à Calgary où je n'ai pas trouvé de travail en plein hiver, mais Banff m'a accueilli à bras ouverts. Le plus difficile a été la langue et trouver du travail. La Manada m'a aidé avec mes questions sur la RP et les choses du quotidien — comme payer ses taxes pour la première fois.",
+        "alt": "Hugo à Banff, en Alberta, migrant de Santiago"
+      },
+      "claudia": {
+        "name": "Claudia",
+        "location": "Sun Peaks, C.-B.",
+        "quote": "Je suis arrivée en mai 2025 depuis Coquimbo dans une station de ski, avec un anglais de base mais une grande envie de l'améliorer. La Manada vous encourage à vous faire confiance, à sortir de votre zone de confort et à faire ce saut de foi. J'ai décidé de rester toute l'année de PVT dans le même emploi, j'ai noué de belles amitiés et j'ai appris à skier.",
+        "alt": "Claudia à Sun Peaks, en C.-B., lors de sa saison de travail dans une station de ski"
+      },
+      "amelia": {
+        "name": "Amelia",
+        "location": "Nouvelle-Écosse, Canada",
+        "quote": "Nous sommes une famille chilienne d'Iquique arrivée en Nouvelle-Écosse en 2025 à la recherche d'un avenir meilleur pour nos enfants. Avec effort et dévouement, nous construisons notre nouvelle vie. Je travaille comme infirmière aux urgences, mon mari dans la construction. Comme beaucoup de familles immigrantes, notre chemin est marqué par la résilience, le sacrifice et l'amour.",
+        "alt": "Amelia et sa famille chilienne en Nouvelle-Écosse, au Canada"
+      }
+    }
   }
 }

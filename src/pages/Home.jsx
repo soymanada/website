@@ -3,6 +3,7 @@ import AuthBanner     from '../components/AuthBanner'
 import StatsSection    from '../components/StatsSection'
 import ValueProps      from '../components/ValueProps'
 import CategoryGrid    from '../components/CategoryGrid'
+import ManadaStories   from '../components/ManadaStories'
 import HowItWorks      from '../components/HowItWorks'
 import FounderSection  from '../components/FounderSection'
 import TrustBadge      from '../components/TrustBadge'
@@ -17,6 +18,7 @@ export default function Home() {
       <StatsSection />
       <ValueProps />
       <CategoryGrid />
+      <ManadaStories />
       <HowItWorks />
       <Testimonials />
       <FounderSection />

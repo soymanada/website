@@ -149,12 +149,22 @@
     "eyebrow": "Simple and fast",
     "title": "How does it work?",
     "lead": "From \"I don't know who to call\" to talking with someone you trust in three steps.",
-    "step1_title": "Browse categories",
-    "step1_body": "Insurance, immigration, work, housing, languages. Everything organized, no noise.",
-    "step2_title": "Review the provider",
-    "step2_body": "Name, service, countries, languages, and whether they're verified by the Manada community.",
-    "step3_title": "Contact them directly",
-    "step3_body": "One click opens WhatsApp. No forms. No waiting. Talk to them today."
+    "step1_title": "Find what you need",
+    "step1_body": "Insurance, immigration, work, housing. Real categories organized by people who've already lived what you're just starting.",
+    "step2_title": "Know who's behind it",
+    "step2_body": "Every provider has a name, a story, and countries of experience. No anonymous profiles. Community-verified.",
+    "step3_title": "Connect without barriers",
+    "step3_body": "One click and you're talking to someone who gets your situation. No forms. No waiting. Today.",
+    "img_nandy_work_alt": "Migrant wearing protective gear working in Canada",
+    "img_waterfall_alt": "Person standing before a large waterfall in winter, Canada",
+    "img_person3_alt": "Migrant on an everyday day in Canada",
+    "img_fox_alt": "Fox among the trees of the Canadian forest",
+    "img_aurora_alt": "Northern lights over the northern Canadian sky",
+    "img_owl_alt": "Owl perched among tree branches in Canada",
+    "label_fox": "Fox",
+    "label_aurora": "Northern lights",
+    "label_owl": "Owl",
+    "nature_strip_label": "Canadian wildlife and landscapes"
   },
   "cta_section": {
     "badge": "For providers",
@@ -549,5 +559,36 @@
   "forms": {
     "submit_error": "Could not send your message. Please try again.",
     "sending": "Sending…"
+  },
+  "manadaStories": {
+    "eyebrow": "Real stories",
+    "title": "La Manada speaks",
+    "subtitle": "Migrants who have already walked the path you're thinking about taking.",
+    "items": {
+      "daniela": {
+        "name": "Daniela",
+        "location": "Toronto, Ontario",
+        "quote": "We're a family who moved from Santiago to Toronto three years ago. One of our biggest challenges at the beginning was finding a place to rent — it wasn't easy at all — but we made it happen. Now we're really happy, settled, and closer than ever as a family 💓",
+        "alt": "Daniela and her family, migrants from Santiago living in Toronto"
+      },
+      "hugo": {
+        "name": "Hugo",
+        "location": "Banff, Alberta",
+        "quote": "I came from Santiago and arrived in Calgary where I couldn't find work in the middle of winter, but Banff welcomed me with open arms. The hardest part was the language and finding work. La Manada helped me with questions about PR and everyday things — like filing taxes for the first time.",
+        "alt": "Hugo in Banff, Alberta, migrant from Santiago"
+      },
+      "claudia": {
+        "name": "Claudia",
+        "location": "Sun Peaks, BC",
+        "quote": "I arrived in May 2025 from Coquimbo to a ski resort, with basic English but a real desire to improve it. La Manada encourages you to trust yourself, step outside your comfort zone, and take that leap of faith. I decided to stay the whole WHV year in the same job, made great friends, and learned to ski.",
+        "alt": "Claudia at Sun Peaks, BC, during her ski resort work season"
+      },
+      "amelia": {
+        "name": "Amelia",
+        "location": "Nova Scotia, Canada",
+        "quote": "We're a Chilean family from Iquique who arrived in Nova Scotia in 2025 in search of a better future for our children. With effort and dedication we've been building our new life. I work as an emergency nurse, my husband in construction. Like many immigrant families, our path is marked by resilience, sacrifice, and love.",
+        "alt": "Amelia and her Chilean family in Nova Scotia, Canada"
+      }
+    }
   }
 }
