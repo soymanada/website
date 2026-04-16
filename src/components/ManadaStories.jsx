@@ -3,10 +3,10 @@ import { useTranslation } from 'react-i18next'
 import './ManadaStories.css'
 
 const STORIES = [
-  { key: 'daniela', img: '/images/story-daniela-toronto-4.jpg' },
-  { key: 'hugo',    img: '/images/story-hugo-banff-5.jpg'     },
-  { key: 'claudia', img: '/images/story-claudia-sunpeaks-3.jpg'},
-  { key: 'amelia',  img: '/images/story-Amelia-nova-2.jpg'    },
+  { key: 'daniela', img: '/images/story-daniela-toronto.jpg' },
+  { key: 'hugo',    img: '/images/story-hugo-banff.jpg'      },
+  { key: 'claudia', img: '/images/story-claudia-sunpeaks.jpg'},
+  { key: 'amelia',  img: '/images/story-Amelia-nova.jpg'     },
 ]
 
 export default function ManadaStories() {

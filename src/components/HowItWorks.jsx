@@ -6,21 +6,21 @@ import './HowItWorks.css'
 const STEPS = [
   {
     n: '01',
-    img: '/images/nandy-2-10.jpg',
+    img: '/images/nandy%202.jpg',
     imgAltKey: 'how_it_works.img_nandy_work_alt',
     titleKey:  'how_it_works.step1_title',
     bodyKey:   'how_it_works.step1_body',
   },
   {
     n: '02',
-    img: '/images/cristobal-2-9.jpg',
+    img: '/images/cristobal%202.jpg',
     imgAltKey: 'how_it_works.img_waterfall_alt',
     titleKey:  'how_it_works.step2_title',
     bodyKey:   'how_it_works.step2_body',
   },
   {
     n: '03',
-    img: '/images/nandy-3-11.jpg',
+    img: '/images/nandy%203.jpg',
     imgAltKey: 'how_it_works.img_person3_alt',
     titleKey:  'how_it_works.step3_title',
     bodyKey:   'how_it_works.step3_body',
@@ -29,9 +29,9 @@ const STEPS = [
 
 // Nature photos — identity / sense of place (decorative strip, not primary)
 const NATURE = [
-  { src: '/images/zorro-nandy-usable-6.jpg',           altKey: 'how_it_works.img_fox_alt',   labelKey: 'how_it_works.label_fox'   },
-  { src: '/images/auroras-boreales-nandy-usable-7.jpg', altKey: 'how_it_works.img_aurora_alt', labelKey: 'how_it_works.label_aurora' },
-  { src: '/images/buho-nandy-usable-8.jpg',             altKey: 'how_it_works.img_owl_alt',   labelKey: 'how_it_works.label_owl'   },
+  { src: '/images/zorro%20nandy%20usable.jpg',           altKey: 'how_it_works.img_fox_alt',   labelKey: 'how_it_works.label_fox'   },
+  { src: '/images/auroras%20boreales%20nandy%20usable.jpg', altKey: 'how_it_works.img_aurora_alt', labelKey: 'how_it_works.label_aurora' },
+  { src: '/images/buho%20nandy%20usable.jpg',             altKey: 'how_it_works.img_owl_alt',   labelKey: 'how_it_works.label_owl'   },
 ]
 
 export default function HowItWorks() {
