@@ -15,8 +15,10 @@ export default function LoginPage() {
   const location    = useLocation()
   // Si viene de una ruta protegida o del gate, volver ahí tras el login
   const from        = location.state?.from?.pathname ?? '/proveedores'
+  // ?mode=register desde el AuthBanner o links externos abre directamente el tab de registro
+  const queryMode   = new URLSearchParams(location.search).get('mode')
 
-  const [mode,      setMode]      = useState('login')   // 'login' | 'register'
+  const [mode,      setMode]      = useState(queryMode === 'register' ? 'register' : 'login')
   const [email,     setEmail]     = useState('')
   const [password,  setPassword]  = useState('')
   const [name,      setName]      = useState('')

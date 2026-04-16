@@ -542,5 +542,9 @@
     "success_title": "¡Gracias por tu sugerencia!",
     "success_body": "La revisaremos y, si cumple nuestros criterios, lo invitaremos a unirse.",
     "close": "Cerrar"
+  },
+  "forms": {
+    "submit_error": "No pudimos enviar tu mensaje. Por favor intenta de nuevo.",
+    "sending": "Enviando…"
   }
 }

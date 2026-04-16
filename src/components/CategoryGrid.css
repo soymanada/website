@@ -91,8 +91,36 @@
 
 .catcard__desc { color: var(--text-500); flex: 1; }
 
-@media (max-width: 900px) { 
-  .catgrid__grid { grid-template-columns: repeat(2, 1fr); } 
+/* ── Bottom CTA — Suggest a provider ───────────────────────── */
+.catgrid__suggest {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.catgrid__suggest-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  background: transparent;
+  border: 1.5px solid var(--iris-300, #a5b4fc);
+  border-radius: 100px;
+  color: var(--iris-700, #4338ca);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.15s;
+}
+
+.catgrid__suggest-btn:hover {
+  background: var(--iris-50, #f5f3ff);
+  border-color: var(--iris-400, #818cf8);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 900px) {
+  .catgrid__grid { grid-template-columns: repeat(2, 1fr); }
   .catcard--vip { transform: none; } /* En móvil evitamos el scale para no romper el grid */
   .catcard--vip:hover { transform: translateY(-4px); }
 }

@@ -545,5 +545,9 @@
     "success_title": "Merci pour votre suggestion!",
     "success_body": "Nous l'examinerons et, si elle répond à nos critères, nous l'inviterons à rejoindre.",
     "close": "Fermer"
+  },
+  "forms": {
+    "submit_error": "Impossible d'envoyer votre message. Veuillez réessayer.",
+    "sending": "Envoi…"
   }
 }

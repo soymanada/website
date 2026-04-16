@@ -545,5 +545,9 @@
     "success_title": "Thanks for your suggestion!",
     "success_body": "We'll review it and, if it meets our criteria, we'll invite them to join.",
     "close": "Close"
+  },
+  "forms": {
+    "submit_error": "Could not send your message. Please try again.",
+    "sending": "Sending…"
   }
 }
