@@ -1,13 +1,16 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import categories from '../data/categories.json'
 import { trackEvent, Events } from '../utils/analytics'
 import CategoryIcon from './CategoryIcon'
+import SuggestProviderModal from './SuggestProviderModal'
 import './CategoryGrid.css'
 
 export default function CategoryGrid() {
   const { t } = useTranslation()
   const sorted = [...categories].sort((a, b) => a.order - b.order)
+  const [showSuggestProvider, setShowSuggestProvider] = useState(false)
 
   return (
     <section id="categorias" className="catgrid section">
@@ -36,7 +39,20 @@ export default function CategoryGrid() {
             )
           })}
         </div>
+
+        {/* Bottom CTA */}
+        <div className="catgrid__suggest">
+          <button className="catgrid__suggest-btn" onClick={() => setShowSuggestProvider(true)}>
+            <span>＋</span>
+            {t('categories.suggest_provider_cta')}
+          </button>
+        </div>
       </div>
+
+      <SuggestProviderModal
+        open={showSuggestProvider}
+        onClose={() => setShowSuggestProvider(false)}
+      />
     </section>
   )
 }

@@ -246,7 +246,8 @@
     "error_not_confirmed": "Confirma tu email antes de ingresar.",
     "error_already_registered": "Ya existe una cuenta con ese email.",
     "error_password_length": "La contraseña debe tener al menos 6 caracteres.",
-    "footer_disclaimer": "Al ingresar aceptas que SoyManada es un directorio informativo y no provee asesoría legal ni migratoria."
+    "footer_disclaimer": "Al ingresar aceptas que SoyManada es un directorio informativo y no provee asesoría legal ni migratoria.",
+    "error_generic": "Algo salió mal. Por favor intenta de nuevo."
   },
   "reset_password": {
     "title_request": "Recuperar contraseña",
@@ -470,7 +471,8 @@
     "comunidad": "Comunidad",
     "comunidad_oneliner": "Eventos, encuentros y conexión con tu manada.",
     "remesas": "Remesas",
-    "remesas_oneliner": "Envía y recibe dinero sin perder en el cambio."
+    "remesas_oneliner": "Envía y recibe dinero sin perder en el cambio.",
+    "suggest_provider_cta": "Sugerir un proveedor"
   },
   "provider_page": {
     "loading": "Cargando…",
@@ -511,5 +513,34 @@
     "name": "Francisco Aleuy",
     "role": "Fundador · Migrante",
     "tiktok_stat": "+20K en TikTok"
+  },
+  "auth_banner": {
+    "headline": "Únete a La Manada — es gratis 🐾",
+    "copy": "Ve los contactos reales de proveedores verificados por la comunidad y protege a otros migrantes de estafas.",
+    "login": "Ingresar",
+    "register": "Crear cuenta"
+  },
+  "suggest_provider": {
+    "title": "Sugiere un proveedor",
+    "subtitle": "¿Conoces a alguien que ayuda a migrantes? Cuéntanos y lo revisamos.",
+    "name_label": "Nombre del proveedor",
+    "name_placeholder": "Ej: María García",
+    "category_label": "Categoría",
+    "category_default": "Selecciona una categoría",
+    "city_label": "Ciudad",
+    "city_placeholder": "Ej: Montreal, Toronto…",
+    "description_label": "¿Qué servicios ofrece?",
+    "description_placeholder": "Ej: ayuda con declaración de impuestos, visa de estudiante…",
+    "contact_label": "Contacto del proveedor",
+    "contact_placeholder": "WhatsApp, Instagram, sitio web, email…",
+    "your_info_label": "Tu información (opcional)",
+    "suggester_name_label": "Tu nombre",
+    "suggester_name_placeholder": "Ej: Carlos Pérez",
+    "email_label": "Tu email",
+    "email_placeholder": "tu@email.com",
+    "submit": "Enviar sugerencia",
+    "success_title": "¡Gracias por tu sugerencia!",
+    "success_body": "La revisaremos y, si cumple nuestros criterios, lo invitaremos a unirse.",
+    "close": "Cerrar"
   }
 }

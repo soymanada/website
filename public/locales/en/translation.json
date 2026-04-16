@@ -248,7 +248,8 @@
     "error_not_confirmed": "Please confirm your email before signing in.",
     "error_already_registered": "An account with this email already exists.",
     "error_password_length": "Password must be at least 6 characters.",
-    "footer_disclaimer": "By signing in you agree that SoyManada is an informational directory and does not provide legal or immigration advice."
+    "footer_disclaimer": "By signing in you agree that SoyManada is an informational directory and does not provide legal or immigration advice.",
+    "error_generic": "Something went wrong. Please try again."
   },
   "reset_password": {
     "title_request": "Reset password",
@@ -473,7 +474,8 @@
     "comunidad": "Community",
     "comunidad_oneliner": "Events, meetups and connection with your pack.",
     "remesas": "Remittances",
-    "remesas_oneliner": "Send money home without losing it in fees."
+    "remesas_oneliner": "Send money home without losing it in fees.",
+    "suggest_provider_cta": "Suggest a provider"
   },
   "provider_page": {
     "loading": "Loading…",
@@ -514,5 +516,34 @@
     "name": "Francisco Aleuy",
     "role": "Founder · Migrant",
     "tiktok_stat": "+20K on TikTok"
+  },
+  "auth_banner": {
+    "headline": "Join La Manada — it's free 🐾",
+    "copy": "See real contacts from community-verified providers and help protect other migrants from scams.",
+    "login": "Log in",
+    "register": "Create account"
+  },
+  "suggest_provider": {
+    "title": "Suggest a provider",
+    "subtitle": "Do you know someone who helps migrants? Tell us and we'll review them.",
+    "name_label": "Provider name",
+    "name_placeholder": "E.g. María García",
+    "category_label": "Category",
+    "category_default": "Select a category",
+    "city_label": "City",
+    "city_placeholder": "E.g. Montreal, Toronto…",
+    "description_label": "What services do they offer?",
+    "description_placeholder": "E.g. tax returns, student visa help…",
+    "contact_label": "Provider contact",
+    "contact_placeholder": "WhatsApp, Instagram, website, email…",
+    "your_info_label": "Your information (optional)",
+    "suggester_name_label": "Your name",
+    "suggester_name_placeholder": "E.g. Carlos Pérez",
+    "email_label": "Your email",
+    "email_placeholder": "you@email.com",
+    "submit": "Send suggestion",
+    "success_title": "Thanks for your suggestion!",
+    "success_body": "We'll review it and, if it meets our criteria, we'll invite them to join.",
+    "close": "Close"
   }
 }

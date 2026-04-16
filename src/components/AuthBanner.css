@@ -1,0 +1,98 @@
+/* ── AuthBanner ───────────────────────────────────────────────────
+   Shown only to guests, inserted between Hero and category grid.
+   Gives mobile users an immediate, clear path to register/login.
+──────────────────────────────────────────────────────────────── */
+.auth-banner {
+  background: var(--iris-50, #f5f3ff);
+  border-bottom: 1.5px solid var(--iris-200, #ede9fe);
+}
+
+.auth-banner__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
+.auth-banner__text {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.auth-banner__icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.auth-banner__headline {
+  margin: 0 0 2px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--iris-900, #1e1044);
+  line-height: 1.3;
+}
+
+.auth-banner__copy {
+  margin: 0;
+  font-size: 0.83rem;
+  color: var(--iris-700, #4338ca);
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.auth-banner__actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.auth-banner__btn {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 100px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity 0.15s, transform 0.15s;
+  white-space: nowrap;
+}
+
+.auth-banner__btn:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+.auth-banner__btn--secondary {
+  background: transparent;
+  border: 1.5px solid var(--iris-400, #818cf8);
+  color: var(--iris-700, #4338ca);
+}
+
+.auth-banner__btn--primary {
+  background: var(--iris-700, #4338ca);
+  border: 1.5px solid transparent;
+  color: #fff;
+}
+
+@media (max-width: 600px) {
+  .auth-banner__inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .auth-banner__actions {
+    width: 100%;
+  }
+
+  .auth-banner__btn {
+    flex: 1;
+    justify-content: center;
+  }
+}

@@ -248,7 +248,8 @@
     "error_not_confirmed": "Veuillez confirmer votre courriel avant de vous connecter.",
     "error_already_registered": "Un compte avec ce courriel existe déjà.",
     "error_password_length": "Le mot de passe doit comporter au moins 6 caractères.",
-    "footer_disclaimer": "En vous connectant, vous acceptez que SoyManada est un répertoire informatif et ne fournit pas de conseils juridiques ou d'immigration."
+    "footer_disclaimer": "En vous connectant, vous acceptez que SoyManada est un répertoire informatif et ne fournit pas de conseils juridiques ou d'immigration.",
+    "error_generic": "Quelque chose s'est mal passé. Veuillez réessayer."
   },
   "reset_password": {
     "title_request": "Réinitialiser le mot de passe",
@@ -473,7 +474,8 @@
     "comunidad": "Communauté",
     "comunidad_oneliner": "Événements, rencontres et connexion avec ton groupe.",
     "remesas": "Transferts",
-    "remesas_oneliner": "Envoie de l'argent sans perdre sur les frais."
+    "remesas_oneliner": "Envoie de l'argent sans perdre sur les frais.",
+    "suggest_provider_cta": "Suggérer un fournisseur"
   },
   "provider_page": {
     "loading": "Chargement…",
@@ -514,5 +516,34 @@
     "name": "Francisco Aleuy",
     "role": "Fondateur · Migrant",
     "tiktok_stat": "+20K sur TikTok"
+  },
+  "auth_banner": {
+    "headline": "Rejoignez La Manada — c'est gratuit 🐾",
+    "copy": "Consultez les vrais contacts des fournisseurs vérifiés par la communauté et protégez d'autres migrants des arnaques.",
+    "login": "Se connecter",
+    "register": "Créer un compte"
+  },
+  "suggest_provider": {
+    "title": "Suggérer un fournisseur",
+    "subtitle": "Vous connaissez quelqu'un qui aide les migrants? Dites-nous et nous l'examinerons.",
+    "name_label": "Nom du fournisseur",
+    "name_placeholder": "Ex: María García",
+    "category_label": "Catégorie",
+    "category_default": "Sélectionnez une catégorie",
+    "city_label": "Ville",
+    "city_placeholder": "Ex: Montréal, Toronto…",
+    "description_label": "Quels services offre-t-il/elle?",
+    "description_placeholder": "Ex: déclaration de revenus, visa étudiant…",
+    "contact_label": "Contact du fournisseur",
+    "contact_placeholder": "WhatsApp, Instagram, site web, courriel…",
+    "your_info_label": "Vos informations (optionnel)",
+    "suggester_name_label": "Votre nom",
+    "suggester_name_placeholder": "Ex: Carlos Pérez",
+    "email_label": "Votre courriel",
+    "email_placeholder": "vous@courriel.com",
+    "submit": "Envoyer la suggestion",
+    "success_title": "Merci pour votre suggestion!",
+    "success_body": "Nous l'examinerons et, si elle répond à nos critères, nous l'inviterons à rejoindre.",
+    "close": "Fermer"
   }
 }

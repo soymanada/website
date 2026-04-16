@@ -1,6 +1,7 @@
 // src/pages/LoginPage.jsx — Login con Google OAuth + Email/Password
 import { useEffect, useState } from 'react'
 import { useNavigate, useLocation, Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../hooks/useAuth'
 import { trackEvent, Events } from '../utils/analytics'
@@ -8,6 +9,7 @@ import PawIcon from '../components/PawIcon'
 import './LoginPage.css'
 
 export default function LoginPage() {
+  const { t }       = useTranslation()
   const { user }    = useAuth()
   const navigate    = useNavigate()
   const location    = useLocation()
@@ -47,7 +49,7 @@ export default function LoginPage() {
       },
     })
     if (error) {
-      setError(error.message)
+      setError(t('login_page.error_generic'))
       setGoogleLoading(false)
     }
     // Si no hay error el navegador redirige a Google
@@ -78,11 +80,11 @@ export default function LoginPage() {
       }
     } catch (err) {
       const msg = err.message
-      if (msg.includes('Invalid login credentials'))    setError('Email o contraseña incorrectos.')
-      else if (msg.includes('Email not confirmed'))     setError('Confirma tu email antes de ingresar.')
-      else if (msg.includes('User already registered')) setError('Ya existe una cuenta con ese email.')
-      else if (msg.includes('Password should be'))      setError('La contraseña debe tener al menos 6 caracteres.')
-      else setError(msg)
+      if (msg.includes('Invalid login credentials'))    setError(t('login_page.error_credentials'))
+      else if (msg.includes('Email not confirmed'))     setError(t('login_page.error_not_confirmed'))
+      else if (msg.includes('User already registered')) setError(t('login_page.error_already_registered'))
+      else if (msg.includes('Password should be'))      setError(t('login_page.error_password_length'))
+      else setError(t('login_page.error_generic'))
     } finally {
       setLoading(false)
     }
