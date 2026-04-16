@@ -1,29 +1,31 @@
 // supabase/functions/notify-admin/index.ts
-// Recibe notificaciones de formularios (feedback, sugerencias, solicitudes)
-// y las reenvía por email vía Resend.
-//
-// Variables de entorno requeridas en Supabase → Project Settings → Edge Functions:
-//   RESEND_API_KEY  → tu API key de resend.com
-//   NOTIFY_TO       → manadasisoy@gmail.com
-//   NOTIFY_FROM     → noreply@soymanada.com  (dominio verificado en Resend)
+// Sends an email to the admin when a feedback, suggestion, service_request,
+// or provider_suggestion is submitted.
+import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
 
-import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
-
-const RESEND_KEY  = Deno.env.get('RESEND_API_KEY') ?? ''
-const NOTIFY_TO   = Deno.env.get('NOTIFY_TO')      ?? 'manadasisoy@gmail.com'
-const NOTIFY_FROM = Deno.env.get('NOTIFY_FROM')     ?? 'SoyManada <noreply@soymanada.com>'
-
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
+const CORS = {
+  'Access-Control-Allow-Origin':  '*',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders })
+    return new Response(null, { status: 204, headers: CORS })
   }
 
   try {
+    const RESEND_KEY = Deno.env.get('RESEND_API_KEY')
+    const TO         = Deno.env.get('NOTIFY_TO')
+    const FROM       = Deno.env.get('NOTIFY_FROM') ?? 'notificaciones@soymanada.com'
+
+    if (!RESEND_KEY || !TO) {
+      // Silent no-op if env vars are not configured — callers use fire-and-forget
+      return new Response(JSON.stringify({ ok: true, skipped: true }), {
+        headers: { ...CORS, 'Content-Type': 'application/json' },
+      })
+    }
+
     const { type, payload } = await req.json()
 
     let subject = ''
@@ -31,72 +33,77 @@ serve(async (req) => {
 
     if (type === 'feedback') {
       const typeLabels: Record<string, string> = {
-        idea:   '💡 Idea o sugerencia',
-        bug:    '🐛 Algo no funciona',
-        praise: '🌟 Felicitación',
-        other:  '💬 Otro',
+        idea: 'Idea', bug: 'Bug', praise: 'Elogio', other: 'Otro',
       }
       subject = `[SoyManada] Nuevo feedback — ${typeLabels[payload.type] ?? payload.type}`
       html = `
-        <h2>Nuevo comentario en SoyManada</h2>
         <p><strong>Tipo:</strong> ${typeLabels[payload.type] ?? payload.type}</p>
-        <p><strong>Mensaje:</strong></p>
-        <blockquote>${payload.message}</blockquote>
-        <p><strong>Email de contacto:</strong> ${payload.email ?? '(no proporcionado)'}</p>
+        <p><strong>Mensaje:</strong> ${payload.message}</p>
+        ${payload.email ? `<p><strong>Email:</strong> ${payload.email}</p>` : ''}
       `
     } else if (type === 'suggestion') {
-      subject = `[SoyManada] Nueva sugerencia de categoría`
+      subject = '[SoyManada] Nueva sugerencia de categoría'
       html = `
-        <h2>Sugerencia de categoría</h2>
-        <p><strong>Nombre:</strong> ${payload.name ?? '-'}</p>
-        <p><strong>Rol:</strong> ${payload.role ?? '-'}</p>
-        <p><strong>Ciudad:</strong> ${payload.city ?? '-'}</p>
-        <p><strong>Sugerencia:</strong></p>
-        <blockquote>${payload.message}</blockquote>
-        <p><strong>Email:</strong> ${payload.email ?? '(no proporcionado)'}</p>
+        <p><strong>Rol:</strong> ${payload.role ?? '—'}</p>
+        <p><strong>Nombre:</strong> ${payload.name ?? '—'}</p>
+        <p><strong>Ciudad:</strong> ${payload.city ?? '—'}</p>
+        <p><strong>Mensaje:</strong> ${payload.message}</p>
+        ${payload.email ? `<p><strong>Email:</strong> ${payload.email}</p>` : ''}
       `
     } else if (type === 'service_request') {
-      subject = `[SoyManada] Nueva solicitud de servicio`
+      subject = '[SoyManada] Nueva solicitud de servicio'
       html = `
-        <h2>Solicitud de servicio</h2>
-        <p><strong>Categoría:</strong> ${payload.category ?? 'Sin especificar'}</p>
-        <p><strong>Ciudad:</strong> ${payload.city ?? '-'}</p>
-        <p><strong>Descripción:</strong></p>
-        <blockquote>${payload.description}</blockquote>
-        <p><strong>Email:</strong> ${payload.email ?? '(no proporcionado)'}</p>
+        <p><strong>Categoría:</strong> ${payload.category ?? '—'}</p>
+        <p><strong>Descripción:</strong> ${payload.description}</p>
+        <p><strong>Ciudad:</strong> ${payload.city ?? '—'}</p>
+        ${payload.email ? `<p><strong>Email:</strong> ${payload.email}</p>` : ''}
+      `
+    } else if (type === 'provider_suggestion') {
+      subject = `[SoyManada] Sugerencia de proveedor — ${payload.suggested_name}`
+      html = `
+        <h3>Proveedor sugerido</h3>
+        <p><strong>Nombre:</strong> ${payload.suggested_name}</p>
+        <p><strong>Categoría:</strong> ${payload.category ?? '—'}</p>
+        <p><strong>Ciudad:</strong> ${payload.city ?? '—'}</p>
+        <p><strong>Descripción:</strong> ${payload.description ?? '—'}</p>
+        <p><strong>Contacto:</strong> ${payload.contact ?? '—'}</p>
+        <h3>Quien sugiere</h3>
+        <p><strong>Nombre:</strong> ${payload.suggester_name ?? '—'}</p>
+        <p><strong>Email:</strong> ${payload.suggester_email ?? '—'}</p>
       `
     } else {
       return new Response(JSON.stringify({ error: 'unknown type' }), {
         status: 400,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: { ...CORS, 'Content-Type': 'application/json' },
       })
     }
 
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${RESEND_KEY}`,
+        Authorization: `Bearer ${RESEND_KEY}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        from:    NOTIFY_FROM,
-        to:      [NOTIFY_TO],
-        subject,
-        html,
-      }),
+      body: JSON.stringify({ from: FROM, to: TO, subject, html }),
     })
 
-    const resBody = await res.json()
+    if (!res.ok) {
+      const err = await res.text()
+      console.error('[notify-admin] Resend error:', err)
+      return new Response(JSON.stringify({ error: 'resend_error' }), {
+        status: 500,
+        headers: { ...CORS, 'Content-Type': 'application/json' },
+      })
+    }
 
-    return new Response(JSON.stringify({ ok: res.ok, resend: resBody }), {
-      status: res.ok ? 200 : 502,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    return new Response(JSON.stringify({ ok: true }), {
+      headers: { ...CORS, 'Content-Type': 'application/json' },
     })
-
-  } catch (err) {
-    return new Response(JSON.stringify({ error: String(err) }), {
+  } catch (e) {
+    console.error('[notify-admin] Unexpected error:', e)
+    return new Response(JSON.stringify({ error: 'internal' }), {
       status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      headers: { ...CORS, 'Content-Type': 'application/json' },
     })
   }
 })

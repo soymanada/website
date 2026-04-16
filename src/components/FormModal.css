@@ -12,6 +12,20 @@
   backdrop-filter: blur(2px);
 }
 
+/* SuggestProviderModal uses fmodal__overlay instead of fmask */
+.fmodal__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(2px);
+  overflow-y: auto;
+}
+
 .fmodal {
   background: #fff;
   border-radius: 16px;
@@ -21,9 +35,13 @@
   position: relative;
   box-shadow: 0 20px 60px rgba(0,0,0,0.2);
   max-height: 90vh;
-  /* overflow:clip clips without creating a scroll container,
-     so native <select> dropdowns are never clipped */
   overflow: clip;
+}
+
+/* Allow scrolling inside the modal for taller forms */
+.fmodal__overlay .fmodal {
+  overflow-y: auto;
+  max-height: calc(100vh - 40px);
 }
 
 .fmodal__close {
@@ -62,15 +80,26 @@
   margin-bottom: 16px;
 }
 
-.fmodal__row {
+.fmodal__field {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  margin-bottom: 12px;
+}
+
+.fmodal__row {
+  display: flex;
+  gap: 12px;
+}
+
+.fmodal__row .fmodal__field {
+  flex: 1;
 }
 
 .fmodal__label {
   font-weight: 600;
   color: var(--text-700);
+  font-size: 0.85rem;
 }
 
 .fmodal__input,
@@ -101,6 +130,18 @@
 .fmodal__error {
   color: var(--error, #e53e3e);
   margin: 0 0 8px;
+  font-size: 0.85rem;
+}
+
+.fmodal__section-divider {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-400);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 8px 0 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--iris-100, #ede9fe);
 }
 
 .fmodal__footer {
@@ -148,4 +189,5 @@
 
 @media (max-width: 520px) {
   .fmodal { padding: 24px 20px; }
+  .fmodal__row { flex-direction: column; gap: 0; }
 }

@@ -232,7 +232,8 @@
     "request_city_label": "Ville ou province",
     "request_city_placeholder": "Ex : Montréal, QC",
     "request_sent_title": "Demande envoyée !",
-    "request_sent_body": "L'équipe de SoyManada l'examinera. Si nous trouvons un fournisseur adéquat, nous vous en informerons."
+    "request_sent_body": "L'équipe de SoyManada l'examinera. Si nous trouvons un fournisseur adéquat, nous vous en informerons.",
+    "sending": "Envoi…"
   },
   "feedback": {
     "footer_cta": "Commentaires et suggestions"
@@ -263,7 +264,17 @@
     "step2_title": "Consultez le fournisseur",
     "step2_body": "Nom, service, pays, langues et s'il est vérifié par la communauté Manada.",
     "step3_title": "Contactez-les directement",
-    "step3_body": "Un clic ouvre WhatsApp. Sans formulaires. Sans attente. Parlez-leur aujourd'hui."
+    "step3_body": "Un clic ouvre WhatsApp. Sans formulaires. Sans attente. Parlez-leur aujourd'hui.",
+    "img_nandy_work_alt": "Migrant portant un équipement de protection au travail au Canada",
+    "img_waterfall_alt": "Personne devant une grande cascade en hiver, Canada",
+    "img_person3_alt": "Migrant dans un quotidien ordinaire au Canada",
+    "img_fox_alt": "Renard parmi les arbres de la forêt canadienne",
+    "img_aurora_alt": "Aurores boréales sur le ciel du nord du Canada",
+    "img_owl_alt": "Hibou perché dans les branches d'un arbre au Canada",
+    "label_fox": "Renard",
+    "label_aurora": "Aurores boréales",
+    "label_owl": "Hibou",
+    "nature_strip_label": "Faune et paysages du Canada"
   },
   "cta_section": {
     "badge": "Pour les fournisseurs",
@@ -357,7 +368,8 @@
     "error_not_confirmed": "Veuillez confirmer votre courriel avant de vous connecter.",
     "error_already_registered": "Un compte avec ce courriel existe déjà.",
     "error_password_length": "Le mot de passe doit comporter au moins 6 caractères.",
-    "footer_disclaimer": "En vous connectant, vous acceptez que SoyManada est un répertoire informatif et ne fournit pas de conseils juridiques ou d'immigration."
+    "footer_disclaimer": "En vous connectant, vous acceptez que SoyManada est un répertoire informatif et ne fournit pas de conseils juridiques ou d'immigration.",
+    "error_generic": "Quelque chose s'est mal passé. Veuillez réessayer."
   },
   "reset_password": {
     "title_request": "Réinitialiser le mot de passe",
@@ -585,7 +597,8 @@
     "comunidad": "Communauté",
     "comunidad_oneliner": "Événements, rencontres et connexion avec ton groupe.",
     "remesas": "Transferts",
-    "remesas_oneliner": "Envoie de l'argent sans perdre sur les frais."
+    "remesas_oneliner": "Envoie de l'argent sans perdre sur les frais.",
+    "suggest_provider_cta": "Suggérer un fournisseur"
   },
   "provider_page": {
     "loading": "Chargement…",
@@ -750,6 +763,66 @@
       "users": "Utilisateurs",
       "providers": "Fournisseurs",
       "submissions": "Demandes"
+    }
+  },
+  "auth_banner": {
+    "headline": "Rejoignez La Manada — c'est gratuit 🐾",
+    "copy": "Consultez les vrais contacts des fournisseurs vérifiés par la communauté et protégez d'autres migrants des arnaques.",
+    "login": "Se connecter",
+    "register": "Créer un compte"
+  },
+  "suggest_provider": {
+    "title": "Suggérer un fournisseur",
+    "subtitle": "Vous connaissez quelqu'un qui aide les migrants? Dites-nous et nous l'examinerons.",
+    "name_label": "Nom du fournisseur",
+    "name_placeholder": "Ex: María García",
+    "category_label": "Catégorie",
+    "category_default": "Sélectionnez une catégorie",
+    "city_label": "Ville",
+    "city_placeholder": "Ex: Montréal, Toronto…",
+    "description_label": "Quels services offre-t-il/elle?",
+    "description_placeholder": "Ex: déclaration de revenus, visa étudiant…",
+    "contact_label": "Contact du fournisseur",
+    "contact_placeholder": "WhatsApp, Instagram, site web, courriel…",
+    "your_info_label": "Vos informations (optionnel)",
+    "suggester_name_label": "Votre nom",
+    "suggester_name_placeholder": "Ex: Carlos Pérez",
+    "email_label": "Votre courriel",
+    "email_placeholder": "vous@courriel.com",
+    "submit": "Envoyer la suggestion",
+    "success_title": "Merci pour votre suggestion!",
+    "success_body": "Nous l'examinerons et, si elle répond à nos critères, nous l'inviterons à rejoindre.",
+    "close": "Fermer"
+  },
+  "manadaStories": {
+    "eyebrow": "Histoires vraies",
+    "title": "La Manada parle",
+    "subtitle": "Des migrants qui ont déjà parcouru le chemin que vous envisagez de faire.",
+    "items": {
+      "daniela": {
+        "name": "Daniela",
+        "location": "Toronto, Ontario",
+        "quote": "Nous sommes une famille venue de Santiago à Toronto il y a trois ans. L'un de nos plus grands défis au début était de trouver un logement — ce n'était vraiment pas simple — mais nous y sommes arrivés. Maintenant, nous sommes vraiment heureux, bien installés et plus unis que jamais en famille 💓",
+        "alt": "Daniela et sa famille, migrants de Santiago vivant à Toronto"
+      },
+      "hugo": {
+        "name": "Hugo",
+        "location": "Banff, Alberta",
+        "quote": "Je viens de Santiago, je suis arrivé à Calgary où je n'ai pas trouvé de travail en plein hiver, mais Banff m'a accueilli à bras ouverts. Le plus difficile a été la langue et trouver du travail. La Manada m'a aidé avec mes questions sur la RP et les choses du quotidien — comme payer ses taxes pour la première fois.",
+        "alt": "Hugo à Banff, en Alberta, migrant de Santiago"
+      },
+      "claudia": {
+        "name": "Claudia",
+        "location": "Sun Peaks, C.-B.",
+        "quote": "Je suis arrivée en mai 2025 depuis Coquimbo dans une station de ski, avec un anglais de base mais une grande envie de l'améliorer. La Manada vous encourage à vous faire confiance, à sortir de votre zone de confort et à faire ce saut de foi. J'ai décidé de rester toute l'année de PVT dans le même emploi, j'ai noué de belles amitiés et j'ai appris à skier.",
+        "alt": "Claudia à Sun Peaks, en C.-B., lors de sa saison de travail dans une station de ski"
+      },
+      "amelia": {
+        "name": "Amelia",
+        "location": "Nouvelle-Écosse, Canada",
+        "quote": "Nous sommes une famille chilienne d'Iquique arrivée en Nouvelle-Écosse en 2025 à la recherche d'un avenir meilleur pour nos enfants. Avec effort et dévouement, nous construisons notre nouvelle vie. Je travaille comme infirmière aux urgences, mon mari dans la construction. Comme beaucoup de familles immigrantes, notre chemin est marqué par la résilience, le sacrifice et l'amour.",
+        "alt": "Amelia et sa famille chilienne en Nouvelle-Écosse, au Canada"
+      }
     }
   }
 }

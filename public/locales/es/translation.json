@@ -230,7 +230,8 @@
     "request_city_label": "Ciudad o provincia",
     "request_city_placeholder": "Ej: Vancouver, BC",
     "request_sent_title": "¡Solicitud enviada!",
-    "request_sent_body": "El equipo de SoyManada la revisará. Si encontramos un proveedor adecuado, te avisamos."
+    "request_sent_body": "El equipo de SoyManada la revisará. Si encontramos un proveedor adecuado, te avisamos.",
+    "sending": "Enviando…"
   },
   "feedback": {
     "footer_cta": "Comentarios y sugerencias"
@@ -261,7 +262,17 @@
     "step2_title": "Revisa el proveedor",
     "step2_body": "Nombre, servicio, países, idiomas y si está verificado por la comunidad Manada.",
     "step3_title": "Contáctalos directo",
-    "step3_body": "Un clic y abre WhatsApp. Sin formularios. Sin esperas. Hablas hoy mismo."
+    "step3_body": "Un clic y abre WhatsApp. Sin formularios. Sin esperas. Hablas hoy mismo.",
+    "img_nandy_work_alt": "Migrante con equipo de protección trabajando en Canadá",
+    "img_waterfall_alt": "Persona frente a una gran cascada en invierno, Canadá",
+    "img_person3_alt": "Migrante en un día cotidiano en Canadá",
+    "img_fox_alt": "Zorro entre los árboles del bosque canadiense",
+    "img_aurora_alt": "Auroras boreales sobre el cielo del norte de Canadá",
+    "img_owl_alt": "Búho entre las ramas de un árbol en Canadá",
+    "label_fox": "Zorro",
+    "label_aurora": "Auroras boreales",
+    "label_owl": "Búho",
+    "nature_strip_label": "Fauna y paisajes de Canadá"
   },
   "cta_section": {
     "badge": "Para proveedores",
@@ -355,7 +366,8 @@
     "error_not_confirmed": "Confirma tu email antes de ingresar.",
     "error_already_registered": "Ya existe una cuenta con ese email.",
     "error_password_length": "La contraseña debe tener al menos 6 caracteres.",
-    "footer_disclaimer": "Al ingresar aceptas que SoyManada es un directorio informativo y no provee asesoría legal ni migratoria."
+    "footer_disclaimer": "Al ingresar aceptas que SoyManada es un directorio informativo y no provee asesoría legal ni migratoria.",
+    "error_generic": "Algo salió mal. Por favor intenta de nuevo."
   },
   "reset_password": {
     "title_request": "Recuperar contraseña",
@@ -582,7 +594,8 @@
     "comunidad": "Comunidad",
     "comunidad_oneliner": "Eventos, encuentros y conexión con tu manada.",
     "remesas": "Remesas",
-    "remesas_oneliner": "Envía y recibe dinero sin perder en el cambio."
+    "remesas_oneliner": "Envía y recibe dinero sin perder en el cambio.",
+    "suggest_provider_cta": "Sugerir un proveedor"
   },
   "provider_page": {
     "loading": "Cargando…",
@@ -747,6 +760,66 @@
       "users": "Usuarios",
       "providers": "Proveedores",
       "submissions": "Solicitudes"
+    }
+  },
+  "auth_banner": {
+    "headline": "Únete a La Manada — es gratis 🐾",
+    "copy": "Ve los contactos reales de proveedores verificados por la comunidad y protege a otros migrantes de estafas.",
+    "login": "Ingresar",
+    "register": "Crear cuenta"
+  },
+  "suggest_provider": {
+    "title": "Sugiere un proveedor",
+    "subtitle": "¿Conoces a alguien que ayuda a migrantes? Cuéntanos y lo revisamos.",
+    "name_label": "Nombre del proveedor",
+    "name_placeholder": "Ej: María García",
+    "category_label": "Categoría",
+    "category_default": "Selecciona una categoría",
+    "city_label": "Ciudad",
+    "city_placeholder": "Ej: Montreal, Toronto…",
+    "description_label": "¿Qué servicios ofrece?",
+    "description_placeholder": "Ej: ayuda con declaración de impuestos, visa de estudiante…",
+    "contact_label": "Contacto del proveedor",
+    "contact_placeholder": "WhatsApp, Instagram, sitio web, email…",
+    "your_info_label": "Tu información (opcional)",
+    "suggester_name_label": "Tu nombre",
+    "suggester_name_placeholder": "Ej: Carlos Pérez",
+    "email_label": "Tu email",
+    "email_placeholder": "tu@email.com",
+    "submit": "Enviar sugerencia",
+    "success_title": "¡Gracias por tu sugerencia!",
+    "success_body": "La revisaremos y, si cumple nuestros criterios, lo invitaremos a unirse.",
+    "close": "Cerrar"
+  },
+  "manadaStories": {
+    "eyebrow": "Historias reales",
+    "title": "La Manada habla",
+    "subtitle": "Migrantes que ya hicieron el camino que tú estás pensando hacer.",
+    "items": {
+      "daniela": {
+        "name": "Daniela",
+        "location": "Toronto, Ontario",
+        "quote": "Somos una familia que llegó de Santiago a Toronto hace tres años. Uno de los mayores desafíos al principio fue encontrar arriendo —no fue nada fácil— pero lo logramos. Hoy estamos felices, arraigados y más unidos que nunca como familia 💓",
+        "alt": "Daniela y su familia, migrantes de Santiago viviendo en Toronto"
+      },
+      "hugo": {
+        "name": "Hugo",
+        "location": "Banff, Alberta",
+        "quote": "Vengo de Santiago, llegué a Calgary donde no pude encontrar trabajo en pleno invierno, pero Banff me recibió con los brazos abiertos. Lo más difícil fue el speaking y encontrar trabajo. La Manada me ayudó con mis dudas sobre la PR y cosas cotidianas, como pagar los taxes la primera vez.",
+        "alt": "Hugo en Banff, Alberta, migrante de Santiago"
+      },
+      "claudia": {
+        "name": "Claudia",
+        "location": "Sun Peaks, BC",
+        "quote": "Llegué en mayo 2025 desde Coquimbo a un centro de ski, con un inglés básico pero con muchas ganas de mejorarlo. La Manada te anima a confiar en ti, a salir de tu zona de confort y dar ese salto de fe. Decidí quedarme el año de WH en el mismo trabajo, hice muy buenos amigos, aprendí y amé skiar.",
+        "alt": "Claudia en Sun Peaks, BC, durante su temporada de trabajo en ski"
+      },
+      "amelia": {
+        "name": "Amelia",
+        "location": "Nueva Escocia, Canadá",
+        "quote": "Somos una familia chilena de Iquique que llegó a Nueva Escocia en 2025 en busca de un mejor futuro para nuestros hijos. Con esfuerzo y dedicación hemos ido construyendo nuestra nueva vida. Yo trabajo como enfermera en urgencias, mi esposo en construcción. Como muchas familias inmigrantes, nuestro camino está marcado por la resiliencia, el sacrificio y el amor.",
+        "alt": "Amelia y su familia chilena en Nueva Escocia, Canadá"
+      }
     }
   }
 }

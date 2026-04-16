@@ -1,5 +1,7 @@
 import { useEffect } from 'react'
 import Hero           from '../components/Hero'
+import AuthBanner     from '../components/AuthBanner'
+import StatsSection    from '../components/StatsSection'
 import ManadaStories   from '../components/ManadaStories'
 import ValueProps      from '../components/ValueProps'
 import CategoryGrid    from '../components/CategoryGrid'
@@ -21,6 +23,8 @@ export default function Home() {
   return (
     <main>
       <Hero />
+      <AuthBanner />
+      <StatsSection />
       <ManadaStories />
       <ValueProps />
       <CategoryGrid />

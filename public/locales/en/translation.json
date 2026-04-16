@@ -232,7 +232,8 @@
     "request_city_label": "City or province",
     "request_city_placeholder": "E.g. Vancouver, BC",
     "request_sent_title": "Request sent!",
-    "request_sent_body": "The SoyManada team will review it. If we find a suitable provider, we'll let you know."
+    "request_sent_body": "The SoyManada team will review it. If we find a suitable provider, we'll let you know.",
+    "sending": "Sending…"
   },
   "feedback": {
     "footer_cta": "Feedback & suggestions"
@@ -263,7 +264,17 @@
     "step2_title": "Review the provider",
     "step2_body": "Name, service, countries, languages, and whether they're verified by the Manada community.",
     "step3_title": "Contact them directly",
-    "step3_body": "One click opens WhatsApp. No forms. No waiting. Talk to them today."
+    "step3_body": "One click opens WhatsApp. No forms. No waiting. Talk to them today.",
+    "img_nandy_work_alt": "Migrant wearing protective gear working in Canada",
+    "img_waterfall_alt": "Person standing before a large waterfall in winter, Canada",
+    "img_person3_alt": "Migrant on an everyday day in Canada",
+    "img_fox_alt": "Fox among the trees of the Canadian forest",
+    "img_aurora_alt": "Northern lights over the northern Canadian sky",
+    "img_owl_alt": "Owl perched among tree branches in Canada",
+    "label_fox": "Fox",
+    "label_aurora": "Northern lights",
+    "label_owl": "Owl",
+    "nature_strip_label": "Canadian wildlife and landscapes"
   },
   "cta_section": {
     "badge": "For providers",
@@ -357,7 +368,8 @@
     "error_not_confirmed": "Please confirm your email before signing in.",
     "error_already_registered": "An account with this email already exists.",
     "error_password_length": "Password must be at least 6 characters.",
-    "footer_disclaimer": "By signing in you agree that SoyManada is an informational directory and does not provide legal or immigration advice."
+    "footer_disclaimer": "By signing in you agree that SoyManada is an informational directory and does not provide legal or immigration advice.",
+    "error_generic": "Something went wrong. Please try again."
   },
   "reset_password": {
     "title_request": "Reset password",
@@ -585,7 +597,8 @@
     "comunidad": "Community",
     "comunidad_oneliner": "Events, meetups and connection with your pack.",
     "remesas": "Remittances",
-    "remesas_oneliner": "Send money home without losing it in fees."
+    "remesas_oneliner": "Send money home without losing it in fees.",
+    "suggest_provider_cta": "Suggest a provider"
   },
   "provider_page": {
     "loading": "Loading…",
@@ -750,6 +763,66 @@
       "users": "Users",
       "providers": "Providers",
       "submissions": "Applications"
+    }
+  },
+  "auth_banner": {
+    "headline": "Join La Manada — it's free 🐾",
+    "copy": "See real contacts from community-verified providers and help protect other migrants from scams.",
+    "login": "Log in",
+    "register": "Create account"
+  },
+  "suggest_provider": {
+    "title": "Suggest a provider",
+    "subtitle": "Do you know someone who helps migrants? Tell us and we'll review them.",
+    "name_label": "Provider name",
+    "name_placeholder": "E.g. María García",
+    "category_label": "Category",
+    "category_default": "Select a category",
+    "city_label": "City",
+    "city_placeholder": "E.g. Montreal, Toronto…",
+    "description_label": "What services do they offer?",
+    "description_placeholder": "E.g. tax returns, student visa help…",
+    "contact_label": "Provider contact",
+    "contact_placeholder": "WhatsApp, Instagram, website, email…",
+    "your_info_label": "Your information (optional)",
+    "suggester_name_label": "Your name",
+    "suggester_name_placeholder": "E.g. Carlos Pérez",
+    "email_label": "Your email",
+    "email_placeholder": "you@email.com",
+    "submit": "Send suggestion",
+    "success_title": "Thanks for your suggestion!",
+    "success_body": "We'll review it and, if it meets our criteria, we'll invite them to join.",
+    "close": "Close"
+  },
+  "manadaStories": {
+    "eyebrow": "Real stories",
+    "title": "La Manada speaks",
+    "subtitle": "Migrants who have already walked the path you're thinking about taking.",
+    "items": {
+      "daniela": {
+        "name": "Daniela",
+        "location": "Toronto, Ontario",
+        "quote": "We're a family who moved from Santiago to Toronto three years ago. One of our biggest challenges at the beginning was finding a place to rent — it wasn't easy at all — but we made it happen. Now we're really happy, settled, and closer than ever as a family 💓",
+        "alt": "Daniela and her family, migrants from Santiago living in Toronto"
+      },
+      "hugo": {
+        "name": "Hugo",
+        "location": "Banff, Alberta",
+        "quote": "I came from Santiago and arrived in Calgary where I couldn't find work in the middle of winter, but Banff welcomed me with open arms. The hardest part was the language and finding work. La Manada helped me with questions about PR and everyday things — like filing taxes for the first time.",
+        "alt": "Hugo in Banff, Alberta, migrant from Santiago"
+      },
+      "claudia": {
+        "name": "Claudia",
+        "location": "Sun Peaks, BC",
+        "quote": "I arrived in May 2025 from Coquimbo to a ski resort, with basic English but a real desire to improve it. La Manada encourages you to trust yourself, step outside your comfort zone, and take that leap of faith. I decided to stay the whole WHV year in the same job, made great friends, and learned to ski.",
+        "alt": "Claudia at Sun Peaks, BC, during her ski resort work season"
+      },
+      "amelia": {
+        "name": "Amelia",
+        "location": "Nova Scotia, Canada",
+        "quote": "We're a Chilean family from Iquique who arrived in Nova Scotia in 2025 in search of a better future for our children. With effort and dedication we've been building our new life. I work as an emergency nurse, my husband in construction. Like many immigrant families, our path is marked by resilience, sacrifice, and love.",
+        "alt": "Amelia and her Chilean family in Nova Scotia, Canada"
+      }
     }
   }
 }
