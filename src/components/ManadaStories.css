@@ -52,6 +52,7 @@
   flex: 1;
   display: flex;
   gap: 20px;
+  align-items: start;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
@@ -78,11 +79,16 @@
   box-shadow: var(--shadow-md);
 }
 
+/* Image button wrapper */
 .mstory-card__img-wrap {
+  all: unset;
+  display: block;
   width: 100%;
   aspect-ratio: 4 / 3;
   overflow: hidden;
   flex-shrink: 0;
+  position: relative;
+  cursor: zoom-in;
 }
 
 .mstory-card__img {
@@ -91,18 +97,82 @@
   object-fit: cover;
   object-position: center;
   transition: transform 0.4s var(--ease-out);
+  display: block;
 }
-.mstory-card:hover .mstory-card__img {
+.mstory-card__img-wrap:hover .mstory-card__img {
   transform: scale(1.04);
 }
+
+/* Zoom icon shown on hover */
+.mstory-card__zoom {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0,0,0,0.45);
+  color: #fff;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+  backdrop-filter: blur(4px);
+}
+.mstory-card__img-wrap:hover .mstory-card__zoom { opacity: 1; }
 
 .mstory-card__body {
   padding: 20px 22px 24px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  flex: 1;
 }
+
+/* ── Lightbox ── */
+.mstories__lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 24px;
+  cursor: zoom-out;
+  animation: lb-in 0.18s ease;
+}
+@keyframes lb-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.mstories__lightbox-img {
+  max-width: 100%;
+  max-height: 90vh;
+  border-radius: 16px;
+  object-fit: contain;
+  cursor: default;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.5);
+}
+
+.mstories__lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255,255,255,0.12);
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.mstories__lightbox-close:hover { background: rgba(255,255,255,0.22); }
 
 .mstory-card__meta {
   display: flex;
