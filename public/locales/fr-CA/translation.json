@@ -274,7 +274,10 @@
     "label_fox": "Renard",
     "label_aurora": "Aurores boréales",
     "label_owl": "Hibou",
-    "nature_strip_label": "Faune et paysages du Canada"
+    "nature_strip_label": "Faune et paysages du Canada",
+    "img_bear_alt": "Ours dans la nature canadienne",
+    "img_bird_alt": "Oiseau au Canada",
+    "img_bird2_alt": "Oiseau sauvage canadien"
   },
   "cta_section": {
     "badge": "Pour les fournisseurs",
@@ -822,6 +825,24 @@
         "location": "Nouvelle-Écosse, Canada",
         "quote": "Nous sommes une famille chilienne d'Iquique arrivée en Nouvelle-Écosse en 2025 à la recherche d'un avenir meilleur pour nos enfants. Avec effort et dévouement, nous construisons notre nouvelle vie. Je travaille comme infirmière aux urgences, mon mari dans la construction. Comme beaucoup de familles immigrantes, notre chemin est marqué par la résilience, le sacrifice et l'amour.",
         "alt": "Amelia et sa famille chilienne en Nouvelle-Écosse, au Canada"
+      },
+      "cristobal": {
+        "name": "Cristóbal",
+        "location": "Calgary, AB",
+        "alt": "Cristóbal à Calgary",
+        "quote": "J'ai trouvé du travail en démolition en moins de deux semaines. Le plus difficile a été de trouver un logement à mon arrivée. La Manada m'a aidé avec toutes les informations avant de quitter le Chili."
+      },
+      "valeria": {
+        "name": "Valeria",
+        "location": "Banff, AB",
+        "alt": "Valeria à Banff",
+        "quote": "Je suis arrivée avec un anglais très basique et beaucoup de peur. La Manada m'a dit de me lancer — et ils avaient raison. On l'apprend beaucoup plus vite ici que dans n'importe quel cours."
+      },
+      "nandy": {
+        "name": "Nandy",
+        "location": "Quebec, QC",
+        "alt": "Nandy à Québec",
+        "quote": "J'ai trouvé un travail en garde d'enfants avant de quitter le Chili. Je suis arrivée avec tout organisé : assurance voyage, orientation, logistique. Le français était le plus difficile, mais une famille bilingue m'a aidée."
       }
     }
   }

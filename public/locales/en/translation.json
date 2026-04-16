@@ -274,7 +274,10 @@
     "label_fox": "Fox",
     "label_aurora": "Northern lights",
     "label_owl": "Owl",
-    "nature_strip_label": "Canadian wildlife and landscapes"
+    "nature_strip_label": "Canadian wildlife and landscapes",
+    "img_bear_alt": "Bear in Canadian nature",
+    "img_bird_alt": "Bird in Canada",
+    "img_bird2_alt": "Canadian wild bird"
   },
   "cta_section": {
     "badge": "For providers",
@@ -822,6 +825,24 @@
         "location": "Nova Scotia, Canada",
         "quote": "We're a Chilean family from Iquique who arrived in Nova Scotia in 2025 in search of a better future for our children. With effort and dedication we've been building our new life. I work as an emergency nurse, my husband in construction. Like many immigrant families, our path is marked by resilience, sacrifice, and love.",
         "alt": "Amelia and her Chilean family in Nova Scotia, Canada"
+      },
+      "cristobal": {
+        "name": "Cristóbal",
+        "location": "Calgary, AB",
+        "alt": "Cristóbal in Calgary",
+        "quote": "I found work in demolition in less than two weeks. The hardest part was finding housing and managing payments when I arrived. La Manada helped me with all the information before leaving Chile."
+      },
+      "valeria": {
+        "name": "Valeria",
+        "location": "Banff, AB",
+        "alt": "Valeria in Banff",
+        "quote": "I arrived with very basic English and a lot of fear. La Manada told me to just go for it — and they were right. You learn it much faster here than in any course."
+      },
+      "nandy": {
+        "name": "Nandy",
+        "location": "Quebec, QC",
+        "alt": "Nandy in Quebec",
+        "quote": "I found childcare work before leaving Chile. I arrived with everything organized: travel insurance, orientation, logistics. French was the hardest part, but a bilingual family helped me adapt."
       }
     }
   }

@@ -2,26 +2,25 @@
 import { useTranslation } from 'react-i18next'
 import './HowItWorks.css'
 
-// Human photos paired with each step (community / belonging)
 const STEPS = [
   {
     n: '01',
-    img: '/images/nandy%202.jpg',
-    imgAltKey: 'how_it_works.img_nandy_work_alt',
+    img: '/images/oso%20nandy%20usable.jpg',
+    imgAltKey: 'how_it_works.img_bear_alt',
     titleKey:  'how_it_works.step1_title',
     bodyKey:   'how_it_works.step1_body',
   },
   {
     n: '02',
-    img: '/images/cristobal%202.jpg',
-    imgAltKey: 'how_it_works.img_waterfall_alt',
+    img: '/images/pajaro%20nandy%20(usable).jpg',
+    imgAltKey: 'how_it_works.img_bird_alt',
     titleKey:  'how_it_works.step2_title',
     bodyKey:   'how_it_works.step2_body',
   },
   {
     n: '03',
-    img: '/images/nandy%203.jpg',
-    imgAltKey: 'how_it_works.img_person3_alt',
+    img: '/images/pajaro%20nandy%20usable%20otro.jpg',
+    imgAltKey: 'how_it_works.img_bird2_alt',
     titleKey:  'how_it_works.step3_title',
     bodyKey:   'how_it_works.step3_body',
   },

@@ -1,16 +1,28 @@
 // src/components/ManadaStories.jsx
+import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import './ManadaStories.css'
 
 const STORIES = [
-  { key: 'daniela', img: '/images/story-daniela-toronto.jpg' },
-  { key: 'hugo',    img: '/images/story-hugo-banff.jpg'      },
-  { key: 'claudia', img: '/images/story-claudia-sunpeaks.jpg'},
-  { key: 'amelia',  img: '/images/story-Amelia-nova.jpg'     },
+  { key: 'cristobal', img: '/images/story-cristobal-calgary.jpg' },
+  { key: 'valeria',   img: '/images/story-valeria-banff.jpg'     },
+  { key: 'nandy',     img: '/images/story-nandy-quebec.jpg'      },
+  { key: 'daniela',   img: '/images/story-daniela-toronto.jpg'   },
+  { key: 'hugo',      img: '/images/story-hugo-banff.jpg'        },
+  { key: 'claudia',   img: '/images/story-claudia-sunpeaks.jpg'  },
+  { key: 'amelia',    img: '/images/story-Amelia-nova.jpg'       },
 ]
 
 export default function ManadaStories() {
   const { t } = useTranslation()
+  const trackRef = useRef(null)
+
+  const scroll = (dir) => {
+    if (!trackRef.current) return
+    const card = trackRef.current.querySelector('.mstory-card')
+    if (!card) return
+    trackRef.current.scrollBy({ left: dir * (card.offsetWidth + 20), behavior: 'smooth' })
+  }
 
   return (
     <section className="mstories section">
@@ -28,32 +40,46 @@ export default function ManadaStories() {
           <p className="t-lg mstories__subtitle">{t('manadaStories.subtitle')}</p>
         </div>
 
-        <div className="mstories__track">
-          {STORIES.map(s => (
-            <article key={s.key} className="mstory-card">
-              <div className="mstory-card__img-wrap">
-                <img
-                  src={s.img}
-                  alt={t(`manadaStories.items.${s.key}.alt`)}
-                  className="mstory-card__img"
-                  loading="lazy"
-                />
-              </div>
-              <div className="mstory-card__body">
-                <div className="mstory-card__meta">
-                  <strong className="mstory-card__name">
-                    {t(`manadaStories.items.${s.key}.name`)}
-                  </strong>
-                  <span className="mstory-card__location">
-                    {t(`manadaStories.items.${s.key}.location`)}
-                  </span>
+        <div className="mstories__carousel">
+          <button className="mstories__arrow mstories__arrow--prev" onClick={() => scroll(-1)} aria-label="Anterior">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="20" height="20">
+              <polyline points="15 18 9 12 15 6"/>
+            </svg>
+          </button>
+
+          <div className="mstories__track" ref={trackRef}>
+            {STORIES.map(s => (
+              <article key={s.key} className="mstory-card">
+                <div className="mstory-card__img-wrap">
+                  <img
+                    src={s.img}
+                    alt={t(`manadaStories.items.${s.key}.alt`)}
+                    className="mstory-card__img"
+                    loading="lazy"
+                  />
                 </div>
-                <p className="mstory-card__quote">
-                  &ldquo;{t(`manadaStories.items.${s.key}.quote`)}&rdquo;
-                </p>
-              </div>
-            </article>
-          ))}
+                <div className="mstory-card__body">
+                  <div className="mstory-card__meta">
+                    <strong className="mstory-card__name">
+                      {t(`manadaStories.items.${s.key}.name`)}
+                    </strong>
+                    <span className="mstory-card__location">
+                      {t(`manadaStories.items.${s.key}.location`)}
+                    </span>
+                  </div>
+                  <p className="mstory-card__quote">
+                    &ldquo;{t(`manadaStories.items.${s.key}.quote`)}&rdquo;
+                  </p>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <button className="mstories__arrow mstories__arrow--next" onClick={() => scroll(1)} aria-label="Siguiente">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="20" height="20">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </button>
         </div>
       </div>
     </section>

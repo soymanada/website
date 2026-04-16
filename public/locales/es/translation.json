@@ -272,7 +272,10 @@
     "label_fox": "Zorro",
     "label_aurora": "Auroras boreales",
     "label_owl": "Búho",
-    "nature_strip_label": "Fauna y paisajes de Canadá"
+    "nature_strip_label": "Fauna y paisajes de Canadá",
+    "img_bear_alt": "Oso en la naturaleza canadiense",
+    "img_bird_alt": "Pájaro en Canadá",
+    "img_bird2_alt": "Pájaro silvestre canadiense"
   },
   "cta_section": {
     "badge": "Para proveedores",
@@ -819,6 +822,24 @@
         "location": "Nueva Escocia, Canadá",
         "quote": "Somos una familia chilena de Iquique que llegó a Nueva Escocia en 2025 en busca de un mejor futuro para nuestros hijos. Con esfuerzo y dedicación hemos ido construyendo nuestra nueva vida. Yo trabajo como enfermera en urgencias, mi esposo en construcción. Como muchas familias inmigrantes, nuestro camino está marcado por la resiliencia, el sacrificio y el amor.",
         "alt": "Amelia y su familia chilena en Nueva Escocia, Canadá"
+      },
+      "cristobal": {
+        "name": "Cristóbal",
+        "location": "Calgary, AB",
+        "alt": "Cristóbal en Calgary",
+        "quote": "Encontré trabajo en demolición en menos de dos semanas. Lo más difícil fue conseguir alojamiento y gestionar los pagos al llegar. La Manada me ayudó con toda la información antes de salir de Chile."
+      },
+      "valeria": {
+        "name": "Valeria",
+        "location": "Banff, AB",
+        "alt": "Valeria en Banff",
+        "quote": "Llegué con inglés muy básico y mucho miedo. La Manada me dijo que simplemente me lanzara — y tenían razón. Acá lo aprendes mucho más rápido que en cualquier curso."
+      },
+      "nandy": {
+        "name": "Nandy",
+        "location": "Quebec, QC",
+        "alt": "Nandy en Quebec",
+        "quote": "Conseguí trabajo en cuidado infantil antes de salir de Chile. Llegué con todo organizado: seguro de viaje, orientación, logística. El francés era lo más difícil, pero una familia bilingüe me ayudó."
       }
     }
   }
