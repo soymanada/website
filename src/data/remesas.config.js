@@ -64,5 +64,12 @@ export const CURRENCY_PAIRS = [
   { code: 'USD', label: 'Estados Unidos',   flag: 'US' },
 ]
 
-// Monedas de origen — misma lista que destino
-export const ORIGIN_CURRENCIES = CURRENCY_PAIRS
+// Monedas de origen — donde el migrante envía DESDE (típicamente Canadá)
+export const ORIGIN_CURRENCIES = [
+  { code: 'CAD', label: 'Canadá',        flag: 'CA' },
+  { code: 'USD', label: 'Estados Unidos', flag: 'US' },
+  { code: 'EUR', label: 'Europa (€)',     flag: 'EU' },
+  { code: 'GBP', label: 'Reino Unido',   flag: 'GB' },
+  { code: 'AUD', label: 'Australia',     flag: 'AU' },
+  { code: 'NZD', label: 'Nueva Zelanda', flag: 'NZ' },
+]

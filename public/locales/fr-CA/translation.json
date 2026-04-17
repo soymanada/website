@@ -623,7 +623,7 @@
   "remesas_comp": {
     "title": "Comparez les taux en temps réel",
     "updated": "Taux mis à jour chaque heure",
-    "amount_label": "Vous envoyez en {{currency}}",
+    "amount_label": "Montant",
     "to_currency_label": "Destination",
     "col_platform": "Plateforme",
     "col_receive": "Vous recevez",
