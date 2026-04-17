@@ -765,7 +765,8 @@
     "tabs": {
       "users": "Users",
       "providers": "Providers",
-      "submissions": "Applications"
+      "submissions": "Applications",
+      "photos": "Pending photos"
     }
   },
   "auth_banner": {
@@ -845,5 +846,25 @@
         "quote": "I found childcare work before leaving Chile. I arrived with everything organized: travel insurance, orientation, logistics. French was the hardest part, but a bilingual family helped me adapt."
       }
     }
+  },
+  "community_photos": {
+    "cta": "Share your photo 📸",
+    "modal_title": "Share your photo with La Manada",
+    "subtitle": "Approved photos appear in our stories gallery.",
+    "photo_label": "Photo",
+    "photo_placeholder": "Click to choose an image (JPG, PNG, max 5 MB)",
+    "caption_label": "Caption",
+    "caption_placeholder": "E.g. My first winter in Montreal",
+    "city_label": "City",
+    "city_placeholder": "E.g. Montreal, Toronto…",
+    "name_label": "Your name (optional)",
+    "name_placeholder": "E.g. María González",
+    "submit": "Submit photo",
+    "success_title": "Thanks for sharing!",
+    "success_body": "We'll review your photo and publish it in the gallery if it meets our guidelines.",
+    "close": "Close",
+    "error_type": "Only JPG, PNG or WebP images are allowed.",
+    "error_size": "The image cannot exceed 5 MB.",
+    "error_upload": "There was an error uploading your photo. Please try again."
   }
 }

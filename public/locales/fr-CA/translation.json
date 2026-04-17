@@ -765,7 +765,8 @@
     "tabs": {
       "users": "Utilisateurs",
       "providers": "Fournisseurs",
-      "submissions": "Demandes"
+      "submissions": "Demandes",
+      "photos": "Photos en attente"
     }
   },
   "auth_banner": {
@@ -845,5 +846,25 @@
         "quote": "J'ai trouvé un travail en garde d'enfants avant de quitter le Chili. Je suis arrivée avec tout organisé : assurance voyage, orientation, logistique. Le français était le plus difficile, mais une famille bilingue m'a aidée."
       }
     }
+  },
+  "community_photos": {
+    "cta": "Partagez votre photo 📸",
+    "modal_title": "Partagez votre photo avec La Manada",
+    "subtitle": "Les photos approuvées apparaissent dans notre galerie d'histoires.",
+    "photo_label": "Photo",
+    "photo_placeholder": "Cliquez pour choisir une image (JPG, PNG, max 5 Mo)",
+    "caption_label": "Description",
+    "caption_placeholder": "Ex: Mon premier hiver à Montréal",
+    "city_label": "Ville",
+    "city_placeholder": "Ex: Montréal, Toronto…",
+    "name_label": "Votre nom (optionnel)",
+    "name_placeholder": "Ex: María González",
+    "submit": "Envoyer la photo",
+    "success_title": "Merci de partager!",
+    "success_body": "Nous examinerons votre photo et la publierons dans la galerie si elle respecte nos directives.",
+    "close": "Fermer",
+    "error_type": "Seules les images JPG, PNG ou WebP sont autorisées.",
+    "error_size": "L'image ne peut pas dépasser 5 Mo.",
+    "error_upload": "Une erreur s'est produite lors du téléchargement. Veuillez réessayer."
   }
 }

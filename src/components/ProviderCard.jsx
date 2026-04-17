@@ -10,6 +10,7 @@ import { useProviderRating, useUserReview } from '../hooks/useReviews'
 import VerificationBadge from './VerificationBadge'
 import PawRating from './PawRating'
 import ReviewModal from './ReviewModal'
+import MessageModal from './MessageModal'
 import Interstitial from './Interstitial'
 import './ProviderCard.css'
 
@@ -41,6 +42,7 @@ export default function ProviderCard({ provider: rawProvider }) {
   const [isConnecting,   setIsConnecting]   = useState(false)
   const [targetPlatform, setTargetPlatform] = useState('')
   const [showReview,     setShowReview]     = useState(false)
+  const [showMsg,        setShowMsg]        = useState(false)
   const viewTracked = useRef(false)
 
   // Rating agregado del proveedor
@@ -75,6 +77,14 @@ export default function ProviderCard({ provider: rawProvider }) {
           existingReview={userReview}
           onClose={() => setShowReview(false)}
           onSuccess={reloadReview}
+        />
+      )}
+      {showMsg && (
+        <MessageModal
+          providerId={id}
+          providerName={name}
+          userId={user?.id}
+          onClose={() => setShowMsg(false)}
         />
       )}
 
@@ -155,6 +165,9 @@ export default function ProviderCard({ provider: rawProvider }) {
         {user ? (
           <>
             <div className="pcard__actions">
+              <button className="pcard__btn pcard__btn--msg" onClick={() => setShowMsg(true)}>
+                {t('messaging.cta')}
+              </button>
               {contact.whatsapp && !hideWhatsAppForMigrant && (
                 <button className="pcard__btn pcard__btn--wa"
                   onClick={() => handleContact('whatsapp', `https://wa.me/${contact.whatsapp}`)}>

@@ -18,6 +18,28 @@
 .mstories__title   { color: var(--iris-900); }
 .mstories__subtitle { color: var(--text-500); }
 
+.mstories__share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  padding: 10px 22px;
+  background: var(--iris-50);
+  border: 1.5px solid var(--iris-300);
+  border-radius: 100px;
+  color: var(--iris-700);
+  font-size: 0.87rem;
+  font-weight: 600;
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: background 0.18s, border-color 0.18s, transform 0.18s;
+}
+.mstories__share-btn:hover {
+  background: var(--iris-100);
+  border-color: var(--iris-400);
+  transform: translateY(-1px);
+}
+
 /* ── Carousel wrapper ── */
 .mstories__carousel {
   position: relative;

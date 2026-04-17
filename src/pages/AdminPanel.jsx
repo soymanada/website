@@ -806,6 +806,73 @@ function SubmissionsPanel() {
   )
 }
 
+// ── Fotos de la comunidad ─────────────────────────────────────────────────────
+function PhotosPanel() {
+  const [photos,  setPhotos]  = useState([])
+  const [loading, setLoading] = useState(true)
+
+  const load = useCallback(async () => {
+    setLoading(true)
+    const { data } = await supabase
+      .from('community_photos')
+      .select('*')
+      .order('submitted_at', { ascending: false })
+    setPhotos(data ?? [])
+    setLoading(false)
+  }, [])
+
+  useEffect(() => { load() }, [load])
+
+  const setStatus = async (id, status) => {
+    await supabase
+      .from('community_photos')
+      .update({ status, reviewed_at: new Date().toISOString() })
+      .eq('id', id)
+    load()
+  }
+
+  return (
+    <div className="adm-section">
+      <div className="adm-section__head">
+        <h2 className="adm-section__title">Fotos de la comunidad</h2>
+        <p className="adm-section__sub">Aprueba o rechaza las fotos enviadas por los usuarios.</p>
+      </div>
+      {loading ? (
+        <p className="adm-section__empty">Cargando…</p>
+      ) : photos.length === 0 ? (
+        <p className="adm-section__empty">No hay fotos pendientes.</p>
+      ) : (
+        <div className="adm-photos">
+          {photos.map(p => (
+            <div key={p.id} className={`adm-photo-card adm-photo-card--${p.status}`}>
+              <img src={p.public_url} alt={p.caption} className="adm-photo-card__img" />
+              <div className="adm-photo-card__info">
+                <p className="adm-photo-card__caption"><strong>{p.caption}</strong></p>
+                {p.city           && <p className="adm-photo-card__meta">📍 {p.city}</p>}
+                {p.submitter_name && <p className="adm-photo-card__meta">👤 {p.submitter_name}</p>}
+                <p className="adm-photo-card__meta">{fmt(p.submitted_at)}</p>
+                <span className={`adm-photo-card__badge adm-photo-card__badge--${p.status}`}>
+                  {p.status === 'pending' ? 'Pendiente' : p.status === 'approved' ? 'Aprobada' : 'Rechazada'}
+                </span>
+              </div>
+              {p.status === 'pending' && (
+                <div className="adm-photo-card__actions">
+                  <button className="btn btn-primary btn-sm" onClick={() => setStatus(p.id, 'approved')}>
+                    ✓ Aprobar
+                  </button>
+                  <button className="btn btn-ghost btn-sm" onClick={() => setStatus(p.id, 'rejected')}>
+                    ✕ Rechazar
+                  </button>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ── Panel principal ───────────────────────────────────────────────────────────
 export default function AdminPanel() {
   const { t } = useTranslation()
@@ -815,6 +882,7 @@ export default function AdminPanel() {
     { id: 'users',       label: t('admin.tabs.users')       },
     { id: 'providers',   label: t('admin.tabs.providers')   },
     { id: 'submissions', label: t('admin.tabs.submissions') },
+    { id: 'photos',      label: t('admin.tabs.photos')      },
   ]
 
   useEffect(() => {
@@ -843,6 +911,7 @@ export default function AdminPanel() {
         {tab === 'users'       && <UsersPanel />}
         {tab === 'providers'   && <ProvidersPanel />}
         {tab === 'submissions' && <SubmissionsPanel />}
+        {tab === 'photos'      && <PhotosPanel />}
       </div>
     </main>
   )

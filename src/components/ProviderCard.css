@@ -162,6 +162,13 @@
   cursor: pointer;
   transition: all var(--t-fast);
 }
+.pcard__btn--msg {
+  background: var(--iris-600);
+  color: #fff;
+  flex: 1;
+}
+.pcard__btn--msg:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
 .pcard__btn--wa {
   background: #25D366;
   color: white;

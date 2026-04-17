@@ -762,7 +762,8 @@
     "tabs": {
       "users": "Usuarios",
       "providers": "Proveedores",
-      "submissions": "Solicitudes"
+      "submissions": "Solicitudes",
+      "photos": "Fotos pendientes"
     }
   },
   "auth_banner": {
@@ -842,5 +843,25 @@
         "quote": "Conseguí trabajo en cuidado infantil antes de salir de Chile. Llegué con todo organizado: seguro de viaje, orientación, logística. El francés era lo más difícil, pero una familia bilingüe me ayudó."
       }
     }
+  },
+  "community_photos": {
+    "cta": "Comparte tu foto 📸",
+    "modal_title": "Comparte tu foto con La Manada",
+    "subtitle": "Las fotos aprobadas aparecen en nuestra galería de historias.",
+    "photo_label": "Foto",
+    "photo_placeholder": "Haz clic para elegir una imagen (JPG, PNG, máx 5 MB)",
+    "caption_label": "Descripción",
+    "caption_placeholder": "Ej: Mi primer invierno en Montreal",
+    "city_label": "Ciudad",
+    "city_placeholder": "Ej: Montreal, Toronto…",
+    "name_label": "Tu nombre (opcional)",
+    "name_placeholder": "Ej: María González",
+    "submit": "Enviar foto",
+    "success_title": "¡Gracias por compartir!",
+    "success_body": "Revisaremos tu foto y si cumple nuestras pautas la publicaremos en la galería.",
+    "close": "Cerrar",
+    "error_type": "Solo se permiten imágenes JPG, PNG o WebP.",
+    "error_size": "La imagen no puede superar los 5 MB.",
+    "error_upload": "Hubo un error al subir la foto. Por favor intenta de nuevo."
   }
 }

@@ -1,6 +1,8 @@
 // src/components/ManadaStories.jsx
 import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useAuth } from '../hooks/useAuth'
+import CommunityPhotoModal from './CommunityPhotoModal'
 import './ManadaStories.css'
 
 const STORIES = [
@@ -15,8 +17,10 @@ const STORIES = [
 
 export default function ManadaStories() {
   const { t } = useTranslation()
+  const { user } = useAuth()
   const trackRef = useRef(null)
-  const [lightbox, setLightbox] = useState(null)
+  const [lightbox,    setLightbox]    = useState(null)
+  const [showPhotoModal, setShowPhotoModal] = useState(false)
 
   const scroll = (dir) => {
     if (!trackRef.current) return
@@ -39,6 +43,9 @@ export default function ManadaStories() {
           </p>
           <h2 className="d-xl mstories__title">{t('manadaStories.title')}</h2>
           <p className="t-lg mstories__subtitle">{t('manadaStories.subtitle')}</p>
+          <button className="mstories__share-btn" onClick={() => setShowPhotoModal(true)}>
+            {t('community_photos.cta')}
+          </button>
         </div>
 
         <div className="mstories__carousel">
@@ -93,6 +100,12 @@ export default function ManadaStories() {
           </button>
         </div>
       </div>
+
+      <CommunityPhotoModal
+        open={showPhotoModal}
+        onClose={() => setShowPhotoModal(false)}
+        userId={user?.id}
+      />
 
       {lightbox && (
         <div className="mstories__lightbox" onClick={() => setLightbox(null)} role="dialog" aria-modal="true">

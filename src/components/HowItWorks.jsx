@@ -1,4 +1,5 @@
 // src/components/HowItWorks.jsx
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import './HowItWorks.css'
 
@@ -35,6 +36,7 @@ const NATURE = [
 
 export default function HowItWorks() {
   const { t } = useTranslation()
+  const [lightbox, setLightbox] = useState(null)
 
   return (
     <section className="how section">
@@ -80,20 +82,47 @@ export default function HowItWorks() {
         {/* Nature identity strip */}
         <div className="how__nature" aria-label={t('how_it_works.nature_strip_label')}>
           {NATURE.map(n => (
-            <div key={n.src} className="how__nature-item">
+            <button
+              key={n.src}
+              className="how__nature-item"
+              onClick={() => setLightbox({ src: n.src, alt: t(n.altKey) })}
+              aria-label={t(n.altKey)}
+            >
               <img
                 src={n.src}
                 alt={t(n.altKey)}
                 className="how__nature-img"
                 loading="lazy"
               />
+              <span className="how__nature-zoom" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </span>
               <span className="how__nature-label" aria-hidden="true">
                 {t(n.labelKey)}
               </span>
-            </div>
+            </button>
           ))}
         </div>
       </div>
+
+      {lightbox && (
+        <div className="how__lightbox" onClick={() => setLightbox(null)} role="dialog" aria-modal="true">
+          <button className="how__lightbox-close" onClick={() => setLightbox(null)} aria-label="Cerrar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" width="22" height="22">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+          <img
+            src={lightbox.src}
+            alt={lightbox.alt}
+            className="how__lightbox-img"
+            onClick={e => e.stopPropagation()}
+          />
+        </div>
+      )}
     </section>
   )
 }
