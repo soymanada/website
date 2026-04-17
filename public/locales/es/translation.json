@@ -512,7 +512,11 @@
     "provider_reply_placeholder": "Escribe tu respuesta… (máx. 500 caracteres)",
     "provider_reply_submit": "Publicar respuesta",
     "provider_reply_publishing": "Publicando…",
-    "close": "Cerrar"
+    "close": "Cerrar",
+    "verified_badge": "Cliente verificado",
+    "verified_client": "Estás evaluando como cliente verificado",
+    "gate_hint": "Envía un mensaje al proveedor primero. Si te responde, podrás dejar tu evaluación.",
+    "gate_cta": "Enviar mensaje"
   },
   "pricing_page": {
     "eyebrow": "Planes para proveedores",

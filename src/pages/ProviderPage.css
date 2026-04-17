@@ -338,3 +338,38 @@
 }
 .ppage__reply-submit:hover:not(:disabled) { opacity: 0.85; }
 .ppage__reply-submit:disabled { opacity: 0.45; cursor: default; }
+
+/* ── Verified interaction gate ───────────────────────────────────── */
+.ppage__review-gate {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: var(--iris-50);
+  border-radius: var(--r-md);
+  border: 1px solid var(--iris-100);
+}
+.ppage__review-gate-hint {
+  color: var(--text-600);
+  margin: 0;
+  line-height: 1.4;
+}
+.ppage__rate-btn--muted {
+  opacity: 0.85;
+}
+.ppage__reviews-cta--muted {
+  opacity: 0.85;
+}
+
+/* ── Verified badge on review card ───────────────────────────────── */
+.ppage__verified-badge {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #16a34a;
+  background: #dcfce7;
+  border: 1px solid #86efac;
+  border-radius: var(--r-full, 9999px);
+  padding: 1px 8px;
+  letter-spacing: 0.01em;
+}

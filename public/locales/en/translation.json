@@ -515,7 +515,11 @@
     "provider_reply_placeholder": "Write your reply… (max. 500 characters)",
     "provider_reply_submit": "Post reply",
     "provider_reply_publishing": "Publishing…",
-    "close": "Close"
+    "close": "Close",
+    "verified_badge": "Verified client",
+    "verified_client": "You're reviewing as a verified client",
+    "gate_hint": "Send a message to the provider first. Once they reply, you'll be able to leave a review.",
+    "gate_cta": "Send message"
   },
   "pricing_page": {
     "eyebrow": "Plans for providers",

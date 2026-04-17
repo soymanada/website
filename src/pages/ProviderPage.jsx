@@ -12,6 +12,7 @@ import {
   useReviewReactions,
   submitProviderReply,
 } from '../hooks/useReviews'
+import { useVerifiedInteraction } from '../hooks/useVerifiedInteraction'
 import { trackEvent, Events } from '../utils/analytics'
 import VerificationBadge from '../components/VerificationBadge'
 import PawRating from '../components/PawRating'
@@ -93,6 +94,11 @@ function ReviewCard({ review, user, canReply, onReviewUpdate }) {
         <span className="ppage__review-stars">
           {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
         </span>
+        {review.verified && (
+          <span className="ppage__verified-badge">
+            ✓ {t('reviews.verified_badge')}
+          </span>
+        )}
         <span className="ppage__review-date">
           {new Date(review.created_at).toLocaleDateString('es-CL')}
         </span>
@@ -153,7 +159,7 @@ function ReviewCard({ review, user, canReply, onReviewUpdate }) {
 }
 
 // ── Lista de reseñas ──────────────────────────────────────────────
-function ReviewsList({ providerId, user, userReview, canReply, onReviewClick }) {
+function ReviewsList({ providerId, user, userReview, canReply, hasInteraction, onReviewClick, onMessageClick }) {
   const [reviews, setReviews] = useState([])
   const [loading, setLoading] = useState(true)
   const { t } = useTranslation()
@@ -161,7 +167,7 @@ function ReviewsList({ providerId, user, userReview, canReply, onReviewClick }) 
   const load = () => {
     supabase
       .from('reviews')
-      .select('id, rating, comment, created_at, provider_reply, provider_reply_at')
+      .select('id, rating, comment, created_at, provider_reply, provider_reply_at, verified')
       .eq('provider_id', providerId)
       .eq('status', 'published')
       .order('created_at', { ascending: false })
@@ -196,10 +202,18 @@ function ReviewsList({ providerId, user, userReview, canReply, onReviewClick }) 
     <section className="ppage__reviews ppage__reviews--empty">
       <h2 className="ppage__section-title">{t('provider_page.reviews_title')}</h2>
       <p className="ppage__reviews-notice t-sm">{t('provider_page.reviews_min_notice')}</p>
-      {user && !userReview && (
+      {user && !userReview && hasInteraction && (
         <button className="ppage__reviews-cta" onClick={onReviewClick}>
           {t('provider_page.reviews_be_first')}
         </button>
+      )}
+      {user && !userReview && !hasInteraction && (
+        <div className="ppage__review-gate">
+          <p className="ppage__review-gate-hint t-xs">{t('reviews.gate_hint')}</p>
+          <button className="ppage__reviews-cta ppage__reviews-cta--muted" onClick={onMessageClick}>
+            {t('reviews.gate_cta')}
+          </button>
+        </div>
       )}
     </section>
   )
@@ -239,6 +253,7 @@ export default function ProviderPage() {
 
   const { avg, count, visible: ratingVisible, sub, recommendPct } = useProviderRating(providerId)
   const { review: userReview, reload: reloadReview } = useUserReview(providerId, user?.id)
+  const { hasInteraction } = useVerifiedInteraction(providerId, user?.id)
 
   // Provider can reply if they own this page and have tier silver or gold
   const canReply = !!(
@@ -315,6 +330,7 @@ export default function ProviderPage() {
           provider={{ id: providerId, name }}
           userId={user?.id}
           existingReview={userReview}
+          verified={hasInteraction}
           onClose={() => setShowReview(false)}
           onSuccess={reloadReview}
         />
@@ -383,7 +399,9 @@ export default function ProviderPage() {
                 user={user}
                 userReview={userReview}
                 canReply={canReply}
+                hasInteraction={hasInteraction}
                 onReviewClick={() => setShowReview(true)}
+                onMessageClick={() => setShowMsg(true)}
               />
             </div>
 
@@ -453,10 +471,18 @@ export default function ProviderPage() {
                             <p className="ppage__your-review-comment t-xs">"{userReview.comment}"</p>
                           )}
                         </div>
-                      ) : (
+                      ) : hasInteraction ? (
                         <button className="ppage__rate-btn" onClick={() => setShowReview(true)}>
                           {t('reviews.rate_cta')}
                         </button>
+                      ) : (
+                        <div className="ppage__review-gate">
+                          <p className="ppage__review-gate-hint t-xs">{t('reviews.gate_hint')}</p>
+                          <button className="ppage__rate-btn ppage__rate-btn--muted"
+                            onClick={() => setShowMsg(true)}>
+                            {t('reviews.gate_cta')}
+                          </button>
+                        </div>
                       )}
                     </>
                   ) : (

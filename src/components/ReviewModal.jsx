@@ -14,7 +14,7 @@ const SUB_FIELDS = [
 
 const EMPTY_SUB = { speed: 0, reliability: 0, clarity: 0, value: 0 }
 
-export default function ReviewModal({ provider, userId, existingReview, onClose, onSuccess }) {
+export default function ReviewModal({ provider, userId, existingReview, verified, onClose, onSuccess }) {
   const { t } = useTranslation()
   const [rating,  setRating]  = useState(existingReview?.rating  ?? 0)
   const [hovered, setHovered] = useState(0)
@@ -51,6 +51,7 @@ export default function ReviewModal({ provider, userId, existingReview, onClose,
       ratingReliability: sub.reliability || null,
       ratingClarity:     sub.clarity     || null,
       ratingValue:       sub.value       || null,
+      verified:          !!verified,
     })
     if (error) { setStatus('error'); return }
     setStatus('success')
@@ -75,6 +76,11 @@ export default function ReviewModal({ provider, userId, existingReview, onClose,
           <div>
             <h2 className="rmodal__title">{t('reviews.modal_title')}</h2>
             <p className="rmodal__provider-name t-sm">{provider.name}</p>
+            {verified && (
+              <span className="rmodal__verified-badge">
+                ✓ {t('reviews.verified_client')}
+              </span>
+            )}
           </div>
         </div>
 

@@ -515,7 +515,11 @@
     "provider_reply_placeholder": "Écrivez votre réponse… (max. 500 caractères)",
     "provider_reply_submit": "Publier la réponse",
     "provider_reply_publishing": "Publication…",
-    "close": "Fermer"
+    "close": "Fermer",
+    "verified_badge": "Client vérifié",
+    "verified_client": "Vous évaluez en tant que client vérifié",
+    "gate_hint": "Envoyez d'abord un message au fournisseur. Une fois qu'il vous répond, vous pourrez laisser un avis.",
+    "gate_cta": "Envoyer un message"
   },
   "pricing_page": {
     "eyebrow": "Plans pour les fournisseurs",

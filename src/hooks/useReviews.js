@@ -123,6 +123,7 @@ export function useReviewReactions(reviewId, userId) {
 export async function submitReview({
   providerId, userId, rating, comment,
   ratingSpeed, ratingReliability, ratingClarity, ratingValue,
+  verified = false,
 }) {
   const { error } = await supabase.from('reviews').upsert(
     {
@@ -134,6 +135,7 @@ export async function submitReview({
       rating_reliability:  ratingReliability || null,
       rating_clarity:      ratingClarity     || null,
       rating_value:        ratingValue       || null,
+      verified,
       status:              'published',
     },
     { onConflict: 'user_id,provider_id' }

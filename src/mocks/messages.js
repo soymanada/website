@@ -57,10 +57,22 @@ export async function replyMessage({ conversationId, body }) {
   }
 
   // Update conversation metadata
-  await supabase
+  const { data: conv } = await supabase
     .from('conversations')
     .update({ status: 'replied', last_message_at: new Date().toISOString() })
     .eq('id', conversationId)
+    .select('provider_id, migrant_id')
+    .single()
+
+  // Mark this as a verified interaction so the migrant can leave a review
+  if (conv?.provider_id && conv?.migrant_id) {
+    await supabase
+      .from('verified_interactions')
+      .upsert(
+        { provider_id: conv.provider_id, user_id: conv.migrant_id, source: 'message_reply' },
+        { onConflict: 'provider_id,user_id' }
+      )
+  }
 
   return { data: msg, error: null }
 }
