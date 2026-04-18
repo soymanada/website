@@ -472,3 +472,37 @@
 @media (max-width: 600px) {
   .pdash__booking-card { flex-direction: column; align-items: flex-start; }
 }
+
+/* ── UpgradeButton ────────────────────────────────────────────────── */
+.pdash__upgrade-btn-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.pdash__upgrade-btn-wrap .btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+.pdash__upgrade-spinner {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  border: 2px solid rgba(255,255,255,0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: upgrade-spin 0.7s linear infinite;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+@keyframes upgrade-spin {
+  to { transform: rotate(360deg); }
+}
+.pdash__upgrade-error {
+  color: #dc2626;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: var(--r-sm);
+  padding: 6px 10px;
+  margin: 0;
+  line-height: 1.4;
+}

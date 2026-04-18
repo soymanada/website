@@ -143,9 +143,10 @@ function ProviderProfileEditor({ provider, tier, onSave, saving, onAvatarUpload,
             placeholder="https://calendly.com/tu-nombre"
             disabled={!['silver', 'gold'].includes(tier)} />
           {!['silver', 'gold'].includes(tier) && (
-            <span className="t-xs" style={{ color: 'var(--text-300)', marginTop: 4, display: 'block' }}>
-              Disponible desde Silver. <a href="mailto:hola@soymanada.com?subject=Quiero Silver" style={{ color: 'var(--iris-500)' }}>Activar Silver →</a>
-            </span>
+            <div style={{ marginTop: 6 }}>
+              <p className="t-xs" style={{ color: 'var(--text-300)', marginBottom: 6 }}>Disponible desde Silver.</p>
+              <UpgradeButton planCode="activa" label="Activar Silver — $4.990 CLP/mes" />
+            </div>
           )}
         </div>
 
@@ -172,10 +173,8 @@ function ProviderProfileEditor({ provider, tier, onSave, saving, onAvatarUpload,
 
         {tier !== 'gold' && (
           <div className="pdash__field--full pdash__upgrade-inline">
-            <p className="t-sm">Las herramientas avanzadas (email + respuestas predefinidas) están disponibles en <strong>Gold ($20 USD/mes)</strong>.</p>
-            <a href="mailto:hola@soymanada.com?subject=Quiero Gold" className="btn btn-primary btn-sm">
-              <span>Activar Gold</span>
-            </a>
+            <p className="t-sm">Las herramientas avanzadas (email + respuestas predefinidas) están disponibles en <strong>Gold ($14.990 CLP/mes)</strong>.</p>
+            <UpgradeButton planCode="pro" label="Activar Gold" />
           </div>
         )}
 
@@ -324,10 +323,8 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
               ))}
             </div>
             <div className="pdash__upgrade-cta">
-              <p className="t-sm"><strong>Activa Gold</strong> por $20 USD/mes y desbloquea las herramientas avanzadas.</p>
-              <a href="mailto:hola@soymanada.com?subject=Quiero Gold" className="btn btn-primary btn-sm">
-                <span>Activar Gold — $20 USD/mes</span>
-              </a>
+              <p className="t-sm"><strong>Activa Gold</strong> por $14.990 CLP/mes y desbloquea las herramientas avanzadas.</p>
+              <UpgradeButton planCode="pro" label="Activar Gold — $14.990 CLP/mes" />
             </div>
           </div>
         )}
@@ -335,10 +332,8 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
 
       {!tier && (
         <div className="pdash__upgrade-cta" style={{ marginTop: 24 }}>
-          <p className="t-sm"><strong>Activa Silver</strong> por $10 USD/mes para desbloquear el calendario de citas.</p>
-          <a href="mailto:hola@soymanada.com?subject=Quiero Silver" className="btn btn-primary btn-sm">
-            <span>Activar Silver — $10 USD/mes</span>
-          </a>
+          <p className="t-sm"><strong>Activa Silver</strong> por $4.990 CLP/mes para desbloquear el calendario de citas.</p>
+          <UpgradeButton planCode="activa" label="Activar Silver — $4.990 CLP/mes" />
         </div>
       )}
 
@@ -371,10 +366,8 @@ function SectionMetricas({ tier, metrics, activity, hourlyActivity, feedback, pr
       <div className="pdash__locked">
         <MetricsSummary metrics={null} loading={true} />
         <div className="pdash__upgrade-cta">
-          <p className="t-sm"><strong>Activa Silver</strong> por $10 USD/mes y desbloquea tus métricas en tiempo real.</p>
-          <a href="mailto:hola@soymanada.com?subject=Quiero Silver" className="btn btn-primary btn-sm">
-            <span>Activar Silver — $10 USD/mes</span>
-          </a>
+          <p className="t-sm"><strong>Activa Silver</strong> por $4.990 CLP/mes y desbloquea tus métricas en tiempo real.</p>
+          <UpgradeButton planCode="activa" label="Activar Silver — $4.990 CLP/mes" />
         </div>
       </div>
     </div>
@@ -505,10 +498,8 @@ function SectionReservas({ provider, tier }) {
       </div>
       <div className="pdash__locked">
         <div className="pdash__upgrade-cta">
-          <p className="t-sm"><strong>Activa Silver</strong> para recibir y gestionar reservas de citas.</p>
-          <a href="mailto:hola@soymanada.com?subject=Quiero Silver" className="btn btn-primary btn-sm">
-            <span>Activar Silver — $10 USD/mes</span>
-          </a>
+          <p className="t-sm"><strong>Activa Silver</strong> por $4.990 CLP/mes para recibir y gestionar reservas de citas.</p>
+          <UpgradeButton planCode="activa" label="Activar Silver — $4.990 CLP/mes" />
         </div>
       </div>
     </div>
@@ -636,6 +627,49 @@ const CHECK_ICON = (
   </svg>
 )
 
+const MP_ENDPOINT = 'https://omlpstrmlxeurrqjbear.supabase.co/functions/v1/create-mercadopago-subscription'
+
+function UpgradeButton({ planCode, label, className = 'btn btn-primary btn-sm' }) {
+  const [loading, setLoading] = useState(false)
+  const [error,   setError]   = useState(null)
+
+  const handleUpgrade = async () => {
+    setError(null)
+    const { data: { session } } = await supabase.auth.getSession()
+    if (!session) { setError('Debes iniciar sesión para continuar.'); return }
+    setLoading(true)
+    try {
+      const res = await fetch(MP_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ planCode }),
+      })
+      const data = await res.json()
+      if (!res.ok || !data.init_point) throw new Error(data.error ?? 'Error al crear la suscripción')
+      window.location.href = data.init_point
+    } catch (err) {
+      setError('Hubo un problema al procesar tu suscripción. Intenta de nuevo.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div className="pdash__upgrade-btn-wrap">
+      <button className={className} onClick={handleUpgrade} disabled={loading}>
+        {loading
+          ? <><span className="pdash__upgrade-spinner" aria-hidden="true" /> <span>Procesando…</span></>
+          : <span>{label}</span>
+        }
+      </button>
+      {error && <p className="pdash__upgrade-error t-xs">{error}</p>}
+    </div>
+  )
+}
+
 function SectionMiPlan({ tier }) {
   const { t } = useTranslation()
   const current = tier ?? 'bronze'
@@ -648,14 +682,14 @@ function SectionMiPlan({ tier }) {
       ctaLabel: null,
     },
     {
-      key: 'silver', icon: '🥈', label: 'Silver',
-      price: '$10 USD', priceLocal: '$9.500 CLP',
+      key: 'silver', icon: '🥈', label: 'Silver', planCode: 'activa',
+      price: '$4.990 CLP', priceLocal: null,
       features: t('pdash.tier_silver_features', { returnObjects: true }),
       ctaLabel: t('pdash.tier_silver_cta'),
     },
     {
-      key: 'gold', icon: '🥇', label: 'Gold',
-      price: '$20 USD', priceLocal: '$19.000 CLP',
+      key: 'gold', icon: '🥇', label: 'Gold', planCode: 'pro',
+      price: '$14.990 CLP', priceLocal: null,
       features: t('pdash.tier_gold_features', { returnObjects: true }),
       ctaLabel: t('pdash.tier_gold_cta'),
     },
@@ -720,13 +754,12 @@ function SectionMiPlan({ tier }) {
                   </li>
                 ))}
               </ul>
-              {!isCurrent && td.ctaLabel && (
-                <a
-                  href={`mailto:hola@soymanada.com?subject=Quiero ${td.label}`}
+              {!isCurrent && td.ctaLabel && td.planCode && (
+                <UpgradeButton
+                  planCode={td.planCode}
+                  label={td.ctaLabel}
                   className={`btn btn-sm pdash__plan-card-cta ${td.key === 'gold' ? 'pdash__plan-card-cta--gold' : 'btn-primary'}`}
-                >
-                  <span>{td.ctaLabel}</span>
-                </a>
+                />
               )}
             </div>
           )
@@ -734,7 +767,7 @@ function SectionMiPlan({ tier }) {
       </div>
 
       <p className="t-xs" style={{ color: 'var(--text-300)', textAlign: 'center' }}>
-        Precios en USD · Chile: Silver $9.500 CLP/mes · Gold $19.000 CLP/mes · Sin compromiso, cancela cuando quieras.{' '}
+        Silver $4.990 CLP/mes · Gold $14.990 CLP/mes · Sin compromiso, cancela cuando quieras.{' '}
         <Link to="/planes" style={{ color: 'var(--iris-500)' }}>Ver página de planes →</Link>
       </p>
     </div>
