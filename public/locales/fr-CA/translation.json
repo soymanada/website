@@ -519,7 +519,8 @@
     "verified_badge": "Client vérifié",
     "verified_client": "Vous évaluez en tant que client vérifié",
     "gate_hint": "Envoyez d'abord un message au fournisseur. Une fois qu'il vous répond, vous pourrez laisser un avis.",
-    "gate_cta": "Envoyer un message"
+    "gate_cta": "Envoyer un message",
+    "gate_hint_short": "Écrivez d'abord pour laisser un avis"
   },
   "pricing_page": {
     "eyebrow": "Plans pour les fournisseurs",

@@ -519,7 +519,8 @@
     "verified_badge": "Verified client",
     "verified_client": "You're reviewing as a verified client",
     "gate_hint": "Send a message to the provider first. Once they reply, you'll be able to leave a review.",
-    "gate_cta": "Send message"
+    "gate_cta": "Send message",
+    "gate_hint_short": "Message first to leave a review"
   },
   "pricing_page": {
     "eyebrow": "Plans for providers",

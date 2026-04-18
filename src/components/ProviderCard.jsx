@@ -7,6 +7,7 @@ import { trackEvent, Events } from '../utils/analytics'
 import { useAuth } from '../hooks/useAuth'
 import { supabase } from '../lib/supabase'
 import { useProviderRating, useUserReview } from '../hooks/useReviews'
+import { useVerifiedInteraction } from '../hooks/useVerifiedInteraction'
 import VerificationBadge from './VerificationBadge'
 import PawRating from './PawRating'
 import ReviewModal from './ReviewModal'
@@ -50,6 +51,7 @@ export default function ProviderCard({ provider: rawProvider }) {
 
   // Review del usuario actual (solo si está logueado)
   const { review: userReview, reload: reloadReview } = useUserReview(id, user?.id)
+  const { hasInteraction } = useVerifiedInteraction(id, user?.id)
 
   useEffect(() => {
     if (!viewTracked.current && id) {
@@ -75,6 +77,7 @@ export default function ProviderCard({ provider: rawProvider }) {
           provider={{ id, name }}
           userId={user?.id}
           existingReview={userReview}
+          verified={hasInteraction}
           onClose={() => setShowReview(false)}
           onSuccess={reloadReview}
         />
@@ -188,21 +191,34 @@ export default function ProviderCard({ provider: rawProvider }) {
               )}
             </div>
 
-            {/* Botón de evaluación — solo usuarios logueados */}
-            <button
-              className={`pcard__rate-btn${userReview ? ' pcard__rate-btn--done' : ''}`}
-              onClick={() => !userReview && setShowReview(true)}
-              disabled={!!userReview}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor" width="12" height="12" aria-hidden="true">
-                <ellipse cx="16" cy="25" rx="8" ry="5.5"/>
-                <ellipse cx="4.5" cy="15" rx="3.2" ry="4" transform="rotate(-25,4.5,15)"/>
-                <ellipse cx="11" cy="8" rx="3.2" ry="4" transform="rotate(-10,11,8)"/>
-                <ellipse cx="21" cy="8" rx="3.2" ry="4" transform="rotate(10,21,8)"/>
-                <ellipse cx="27.5" cy="15" rx="3.2" ry="4" transform="rotate(25,27.5,15)"/>
-              </svg>
-              {userReview ? t('reviews.already_rated') : t('reviews.rate_cta')}
-            </button>
+            {/* Botón de evaluación — requiere interacción verificada */}
+            {userReview ? (
+              <button className="pcard__rate-btn pcard__rate-btn--done" disabled>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor" width="12" height="12" aria-hidden="true">
+                  <ellipse cx="16" cy="25" rx="8" ry="5.5"/>
+                  <ellipse cx="4.5" cy="15" rx="3.2" ry="4" transform="rotate(-25,4.5,15)"/>
+                  <ellipse cx="11" cy="8" rx="3.2" ry="4" transform="rotate(-10,11,8)"/>
+                  <ellipse cx="21" cy="8" rx="3.2" ry="4" transform="rotate(10,21,8)"/>
+                  <ellipse cx="27.5" cy="15" rx="3.2" ry="4" transform="rotate(25,27.5,15)"/>
+                </svg>
+                {t('reviews.already_rated')}
+              </button>
+            ) : hasInteraction ? (
+              <button className="pcard__rate-btn" onClick={() => setShowReview(true)}>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor" width="12" height="12" aria-hidden="true">
+                  <ellipse cx="16" cy="25" rx="8" ry="5.5"/>
+                  <ellipse cx="4.5" cy="15" rx="3.2" ry="4" transform="rotate(-25,4.5,15)"/>
+                  <ellipse cx="11" cy="8" rx="3.2" ry="4" transform="rotate(-10,11,8)"/>
+                  <ellipse cx="21" cy="8" rx="3.2" ry="4" transform="rotate(10,21,8)"/>
+                  <ellipse cx="27.5" cy="15" rx="3.2" ry="4" transform="rotate(25,27.5,15)"/>
+                </svg>
+                {t('reviews.rate_cta')}
+              </button>
+            ) : (
+              <button className="pcard__rate-btn pcard__rate-btn--gate" onClick={() => setShowMsg(true)}>
+                {t('reviews.gate_hint_short')}
+              </button>
+            )}
           </>
         ) : (
           <div className="pcard__gate">

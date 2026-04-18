@@ -516,7 +516,8 @@
     "verified_badge": "Cliente verificado",
     "verified_client": "Estás evaluando como cliente verificado",
     "gate_hint": "Envía un mensaje al proveedor primero. Si te responde, podrás dejar tu evaluación.",
-    "gate_cta": "Enviar mensaje"
+    "gate_cta": "Enviar mensaje",
+    "gate_hint_short": "Escríbele primero para evaluar"
   },
   "pricing_page": {
     "eyebrow": "Planes para proveedores",

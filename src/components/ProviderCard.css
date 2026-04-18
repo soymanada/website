@@ -224,6 +224,12 @@
   border-color: transparent;
   cursor: default;
 }
+.pcard__rate-btn--gate {
+  color: var(--iris-500);
+  border-color: var(--iris-200);
+  background: var(--iris-50);
+  font-style: italic;
+}
 
 /* ── Profile link ────────────────────────────────────────────────── */
 .pcard__profile-link {
