@@ -82,6 +82,26 @@ export default function RegistroProveedoresPage() {
       setError(`Error al enviar: ${dbErr.message}`)
       setSubmitting(false)
     } else {
+      const lang = document.documentElement.lang?.slice(0, 2) || 'es'
+      const payload = {
+        contact_email: form.contact_email,
+        contact_name:  form.contact_name,
+        business_name: form.business_name,
+        lang,
+      }
+      // Llamar funciones en paralelo — errores no bloquean el flujo
+      await Promise.allSettled([
+        supabase.functions.invoke('send-application-confirmation', { body: payload }),
+        supabase.functions.invoke('notify-admin', {
+          body: {
+            type:          'provider_application',
+            id:            form.contact_email,
+            business_name: form.business_name,
+            contact_name:  form.contact_name,
+            contact_email: form.contact_email,
+          }
+        }),
+      ])
       setSubmitted(true)
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
