@@ -364,7 +364,7 @@ function SubmissionsPanel() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    supabase.from('provider_submissions')
+    supabase.from('provider_applications')
       .select('*')
       .order('created_at', { ascending: false })
       .then(({ data }) => { setSubs(data ?? []); setLoading(false) })
