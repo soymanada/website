@@ -663,15 +663,12 @@ function SubmissionsPanel() {
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-|-$/g, '')
 
-    // Look up the user account that matches the application email
+    // Look up the user account via auth.users (SECURITY DEFINER function)
     let userId = null
     if (s.contact_email) {
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('id')
-        .ilike('email', s.contact_email.trim())
-        .maybeSingle()
-      userId = profile?.id ?? null
+      const { data } = await supabase
+        .rpc('get_user_id_by_email', { lookup_email: s.contact_email.trim() })
+      userId = data ?? null
     }
 
     const { error } = await supabase.from('providers').insert({
