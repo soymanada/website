@@ -71,6 +71,21 @@ serve(async (req) => {
         <p><strong>Nombre:</strong> ${payload.suggester_name ?? '—'}</p>
         <p><strong>Email:</strong> ${payload.suggester_email ?? '—'}</p>
       `
+    } else if (type === 'new_provider_application') {
+      subject = `[SoyManada] Nueva solicitud de proveedor — ${payload.business_name}`
+      html = `
+        <h2 style="color:#4f46e5;margin:0 0 16px;">Nueva solicitud de proveedor</h2>
+        <p><strong>Negocio:</strong> ${payload.business_name}</p>
+        <p><strong>Servicio:</strong> ${payload.service_title ?? '—'}</p>
+        <p><strong>Categorías:</strong> ${(payload.categories ?? []).join(', ')}</p>
+        <p><strong>Contacto:</strong> ${payload.contact_name}</p>
+        <p><strong>Email:</strong> ${payload.contact_email}</p>
+        <p style="margin-top:20px;">
+          <a href="https://soymanada.com/admin" style="background:#4f46e5;color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none;font-weight:700;">
+            Revisar en el panel admin →
+          </a>
+        </p>
+      `
     } else {
       return new Response(JSON.stringify({ error: 'unknown type' }), {
         status: 400,

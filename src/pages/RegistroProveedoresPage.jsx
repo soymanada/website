@@ -112,6 +112,19 @@ export default function RegistroProveedoresPage() {
       setError(`${t('registro.error_generico')} (${dbErr.message})`)
       setSubmitting(false)
     } else {
+      // Fire-and-forget: notify admin of new application
+      supabase.functions.invoke('notify-admin', {
+        body: {
+          type: 'new_provider_application',
+          payload: {
+            business_name:  form.business_name,
+            service_title:  form.service_title,
+            categories:     form.categories,
+            contact_name:   form.contact_name,
+            contact_email:  form.contact_email,
+          },
+        },
+      }).catch(console.error)
       setSubmitted(true)
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
