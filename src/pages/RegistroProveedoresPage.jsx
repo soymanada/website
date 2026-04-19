@@ -112,7 +112,7 @@ export default function RegistroProveedoresPage() {
       setError(`${t('registro.error_generico')} (${dbErr.message})`)
       setSubmitting(false)
     } else {
-      // Fire-and-forget: notify admin of new application
+      // Notify admin (fire-and-forget)
       supabase.functions.invoke('notify-admin', {
         body: {
           type: 'new_provider_application',
@@ -123,6 +123,15 @@ export default function RegistroProveedoresPage() {
             contact_name:   form.contact_name,
             contact_email:  form.contact_email,
           },
+        },
+      }).catch(console.error)
+      // Confirmation email to the applicant (fire-and-forget)
+      supabase.functions.invoke('send-application-confirmation', {
+        body: {
+          contact_email:  form.contact_email,
+          business_name:  form.business_name,
+          contact_name:   form.contact_name,
+          languages:      form.languages,
         },
       }).catch(console.error)
       setSubmitted(true)

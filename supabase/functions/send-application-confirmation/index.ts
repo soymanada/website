@@ -1,5 +1,5 @@
-// supabase/functions/send-welcome-email/index.ts
-// Sent to the provider after admin approves their application.
+// supabase/functions/send-application-confirmation/index.ts
+// Sent to the provider right after they submit their application.
 // Language priority: Inglés → en | Español → es | Francés → fr | default → en
 //
 // Required secrets:
@@ -22,53 +22,35 @@ function detectLang(languages: string[]): 'en' | 'es' | 'fr' {
 
 const COPY = {
   en: {
-    subject: (name: string) => `Your SoyManada profile is approved, ${name}! 🎉`,
-    heading: (name: string) => `You're in, ${name}! 🎉`,
+    subject: (name: string) => `We received your application, ${name}! 🐾`,
+    heading: (name: string) => `We got it, ${name}!`,
     body: (biz: string) =>
-      `<strong>${biz}</strong> is now live on SoyManada. Migrants in Canada can already find you.`,
-    trial_badge: '🚀 Early Bird — 3 months Gold FREE',
-    trial_body: 'Activate your free Gold period from your dashboard before June 30. Get full visibility, WhatsApp exposure, and booking tools.',
-    cta: 'Go to my dashboard →',
-    checklist_title: 'Next steps',
-    checklist: [
-      'Complete your profile (photo, description, links)',
-      'Activate your free 3-month Gold trial',
-      'Share your SoyManada profile link with clients',
-    ],
+      `Your application for <strong>${biz}</strong> is now under review. We typically respond within 1–2 business days.`,
+    tip_heading: 'Important',
+    tip_body: 'Make sure you have a SoyManada account registered with this email address. When your profile is approved, it will be automatically linked to your account.',
+    register_cta: 'Create your account →',
     closing: 'Questions? Just reply to this email.',
     footer: 'SoyManada · Directory for migrants in Canada',
   },
   es: {
-    subject: (name: string) => `¡Tu perfil en SoyManada fue aprobado, ${name}! 🎉`,
-    heading: (name: string) => `¡Ya estás dentro, ${name}! 🎉`,
+    subject: (name: string) => `¡Recibimos tu solicitud, ${name}! 🐾`,
+    heading: (name: string) => `¡Ya la tenemos, ${name}!`,
     body: (biz: string) =>
-      `<strong>${biz}</strong> ya está publicado en SoyManada. Los migrantes en Canadá pueden encontrarte.`,
-    trial_badge: '🚀 Early Bird — 3 meses Gold GRATIS',
-    trial_body: 'Activa tu período Gold gratuito desde tu panel antes del 30 de junio. Obtén visibilidad completa, WhatsApp visible y herramientas de reserva.',
-    cta: 'Ir a mi panel →',
-    checklist_title: 'Próximos pasos',
-    checklist: [
-      'Completa tu perfil (foto, descripción, enlaces)',
-      'Activa tu trial gratuito de 3 meses Gold',
-      'Comparte tu link de SoyManada con tus clientes',
-    ],
+      `Tu solicitud para <strong>${biz}</strong> está siendo revisada. Generalmente respondemos en 1–2 días hábiles.`,
+    tip_heading: 'Importante',
+    tip_body: 'Asegúrate de tener una cuenta en SoyManada registrada con este email. Cuando tu perfil sea aprobado, se vinculará automáticamente a tu cuenta.',
+    register_cta: 'Crear mi cuenta →',
     closing: '¿Tienes preguntas? Responde este email.',
     footer: 'SoyManada · Directorio para migrantes en Canadá',
   },
   fr: {
-    subject: (name: string) => `Votre profil SoyManada est approuvé, ${name}! 🎉`,
-    heading: (name: string) => `Vous êtes accepté, ${name}! 🎉`,
+    subject: (name: string) => `Nous avons reçu votre demande, ${name}! 🐾`,
+    heading: (name: string) => `C'est reçu, ${name}!`,
     body: (biz: string) =>
-      `<strong>${biz}</strong> est maintenant en ligne sur SoyManada. Les migrants au Canada peuvent déjà vous trouver.`,
-    trial_badge: '🚀 Early Bird — 3 mois Gold GRATUITS',
-    trial_body: 'Activez votre période Gold gratuite depuis votre tableau de bord avant le 30 juin. Visibilité complète, WhatsApp visible et outils de réservation inclus.',
-    cta: 'Aller à mon tableau de bord →',
-    checklist_title: 'Prochaines étapes',
-    checklist: [
-      'Complétez votre profil (photo, description, liens)',
-      'Activez votre essai gratuit de 3 mois Gold',
-      'Partagez votre lien SoyManada avec vos clients',
-    ],
+      `Votre demande pour <strong>${biz}</strong> est en cours d'examen. Nous répondons généralement dans 1–2 jours ouvrables.`,
+    tip_heading: 'Important',
+    tip_body: 'Assurez-vous d\'avoir un compte SoyManada enregistré avec cet email. Lorsque votre profil sera approuvé, il sera automatiquement lié à votre compte.',
+    register_cta: 'Créer mon compte →',
     closing: 'Des questions ? Répondez à cet email.',
     footer: 'SoyManada · Répertoire pour les migrants au Canada',
   },
@@ -83,7 +65,7 @@ serve(async (req) => {
     const SITE_URL   = Deno.env.get('SITE_URL')       ?? 'https://soymanada.com'
 
     if (!RESEND_KEY) {
-      console.warn('[send-welcome-email] RESEND_API_KEY not set — skipping')
+      console.warn('[send-application-confirmation] RESEND_API_KEY not set — skipping')
       return new Response(JSON.stringify({ ok: true, skipped: true }), {
         headers: { ...CORS, 'Content-Type': 'application/json' },
       })
@@ -97,14 +79,10 @@ serve(async (req) => {
       })
     }
 
-    const lang         = detectLang(languages ?? [])
-    const c            = COPY[lang]
-    const name         = contact_name ?? business_name
-    const dashboardUrl = `${SITE_URL}/mi-perfil`
-
-    const checklistHtml = c.checklist
-      .map(item => `<li style="margin:0 0 6px;font-size:14px;color:#5A4877;">${item}</li>`)
-      .join('')
+    const lang = detectLang(languages ?? [])
+    const c    = COPY[lang]
+    const name = contact_name ?? business_name
+    const registerUrl = `${SITE_URL}/login?mode=register`
 
     const html = `<!DOCTYPE html>
 <html lang="${lang}">
@@ -118,33 +96,27 @@ serve(async (req) => {
           <td style="background:linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%);padding:32px 40px;text-align:center;">
             <p style="margin:0 0 8px;font-size:26px;">🐾</p>
             <h1 style="margin:0;font-size:22px;font-weight:700;color:#ffffff;">SoyManada</h1>
-            <p style="margin:6px 0 0;font-size:13px;color:rgba(255,255,255,0.8);">Directory for migrants in Canada</p>
           </td>
         </tr>
 
         <tr>
           <td style="padding:36px 40px 28px;">
-            <h2 style="margin:0 0 12px;font-size:20px;font-weight:700;color:#120826;">${c.heading(name)}</h2>
+            <h2 style="margin:0 0 16px;font-size:20px;font-weight:700;color:#120826;">${c.heading(name)}</h2>
             <p style="margin:0 0 24px;font-size:15px;color:#5A4877;line-height:1.6;">${c.body(business_name)}</p>
 
-            <div style="background:#fefce8;border:1.5px solid #fde047;border-radius:12px;padding:16px 20px;margin:0 0 24px;">
-              <p style="margin:0 0 6px;font-size:12px;font-weight:700;color:#854d0e;text-transform:uppercase;letter-spacing:0.06em;">
-                ${c.trial_badge}
+            <div style="background:#f5f3ff;border:1.5px solid #ede9fe;border-radius:12px;padding:16px 20px;margin:0 0 28px;">
+              <p style="margin:0 0 6px;font-size:12px;font-weight:700;color:#4f46e5;text-transform:uppercase;letter-spacing:0.06em;">
+                ${c.tip_heading}
               </p>
-              <p style="margin:0;font-size:14px;color:#713f12;line-height:1.5;">${c.trial_body}</p>
+              <p style="margin:0;font-size:14px;color:#5A4877;line-height:1.5;">${c.tip_body}</p>
             </div>
-
-            <p style="margin:0 0 10px;font-size:13px;font-weight:700;color:#120826;text-transform:uppercase;letter-spacing:0.05em;">
-              ${c.checklist_title}
-            </p>
-            <ul style="margin:0 0 28px;padding-left:18px;">${checklistHtml}</ul>
 
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr><td align="center">
-                <a href="${dashboardUrl}" target="_blank"
-                   style="display:inline-block;background:#4f46e5;color:#ffffff;font-size:15px;font-weight:700;
-                          text-decoration:none;padding:14px 36px;border-radius:100px;">
-                  ${c.cta}
+                <a href="${registerUrl}" target="_blank"
+                   style="display:inline-block;background:#4f46e5;color:#ffffff;font-size:14px;font-weight:700;
+                          text-decoration:none;padding:13px 32px;border-radius:100px;">
+                  ${c.register_cta}
                 </a>
               </td></tr>
             </table>
@@ -176,7 +148,7 @@ serve(async (req) => {
 
     const body = await res.json()
     if (!res.ok) {
-      console.error('[send-welcome-email] Resend error:', body)
+      console.error('[send-application-confirmation] Resend error:', body)
       return new Response(JSON.stringify({ error: 'resend_error', detail: body }), {
         status: 502, headers: { ...CORS, 'Content-Type': 'application/json' },
       })
@@ -186,7 +158,7 @@ serve(async (req) => {
       headers: { ...CORS, 'Content-Type': 'application/json' },
     })
   } catch (e) {
-    console.error('[send-welcome-email] Unexpected error:', e)
+    console.error('[send-application-confirmation] Unexpected error:', e)
     return new Response(JSON.stringify({ error: 'internal' }), {
       status: 500, headers: { ...CORS, 'Content-Type': 'application/json' },
     })

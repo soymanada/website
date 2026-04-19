@@ -709,6 +709,7 @@ function SubmissionsPanel() {
           contact_email: s.contact_email,
           business_name: s.business_name,
           contact_name:  s.contact_name ?? s.business_name,
+          languages:     s.languages ?? [],
         },
       }).catch(console.error)
     }
