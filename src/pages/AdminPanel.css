@@ -6,7 +6,7 @@
   background: var(--ivory);
 }
 
-.adm__header { margin-bottom: 32px; }
+.adm__header { margin-bottom: 32px; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
 .adm__title  { color: var(--iris-900); margin-bottom: 4px; }
 .adm__sub    { color: var(--text-400); }
 

@@ -1,7 +1,9 @@
 // src/pages/AdminPanel.jsx
 import { useState, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
+import { useAuth } from '../hooks/useAuth'
 import './AdminPanel.css'
 
 const fmt = (iso) => iso ? new Date(iso).toLocaleDateString('es-CL') : '—'
@@ -905,7 +907,14 @@ function PhotosPanel() {
 // ── Panel principal ───────────────────────────────────────────────────────────
 export default function AdminPanel() {
   const { t } = useTranslation()
+  const { signOut } = useAuth()
+  const navigate = useNavigate()
   const [tab, setTab] = useState('users')
+
+  const handleSignOut = async () => {
+    await signOut()
+    navigate('/', { replace: true })
+  }
 
   const TABS = [
     { id: 'users',       label: t('admin.tabs.users')       },
@@ -923,8 +932,13 @@ export default function AdminPanel() {
     <main className="adm">
       <div className="container">
         <div className="adm__header">
-          <h1 className="d-lg adm__title">{t('admin.title')}</h1>
-          <p className="t-sm adm__sub">{t('admin.subtitle')}</p>
+          <div>
+            <h1 className="d-lg adm__title">{t('admin.title')}</h1>
+            <p className="t-sm adm__sub">{t('admin.subtitle')}</p>
+          </div>
+          <button className="adm-btn adm-btn--ghost" onClick={handleSignOut}>
+            Cerrar sesión
+          </button>
         </div>
 
         <nav className="adm__tabs">
