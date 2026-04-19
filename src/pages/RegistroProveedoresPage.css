@@ -434,3 +434,55 @@
   .ppg-form__checks--grid { grid-template-columns: 1fr; }
   .ppg-form__submit { width: 100%; justify-content: center; }
 }
+
+/* ── Early Bird Promo Banner ───────────────────────────────────────── */
+.ppg-early-bird {
+  background: linear-gradient(90deg, var(--iris-700) 0%, var(--iris-500) 100%);
+  color: #fff;
+  padding: 14px 0;
+}
+.ppg-early-bird__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.ppg-early-bird__left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.ppg-early-bird__tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: rgba(255,255,255,0.2);
+  border-radius: var(--r-full, 9999px);
+  padding: 4px 12px;
+  white-space: nowrap;
+}
+.ppg-early-bird__text {
+  font-size: 0.9rem;
+  margin: 0;
+  opacity: 0.95;
+}
+.ppg-early-bird__btn {
+  background: #fff;
+  color: var(--iris-700);
+  border: none;
+  border-radius: var(--r-md);
+  padding: 9px 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.15s, transform 0.15s;
+}
+.ppg-early-bird__btn:hover { opacity: 0.9; transform: translateY(-1px); }
+@media (max-width: 600px) {
+  .ppg-early-bird__inner { flex-direction: column; align-items: flex-start; }
+  .ppg-early-bird__btn { width: 100%; text-align: center; }
+}

@@ -130,8 +130,33 @@ export default function RegistroProveedoresPage() {
     { n: '03', title: t('registro_proveedores.step3_title'), body: t('registro_proveedores.step3_body') },
   ]
 
+  const now = new Date()
+  const EARLY_BIRD_END = new Date('2026-07-19T00:00:00Z')
+  const isEarlyBird = now < EARLY_BIRD_END
+  const earlyBirdDays = Math.max(0, Math.ceil((EARLY_BIRD_END - now) / 86400000))
+
   return (
     <main className="ppg">
+
+      {/* ── Early Bird Promo Banner ───────────────────────── */}
+      <div className="ppg-early-bird">
+        <div className="container ppg-early-bird__inner">
+          <div className="ppg-early-bird__left">
+            <span className="ppg-early-bird__tag">
+              {isEarlyBird ? '🚀 Oferta Early Bird' : '🎁 Bienvenida'}
+            </span>
+            <p className="ppg-early-bird__text">
+              {isEarlyBird
+                ? <><strong>{3} meses Gold GRATIS</strong> para los primeros proveedores · Solo quedan <strong>{earlyBirdDays} días</strong></>
+                : <><strong>1 mes Gold GRATIS</strong> para nuevos proveedores</>
+              }
+            </p>
+          </div>
+          <button className="ppg-early-bird__btn" onClick={scrollToForm}>
+            Quiero mi acceso gratuito →
+          </button>
+        </div>
+      </div>
 
       {/* ── Hero ─────────────────────────────────────────── */}
       <section className="ppg-hero">

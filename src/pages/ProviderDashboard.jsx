@@ -670,7 +670,80 @@ function UpgradeButton({ planCode, label, className = 'btn btn-primary btn-sm' }
   )
 }
 
-function SectionMiPlan({ tier }) {
+// Early-bird: 3 months free Gold. After this date: 1 month free Gold.
+const EARLY_BIRD_END = new Date('2026-07-19T00:00:00Z')
+
+function TrialBanner({ provider, onActivated }) {
+  const [busy,  setBusy]  = useState(false)
+  const [error, setError] = useState(null)
+
+  const now         = new Date()
+  const isEarlyBird = now < EARLY_BIRD_END
+  const trialMonths = isEarlyBird ? 3 : 1
+  const alreadyUsed = !!provider?.trial_activated_at
+  const trialActive = alreadyUsed && provider?.trial_ends_at && new Date(provider.trial_ends_at) > now
+  const daysLeft    = trialActive ? Math.ceil((new Date(provider.trial_ends_at) - now) / 86400000) : 0
+  const earlyBirdDaysLeft = Math.max(0, Math.ceil((EARLY_BIRD_END - now) / 86400000))
+
+  const activate = async () => {
+    setBusy(true); setError(null)
+    const endsAt = new Date(now.getTime() + trialMonths * 30 * 24 * 60 * 60 * 1000)
+    const { data, error: err } = await supabase
+      .from('providers')
+      .update({ tier: 'gold', trial_activated_at: now.toISOString(), trial_ends_at: endsAt.toISOString() })
+      .eq('id', provider.id)
+      .select().single()
+    if (err) { setError('No pudimos activar el trial. Intenta de nuevo.'); setBusy(false); return }
+    onActivated?.(data)
+    setBusy(false)
+  }
+
+  if (trialActive) return (
+    <div className="pdash__trial-banner pdash__trial-banner--active">
+      <span className="pdash__trial-icon">✨</span>
+      <div>
+        <strong>Gold gratuito activo — {daysLeft} {daysLeft === 1 ? 'día' : 'días'} restantes</strong>
+        <p className="t-xs">Aprovecha al máximo tus herramientas Gold antes de que termine.</p>
+      </div>
+    </div>
+  )
+
+  if (alreadyUsed) return (
+    <div className="pdash__trial-banner pdash__trial-banner--expired">
+      <span className="pdash__trial-icon">⏰</span>
+      <div>
+        <strong>Tu período Gold gratuito terminó</strong>
+        <p className="t-xs">Activa Silver o Gold para seguir disfrutando las herramientas premium.</p>
+      </div>
+    </div>
+  )
+
+  return (
+    <div className="pdash__trial-banner pdash__trial-banner--cta">
+      <div>
+        <span className="pdash__trial-pill">{isEarlyBird ? '🚀 Early Bird' : '🎁 Bienvenida'}</span>
+        <strong className="pdash__trial-headline">
+          {isEarlyBird
+            ? `¡${trialMonths} meses Gold GRATIS por ser de los primeros!`
+            : '1 mes Gold GRATIS para nuevos proveedores'}
+        </strong>
+        <p className="t-xs pdash__trial-desc">
+          {isEarlyBird
+            ? `Oferta exclusiva Early Bird. Quedan ${earlyBirdDaysLeft} días para aprovecharla.`
+            : 'Prueba todas las herramientas Gold sin costo durante tu primer mes.'}
+        </p>
+        {error && <p className="pdash__upgrade-error t-xs">{error}</p>}
+        <button className="pdash__trial-cta-btn" onClick={activate} disabled={busy}>
+          {busy
+            ? <><span className="pdash__upgrade-spinner" aria-hidden="true" /> Activando…</>
+            : `Activar ${trialMonths} ${trialMonths === 1 ? 'mes' : 'meses'} Gold gratis`}
+        </button>
+      </div>
+    </div>
+  )
+}
+
+function SectionMiPlan({ tier, provider, onProviderUpdate }) {
   const { t } = useTranslation()
   const current = tier ?? 'bronze'
 
@@ -724,6 +797,14 @@ function SectionMiPlan({ tier }) {
           </p>
         )}
       </div>
+
+      {/* Trial banner — solo para Bronze sin trial activo */}
+      {provider && current === 'bronze' && (
+        <TrialBanner provider={provider} onActivated={updated => {
+          onProviderUpdate?.(updated)
+          window.location.reload()
+        }} />
+      )}
 
       {/* Comparación de tiers */}
       <div className="pdash__plan-grid">
@@ -1007,7 +1088,7 @@ export default function ProviderDashboard() {
                 <SectionReservas provider={provider} tier={tier} />
               )}
               {activeTab === 'miplan' && (
-                <SectionMiPlan tier={tier} />
+                <SectionMiPlan tier={tier} provider={provider} onProviderUpdate={p => setProvider(p)} />
               )}
             </>
           )}
