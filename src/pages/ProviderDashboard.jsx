@@ -671,7 +671,7 @@ function UpgradeButton({ planCode, label, className = 'btn btn-primary btn-sm' }
 }
 
 // Early-bird: 3 months free Gold. After this date: 1 month free Gold.
-const EARLY_BIRD_END = new Date('2026-07-19T00:00:00Z')
+const EARLY_BIRD_END = new Date('2026-06-30T23:59:59Z')
 
 function TrialBanner({ provider, onActivated }) {
   const [busy,  setBusy]  = useState(false)
