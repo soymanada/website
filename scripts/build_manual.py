@@ -22,7 +22,9 @@ WARN_BG     = 'FFF3CD'
 WARN_BORDER = 'F0AD4E'
 TIP_BG      = 'E8F5E9'
 
-DATE_STR = 'Abril 2026'
+DATE_STR      = 'Abril 2026'
+DATE_STR_V2   = 'Mayo 2026'
+IMG_PLACEHOLDER_BG = 'EDE9F8'   # lavanda suave para recuadros de imagen
 
 # ── Helpers XML ──────────────────────────────────────────────────
 
@@ -276,6 +278,28 @@ def add_faq_item(doc, question, answer):
     r_a.font.color.rgb = TEXT_400
     set_para_spacing(p_a, before=0, after=120)
 
+def add_screenshot_placeholder(doc, label, height_cm=5.5):
+    """Recuadro punteado lavanda que marca dónde va un screenshot."""
+    table = doc.add_table(rows=1, cols=1)
+    table.style = 'Table Grid'
+    cell = table.cell(0, 0)
+    set_cell_bg(cell, IMG_PLACEHOLDER_BG)
+    set_cell_border(cell, top='7B4DC8', bottom='7B4DC8', left='7B4DC8', right='7B4DC8')
+    # altura mínima aproximada
+    from docx.oxml.ns import qn as _qn
+    tc = cell._tc
+    trPr = tc.getparent().get_or_add_trPr() if hasattr(tc.getparent(), 'get_or_add_trPr') else None
+    p = cell.paragraphs[0]
+    p.clear()
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    set_para_spacing(p, before=int(height_cm * 100), after=int(height_cm * 100))
+    r = p.add_run(f'📷  {label}')
+    r.font.name    = 'Calibri'
+    r.font.size    = Pt(10.5)
+    r.font.italic  = True
+    r.font.color.rgb = IRIS_500
+    doc.add_paragraph()
+
 # ── Portada genérica ──────────────────────────────────────────────
 
 def build_cover(doc, title, subtitle, footer_line):
@@ -333,9 +357,9 @@ def add_plans_table(doc):
 
     headers = ['Plan', 'Precio', 'Incluye']
     rows_data = [
-        ('Bronze (Gratis)', '$0', 'Perfil básico, 1 categoría, mensajes'),
-        ('Activa (Silver)', '$10 USD/mes', 'Todo Bronze + métricas, calendario, WhatsApp visible, posición prioritaria'),
-        ('Pro (Gold)', '$20 USD/mes', 'Todo Activa + todas las categorías, métricas completas, herramientas avanzadas'),
+        ('Bronze (Gratis)', '$0', 'Perfil básico, 1 categoría, mensajería, reseñas'),
+        ('Activa (Silver)', '$4.990 CLP/mes', 'Todo Bronze + métricas, calendario de citas, WhatsApp visible, posición prioritaria, responder reseñas'),
+        ('Pro (Gold)', '$14.990 CLP/mes', 'Todo Activa + todas las categorías, métricas completas, herramientas avanzadas'),
     ]
 
     # Header row
@@ -492,141 +516,279 @@ def build_manual_migrante(doc):
 # ── MANUAL PROVEEDOR ──────────────────────────────────────────────
 
 def build_manual_proveedor(doc):
-    # Portada
+    # ── Portada ───────────────────────────────────────────────────
     build_cover(
         doc,
         title='Manual del proveedor',
-        subtitle='Guía completa para gestionar tu perfil, mensajes, reseñas y visibilidad en el directorio.',
-        footer_line='soymanada.com · Versión 1.0 · Abril 2026',
+        subtitle='Guía completa para gestionar tu perfil, mensajes, reseñas, pagos y visibilidad en el directorio.',
+        footer_line='soymanada.com · Versión 2.0 · Mayo 2026',
     )
 
     # ── Sección 1: Alta como proveedor ───────────────────────────
-    add_section_heading(doc, '1. Alta como proveedor')
+    add_section_heading(doc, '1. Cómo darte de alta como proveedor')
+    add_body(doc,
+        'El proceso de registro es simple y está completamente en línea. '
+        'Después de enviar tu solicitud recibirás dos emails: uno inmediato de confirmación y, '
+        'una vez aprobado por el equipo, un email de bienvenida con tus instrucciones de acceso.'
+    )
     add_numbered_steps(doc, [
-        'Ir a /registro-proveedores.',
-        'Completar el formulario: nombre del negocio, servicio, categorías, descripción, idiomas, países, WhatsApp de contacto, email.',
-        'Aceptar términos y enviar.',
-        'El equipo revisa la solicitud.',
-        'Si es aprobado, recibirás acceso al dashboard.',
+        'Ve a soymanada.com/registro-proveedores.',
+        'Completa el formulario: nombre del negocio, servicio, categorías, descripción, '
+        'idiomas atendidos, países, WhatsApp, email de contacto.',
+        'Acepta los términos y envía la solicitud.',
+        'Recibirás un email de confirmación inmediatamente — revisa tu bandeja de spam.',
+        'El email incluye el link para crear tu cuenta en SoyManada con ese mismo email.',
+        'El equipo revisará tu solicitud (1–2 días hábiles).',
+        'Si es aprobado, recibirás un email de bienvenida con el enlace a tu dashboard.',
     ])
     add_tip_block(doc,
-        'Una descripción detallada y precisa aumenta tus probabilidades de aprobación y de aparecer en búsquedas.'
+        'Una descripción detallada y un WhatsApp activo aumentan tu probabilidad de aprobación y tu '
+        'visibilidad en búsquedas. Usa el mismo email en el formulario y en tu cuenta SoyManada — '
+        'de lo contrario, el sistema no podrá vincular automáticamente tu perfil.'
+    )
+    add_screenshot_placeholder(doc, 'SCREENSHOT: Página /registro-proveedores — formulario completo visible', height_cm=6)
+
+    add_divider(doc)
+
+    # ── Sección 2: Early Bird — Trial Gold 3 meses gratis ─────────
+    add_section_heading(doc, '2. 🚀 Early Bird: 3 meses de Gold gratis')
+    add_body(doc,
+        'Como parte del lanzamiento de la plataforma, todos los proveedores que se registren '
+        'antes del 30 de junio de 2026 tienen acceso a un trial de 3 meses en plan Gold (Pro) sin costo. '
+        'Esto incluye todas las funciones avanzadas: métricas completas, calendario de citas, '
+        'WhatsApp visible, posición prioritaria y acceso a todas las categorías.'
+    )
+    add_colored_block(doc,
+        '¿Cómo activar el trial?',
+        [
+            '1. Inicia sesión en tu cuenta de proveedor.',
+            '2. Ve a /mi-perfil → tab "Mi Plan".',
+            '3. Verás el banner Early Bird con el botón "Activar 3 meses Gold gratis".',
+            '4. Clic en el botón — se activa de inmediato, sin tarjeta de crédito.',
+            '5. Tu plan pasará a Gold durante los próximos 3 meses.',
+        ],
+        'EDE9F8',
+    )
+    add_screenshot_placeholder(doc, 'SCREENSHOT: Banner Early Bird en el tab "Mi Plan" — botón de activación visible', height_cm=4)
+    add_warning_block(doc,
+        'El trial Early Bird está disponible solo para registros hasta el 30 de junio de 2026. '
+        'Al terminar el trial, el plan vuelve a Bronze automáticamente. '
+        'Si registros después de esa fecha, el trial será de 1 mes.'
     )
 
-    # ── Sección 2: Editar tu perfil ───────────────────────────────
-    add_section_heading(doc, '2. Panel Mi Perfil (tab Perfil)')
-    add_body(doc, 'Campos editables desde el tab "Mi perfil":')
+    add_divider(doc)
+
+    # ── Sección 3: Editar tu perfil ───────────────────────────────
+    add_section_heading(doc, '3. Dashboard — Tab Perfil')
+    add_body(doc, 'Desde el tab "Perfil" puedes editar toda la información que verán los migrantes:')
     add_bullet_list(doc, [
-        'Nombre del negocio',
-        'Título del servicio',
-        'Descripción',
-        'Idiomas',
-        'WhatsApp de contacto',
+        'Nombre del negocio y título del servicio',
+        'Descripción (aparece completa en tu perfil público)',
+        'Idiomas en que atiendes',
+        'Número de WhatsApp de contacto',
+        'Link de Instagram y sitio web',
+        'Link de pago (si ofreces pagos online)',
         'Foto de perfil (JPG/PNG, máx 2 MB)',
     ])
     add_numbered_steps(doc, [
-        'Inicia sesión.',
-        'Ve a /mi-perfil.',
-        'Edita los campos en el tab "Mi perfil".',
+        'Inicia sesión → /mi-perfil.',
+        'Edita los campos deseados en el tab "Perfil".',
         'Clic en "Guardar cambios".',
     ])
-    add_warning_block(doc,
-        'Los cambios en tu perfil se guardan en Supabase. El directorio público (/proveedores) '
-        'se actualiza en el siguiente deploy del sitio.'
-    )
+    add_screenshot_placeholder(doc, 'SCREENSHOT: Tab Perfil del dashboard — formulario de edición', height_cm=5.5)
 
-    # ── Sección 3: Mensajes ───────────────────────────────────────
-    add_section_heading(doc, '3. Tab Mensajes — Bandeja de entrada')
+    add_section_heading(doc, 'Badge "Verificado por Manada"')
     add_body(doc,
-        'El ProviderInbox muestra la lista de conversaciones con migrantes. '
-        'Selecciona un hilo para ver el historial completo y responder. '
-        'Puedes usar Ctrl+Enter para enviar tu respuesta rápidamente.'
+        'El badge de verificación indica que SoyManada revisó manualmente a este proveedor y validó '
+        'su identidad y servicio. Cuando tu perfil es verificado, el badge aparece en tu tarjeta en '
+        'el directorio y en tu perfil público, generando mayor confianza en los migrantes.'
+    )
+    add_tip_block(doc,
+        'La verificación es realizada por el equipo de SoyManada. Si deseas solicitarla, escribe a '
+        'hola@soymanada.com con tu nombre de negocio y descripción de servicio.'
+    )
+    add_screenshot_placeholder(doc, 'SCREENSHOT: Tarjeta de proveedor en el directorio con badge "Verificado" visible', height_cm=3.5)
+
+    add_divider(doc)
+
+    # ── Sección 4: Mensajes ───────────────────────────────────────
+    add_section_heading(doc, '4. Tab Mensajes — Bandeja de entrada')
+    add_body(doc,
+        'El tab Mensajes muestra todas las conversaciones con migrantes. '
+        'Selecciona un hilo para ver el historial completo y responder directamente desde el dashboard. '
+        'Usa Ctrl+Enter para enviar tu respuesta rápidamente.'
     )
     add_numbered_steps(doc, [
         'Tab "Mensajes" en el dashboard.',
-        'Selecciona una conversación.',
-        'Escribe tu respuesta.',
+        'Selecciona una conversación de la lista.',
+        'Lee el mensaje completo y escribe tu respuesta.',
         'Ctrl+Enter o clic en "Responder".',
     ])
+    add_screenshot_placeholder(doc, 'SCREENSHOT: Tab Mensajes — lista de conversaciones + hilo abierto', height_cm=5.5)
+
     add_section_heading(doc, 'Notificaciones por email')
     add_body(doc,
-        'En la sección de notificaciones puedes activar los siguientes toggles: '
-        '"Nuevo mensaje de un migrante" activa una notificación por email cada vez que recibes un mensaje. '
-        '"Nueva evaluación en mi perfil" te avisa cuando un migrante deja una reseña. '
-        'Guarda los cambios con "Guardar preferencias".'
+        'En el tab "Perfil" encontrarás la sección de notificaciones con dos toggles: '
+        '"Nuevo mensaje" te avisa por email cuando un migrante te escribe. '
+        '"Nueva reseña" te avisa cuando alguien deja una evaluación en tu perfil. '
+        'Guarda tus preferencias con el botón "Guardar preferencias".'
     )
 
-    # ── Sección 4: WhatsApp y visibilidad ─────────────────────────
-    add_section_heading(doc, '4. Controlar qué ven los migrantes')
+    add_divider(doc)
+
+    # ── Sección 5: Reseñas verificadas ────────────────────────────
+    add_section_heading(doc, '5. Evaluaciones y reseñas verificadas')
     add_body(doc,
-        'En el tab "Herramientas" encontrarás la sección "Visibilidad de WhatsApp". '
-        'Esta opción solo está disponible para proveedores con plan Activa (Silver) y Pro (Gold). '
-        'El toggle permite mostrar u ocultar tu número de WhatsApp en el perfil público.'
+        'Las reseñas aparecen en tu perfil público y contribuyen directamente a tu reputación en el directorio. '
+        'SoyManada distingue dos tipos de reseña:'
+    )
+    add_bullet_list(doc, [
+        'Reseña estándar — cualquier usuario registrado puede dejar una reseña.',
+        'Reseña verificada ✓ — el migrante tuvo una interacción real contigo (mensaje o cita confirmada). '
+        'Estas reseñas llevan un badge de verificación y tienen mayor peso en tu puntuación.',
+    ])
+    add_tip_block(doc,
+        'Responder reseñas —incluso las negativas— demuestra profesionalismo. '
+        'Los proveedores con plan Activa o Pro (Silver/Gold) pueden publicar respuestas visibles '
+        'directamente desde el dashboard. En plan Bronze las reseñas son solo de lectura.'
+    )
+    add_screenshot_placeholder(doc, 'SCREENSHOT: Perfil público con reseñas — badge "Verificada" en una reseña', height_cm=4)
+
+    add_divider(doc)
+
+    # ── Sección 6: Visibilidad de WhatsApp ────────────────────────
+    add_section_heading(doc, '6. Controlar la visibilidad de WhatsApp (Silver/Gold)')
+    add_body(doc,
+        'En el tab "Herramientas" encontrarás el toggle de visibilidad de WhatsApp. '
+        'Cuando está activo, tu número aparece como botón directo en tu perfil público '
+        'y los migrantes pueden contactarte con un solo clic.'
     )
     add_warning_block(doc,
-        'Si estás en plan Bronze, el número de WhatsApp NO aparece en tu perfil público aunque lo hayas registrado. '
-        'Debes tener plan Activa o Pro y activar el toggle.'
+        'Esta opción solo está disponible en planes Activa (Silver) y Pro (Gold). '
+        'En plan Bronze, el número de WhatsApp NO aparece aunque lo hayas registrado. '
+        'Si estás en el trial Gold, tienes acceso completo durante los 3 meses.'
     )
 
-    # ── Sección 5: Reseñas ────────────────────────────────────────
-    add_section_heading(doc, '5. Gestionar evaluaciones')
-    add_body(doc,
-        'Las reseñas de migrantes aparecen en tu perfil público y contribuyen a tu reputación en el directorio. '
-        'Si tienes plan Activa o Pro (Silver/Gold), puedes responder públicamente a las reseñas. '
-        'Cada migrante puede dejar una sola reseña por proveedor.'
-    )
-    add_tip_block(doc,
-        'Responder reseñas (especialmente negativas) demuestra profesionalismo y genera confianza.'
-    )
+    add_divider(doc)
 
-    # ── Sección 6: Calendario de citas ───────────────────────────
-    add_section_heading(doc, '6. Agenda de citas (Silver/Gold)')
+    # ── Sección 7: Fotos de comunidad ─────────────────────────────
+    add_section_heading(doc, '7. Subir fotos a la Comunidad SoyManada')
     add_body(doc,
-        'El calendario de citas solo está disponible para planes Activa y Pro. '
-        'El tab "Reservas" muestra tus citas pendientes y confirmadas. '
-        'Puedes configurar tu disponibilidad en el editor de disponibilidad.'
+        'La sección "Historias de la Manada" en la página principal muestra fotos reales de '
+        'migrantes en Canadá. Como proveedor o migrante registrado puedes contribuir fotos '
+        'que representen tu experiencia de vida en el país.'
     )
     add_numbered_steps(doc, [
-        'Tab "Reservas".',
-        'Sección "Gestionar disponibilidad" → define días y horarios.',
-        'Las citas pendientes aparecen para confirmar o rechazar.',
+        'En la página principal, clic en el botón "Comparte tu foto" bajo el título de la sección.',
+        'Selecciona una imagen de tu dispositivo (JPG/PNG, máx 5 MB).',
+        'Añade tu nombre y ciudad.',
+        'Escribe un mensaje corto opcional.',
+        'Clic en "Enviar" — el equipo de SoyManada revisará y publicará la foto.',
+    ])
+    add_colored_block(doc,
+        '¿Qué tipo de fotos funcionan mejor?',
+        [
+            '▸  Tú en un paisaje o ciudad de Canadá (parques, montañas, barrios).',
+            '▸  Tu lugar de trabajo o negocio.',
+            '▸  Momentos de integración: comunidad, eventos, vida cotidiana.',
+            '▸  Fotos nítidas, bien iluminadas, en horizontal si es posible.',
+        ],
+        TIP_BG,
+    )
+    add_screenshot_placeholder(doc, 'SCREENSHOT: Modal "Comparte tu foto" — formulario de subida de imagen', height_cm=4.5)
+
+    add_divider(doc)
+
+    # ── Sección 8: Calendario de citas ───────────────────────────
+    add_section_heading(doc, '8. Agenda de citas (Silver/Gold)')
+    add_body(doc,
+        'El tab "Reservas" permite gestionar citas con migrantes directamente desde el dashboard. '
+        'Primero configuras tu disponibilidad semanal; luego, los migrantes pueden agendar una cita '
+        'en los horarios libres que hayas definido. Las citas aparecen para que las confirmes o rechaces.'
+    )
+    add_numbered_steps(doc, [
+        'Tab "Reservas" → sección "Gestionar disponibilidad".',
+        'Selecciona los días y define el rango horario de cada uno.',
+        'Elige la duración de cada cita (ej. 30 o 60 minutos).',
+        'Guarda la disponibilidad.',
+        'Las citas que lleguen aparecerán en la lista con estado "Pendiente".',
+        'Confirma o rechaza cada cita con los botones de acción.',
     ])
     add_warning_block(doc,
-        'El calendario de citas solo es visible en tu perfil público si tienes plan Activa o Pro.'
+        'El calendario de citas solo es visible en tu perfil público si tienes plan Activa o Pro activo. '
+        'En Bronze, los migrantes no verán la opción de agendar cita.'
     )
 
-    # ── Sección 7: Métricas ───────────────────────────────────────
-    add_section_heading(doc, '7. Tab Métricas (Silver/Gold)')
+    add_divider(doc)
+
+    # ── Sección 9: Métricas ───────────────────────────────────────
+    add_section_heading(doc, '9. Tab Métricas (Silver/Gold)')
     add_body(doc,
-        'Las métricas están disponibles solo en planes Activa y Pro. '
-        'Muestran 6 KPIs clave: visitas esta semana, clics en contacto, tasa de contacto, '
-        'puntaje promedio, mensajes recibidos y tasa de respuesta.'
+        'Las métricas muestran el rendimiento de tu perfil con 6 indicadores clave:'
     )
+    add_bullet_list(doc, [
+        'Visitas esta semana — cuántas veces se vio tu perfil.',
+        'Clics en contacto — cuántas veces alguien hizo clic en WhatsApp, Instagram o mensaje.',
+        'Tasa de contacto — % de visitantes que intentaron contactarte.',
+        'Puntaje promedio — promedio de tus reseñas (1–5 estrellas).',
+        'Mensajes recibidos — total de mensajes en el período.',
+        'Tasa de respuesta — % de conversaciones donde respondiste al menos una vez.',
+    ])
     add_tip_block(doc,
-        'La tasa de respuesta mide cuántas conversaciones han recibido al menos una respuesta tuya. '
-        'Un porcentaje alto aumenta tu confianza en el directorio.'
+        'Una tasa de respuesta alta (>80 %) mejora tu posición en el directorio y genera más confianza. '
+        'Responde los mensajes aunque sea para decir que no puedes atender — cuenta igual.'
     )
 
-    # ── Sección 8: Plan y upgrades ────────────────────────────────
-    add_section_heading(doc, '8. Tab Mi Plan')
+    add_divider(doc)
+
+    # ── Sección 10: Plan y pagos ──────────────────────────────────
+    add_section_heading(doc, '10. Tab Mi Plan — Upgrades y pagos')
     add_body(doc, 'Comparativa de planes disponibles:')
     add_plans_table(doc)
 
-    # ── Sección 9: Preguntas frecuentes ──────────────────────────
-    add_section_heading(doc, '9. Preguntas frecuentes')
+    add_body(doc,
+        'Para subir de plan, ve al tab "Mi Plan" y haz clic en el botón de upgrade del plan deseado. '
+        'El pago se procesa a través de Mercado Pago — puedes pagar con tarjeta de débito, '
+        'crédito o transferencia. La suscripción se renueva mensualmente y puedes cancelar en cualquier momento '
+        'escribiendo a hola@soymanada.com.'
+    )
+    add_screenshot_placeholder(doc, 'SCREENSHOT: Tab "Mi Plan" — tabla de planes + botón "Activar Silver" con Mercado Pago', height_cm=5)
+    add_tip_block(doc,
+        'Si estás en el trial Early Bird, no necesitas pagar nada durante 3 meses. '
+        'Puedes contratar un plan pago al terminar el trial o en cualquier momento desde el tab Mi Plan.'
+    )
+
+    add_divider(doc)
+
+    # ── Sección 11: Preguntas frecuentes ─────────────────────────
+    add_section_heading(doc, '11. Preguntas frecuentes')
     doc.add_paragraph()
 
     faqs = [
         ('¿Cuándo aparece mi perfil en el directorio?',
-         'Después de que el equipo apruebe tu solicitud. El proceso suele tardar 1-3 días hábiles.'),
+         'Después de que el equipo apruebe tu solicitud. El proceso suele tardar 1–2 días hábiles. '
+         'Recibirás un email de bienvenida cuando esté listo.'),
+        ('¿Por qué no veo mi dashboard después de que me aprobaron?',
+         'Verifica que tu cuenta de SoyManada esté registrada con el mismo email que usaste en el formulario. '
+         'Si no la creaste aún, usa el link del email de confirmación que recibiste al aplicar.'),
         ('¿Puedo tener más de una categoría?',
-         'Con Bronze: 1. Con Activa: hasta 2. Con Pro: todas.'),
+         'Con Bronze: 1 categoría. Con Activa (Silver): hasta 2. Con Pro (Gold) o trial: todas las categorías disponibles.'),
         ('¿Los mensajes son privados?',
-         'Sí. Solo tú y el migrante que te escribió pueden leer la conversación.'),
+         'Sí. Solo tú y el migrante que te escribió pueden leer esa conversación.'),
+        ('¿El trial Gold Early Bird requiere tarjeta de crédito?',
+         'No. Se activa con un clic desde el tab Mi Plan, sin datos de pago. Al terminar el trial, '
+         'el plan vuelve a Bronze automáticamente.'),
+        ('¿Cómo funciona el pago con Mercado Pago?',
+         'Al hacer clic en el botón de upgrade serás redirigido a Mercado Pago. '
+         'Puedes pagar con tarjeta de débito, crédito o transferencia. '
+         'La suscripción se renueva automáticamente cada mes hasta que la canceles.'),
+        ('¿Qué es una reseña verificada?',
+         'Una reseña verificada indica que el migrante tuvo una interacción real contigo '
+         '(te envió un mensaje o agendó una cita confirmada). Llevan un badge especial en tu perfil.'),
         ('¿Cómo cambio mi contraseña?',
          'Desde la página de login, clic en "¿Olvidaste tu contraseña?" e ingresa tu email.'),
         ('¿Qué pasa si quiero dar de baja mi perfil?',
-         'Escribe al equipo a través del formulario de feedback en el footer o directamente a manadasisoy@gmail.com.'),
+         'Escribe a hola@soymanada.com con tu nombre de negocio. El equipo lo desactiva en 24–48 horas.'),
     ]
     for q, a in faqs:
         add_faq_item(doc, q, a)
@@ -659,8 +821,9 @@ def main():
 
     # ── Manual Proveedor ─────────────────────────────────────────
     doc_p = make_doc()
+    set_footer(doc_p, date_str=DATE_STR_V2)
     build_manual_proveedor(doc_p)
-    path_p = os.path.join(out_dir, 'manual-proveedor-soymanada.docx')
+    path_p = os.path.join(out_dir, 'manual-proveedor-soymanada-v2.docx')
     doc_p.save(path_p)
     size_p = os.path.getsize(path_p)
     print(f'Proveedor → {path_p}  ({size_p:,} bytes)')
