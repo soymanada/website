@@ -360,15 +360,73 @@ function ProvidersPanel() {
 
 // ── Solicitudes ───────────────────────────────────────────────────────────────
 function SubmissionsPanel() {
-  const [subs,    setSubs]    = useState([])
-  const [loading, setLoading] = useState(true)
+  const [subs,     setSubs]     = useState([])
+  const [loading,  setLoading]  = useState(true)
+  const [approving,setApproving]= useState(null) // id en proceso
 
-  useEffect(() => {
-    supabase.from('provider_applications')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .then(({ data }) => { setSubs(data ?? []); setLoading(false) })
+  const load = useCallback(async () => {
+    setLoading(true)
+    const { data } = await supabase.from('provider_applications')
+      .select('*').order('created_at', { ascending: false })
+    setSubs(data ?? [])
+    setLoading(false)
   }, [])
+
+  useEffect(() => { load() }, [load])
+
+  const approve = async (s) => {
+    setApproving(s.id)
+    try {
+      // 1. Buscar user_id por email en auth.users (via función SECURITY DEFINER)
+      const { data: userId } = await supabase
+        .rpc('get_user_id_by_email', { lookup_email: s.contact_email })
+
+      // 2. Crear fila en providers
+      const { error: provErr } = await supabase.from('providers').insert({
+        name:          s.business_name,
+        service:       s.service_title,
+        description:   s.description,
+        languages:     s.languages ?? [],
+        countries:     s.countries ?? [],
+        category_slug: (s.categories ?? [])[0] ?? null,
+        verified:      true,
+        active:        true,
+        user_id:       userId ?? null,
+        contact: {
+          whatsapp:  s.whatsapp  || null,
+          instagram: s.instagram || null,
+          website:   s.website   || null,
+        },
+      })
+      if (provErr) throw provErr
+
+      // 3. Actualizar role en profiles si se encontró el usuario
+      if (userId) {
+        await supabase.from('profiles')
+          .upsert({ id: userId, role: 'provider', tier: 'bronze' }, { onConflict: 'id' })
+      }
+
+      // 4. Marcar solicitud como aprobada
+      await supabase.from('provider_applications')
+        .update({ status: 'approved' }).eq('id', s.id)
+
+      // 5. Enviar email de bienvenida
+      await supabase.functions.invoke('send-welcome-email', {
+        body: {
+          contact_email: s.contact_email,
+          contact_name:  s.contact_name,
+          business_name: s.business_name,
+          lang:          'es',
+        }
+      })
+
+      await load()
+    } catch (err) {
+      alert('Error al aprobar: ' + (err.message ?? err))
+    } finally {
+      setApproving(null)
+    }
+  }
 
   const pending = subs.filter(s => !s.status || s.status === 'pending').length
 
@@ -387,21 +445,32 @@ function SubmissionsPanel() {
           <table className="adm-table">
             <thead>
               <tr>
-                <th>Nombre</th><th>Categoría</th><th>Estado</th><th>Fecha</th><th>Contacto</th>
+                <th>Nombre</th><th>Categoría</th><th>Estado</th><th>Fecha</th><th>Contacto</th><th></th>
               </tr>
             </thead>
             <tbody>
               {subs.map(s => (
                 <tr key={s.id}>
-                  <td><strong>{s.business_name ?? s.name ?? '—'}</strong></td>
-                  <td>{s.category_slug ?? '—'}</td>
+                  <td><strong>{s.business_name ?? '—'}</strong></td>
+                  <td>{(s.categories ?? [])[0] ?? '—'}</td>
                   <td>
                     <span className={`adm-pill adm-pill--${s.status ?? 'pending'}`}>
                       {s.status ?? 'pending'}
                     </span>
                   </td>
                   <td>{fmt(s.created_at)}</td>
-                  <td className="adm-td--mono">{s.whatsapp ?? s.email ?? '—'}</td>
+                  <td className="adm-td--mono">{s.contact_email ?? s.whatsapp ?? '—'}</td>
+                  <td>
+                    {(!s.status || s.status === 'pending') && (
+                      <button
+                        className="adm-btn adm-btn--primary"
+                        disabled={approving === s.id}
+                        onClick={() => approve(s)}
+                      >
+                        {approving === s.id ? 'Aprobando…' : 'Aprobar'}
+                      </button>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>
