@@ -1,6 +1,6 @@
 // src/pages/ProviderDashboard.jsx
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { supabase } from '../lib/supabase'
 import MetricsSummary      from '../components/dashboard/MetricsSummary'
@@ -411,7 +411,12 @@ function SectionMiPlan({ tier }) {
 
 // ── Dashboard principal ──────────────────────────────────────────
 export default function ProviderDashboard() {
-  const { user, tier, signOut } = useAuth()
+  const { user, tier, signOut, isAdmin } = useAuth()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (isAdmin) navigate('/admin', { replace: true })
+  }, [isAdmin])
   const [provider,      setProvider]      = useState(null)
   const [metrics,       setMetrics]       = useState(null)
   const [activity,      setActivity]      = useState([])
