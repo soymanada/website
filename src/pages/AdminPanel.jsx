@@ -661,6 +661,17 @@ function SubmissionsPanel() {
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-|-$/g, '')
 
+    // Look up the user account that matches the application email
+    let userId = null
+    if (s.contact_email) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('id')
+        .ilike('email', s.contact_email.trim())
+        .maybeSingle()
+      userId = profile?.id ?? null
+    }
+
     const { error } = await supabase.from('providers').insert({
       name:          s.business_name,
       slug:          providerSlug,
@@ -670,8 +681,9 @@ function SubmissionsPanel() {
       countries:     s.countries      ?? [],
       languages:     s.languages      ?? [],
       verified:      false,
-      active:        false,
+      active:        true,
       tier:          'bronze',
+      user_id:       userId,
       contact: {
         whatsapp:  waNumber || null,
         instagram: s.instagram || null,
@@ -679,6 +691,14 @@ function SubmissionsPanel() {
       },
     })
     if (error) { alert('Error al crear proveedor: ' + error.message); setActing(null); return }
+
+    // Update the user's role to 'provider' so they see the dashboard
+    if (userId) {
+      await supabase
+        .from('profiles')
+        .update({ role: 'provider' })
+        .eq('id', userId)
+    }
 
     await supabase.from('provider_applications').update({ status: 'approved' }).eq('id', s.id)
 
