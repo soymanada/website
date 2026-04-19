@@ -630,15 +630,18 @@ const CAT_SLUG = {
 function SubmissionsPanel() {
   const [subs,     setSubs]     = useState([])
   const [loading,  setLoading]  = useState(true)
+  const [loadErr,  setLoadErr]  = useState(null)
   const [expanded, setExpanded] = useState(null)
   const [acting,   setActing]   = useState(null) // id being processed
 
   const load = useCallback(async () => {
     setLoading(true)
-    const { data } = await supabase
+    setLoadErr(null)
+    const { data, error } = await supabase
       .from('provider_applications')
       .select('*')
       .order('created_at', { ascending: false })
+    if (error) setLoadErr(error.message)
     setSubs(data ?? [])
     setLoading(false)
   }, [])
@@ -710,6 +713,11 @@ function SubmissionsPanel() {
         </h2>
       </div>
 
+      {loadErr && (
+        <p style={{ color: '#dc2626', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 6, padding: '8px 12px', fontSize: '0.85rem' }}>
+          Error al cargar: {loadErr}
+        </p>
+      )}
       {loading ? <p className="adm-loading">Cargando...</p>
         : subs.length === 0 ? <p className="adm-empty">No hay postulaciones.</p>
         : (
