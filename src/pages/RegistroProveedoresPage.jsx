@@ -126,14 +126,21 @@ export default function RegistroProveedoresPage() {
         },
       }).catch(console.error)
       // Confirmation email to the applicant (fire-and-forget)
-      supabase.functions.invoke('send-application-confirmation', {
-        body: {
-          contact_email:  form.contact_email,
-          business_name:  form.business_name,
-          contact_name:   form.contact_name,
-          languages:      form.languages,
-        },
-      }).catch(console.error)
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-application-confirmation`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(session ? { Authorization: `Bearer ${session.access_token}` } : {}),
+          },
+          body: JSON.stringify({
+            contact_email: form.contact_email,
+            business_name: form.business_name,
+            contact_name:  form.contact_name,
+            languages:     form.languages ?? [],
+          }),
+        }).catch(err => console.warn('[confirmation-email] failed silently:', err))
+      })
       setSubmitted(true)
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
