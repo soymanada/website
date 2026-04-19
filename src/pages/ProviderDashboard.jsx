@@ -1,6 +1,6 @@
 // src/pages/ProviderDashboard.jsx
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import PhoneInput from 'react-phone-number-input'
 import 'react-phone-number-input/style.css'
@@ -857,7 +857,9 @@ function SectionMiPlan({ tier, provider, onProviderUpdate }) {
 
 // ── Dashboard principal ──────────────────────────────────────────
 export default function ProviderDashboard() {
-  const { user, tier, signOut } = useAuth()
+  const { user, tier, isAdmin, signOut } = useAuth()
+
+  if (isAdmin) return <Navigate to="/admin" replace />
   const [provider,       setProvider]       = useState(null)
   const [metrics,        setMetrics]        = useState(null)
   const [activity,       setActivity]       = useState([])
