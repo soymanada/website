@@ -1,0 +1,150 @@
+// Real Supabase data layer.
+// Signatures are identical to the previous mock so no component changes needed.
+import { supabase } from '../lib/supabase'
+
+// ── Conversations ─────────────────────────────────────────────────
+
+export async function fetchConversations(providerId) {
+  const { data, error } = await supabase
+    .from('conversations')
+    .select('id, provider_id, migrant_id, migrant_name, subject, status, unread_count, last_message_at')
+    .eq('provider_id', providerId)
+    .order('last_message_at', { ascending: false })
+  if (error) console.warn('[fetchConversations]', error.message)
+  return { data: data ?? [], error }
+}
+
+export async function fetchMessages(conversationId) {
+  const { data, error } = await supabase
+    .from('messages')
+    .select('id, conversation_id, sender_role, sender_name, body, read_at, created_at')
+    .eq('conversation_id', conversationId)
+    .order('created_at', { ascending: true })
+  if (error) console.warn('[fetchMessages]', error.message)
+  return { data: data ?? [], error }
+}
+
+// ── Send (migrant → provider, creates or reuses conversation) ─────
+
+export async function sendMessage({ providerId, userId, body }) {
+  const { data, error } = await supabase.rpc('send_or_reply_message', {
+    p_provider_id: providerId,
+    p_body:        body,
+    p_subject:     null,
+  })
+  if (error) {
+    console.warn('[sendMessage]', error.message)
+    return { data, error }
+  }
+
+  // Notify provider via Edge Function (fire-and-forget, never blocks sender)
+  supabase.functions
+    .invoke('notify-new-message', {
+      body: {
+        provider_id:     providerId,
+        migrant_name:    data?.migrant_name ?? 'Un migrante',
+        message_preview: body,
+        conversation_id: data?.conversation_id,
+      },
+    })
+    .catch(() => {})
+
+  return { data, error: null }
+}
+
+// ── Reply (provider → migrant, uses existing conversation) ────────
+
+export async function replyMessage({ conversationId, body }) {
+  const { data: msg, error: msgErr } = await supabase
+    .from('messages')
+    .insert({
+      conversation_id: conversationId,
+      sender_role:     'provider',
+      body,
+    })
+    .select('id, conversation_id, sender_role, sender_name, body, read_at, created_at')
+    .single()
+
+  if (msgErr) {
+    console.warn('[replyMessage] insert', msgErr.message)
+    return { data: null, error: msgErr }
+  }
+
+  const { data: conv } = await supabase
+    .from('conversations')
+    .update({ status: 'replied', last_message_at: new Date().toISOString() })
+    .eq('id', conversationId)
+    .select('provider_id, migrant_id')
+    .single()
+
+  // Mark this as a verified interaction so the migrant can leave a review
+  if (conv?.provider_id && conv?.migrant_id) {
+    await supabase
+      .from('verified_interactions')
+      .upsert(
+        { provider_id: conv.provider_id, user_id: conv.migrant_id, source: 'message_reply' },
+        { onConflict: 'provider_id,user_id' }
+      )
+  }
+
+  return { data: msg, error: null }
+}
+
+// ── Mark conversation as read ─────────────────────────────────────
+
+export async function markConversationRead(conversationId) {
+  const now = new Date().toISOString()
+  await supabase
+    .from('messages')
+    .update({ read_at: now })
+    .is('read_at', null)
+    .eq('conversation_id', conversationId)
+    .eq('sender_role', 'migrant')
+
+  await supabase
+    .from('conversations')
+    .update({ unread_count: 0 })
+    .eq('id', conversationId)
+
+  return { error: null }
+}
+
+// ── Unread count badge ────────────────────────────────────────────
+
+export async function fetchUnreadCount(providerId) {
+  const { data, error } = await supabase
+    .from('conversations')
+    .select('unread_count')
+    .eq('provider_id', providerId)
+    .gt('unread_count', 0)
+  if (error) return { data: 0, error }
+  const total = (data ?? []).reduce((s, c) => s + (c.unread_count ?? 0), 0)
+  return { data: total, error: null }
+}
+
+// ── Notification preferences ──────────────────────────────────────
+
+export async function fetchNotifPrefs(providerId) {
+  const { data, error } = await supabase
+    .from('providers')
+    .select('notif_new_message, notif_new_review')
+    .eq('id', providerId)
+    .single()
+  if (error) console.warn('[fetchNotifPrefs]', error.message)
+  return {
+    data: {
+      notif_new_message: data?.notif_new_message ?? true,
+      notif_new_review:  data?.notif_new_review  ?? true,
+    },
+    error,
+  }
+}
+
+export async function saveNotifPrefs(providerId, { notif_new_message, notif_new_review }) {
+  const { error } = await supabase
+    .from('providers')
+    .update({ notif_new_message, notif_new_review })
+    .eq('id', providerId)
+  if (error) console.warn('[saveNotifPrefs]', error.message)
+  return { error }
+}
