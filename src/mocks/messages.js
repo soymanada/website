@@ -45,7 +45,7 @@ export async function sendMessage({ providerId, userId, body }) {
     p_subject:     null,
   })
   if (error) {
-    console.warn('[sendMessage]', error.message)
+    console.error('[sendMessage] RPC error:', error.message, '| code:', error.code, '| hint:', error.hint)
     return { data, error }
   }
 

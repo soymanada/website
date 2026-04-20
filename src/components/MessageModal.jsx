@@ -18,7 +18,10 @@ export default function MessageModal({ providerId, providerName, userId, onClose
     const { error } = await sendMessage({ providerId, userId, body: body.trim() })
     setSending(false)
     if (error) {
-      setErr(t('messaging.send_error'))
+      console.error('[MessageModal] send error:', error)
+      setErr(error.code === 'PGRST202' || error.message?.includes('function')
+        ? 'Error de configuración: el backend de mensajería no está activado. Contacta al administrador.'
+        : t('messaging.send_error'))
     } else {
       setSent(true)
     }
