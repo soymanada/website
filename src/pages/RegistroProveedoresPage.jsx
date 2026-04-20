@@ -67,6 +67,9 @@ export default function RegistroProveedoresPage() {
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted]   = useState(false)
   const [error, setError]           = useState('')
+  const [fieldErrors, setFieldErrors] = useState({})
+
+  const clearErr = (field) => setFieldErrors(prev => { const n = { ...prev }; delete n[field]; return n })
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -87,9 +90,31 @@ export default function RegistroProveedoresPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (form.categories.length === 0) { setError(t('registro.validacion_categoria')); return }
-    if (form.languages.length  === 0) { setError(t('registro.validacion_idioma'));    return }
-    if (form.countries.length  === 0) { setError(t('registro.validacion_pais'));      return }
+    const errs = {}
+    if (!form.business_name.trim())   errs.business_name  = 'Este campo es obligatorio'
+    if (!form.service_title.trim())   errs.service_title  = 'Este campo es obligatorio'
+    if (!form.description.trim())     errs.description    = 'Este campo es obligatorio'
+    if (form.categories.length === 0) errs.categories     = 'Selecciona al menos una categoría'
+    if (form.languages.length  === 0) errs.languages      = 'Selecciona al menos un idioma'
+    if (form.countries.length  === 0) errs.countries      = 'Selecciona al menos un país'
+    if (!form.modality)               errs.modality       = 'Selecciona una modalidad'
+    if (!form.whatsapp?.trim())       errs.whatsapp       = 'El número de WhatsApp es obligatorio'
+    if (!form.profile_link.trim())    errs.profile_link   = 'Este campo es obligatorio'
+    if (!form.contact_name.trim())    errs.contact_name   = 'Este campo es obligatorio'
+    if (!form.contact_email.trim())   errs.contact_email  = 'El email es obligatorio'
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.contact_email)) errs.contact_email = 'Ingresa un email válido'
+    if (!form.terms_accepted)         errs.terms_accepted = 'Debes aceptar los términos para continuar'
+
+    if (Object.keys(errs).length > 0) {
+      setFieldErrors(errs)
+      setError('Por favor completa todos los campos obligatorios.')
+      setTimeout(() => {
+        document.querySelector('.ppg-form__field--error')
+          ?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }, 50)
+      return
+    }
+    setFieldErrors({})
     setSubmitting(true)
     setError('')
     const { error: dbErr } = await supabase.from('provider_applications').insert({
@@ -301,35 +326,39 @@ export default function RegistroProveedoresPage() {
                 <div className="ppg-form__section">
                   <h3 className="ppg-form__section-title">{t('registro.seccion_negocio')}</h3>
 
-                  <label className="ppg-form__field">
+                  <label className={`ppg-form__field${fieldErrors.business_name ? ' ppg-form__field--error' : ''}`}>
                     <span className="ppg-form__label">{t('registro.campo_nombre')} <em>*</em></span>
                     <span className="ppg-form__hint">{t('registro.campo_nombre_hint')}</span>
-                    <input required value={form.business_name} onChange={e => set('business_name', e.target.value)} placeholder={t('registro.campo_nombre_placeholder')} />
+                    <input value={form.business_name} onChange={e => { set('business_name', e.target.value); clearErr('business_name') }} placeholder={t('registro.campo_nombre_placeholder')} />
+                    {fieldErrors.business_name && <span className="ppg-form__field-error">{fieldErrors.business_name}</span>}
                   </label>
 
-                  <label className="ppg-form__field">
+                  <label className={`ppg-form__field${fieldErrors.service_title ? ' ppg-form__field--error' : ''}`}>
                     <span className="ppg-form__label">{t('registro.campo_servicio')} <em>*</em></span>
                     <span className="ppg-form__hint">{t('registro.campo_servicio_hint')}</span>
-                    <input required value={form.service_title} onChange={e => set('service_title', e.target.value)} placeholder={t('registro.campo_servicio_placeholder')} />
+                    <input value={form.service_title} onChange={e => { set('service_title', e.target.value); clearErr('service_title') }} placeholder={t('registro.campo_servicio_placeholder')} />
+                    {fieldErrors.service_title && <span className="ppg-form__field-error">{fieldErrors.service_title}</span>}
                   </label>
 
-                  <div className="ppg-form__field">
+                  <div className={`ppg-form__field${fieldErrors.categories ? ' ppg-form__field--error' : ''}`}>
                     <span className="ppg-form__label">{t('registro.campo_categorias')} <em>*</em></span>
                     <span className="ppg-form__hint">{t('registro.campo_categorias_hint')}</span>
                     <div className="ppg-form__checks ppg-form__checks--grid">
                       {CATEGORIES.map(c => (
                         <label key={c.value} className="ppg-form__check">
-                          <input type="checkbox" checked={form.categories.includes(c.value)} onChange={() => toggle('categories', c.value)} />
+                          <input type="checkbox" checked={form.categories.includes(c.value)} onChange={() => { toggle('categories', c.value); clearErr('categories') }} />
                           <span>{t(c.labelKey)}</span>
                         </label>
                       ))}
                     </div>
+                    {fieldErrors.categories && <span className="ppg-form__field-error">{fieldErrors.categories}</span>}
                   </div>
 
-                  <label className="ppg-form__field">
+                  <label className={`ppg-form__field${fieldErrors.description ? ' ppg-form__field--error' : ''}`}>
                     <span className="ppg-form__label">{t('registro.campo_descripcion')} <em>*</em></span>
                     <span className="ppg-form__hint">{t('registro.campo_descripcion_hint')}</span>
-                    <textarea required rows={4} value={form.description} onChange={e => set('description', e.target.value)} placeholder={t('registro.campo_descripcion_placeholder')} />
+                    <textarea rows={4} value={form.description} onChange={e => { set('description', e.target.value); clearErr('description') }} placeholder={t('registro.campo_descripcion_placeholder')} />
+                    {fieldErrors.description && <span className="ppg-form__field-error">{fieldErrors.description}</span>}
                   </label>
                 </div>
 
@@ -337,31 +366,33 @@ export default function RegistroProveedoresPage() {
                 <div className="ppg-form__section">
                   <h3 className="ppg-form__section-title">{t('registro.seccion_detalles')}</h3>
 
-                  <div className="ppg-form__field">
+                  <div className={`ppg-form__field${fieldErrors.languages ? ' ppg-form__field--error' : ''}`}>
                     <span className="ppg-form__label">{t('registro.campo_idiomas')} <em>*</em></span>
                     <div className="ppg-form__checks ppg-form__checks--inline">
                       {LANGUAGES.map(l => (
                         <label key={l.value} className="ppg-form__check">
-                          <input type="checkbox" checked={form.languages.includes(l.value)} onChange={() => toggle('languages', l.value)} />
+                          <input type="checkbox" checked={form.languages.includes(l.value)} onChange={() => { toggle('languages', l.value); clearErr('languages') }} />
                           <span>{t(l.labelKey)}</span>
                         </label>
                       ))}
                     </div>
+                    {fieldErrors.languages && <span className="ppg-form__field-error">{fieldErrors.languages}</span>}
                   </div>
 
-                  <div className="ppg-form__field">
+                  <div className={`ppg-form__field${fieldErrors.countries ? ' ppg-form__field--error' : ''}`}>
                     <span className="ppg-form__label">{t('registro.campo_paises')} <em>*</em></span>
                     <div className="ppg-form__checks ppg-form__checks--grid">
                       {COUNTRIES.map(c => (
                         <label key={c.value} className="ppg-form__check">
-                          <input type="checkbox" checked={form.countries.includes(c.value)} onChange={() => toggle('countries', c.value)} />
+                          <input type="checkbox" checked={form.countries.includes(c.value)} onChange={() => { toggle('countries', c.value); clearErr('countries') }} />
                           <span>{t(c.labelKey)}</span>
                         </label>
                       ))}
                     </div>
+                    {fieldErrors.countries && <span className="ppg-form__field-error">{fieldErrors.countries}</span>}
                   </div>
 
-                  <div className="ppg-form__field">
+                  <div className={`ppg-form__field${fieldErrors.modality ? ' ppg-form__field--error' : ''}`}>
                     <span className="ppg-form__label">{t('registro.campo_modalidad')} <em>*</em></span>
                     <div className="ppg-form__radios">
                       {[
@@ -370,11 +401,12 @@ export default function RegistroProveedoresPage() {
                         [t('registro.modalidad_ambas'),      'Ambos'],
                       ].map(([label, value]) => (
                         <label key={value} className="ppg-form__radio">
-                          <input type="radio" name="modality" required checked={form.modality === value} onChange={() => set('modality', value)} />
+                          <input type="radio" name="modality" checked={form.modality === value} onChange={() => { set('modality', value); clearErr('modality') }} />
                           <span>{label}</span>
                         </label>
                       ))}
                     </div>
+                    {fieldErrors.modality && <span className="ppg-form__field-error">{fieldErrors.modality}</span>}
                   </div>
                 </div>
 
@@ -382,17 +414,18 @@ export default function RegistroProveedoresPage() {
                 <div className="ppg-form__section">
                   <h3 className="ppg-form__section-title">{t('registro.seccion_contacto')}</h3>
 
-                  <div className="ppg-form__field">
+                  <div className={`ppg-form__field${fieldErrors.whatsapp ? ' ppg-form__field--error' : ''}`}>
                     <span className="ppg-form__label">{t('registro.campo_whatsapp')} <em>*</em></span>
                     <span className="ppg-form__hint">{t('registro.campo_whatsapp_hint')}</span>
                     <PhoneInput
                       international
                       defaultCountry="CL"
                       value={form.whatsapp}
-                      onChange={v => set('whatsapp', v ?? '')}
+                      onChange={v => { set('whatsapp', v ?? ''); clearErr('whatsapp') }}
                       countryOptionsOrder={['CL', 'CA', 'AR', 'CO', 'VE', 'MX', 'PE', 'ES', '|', '...']}
                       className="ppg-form__phone-input"
                     />
+                    {fieldErrors.whatsapp && <span className="ppg-form__field-error">{fieldErrors.whatsapp}</span>}
                   </div>
 
                   <label className="ppg-form__field">
@@ -405,10 +438,11 @@ export default function RegistroProveedoresPage() {
                     <input type="url" value={form.website} onChange={e => set('website', e.target.value)} placeholder={t('registro.campo_web_placeholder')} />
                   </label>
 
-                  <label className="ppg-form__field">
+                  <label className={`ppg-form__field${fieldErrors.profile_link ? ' ppg-form__field--error' : ''}`}>
                     <span className="ppg-form__label">{t('registro.campo_link_verificacion')} <em>*</em></span>
                     <span className="ppg-form__hint">{t('registro.campo_link_verificacion_hint')}</span>
-                    <input required type="url" value={form.profile_link} onChange={e => set('profile_link', e.target.value)} placeholder={t('registro.campo_link_verificacion_placeholder')} />
+                    <input type="url" value={form.profile_link} onChange={e => { set('profile_link', e.target.value); clearErr('profile_link') }} placeholder={t('registro.campo_link_verificacion_placeholder')} />
+                    {fieldErrors.profile_link && <span className="ppg-form__field-error">{fieldErrors.profile_link}</span>}
                   </label>
                 </div>
 
@@ -417,23 +451,26 @@ export default function RegistroProveedoresPage() {
                   <h3 className="ppg-form__section-title">{t('registro.seccion_datos_internos')}</h3>
                   <p className="ppg-form__section-note">{t('registro.seccion_datos_internos_nota')}</p>
 
-                  <label className="ppg-form__field">
+                  <label className={`ppg-form__field${fieldErrors.contact_name ? ' ppg-form__field--error' : ''}`}>
                     <span className="ppg-form__label">{t('registro.campo_nombre_contacto')} <em>*</em></span>
-                    <input required value={form.contact_name} onChange={e => set('contact_name', e.target.value)} placeholder={t('registro.campo_nombre_contacto_placeholder')} />
+                    <input value={form.contact_name} onChange={e => { set('contact_name', e.target.value); clearErr('contact_name') }} placeholder={t('registro.campo_nombre_contacto_placeholder')} />
+                    {fieldErrors.contact_name && <span className="ppg-form__field-error">{fieldErrors.contact_name}</span>}
                   </label>
 
-                  <label className="ppg-form__field">
+                  <label className={`ppg-form__field${fieldErrors.contact_email ? ' ppg-form__field--error' : ''}`}>
                     <span className="ppg-form__label">{t('registro.campo_email')} <em>*</em></span>
-                    <input required type="email" value={form.contact_email} onChange={e => set('contact_email', e.target.value)} placeholder={t('registro.campo_email_placeholder')} />
+                    <input type="email" value={form.contact_email} onChange={e => { set('contact_email', e.target.value); clearErr('contact_email') }} placeholder={t('registro.campo_email_placeholder')} />
+                    {fieldErrors.contact_email && <span className="ppg-form__field-error">{fieldErrors.contact_email}</span>}
                   </label>
                 </div>
 
                 {/* Términos */}
                 <div className="ppg-form__section ppg-form__section--terms">
                   <label className="ppg-form__check ppg-form__check--terms">
-                    <input type="checkbox" required checked={form.terms_accepted} onChange={e => set('terms_accepted', e.target.checked)} />
+                    <input type="checkbox" checked={form.terms_accepted} onChange={e => { set('terms_accepted', e.target.checked); clearErr('terms_accepted') }} />
                     <span>{t('registro.terminos')} <em>*</em></span>
                   </label>
+                  {fieldErrors.terms_accepted && <span className="ppg-form__field-error" style={{ marginTop: 6, display: 'block' }}>{fieldErrors.terms_accepted}</span>}
                 </div>
 
                 {error && <p className="ppg-form__error">{error}</p>}

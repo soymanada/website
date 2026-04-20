@@ -361,7 +361,7 @@
   flex-shrink: 0;
 }
 
-/* Error */
+/* Error — global */
 .ppg-form__error {
   font-size: 0.85rem;
   color: #c0392b;
@@ -370,6 +370,26 @@
   border-radius: var(--r-md);
   padding: 10px 14px;
 }
+
+/* Error — field level */
+.ppg-form__field-error {
+  font-size: 0.78rem;
+  color: #c0392b;
+  font-weight: 500;
+  margin-top: 2px;
+}
+.ppg-form__field--error input,
+.ppg-form__field--error textarea {
+  border-color: #e74c3c;
+  background: #fffafa;
+}
+.ppg-form__field--error input:focus,
+.ppg-form__field--error textarea:focus {
+  border-color: #c0392b;
+  box-shadow: 0 0 0 3px rgba(192,57,43,0.12);
+}
+.ppg-form__field--error .ppg-form__label { color: #c0392b; }
+.ppg-form__field--error .PhoneInput { border-color: #e74c3c !important; background: #fffafa; }
 
 /* Submit */
 .ppg-form__submit { margin-top: 8px; align-self: flex-start; }
