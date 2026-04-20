@@ -26,6 +26,7 @@ export default function LoginPage() {
   const [googleLoading, setGoogleLoading] = useState(false)
   const [error,     setError]     = useState(null)
   const [success,   setSuccess]   = useState(null)
+  const [suggestRegister, setSuggestRegister] = useState(false)
 
   // Redirigir si ya tiene sesión
   useEffect(() => {
@@ -82,8 +83,9 @@ export default function LoginPage() {
       }
     } catch (err) {
       const msg = err.message
-      if (msg.includes('Invalid login credentials'))    setError(t('login_page.error_credentials'))
-      else if (msg.includes('Email not confirmed'))     setError(t('login_page.error_not_confirmed'))
+      if (msg.includes('Invalid login credentials') && mode === 'login') {
+        setSuggestRegister(true)
+      } else if (msg.includes('Email not confirmed'))     setError(t('login_page.error_not_confirmed'))
       else if (msg.includes('User already registered')) setError(t('login_page.error_already_registered'))
       else if (msg.includes('Password should be'))      setError(t('login_page.error_password_length'))
       else setError(t('login_page.error_generic'))
@@ -96,6 +98,7 @@ export default function LoginPage() {
     setMode(m)
     setError(null)
     setSuccess(null)
+    setSuggestRegister(false)
   }
 
   return (
@@ -193,7 +196,30 @@ export default function LoginPage() {
             />
           </div>
 
-          {error   && <p className="lgp__error t-sm">{error}</p>}
+          {suggestRegister && (
+            <div className="lgp__suggest">
+              <p className="lgp__suggest-msg t-sm">
+                No encontramos una cuenta con este correo. ¿Quieres crear una cuenta nueva?
+              </p>
+              <div className="lgp__suggest-actions">
+                <button
+                  type="button"
+                  className="btn btn-primary btn-sm"
+                  onClick={() => switchMode('register')}
+                >
+                  Crear cuenta →
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-ghost btn-sm"
+                  onClick={() => { setEmail(''); setSuggestRegister(false) }}
+                >
+                  Intentar con otro correo
+                </button>
+              </div>
+            </div>
+          )}
+          {!suggestRegister && error   && <p className="lgp__error t-sm">{error}</p>}
           {success && <p className="lgp__success t-sm">{success}</p>}
 
           <button className="btn btn-primary btn-full" type="submit" disabled={loading || googleLoading}>

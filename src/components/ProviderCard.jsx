@@ -30,14 +30,25 @@ const COUNTRY_ISO = {
 export default function ProviderCard({ provider: rawProvider }) {
   const { user, isProvider } = useAuth()
   const { t, i18n } = useTranslation()
+
+  // Normalize contact: some providers use JSONB 'contact', others use flat 'contact_*' columns
+  const rawContact = rawProvider.contact ?? {}
+  const contact = {
+    whatsapp:  rawContact.whatsapp  || rawProvider.contact_whatsapp  || null,
+    instagram: rawContact.instagram || rawProvider.contact_instagram || null,
+    website:   rawContact.website   || rawProvider.contact_website   || null,
+    phone:     rawContact.phone     || null,
+  }
+
   const provider    = resolveProvider(rawProvider, i18n.language)
-  const { id, slug, name, service, description, countries, verified, contact, testimonial, benefit, price_clp, price_cad, avatar_url, categorySlug } = provider
+  const { id, slug, name, service, description, countries, verified, testimonial, benefit, price_clp, price_cad, avatar_url, categorySlug } = provider
   const location    = useLocation()
   const isMigrantUser = !!user && !isProvider
   const providerTier = String(rawProvider?.tier || 'bronze').toLowerCase()
   const isBronzeProvider = providerTier === 'bronze'
   const isSegurosCategory = categorySlug === 'seguros' || location.pathname.startsWith('/categoria/seguros')
   const hideWhatsAppForMigrant = isMigrantUser && isSegurosCategory && isBronzeProvider
+  const showWhatsApp = contact.whatsapp && providerTier === 'gold' && rawProvider.show_whatsapp
 
   const [isConnecting,   setIsConnecting]   = useState(false)
   const [targetPlatform, setTargetPlatform] = useState('')
@@ -88,7 +99,7 @@ export default function ProviderCard({ provider: rawProvider }) {
         />
       )}
 
-      <article className="pcard">
+      <article className={`pcard${avatar_url ? ' pcard--has-avatar' : ''}`}>
         <div className="pcard__accent" aria-hidden="true" />
         <svg className="pcard__bg-paw" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
           <ellipse cx="16" cy="25" rx="8" ry="5.5"/>
@@ -168,11 +179,15 @@ export default function ProviderCard({ provider: rawProvider }) {
               <button className="pcard__btn pcard__btn--msg" onClick={() => setShowMsg(true)}>
                 {t('messaging.cta')}
               </button>
-              {contact.whatsapp && !hideWhatsAppForMigrant && (
+              {showWhatsApp && !hideWhatsAppForMigrant ? (
                 <button className="pcard__btn pcard__btn--wa"
                   onClick={() => handleContact('whatsapp', `https://wa.me/${contact.whatsapp}`)}>
                   {t('provider_card.contact_whatsapp')}
                 </button>
+              ) : !showWhatsApp && (
+                <Link to={`/proveedor/${slug}`} className="pcard__btn pcard__btn--profile">
+                  Ver perfil completo →
+                </Link>
               )}
               {contact.phone && (
                 <a className="pcard__btn pcard__btn--phone" href={`tel:+${contact.phone}`}

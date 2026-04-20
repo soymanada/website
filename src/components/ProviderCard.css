@@ -40,6 +40,27 @@
   border: 1px solid var(--iris-100);
 }
 
+.pcard--has-avatar .pcard__bg-paw { opacity: 0.06; }
+.pcard--has-avatar .pcard__avatar {
+  border: 2px solid var(--iris-100);
+  box-shadow: 0 2px 12px rgba(79,70,229,0.15);
+}
+
+.pcard__btn--profile {
+  background: transparent;
+  border: 1.5px solid var(--iris-200);
+  color: var(--iris-700);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 12px;
+  height: 34px;
+  border-radius: 100px;
+}
+.pcard__btn--profile:hover { background: var(--iris-50); }
+
 .pcard__bg-paw {
   position: absolute;
   right: 16px;

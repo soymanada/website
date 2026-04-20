@@ -9,6 +9,7 @@ import ProviderCard from '../components/ProviderCard'
 import CategoryIcon from '../components/CategoryIcon'
 import { resolveProvider } from '../utils/providerI18n'
 import { trackEvent, Events } from '../utils/analytics'
+import SuggestProviderModal from '../components/SuggestProviderModal'
 import './ProvidersPage.css'
 
 // Países únicos extraídos de los datos
@@ -46,6 +47,7 @@ export default function ProvidersPage() {
   const [activeSlug,   setActiveSlug]   = useState('todas')
   const [activeCountry,setActiveCountry]= useState('todos')
   const [onlyVerified, setOnlyVerified] = useState(false)
+  const [showSuggestModal, setShowSuggestModal] = useState(false)
 
   // Debounce búsqueda: dispara evento solo cuando el usuario para de escribir
   const searchTimer = useRef(null)
@@ -235,10 +237,11 @@ export default function ProvidersPage() {
                 <p className="t-sm" style={{ color: 'var(--text-500)' }}>
                   {t('providers_page.suggest_cta')}
                 </p>
-                <Link to="/registro-proveedores" className="btn btn-secondary btn-sm">
+                <button className="btn btn-secondary btn-sm" onClick={() => setShowSuggestModal(true)}>
                   <span>{t('providers_page.suggest_btn')}</span>
-                </Link>
+                </button>
               </div>
+              <SuggestProviderModal open={showSuggestModal} onClose={() => setShowSuggestModal(false)} />
             </div>
 
           </div>

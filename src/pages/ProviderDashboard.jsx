@@ -455,10 +455,12 @@ function WAVisibilityToggle({ tier, provider }) {
           <div className="pdash__wa-toggle-right">
             {saved && <span className="t-xs pdash__saved-tag">✓ {t('messaging.saved')}</span>}
             <label className="pdash__switch-label">
-              <input type="checkbox" checked={enabled} onChange={e => toggle(e.target.checked)}
-                style={{ display: 'none' }} />
-              <span className={`pdash__switch${enabled ? ' pdash__switch--on' : ''}`}
-                onClick={() => toggle(!enabled)}>
+              <input type="checkbox" checked={enabled} readOnly style={{ display: 'none' }} />
+              <span
+                className={`pdash__switch${enabled ? ' pdash__switch--on' : ''}`}
+                onClick={() => !saving && toggle(!enabled)}
+                style={{ pointerEvents: saving ? 'none' : undefined, opacity: saving ? 0.6 : undefined }}
+              >
                 <span className="pdash__switch-thumb" />
               </span>
             </label>

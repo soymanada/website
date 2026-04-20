@@ -118,6 +118,15 @@
 }
 .lgp__input::placeholder { color: var(--text-100); }
 
+/* Suggest register */
+.lgp__suggest {
+  background: #FFF7ED; color: #92400E;
+  border: 1px solid #FDE68A; border-radius: var(--r-sm); padding: 12px 14px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.lgp__suggest-msg { margin: 0; }
+.lgp__suggest-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
 /* Feedback */
 .lgp__error {
   background: #FEF2F2; color: #B91C1C;
