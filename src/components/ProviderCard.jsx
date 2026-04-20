@@ -31,8 +31,18 @@ const COUNTRY_ISO = {
 export default function ProviderCard({ provider: rawProvider }) {
   const { user, isProvider } = useAuth()
   const { t, i18n } = useTranslation()
+
+  // Normalize contact: some providers use JSONB 'contact', others use flat 'contact_*' columns
+  const rawContact = rawProvider.contact ?? {}
+  const contact = {
+    whatsapp:  rawContact.whatsapp  || rawProvider.contact_whatsapp  || null,
+    instagram: rawContact.instagram || rawProvider.contact_instagram || null,
+    website:   rawContact.website   || rawProvider.contact_website   || null,
+    phone:     rawContact.phone     || null,
+  }
+
   const provider    = resolveProvider(rawProvider, i18n.language)
-  const { id, slug, name, service, description, countries, verified, contact, testimonial, benefit, price_clp, price_cad, avatar_url, categorySlug } = provider
+  const { id, slug, name, service, description, countries, verified, testimonial, benefit, price_clp, price_cad, avatar_url, categorySlug } = provider
   const location    = useLocation()
   const isMigrantUser = !!user && !isProvider
   const providerTier = String(rawProvider?.tier || 'bronze').toLowerCase()

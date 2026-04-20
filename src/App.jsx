@@ -1,4 +1,4 @@
-import { useEffect, Suspense } from 'react'
+import { useEffect, Suspense, Component } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import Header               from './components/Header'
 import Footer               from './components/Footer'
@@ -21,6 +21,23 @@ import { AuthProvider }     from './hooks/useAuth'
 // IMPORTANTE: Se eliminó initScrollTracking de la siguiente línea
 import { useTranslation } from 'react-i18next'
 import { trackPageView } from './utils/analytics'
+
+class ErrorBoundary extends Component {
+  constructor(props) { super(props); this.state = { hasError: false } }
+  static getDerivedStateFromError() { return { hasError: true } }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <main style={{ padding: '180px 24px 80px', textAlign: 'center' }}>
+          <h1 style={{ color: 'var(--iris-900)', marginBottom: 16, fontSize: '2rem' }}>Algo salió mal</h1>
+          <p style={{ color: 'var(--text-500)', marginBottom: 24 }}>Ocurrió un error inesperado. Por favor recarga la página.</p>
+          <a href="/" className="btn btn-primary" style={{ display: 'inline-flex' }}><span>Volver al inicio</span></a>
+        </main>
+      )
+    }
+    return this.props.children
+  }
+}
 
 function NotFound() {
   const { t } = useTranslation()
@@ -88,10 +105,12 @@ function Layout() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <AuthProvider>
-        <Layout />
-      </AuthProvider>
-    </BrowserRouter>
+    <ErrorBoundary>
+      <BrowserRouter>
+        <AuthProvider>
+          <Layout />
+        </AuthProvider>
+      </BrowserRouter>
+    </ErrorBoundary>
   )
 }
