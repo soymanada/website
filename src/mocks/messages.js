@@ -28,6 +28,17 @@ export async function fetchMessages(conversationId) {
 // ── Send (migrant → provider, creates or reuses conversation) ─────
 
 export async function sendMessage({ providerId, userId, body }) {
+  // Check BEFORE the RPC whether this conversation already exists.
+  // We only email the provider when a brand-new thread is opened.
+  const { data: existing } = await supabase
+    .from('conversations')
+    .select('id')
+    .eq('provider_id', providerId)
+    .eq('migrant_id', userId)
+    .maybeSingle()
+
+  const isNewConversation = !existing
+
   const { data, error } = await supabase.rpc('send_or_reply_message', {
     p_provider_id: providerId,
     p_body:        body,
@@ -38,19 +49,21 @@ export async function sendMessage({ providerId, userId, body }) {
     return { data, error }
   }
 
-  // Notify provider via Edge Function (fire-and-forget, never blocks sender)
-  supabase.auth.getUser().then(({ data: { user } }) => {
-    const migrantName = user?.user_metadata?.full_name ?? user?.email ?? 'Un migrante'
-    supabase.functions
-      .invoke('notify-new-message', {
-        body: {
-          provider_id:     providerId,
-          migrant_name:    migrantName,
-          message_preview: body,
-        },
-      })
-      .catch(() => {})
-  }).catch(() => {})
+  // Notify provider only when a new conversation starts (not on follow-up messages)
+  if (isNewConversation) {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      const migrantName = user?.user_metadata?.full_name ?? user?.email ?? 'Un migrante'
+      supabase.functions
+        .invoke('notify-new-message', {
+          body: {
+            provider_id:     providerId,
+            migrant_name:    migrantName,
+            message_preview: body,
+          },
+        })
+        .catch(() => {})
+    }).catch(() => {})
+  }
 
   return { data, error: null }
 }
@@ -82,14 +95,22 @@ export async function replyMessage({ conversationId, body }) {
     .select('provider_id, migrant_id')
     .single()
 
-  // Mark this as a verified interaction so the migrant can leave a review
+  // Unlock review only after 4 total messages in the thread (migrant + provider combined).
+  // This ensures enough back-and-forth before the migrant can evaluate.
   if (conv?.provider_id && conv?.migrant_id) {
-    await supabase
-      .from('verified_interactions')
-      .upsert(
-        { provider_id: conv.provider_id, user_id: conv.migrant_id, source: 'message_reply' },
-        { onConflict: 'provider_id,user_id' }
-      )
+    const { count } = await supabase
+      .from('messages')
+      .select('*', { count: 'exact', head: true })
+      .eq('conversation_id', conversationId)
+
+    if ((count ?? 0) >= 4) {
+      await supabase
+        .from('verified_interactions')
+        .upsert(
+          { provider_id: conv.provider_id, user_id: conv.migrant_id, source: 'message_reply' },
+          { onConflict: 'provider_id,user_id' }
+        )
+    }
   }
 
   return { data: msg, error: null }
