@@ -33,8 +33,26 @@ export async function sendMessage({ providerId, userId, body }) {
     p_body:        body,
     p_subject:     null,
   })
-  if (error) console.warn('[sendMessage]', error.message)
-  return { data, error }
+  if (error) {
+    console.warn('[sendMessage]', error.message)
+    return { data, error }
+  }
+
+  // Notify provider via Edge Function (fire-and-forget, never blocks sender)
+  supabase.auth.getUser().then(({ data: { user } }) => {
+    const migrantName = user?.user_metadata?.full_name ?? user?.email ?? 'Un migrante'
+    supabase.functions
+      .invoke('notify-new-message', {
+        body: {
+          provider_id:     providerId,
+          migrant_name:    migrantName,
+          message_preview: body,
+        },
+      })
+      .catch(() => {})
+  }).catch(() => {})
+
+  return { data, error: null }
 }
 
 // ── Reply (provider → migrant, uses existing conversation) ────────
