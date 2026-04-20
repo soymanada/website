@@ -44,7 +44,7 @@ function ConversationList({ conversations, selected, onSelect }) {
             className={`pinbox__conv${selected?.id === conv.id ? ' pinbox__conv--active' : ''}${conv.unread_count > 0 ? ' pinbox__conv--unread' : ''}`}
             onClick={() => onSelect(conv)}
           >
-            <div className="pinbox__conv-avatar">{conv.migrant_name[0]}</div>
+            <div className="pinbox__conv-avatar">{(conv.migrant_name || '?')[0]}</div>
             <div className="pinbox__conv-info">
               <div className="pinbox__conv-top">
                 <span className="pinbox__conv-name">{conv.migrant_name}</span>
@@ -158,10 +158,14 @@ function NotificationPanel({ providerId }) {
 
   useEffect(() => {
     if (!providerId) return
-    fetchNotifPrefs(providerId).then(({ data }) => {
-      setNotifMsg(data.notif_new_message)
-      setNotifReview(data.notif_new_review)
-    })
+    fetchNotifPrefs(providerId)
+      .then(({ data }) => {
+        if (data) {
+          setNotifMsg(data.notif_new_message ?? true)
+          setNotifReview(data.notif_new_review ?? true)
+        }
+      })
+      .catch(() => {})
   }, [providerId])
 
   const handleSave = async () => {
@@ -206,17 +210,34 @@ export default function ProviderInbox({ providerId }) {
   const { t } = useTranslation()
   const [conversations, setConversations] = useState([])
   const [loading,       setLoading]       = useState(true)
+  const [loadError,     setLoadError]     = useState(null)
   const [selected,      setSelected]      = useState(null)
 
   useEffect(() => {
     if (!providerId) { setLoading(false); return }
-    fetchConversations(providerId).then(({ data }) => {
-      setConversations(data)
-      setLoading(false)
-    })
+    setLoadError(null)
+    fetchConversations(providerId)
+      .then(({ data, error }) => {
+        if (error) setLoadError(error.message)
+        setConversations(data ?? [])
+        setLoading(false)
+      })
+      .catch(err => {
+        console.error('[ProviderInbox] load error:', err)
+        setLoadError(err.message ?? 'Error cargando mensajes')
+        setLoading(false)
+      })
   }, [providerId])
 
   if (loading) return <div className="pinbox__spinner" />
+
+  if (loadError) return (
+    <div className="pinbox__empty" style={{ color: 'var(--text-400)', padding: '32px 24px' }}>
+      <span className="pinbox__empty-icon" aria-hidden="true">⚠️</span>
+      <p className="pinbox__empty-title">No se pudo cargar el buzón</p>
+      <p className="pinbox__empty-body t-xs" style={{ fontFamily: 'monospace', fontSize: '0.75rem' }}>{loadError}</p>
+    </div>
+  )
 
   return (
     <div className="pinbox">
