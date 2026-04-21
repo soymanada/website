@@ -159,9 +159,11 @@ function NotificationPanel({ providerId }) {
   useEffect(() => {
     if (!providerId) return
     fetchNotifPrefs(providerId).then(({ data }) => {
-      setNotifMsg(data.notif_new_message)
-      setNotifReview(data.notif_new_review)
-    })
+      if (data) {
+        setNotifMsg(data.notif_new_message ?? true)
+        setNotifReview(data.notif_new_review ?? true)
+      }
+    }).catch(() => {})
   }, [providerId])
 
   const handleSave = async () => {
@@ -211,9 +213,9 @@ export default function ProviderInbox({ providerId }) {
   useEffect(() => {
     if (!providerId) { setLoading(false); return }
     fetchConversations(providerId).then(({ data }) => {
-      setConversations(data)
+      setConversations(Array.isArray(data) ? data : [])
       setLoading(false)
-    })
+    }).catch(() => setLoading(false))
   }, [providerId])
 
   if (loading) return <div className="pinbox__spinner" />
