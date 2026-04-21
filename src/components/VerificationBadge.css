@@ -63,12 +63,12 @@
 .vb-pill--light .vb-pill__text strong {
   font-weight: 700;
   letter-spacing: 0.06em;
-  color: var(--iris-700);
+  color: var(--iris-900);
 }
 
 .vb-pill--light .vb-pill__text span {
-  font-weight: 400;
-  color: var(--iris-600);
+  font-weight: 500;
+  color: var(--iris-800);
 }
 
 .vb-pill--dark .vb-pill__text strong {
