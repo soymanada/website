@@ -5,21 +5,20 @@ import { trackEvent, Events } from '../utils/analytics'
 const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
-  const [session,        setSession]        = useState(undefined) // undefined = cargando
-  const [profile,        setProfile]        = useState(null)      // { role, tier, ... }
-  const [profileLoading, setProfileLoading] = useState(true)      // espera a que el perfil llegue
+  const [session,        setSession]        = useState(undefined)
+  const [profile,        setProfile]        = useState(null)
+  const [profileLoading, setProfileLoading] = useState(true)
 
-  // Carga el perfil desde la vista profiles_with_effective_tier (aplica lógica de 90 días)
   const loadProfile = async (userId) => {
     setProfileLoading(true)
     if (!userId) { setProfile(null); setProfileLoading(false); return }
     const { data, error } = await supabase
       .from('profiles_with_effective_tier')
-      .select('role, tier')
+      .select('role, tier, effective_tier')
       .eq('id', userId)
       .single()
     if (!error && data) setProfile(data)
-    else setProfile({ role: 'migrant', tier: 'bronze' }) // fallback seguro
+    else setProfile({ role: 'migrant', tier: 'bronze', effective_tier: 'bronze' })
     setProfileLoading(false)
   }
 
@@ -54,8 +53,8 @@ export function AuthProvider({ children }) {
     session,
     user:    session?.user ?? null,
     loading: session === undefined || (session !== null && profileLoading),
-    role:    profile?.role  ?? null,   // 'migrant' | 'provider' | 'admin'
-    tier:    profile?.tier  ?? null,   // 'bronze' | 'silver' | 'gold'
+    role:    profile?.role           ?? null,
+    tier:    profile?.effective_tier ?? profile?.tier ?? null,  // usa effective_tier (incluye trial 90 días)
     isProvider: profile?.role === 'provider' || profile?.role === 'admin',
     isAdmin:    profile?.role === 'admin',
     signOut,

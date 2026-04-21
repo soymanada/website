@@ -15,8 +15,6 @@ const DAYS = [
 const SLOT_OPTIONS  = [30, 60, 90]
 const DEFAULT_RANGE = { start: '09:00', end: '17:00', slot: 60 }
 
-// schedule shape: { [dow]: { enabled: bool, ranges: [{start, end, slot}] } }
-
 export default function AvailabilityEditor({ providerId }) {
   const { availability, loading } = useAvailability(providerId)
   const [schedule, setSchedule] = useState(null)
@@ -24,22 +22,21 @@ export default function AvailabilityEditor({ providerId }) {
   const [saved,    setSaved]    = useState(false)
   const [err,      setErr]      = useState(null)
 
-  // Initialize from DB once loaded
   useEffect(() => {
     if (loading) return
     try {
       const s = {}
       DAYS.forEach(d => {
-        // Only use rows that have valid start_at and end_at values
+        // DB columns are start_time / end_time (not start_at / end_at)
         const rows = availability.filter(
-          a => a.day_of_week === d.value && a.start_at != null && a.end_at != null
+          a => a.day_of_week === d.value && a.start_time != null && a.end_time != null
         )
         if (rows.length) {
           s[d.value] = {
             enabled: true,
             ranges: rows.map(r => ({
-              start: String(r.start_at).slice(0, 5),
-              end:   String(r.end_at).slice(0, 5),
+              start: String(r.start_time).slice(0, 5),
+              end:   String(r.end_time).slice(0, 5),
               slot:  r.slot_minutes ?? DEFAULT_RANGE.slot,
             })),
           }
@@ -56,7 +53,6 @@ export default function AvailabilityEditor({ providerId }) {
     }
   }, [loading]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ── Helpers ──────────────────────────────────────────────────────
   const toggleDay = (dow, enabled) =>
     setSchedule(p => ({ ...p, [dow]: { ...p[dow], enabled } }))
 
@@ -75,12 +71,10 @@ export default function AvailabilityEditor({ providerId }) {
   const removeRange = (dow, idx) =>
     setSchedule(p => {
       const ranges = p[dow].ranges.filter((_, i) => i !== idx)
-      // Keep at least one range (but disable the day if user removes the last)
       if (ranges.length === 0) return { ...p, [dow]: { enabled: false, ranges: [{ ...DEFAULT_RANGE }] } }
       return { ...p, [dow]: { ...p[dow], ranges } }
     })
 
-  // ── Save ─────────────────────────────────────────────────────────
   const handleSave = async () => {
     setSaving(true); setErr(null)
     const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'America/Toronto'
@@ -90,8 +84,8 @@ export default function AvailabilityEditor({ providerId }) {
       day.ranges.forEach(r => {
         slots.push({
           day_of_week:  Number(dow),
-          start_at:   r.start,
-          end_at:     r.end,
+          start_at:     r.start,
+          end_at:       r.end,
           slot_minutes: r.slot,
           timezone:     tz,
         })
@@ -103,7 +97,6 @@ export default function AvailabilityEditor({ providerId }) {
     else { setSaved(true); setTimeout(() => setSaved(false), 3000) }
   }
 
-  // ── Render ────────────────────────────────────────────────────────
   if (loading || !schedule) {
     return <p className="t-xs" style={{ color: 'var(--text-300)' }}>Cargando disponibilidad…</p>
   }
@@ -120,7 +113,6 @@ export default function AvailabilityEditor({ providerId }) {
           const d = schedule[day.value]
           return (
             <div key={day.value} className={`avail__row${d.enabled ? '' : ' avail__row--off'}`}>
-              {/* Day toggle */}
               <div className="avail__day-header">
                 <label className="avail__toggle">
                   <input type="checkbox" checked={d.enabled}
@@ -139,7 +131,6 @@ export default function AvailabilityEditor({ providerId }) {
                 )}
               </div>
 
-              {/* Time ranges */}
               {d.enabled ? (
                 <div className="avail__ranges">
                   {d.ranges.map((r, i) => (
