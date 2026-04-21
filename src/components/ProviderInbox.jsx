@@ -44,10 +44,10 @@ function ConversationList({ conversations, selected, onSelect }) {
             className={`pinbox__conv${selected?.id === conv.id ? ' pinbox__conv--active' : ''}${conv.unread_count > 0 ? ' pinbox__conv--unread' : ''}`}
             onClick={() => onSelect(conv)}
           >
-            <div className="pinbox__conv-avatar">{conv.migrant_name[0]}</div>
+            <div className="pinbox__conv-avatar">{conv.migrant_name?.[0] ?? '?'}</div>
             <div className="pinbox__conv-info">
               <div className="pinbox__conv-top">
-                <span className="pinbox__conv-name">{conv.migrant_name}</span>
+                <span className="pinbox__conv-name">{conv.migrant_name ?? t('messaging.unknown_migrant', 'Migrante')}</span>
                 <span className="pinbox__conv-time t-xs">{timeAgo(conv.last_message_at)}</span>
               </div>
               <div className="pinbox__conv-sub">
@@ -102,7 +102,7 @@ function ThreadView({ conversation, onBack }) {
       <div className="pinbox__thread-header">
         <button className="pinbox__back" onClick={onBack}>{t('messaging.back_to_list')}</button>
         <div className="pinbox__thread-meta">
-          <span className="pinbox__thread-name">{conversation.migrant_name}</span>
+          <span className="pinbox__thread-name">{conversation.migrant_name ?? t('messaging.unknown_migrant', 'Migrante')}</span>
           <span className="pinbox__thread-subject t-xs">{conversation.subject}</span>
         </div>
       </div>
