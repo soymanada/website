@@ -32,7 +32,15 @@ export async function saveAvailability(providerId, slots) {
   await supabase.from('provider_availability').delete().eq('provider_id', providerId)
   if (!slots.length) return { error: null }
   const { error } = await supabase.from('provider_availability').insert(
-    slots.map(s => ({ ...s, provider_id: providerId }))
+    slots.map(s => ({
+      provider_id:  providerId,
+      day_of_week:  s.day_of_week,
+      start_time:   s.start_at,   // DB column is start_time
+      end_time:     s.end_at,     // DB column is end_time
+      slot_minutes: s.slot_minutes,
+      timezone:     s.timezone,
+      active:       true,
+    }))
   )
   return { error }
 }
@@ -63,8 +71,9 @@ export function generateSlots(availability, takenBookings, daysAhead = 14) {
     const dayAvail = availability.filter(a => a.day_of_week === dow)
 
     for (const avail of dayAvail) {
-      const [sh, sm] = avail.start_at.slice(0, 5).split(':').map(Number)
-      const [eh, em] = avail.end_at.slice(0, 5).split(':').map(Number)
+      // DB columns are start_time / end_time
+      const [sh, sm] = String(avail.start_time).slice(0, 5).split(':').map(Number)
+      const [eh, em] = String(avail.end_time).slice(0, 5).split(':').map(Number)
       const startM = sh * 60 + sm
       const endM   = eh * 60 + em
       const dur    = avail.slot_minutes
