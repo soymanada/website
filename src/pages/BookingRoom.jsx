@@ -72,108 +72,125 @@ export default function BookingRoom() {
   const isConfirmed = booking.status === 'confirmed' || booking.status === 'completed'
 
   return (
-    <main style={{ padding: '100px 24px 60px', maxWidth: 680, margin: '0 auto' }}>
-      {/* Header */}
-      <div style={{ marginBottom: 32 }}>
+    <main style={{ paddingTop: 80 }}>
+      {/* Info strip — ancho contenido */}
+      <div style={{ maxWidth: 760, margin: '0 auto', padding: '24px 24px 0' }}>
         <Link to="/cuenta" style={{ color: 'var(--iris-500)', fontSize: '0.875rem', textDecoration: 'none' }}>
           ← Volver a mi cuenta
         </Link>
-        <h1 style={{ color: 'var(--iris-900)', marginTop: 16, marginBottom: 4, fontSize: '1.75rem' }}>
+        <h1 style={{ color: 'var(--iris-900)', marginTop: 16, marginBottom: 4, fontSize: '1.5rem' }}>
           Sala de reunión
         </h1>
-        <p style={{ color: 'var(--text-400)', fontSize: '0.875rem' }}>
+        <p style={{ color: 'var(--text-400)', fontSize: '0.875rem', marginBottom: 20 }}>
           {isConfirmed ? '✅ Cita confirmada' : '⏳ Pendiente de confirmación'}
         </p>
-      </div>
 
-      {/* Info card */}
-      <div style={{
-        background: 'var(--surface-100, #faf8f4)',
-        border: '1px solid var(--border-100, #e5e0d8)',
-        borderRadius: 12,
-        padding: '24px',
-        marginBottom: 24,
-      }}>
-        {provider && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 20 }}>
-            {provider.avatar_url
-              ? <img src={provider.avatar_url} alt={provider.name} style={{ width: 48, height: 48, borderRadius: '50%', objectFit: 'cover' }} />
-              : <div style={{ width: 48, height: 48, borderRadius: '50%', background: 'var(--iris-100)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, color: 'var(--iris-600)', fontSize: '1.25rem' }}>
-                  {(provider.name || '?')[0].toUpperCase()}
-                </div>
-            }
-            <div>
-              <strong style={{ display: 'block', color: 'var(--text-700)' }}>{provider.name}</strong>
-              {provider.service && <span style={{ fontSize: '0.8rem', color: 'var(--text-400)' }}>{provider.service}</span>}
-            </div>
-          </div>
-        )}
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-          <div>
-            <span style={{ fontSize: '0.75rem', color: 'var(--text-300)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Fecha</span>
-            <p style={{ margin: '2px 0 0', fontWeight: 600, color: 'var(--iris-700)' }}>
-              {fmtDate(booking.start_at)}
-            </p>
-          </div>
-          {booking.notes && (
-            <div>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-300)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Notas</span>
-              <p style={{ margin: '2px 0 0', color: 'var(--text-500)', fontStyle: 'italic' }}>"{booking.notes}"</p>
+        {/* Info card */}
+        <div style={{
+          background: 'var(--surface-100, #faf8f4)',
+          border: '1px solid var(--border-100, #e5e0d8)',
+          borderRadius: 12,
+          padding: '20px 24px',
+          marginBottom: 20,
+        }}>
+          {provider && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 16 }}>
+              {provider.avatar_url
+                ? <img src={provider.avatar_url} alt={provider.name} style={{ width: 44, height: 44, borderRadius: '50%', objectFit: 'cover' }} />
+                : <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'var(--iris-100)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, color: 'var(--iris-600)', fontSize: '1.1rem' }}>
+                    {(provider.name || '?')[0].toUpperCase()}
+                  </div>
+              }
+              <div>
+                <strong style={{ display: 'block', color: 'var(--text-700)' }}>{provider.name}</strong>
+                {provider.service && <span style={{ fontSize: '0.8rem', color: 'var(--text-400)' }}>{provider.service}</span>}
+              </div>
             </div>
           )}
+
+          <div style={{ display: 'flex', gap: 32, flexWrap: 'wrap' }}>
+            <div>
+              <span style={{ fontSize: '0.72rem', color: 'var(--text-300)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Fecha</span>
+              <p style={{ margin: '2px 0 0', fontWeight: 600, color: 'var(--iris-700)' }}>
+                {fmtDate(booking.start_at)}
+              </p>
+            </div>
+            {booking.notes && (
+              <div>
+                <span style={{ fontSize: '0.72rem', color: 'var(--text-300)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Notas</span>
+                <p style={{ margin: '2px 0 0', color: 'var(--text-500)', fontStyle: 'italic' }}>"{booking.notes}"</p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Sala */}
+      {/* Sala — full width */}
       {!isConfirmed ? (
-        <div style={{
-          background: '#fffbeb',
-          border: '1px solid #fde68a',
-          borderRadius: 10,
-          padding: '20px 24px',
-          color: '#92400e',
-        }}>
-          <strong>⏳ Esperando confirmación</strong>
-          <p style={{ margin: '8px 0 0', fontSize: '0.875rem' }}>
-            El proveedor aún no ha confirmado esta cita. Cuando lo haga, recibirás un email con el link para entrar a la sala.
-          </p>
+        <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 24px 60px' }}>
+          <div style={{
+            background: '#fffbeb',
+            border: '1px solid #fde68a',
+            borderRadius: 10,
+            padding: '20px 24px',
+            color: '#92400e',
+          }}>
+            <strong>⏳ Esperando confirmación</strong>
+            <p style={{ margin: '8px 0 0', fontSize: '0.875rem' }}>
+              El proveedor aún no ha confirmado esta cita. Cuando lo haga, recibirás un email con el link para entrar a la sala.
+            </p>
+          </div>
         </div>
       ) : roomUrl ? (
         <div>
-          <div style={{
-            background: '#f0fdf4',
-            border: '1px solid #bbf7d0',
-            borderRadius: 10,
-            padding: '20px 24px',
-            marginBottom: 20,
-          }}>
-            <strong style={{ color: '#166534' }}>✅ Tu sala está lista</strong>
-            <p style={{ margin: '8px 0 16px', fontSize: '0.875rem', color: '#15803d' }}>
-              Entra cuando sea la hora de tu cita. La sala es privada y segura.
-            </p>
-            <a
-              href={roomUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-primary"
-              style={{ display: 'inline-flex' }}
-            >
-              <span>🎥 Entrar a la videollamada</span>
-            </a>
+          {/* Banner verde con botón de nueva ventana */}
+          <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 24px 16px' }}>
+            <div style={{
+              background: '#f0fdf4',
+              border: '1px solid #bbf7d0',
+              borderRadius: 10,
+              padding: '16px 20px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: 12,
+            }}>
+              <div>
+                <strong style={{ color: '#166534' }}>✅ Tu sala está lista</strong>
+                <p style={{ margin: '4px 0 0', fontSize: '0.8rem', color: '#15803d' }}>
+                  La sala es privada y segura. Entra cuando sea la hora de tu cita.
+                </p>
+              </div>
+              <a
+                href={roomUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-primary"
+                style={{ display: 'inline-flex', flexShrink: 0 }}
+              >
+                <span>🎥 Abrir en pantalla completa</span>
+              </a>
+            </div>
           </div>
 
-          {/* Iframe embed */}
-          <div style={{ borderRadius: 12, overflow: 'hidden', border: '1px solid var(--border-100, #e5e0d8)', background: '#000' }}>
+          {/* Iframe full width, altura generosa */}
+          <div style={{
+            width: '100%',
+            height: 'calc(100vh - 260px)',
+            minHeight: 520,
+            background: '#000',
+            borderTop: '1px solid var(--border-100, #e5e0d8)',
+          }}>
             <iframe
               src={`https://meet.jit.si/${booking.room_name}#config.startWithAudioMuted=true&config.startWithVideoMuted=false&userInfo.displayName=${encodeURIComponent(user?.user_metadata?.full_name || 'Migrante')}`}
               allow="camera; microphone; fullscreen; display-capture"
-              style={{ width: '100%', height: 480, border: 'none', display: 'block' }}
+              style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
               title="Sala de reunión"
             />
           </div>
 
-          <p style={{ marginTop: 12, fontSize: '0.75rem', color: 'var(--text-300)', textAlign: 'center' }}>
+          <p style={{ padding: '10px 24px', fontSize: '0.72rem', color: 'var(--text-300)', textAlign: 'center' }}>
             ¿Problemas con el iframe? <a href={roomUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--iris-500)' }}>Abre la sala en una nueva ventana →</a>
           </p>
         </div>
