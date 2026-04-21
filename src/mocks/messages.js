@@ -56,10 +56,13 @@ export async function sendMessage({ providerId, userId, body }) {
       supabase.functions
         .invoke('notify-new-message', {
           body: {
-            provider_id:     providerId,
-            migrant_name:    migrantName,
-            message_preview: body,
+            type:         'new_message',
+            to_provider_id: providerId,
+            body_preview:   body.slice(0, 120),
           },
+        })
+        .then(({ error: fnErr }) => {
+          if (fnErr) console.warn('[notify-new-message]', fnErr.message)
         })
         .catch(() => {})
     }).catch(() => {})
