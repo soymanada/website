@@ -119,27 +119,6 @@ function ProviderProfileEditor({ provider, tier, onSave, saving, onAvatarUpload,
           />
         </div>
 
-        <div className="pdash__field pdash__field--full pdash__divider-section">
-          <p className="label pdash__section-label">
-            Herramientas avanzadas
-            <span className="pdash__badge pdash__badge--gold" style={{ marginLeft: 10 }}>Gold</span>
-          </p>
-        </div>
-        <div className="pdash__field pdash__field--full">
-          <label className="pdash__label t-sm">{t('pdash.predefined_replies_label')}</label>
-          <textarea className="pdash__textarea" rows={5}
-            value={form.predefined_responses}
-            onChange={e => set('predefined_responses', e.target.value)}
-            placeholder={"¿Cuánto cuesta una consulta?\nMi primera sesión es gratuita."} disabled={tier !== 'gold'} />
-        </div>
-
-        {tier !== 'gold' && (
-          <div className="pdash__field--full pdash__upgrade-inline">
-            <p className="t-sm">Las herramientas avanzadas (email + respuestas predefinidas) están disponibles en <strong>Gold ($14.990 CLP/mes)</strong>.</p>
-            <UpgradeButton planCode="pro" label="Activar Gold" />
-          </div>
-        )}
-
         <div className="pdash__field--full pdash__verified-notice">
           <span className="pdash__badge pdash__badge--verified" style={{ gap: 6 }}>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor" width="11" height="11" aria-hidden="true">
