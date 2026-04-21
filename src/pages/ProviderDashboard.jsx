@@ -419,7 +419,9 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
           payment_link:         form.payment_link,
           call_link:            form.call_link,
           redirect_email:       form.redirect_email,
-          predefined_responses: form.predefined_responses,
+          predefined_responses: form.predefined_responses
+            .filter(p => p.q.trim() || p.a.trim())
+            .map(p => `${p.q.trim()}\n${p.a.trim()}`),
         })} disabled={saving}>
           <span>{saving ? t('pdash.saving') : t('pdash.save_herramientas')}</span>
         </button>
