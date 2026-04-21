@@ -131,37 +131,9 @@ function ProviderProfileEditor({ provider, tier, onSave, saving, onAvatarUpload,
 
         <div className="pdash__field pdash__field--full pdash__divider-section">
           <p className="label pdash__section-label">
-            📅 Calendario de citas
-            <span className="pdash__badge pdash__badge--silver" style={{ marginLeft: 10 }}>Silver+</span>
-          </p>
-        </div>
-
-        <div className="pdash__field pdash__field--full">
-          <label className="pdash__label t-sm">Link de agenda (Calendly, Cal.com, etc.)</label>
-          <input className="pdash__input" value={form.calendar_link}
-            onChange={e => set('calendar_link', e.target.value)}
-            placeholder="https://calendly.com/tu-nombre"
-            disabled={!['silver', 'gold'].includes(tier)} />
-          {!['silver', 'gold'].includes(tier) && (
-            <div style={{ marginTop: 6 }}>
-              <p className="t-xs" style={{ color: 'var(--text-300)', marginBottom: 6 }}>Disponible desde Silver.</p>
-              <UpgradeButton planCode="activa" label="Activar Silver — $4.990 CLP/mes" />
-            </div>
-          )}
-        </div>
-
-        <div className="pdash__field pdash__field--full pdash__divider-section">
-          <p className="label pdash__section-label">
             Herramientas avanzadas
             <span className="pdash__badge pdash__badge--gold" style={{ marginLeft: 10 }}>Gold</span>
           </p>
-        </div>
-
-        <div className="pdash__field">
-          <label className="pdash__label t-sm">✉️ Email de redirección</label>
-          <input className="pdash__input" type="email" value={form.redirect_email}
-            onChange={e => set('redirect_email', e.target.value)}
-            placeholder="tu@email.com" disabled={tier !== 'gold'} />
         </div>
         <div className="pdash__field pdash__field--full">
           <label className="pdash__label t-sm">{t('pdash.predefined_replies_label')}</label>
@@ -273,7 +245,21 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
           <span className="pdash__badge pdash__badge--silver">Silver+</span>
         </div>
         {isSilverPlus ? (
-          <AvailabilityEditor providerId={provider?.id} />
+          <>
+            <div className="pdash__field pdash__field--full" style={{ marginBottom: 16 }}>
+              <label className="pdash__label t-sm">Link de agenda (Calendly, Cal.com, etc.)</label>
+              <input
+                className="pdash__input"
+                value={form.calendar_link}
+                onChange={e => set('calendar_link', e.target.value)}
+                placeholder="https://calendly.com/tu-nombre"
+              />
+              <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 4 }}>
+                Opcional. Si lo configuras, el migrante verá este link además de la agenda interna.
+              </p>
+            </div>
+            <AvailabilityEditor providerId={provider?.id} />
+          </>
         ) : (
           <div className="pdash__tool-card pdash__tool-card--locked">
             <span className="pdash__tool-icon">📅</span>
