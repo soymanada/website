@@ -46,7 +46,7 @@ Recomendación: usa una foto tuya real o el logo de tu marca con fondo claro.`,
     title: 'Configurar tu agenda de citas',
     content: `La agenda te permite recibir reservas directamente desde tu perfil público. Disponible desde el plan **Silver**.
 
-Tienes dos opciones:
+Tienes dos opciones de agenda:
 
 **Opción A — Agenda interna de SoyManada (recomendada)**
 1. Ve a **Herramientas → Calendario de citas**.
@@ -57,7 +57,32 @@ Tienes dos opciones:
 1. Pega tu link de Calendly o Cal.com en el campo "Link de agenda".
 2. Guarda. Tu perfil público mostrará ese link como botón adicional.
 
-Puedes usar ambas opciones al mismo tiempo.`,
+Puedes usar ambas opciones al mismo tiempo.
+
+**Plataforma de videollamada**
+En la misma sección puedes configurar dónde se realizará la llamada:
+• **Gold:** se genera automáticamente una sala Jitsi de SoyManada al confirmar la reserva.
+• **Todos los planes:** pega un link de Zoom, Google Meet, Teams, Whereby o WhatsApp en el campo "Plataforma para la llamada". Ese link aparecerá en el email de confirmación del migrante. Si lo dejas vacío en Gold, se usa la sala Jitsi automática.`,
+    links: [{ label: 'Ir a Herramientas', tab: 'herramientas' }],
+  },
+  {
+    id: 'herramientas-pago',
+    category: 'Herramientas',
+    icon: '💳',
+    title: 'Configurar tu link de pago',
+    content: `Disponible en el plan **Gold**. Agrega un link de cobro que aparecerá como botón en tu perfil público.
+
+Acepta cualquier plataforma:
+• Wise: https://wise.com/pay/tu-nombre
+• MercadoPago: https://link.mercadopago.com/...
+• PayPal: https://paypal.me/tu-nombre
+
+Pasos:
+1. Ve a **Herramientas → Herramientas avanzadas**.
+2. Pega tu link en el campo "Link de pago".
+3. Haz clic en **Guardar**.
+
+El botón aparecerá en tu perfil inmediatamente.`,
     links: [{ label: 'Ir a Herramientas', tab: 'herramientas' }],
   },
   {
