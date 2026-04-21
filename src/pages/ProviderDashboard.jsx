@@ -60,7 +60,6 @@ function ProviderProfileEditor({ provider, tier, onSave, saving, onAvatarUpload,
     languages:           (provider?.languages ?? []).join(', '),
     countries:           (provider?.countries ?? []).join(', '),
     whatsapp:            provider?.contact_whatsapp    ?? '',
-    payment_link:        provider?.payment_link        ?? '',
     calendar_link:       provider?.calendar_link       ?? '',
     redirect_email:      provider?.redirect_email      ?? '',
     predefined_responses:(provider?.predefined_responses ?? []).join('\n'),
@@ -118,16 +117,6 @@ function ProviderProfileEditor({ provider, tier, onSave, saving, onAvatarUpload,
             countryOptionsOrder={['CL', 'CA', 'AR', 'CO', 'VE', 'MX', 'PE', 'ES', '|', '...']}
             className="pdash__phone-input"
           />
-        </div>
-
-        <div className="pdash__field pdash__field--full">
-          <label className="pdash__label t-sm">
-            Link de pago
-            <span className="pdash__badge pdash__badge--gold">Gold</span>
-          </label>
-          <input className="pdash__input" value={form.payment_link}
-            onChange={e => set('payment_link', e.target.value)}
-            placeholder="https://wise.com/pay/..." disabled={tier !== 'gold'} />
         </div>
 
         <div className="pdash__field pdash__field--full pdash__divider-section">
@@ -223,6 +212,7 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
   const isGold       = tier === 'gold'
   const [form, setForm] = useState({
     calendar_link:        provider?.calendar_link        ?? '',
+    payment_link:         provider?.payment_link         ?? '',
     redirect_email:       provider?.redirect_email       ?? '',
     predefined_responses: (Array.isArray(provider?.predefined_responses)
       ? provider.predefined_responses : []).join('\n'),
@@ -281,6 +271,21 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
         {isGold ? (
           <div className="pdash__form">
             <div className="pdash__field pdash__field--full">
+              <label className="pdash__label t-sm">
+                💳 Link de pago
+                <span className="pdash__badge pdash__badge--gold" style={{ marginLeft: 6 }}>Gold</span>
+              </label>
+              <input
+                className="pdash__input"
+                value={form.payment_link}
+                onChange={e => set('payment_link', e.target.value)}
+                placeholder="https://wise.com/pay/... · https://link.mercadopago.com/..."
+              />
+              <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 4 }}>
+                Aparece como botón en tu perfil público. Acepta cualquier link de cobro (Wise, MercadoPago, PayPal, etc.).
+              </p>
+            </div>
+            <div className="pdash__field pdash__field--full">
               <label className="pdash__label t-sm">✉️ Email para redirección de consultas</label>
               <input className="pdash__input" type="email" value={form.redirect_email}
                 onChange={e => set('redirect_email', e.target.value)} placeholder="tu@email.com" />
@@ -297,6 +302,7 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
           <div className="pdash__locked">
             <div className="pdash__tools-preview">
               {[
+                { icon: '💳', name: 'Link de pago', desc: 'Recibe pagos directamente desde tu perfil público.' },
                 { icon: '💬', name: t('pdash.tool_canned_name'), desc: t('pdash.tool_canned_desc') },
                 { icon: '✉️', name: t('pdash.tool_redirect_name'), desc: t('pdash.tool_redirect_desc') },
               ].map(tool => (
@@ -327,6 +333,7 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
       {(isSilverPlus) && (
         <button className="btn btn-primary pdash__save-btn" style={{ marginTop: 24 }} onClick={() => onSave({
           calendar_link:        form.calendar_link,
+          payment_link:         form.payment_link,
           redirect_email:       form.redirect_email,
           predefined_responses: form.predefined_responses,
         })} disabled={saving}>
