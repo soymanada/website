@@ -1,0 +1,199 @@
+/* src/components/dashboard/ManualProveedor.css */
+
+/* ── Búsqueda ─────────────────────────────────────────────────── */
+.manual__search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.manual__search-icon {
+  position: absolute;
+  left: 12px;
+  font-size: 14px;
+  pointer-events: none;
+}
+
+.manual__search {
+  width: 100%;
+  padding: 10px 36px 10px 36px;
+  border: 1px solid var(--border-100, #e5e0d8);
+  border-radius: 8px;
+  font-size: 0.875rem;
+  background: var(--surface-0, #fff);
+  color: var(--text-700, #1a1a1a);
+  transition: border-color 0.15s;
+}
+
+.manual__search:focus {
+  outline: none;
+  border-color: var(--iris-400, #7B4DC8);
+}
+
+.manual__search-clear {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-300, #aaa);
+  font-size: 12px;
+  padding: 4px;
+}
+
+/* ── Filtros categoría ────────────────────────────────────────── */
+.manual__categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.manual__cat-btn {
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border-100, #e5e0d8);
+  background: transparent;
+  font-size: 0.8rem;
+  color: var(--text-500, #555);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.manual__cat-btn:hover {
+  border-color: var(--iris-300, #a98de0);
+  color: var(--iris-700, #5a2fa5);
+}
+
+.manual__cat-btn--active {
+  background: var(--iris-50, #f3eeff);
+  border-color: var(--iris-400, #7B4DC8);
+  color: var(--iris-700, #5a2fa5);
+  font-weight: 600;
+}
+
+/* ── Grupo por categoría ──────────────────────────────────────── */
+.manual__group {
+  margin-bottom: 24px;
+}
+
+.manual__group-title {
+  font-weight: 700;
+  color: var(--text-400, #888);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.7rem;
+  margin-bottom: 8px;
+  padding-left: 2px;
+}
+
+/* ── Tarjeta artículo ─────────────────────────────────────────── */
+.manual__card {
+  border: 1px solid var(--border-100, #e5e0d8);
+  border-radius: 10px;
+  margin-bottom: 8px;
+  overflow: hidden;
+  transition: box-shadow 0.15s;
+  background: var(--surface-0, #fff);
+}
+
+.manual__card--open {
+  box-shadow: 0 2px 12px rgba(123, 77, 200, 0.08);
+  border-color: var(--iris-200, #c9b3ed);
+}
+
+.manual__card-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s;
+}
+
+.manual__card-header:hover {
+  background: var(--iris-50, #f3eeff);
+}
+
+.manual__card-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+  width: 28px;
+  text-align: center;
+}
+
+.manual__card-title {
+  flex: 1;
+  font-weight: 600;
+  color: var(--text-700, #1a1a1a);
+  font-size: 0.875rem;
+}
+
+.manual__card-chevron {
+  color: var(--text-300, #aaa);
+  font-size: 14px;
+  transition: transform 0.2s;
+  display: inline-block;
+}
+
+.manual__card-chevron--open {
+  transform: rotate(180deg);
+}
+
+/* ── Cuerpo artículo ──────────────────────────────────────────── */
+.manual__card-body {
+  padding: 0 16px 16px 56px;
+  border-top: 1px solid var(--border-50, #f0ece4);
+}
+
+.manual__card-content {
+  margin-top: 12px;
+}
+
+.manual__line {
+  font-size: 0.875rem;
+  color: var(--text-600, #333);
+  line-height: 1.65;
+  margin-bottom: 4px;
+}
+
+.manual__spacer {
+  height: 8px;
+  margin: 0;
+}
+
+/* ── Links de navegación ──────────────────────────────────────── */
+.manual__card-links {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.manual__card-link {
+  font-size: 0.8rem !important;
+  color: var(--iris-600, #6c3bbf) !important;
+  border-color: var(--iris-200, #c9b3ed) !important;
+}
+
+.manual__card-link:hover {
+  background: var(--iris-50, #f3eeff) !important;
+}
+
+/* ── Vacío ────────────────────────────────────────────────────── */
+.manual__empty {
+  padding: 32px 0;
+  text-align: center;
+}
+
+/* ── Mobile ───────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .manual__card-body {
+    padding-left: 16px;
+  }
+}
