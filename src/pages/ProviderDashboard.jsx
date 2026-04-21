@@ -507,12 +507,29 @@ function SectionReservas({ provider, tier }) {
 
   const handleStatus = async (id, newStatus) => {
     setUpdating(id)
-    await updateBookingStatus(id, newStatus)
 
-    // Cuando se marca completada → enviar email de solicitud de reseña al migrante
-    if (newStatus === 'completed') {
+    try {
+      await updateBookingStatus(id, newStatus)
+
       const booking = bookings.find(b => b.id === id)
-      if (booking?.user_id && provider?.slug && provider?.name) {
+
+      // Confirmación → email al migrante
+      if (newStatus === 'confirmed' && booking?.user_id && provider?.id) {
+        supabase.functions.invoke('notify-booking', {
+          body: {
+            event:         'confirmed',
+            booking_id:    booking.id,
+            provider_id:   provider.id,
+            provider_name: provider.name,
+            migrant_id:    booking.user_id,
+            start_at:      booking.start_at,
+            notes:         booking.notes,
+          }
+        }).catch(() => {})
+      }
+
+      // Completada → solicitud de reseña
+      if (newStatus === 'completed' && booking?.user_id && provider?.slug && provider?.name) {
         const bookingDate = new Date(booking.start_at).toLocaleDateString('es-CL', {
           weekday: 'long', day: 'numeric', month: 'long',
         })
@@ -525,10 +542,11 @@ function SectionReservas({ provider, tier }) {
           }
         }).catch(() => {})
       }
-    }
 
-    await reload()
-    setUpdating(null)
+      await reload()
+    } finally {
+      setUpdating(null)
+    }
   }
 
   const fmtDt = (dt) => new Date(dt).toLocaleDateString('es-CL', {
