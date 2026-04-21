@@ -172,7 +172,7 @@
 .pcard__btn--wa {
   background: #25D366;
   color: white;
-  flex: 1; /* Clic principal prominente */
+  flex: 1;
 }
 .pcard__btn--wa:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
 .pcard__btn--phone {
@@ -188,6 +188,22 @@
   background: var(--ivory);
   color: var(--text-500);
   border: 1px solid var(--iris-200);
+}
+
+/* ── Botón Agendar llamada ────────────────────────────────────────── */
+.pcard__btn--book {
+  background: var(--ivory);
+  color: var(--iris-600);
+  border: 1.5px solid var(--iris-300);
+  width: 100%;
+  justify-content: center;
+  margin-top: -6px;
+}
+.pcard__btn--book:hover {
+  background: var(--iris-50);
+  border-color: var(--iris-500);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
 }
 
 @media (max-width: 600px) {
@@ -278,4 +294,54 @@
 .pcard__gate-btn:hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 18px rgba(91,45,158,0.40);
+}
+
+/* ── Booking modal overlay ───────────────────────────────────────── */
+.pcard__booking-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  backdrop-filter: blur(2px);
+}
+.pcard__booking-modal {
+  background: var(--white);
+  border-radius: var(--r-xl);
+  padding: 28px;
+  width: 100%;
+  max-width: 440px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: var(--shadow-lg);
+}
+.pcard__booking-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  background: var(--ivory);
+  border: 1px solid var(--iris-200);
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: var(--text-500);
+  transition: all var(--t-fast);
+}
+.pcard__booking-close:hover {
+  background: var(--iris-50);
+  border-color: var(--iris-400);
+  color: var(--iris-700);
+}
+.pcard__booking-provider {
+  color: var(--text-500);
+  margin-bottom: 4px;
 }

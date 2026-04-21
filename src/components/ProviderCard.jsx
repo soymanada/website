@@ -12,6 +12,7 @@ import VerificationBadge from './VerificationBadge'
 import PawRating from './PawRating'
 import ReviewModal from './ReviewModal'
 import MessageModal from './MessageModal'
+import BookingCalendar from './BookingCalendar'
 import Interstitial from './Interstitial'
 import './ProviderCard.css'
 
@@ -32,7 +33,6 @@ export default function ProviderCard({ provider: rawProvider }) {
   const { user, isProvider } = useAuth()
   const { t, i18n } = useTranslation()
 
-  // Normalize contact: some providers use JSONB 'contact', others use flat 'contact_*' columns
   const rawContact = rawProvider.contact ?? {}
   const contact = {
     whatsapp:  rawContact.whatsapp  || rawProvider.contact_whatsapp  || null,
@@ -54,12 +54,10 @@ export default function ProviderCard({ provider: rawProvider }) {
   const [targetPlatform, setTargetPlatform] = useState('')
   const [showReview,     setShowReview]     = useState(false)
   const [showMsg,        setShowMsg]        = useState(false)
+  const [showBooking,    setShowBooking]    = useState(false)
   const viewTracked = useRef(false)
 
-  // Rating agregado del proveedor
   const { avg, count, visible: ratingVisible } = useProviderRating(id)
-
-  // Review del usuario actual (solo si está logueado)
   const { review: userReview, reload: reloadReview } = useUserReview(id, user?.id)
   const { hasInteraction } = useVerifiedInteraction(id, user?.id)
 
@@ -77,6 +75,12 @@ export default function ProviderCard({ provider: rawProvider }) {
     setTargetPlatform(platform === 'whatsapp' ? 'WhatsApp' : 'Instagram')
     setIsConnecting(true)
     setTimeout(() => { window.open(url, '_blank', 'noopener,noreferrer'); setIsConnecting(false) }, 1500)
+  }
+
+  const handleBookingOpen = () => {
+    insertEvent(id, 'booking_click')
+    trackEvent(Events.PROVEEDOR_VISITADO, { proveedor_id: id, proveedor_nombre: name, plataforma: 'booking' })
+    setShowBooking(true)
   }
 
   return (
@@ -101,6 +105,29 @@ export default function ProviderCard({ provider: rawProvider }) {
         />
       )}
 
+      {/* Modal de agendamiento */}
+      {showBooking && (
+        <div className="pcard__booking-overlay" role="dialog" aria-modal="true" aria-label={`Agendar llamada con ${name}`}>
+          <div className="pcard__booking-modal">
+            <button
+              className="pcard__booking-close"
+              onClick={() => setShowBooking(false)}
+              aria-label="Cerrar"
+            >
+              ✕
+            </button>
+            <p className="pcard__booking-provider t-sm">
+              <strong>{name}</strong>
+            </p>
+            <BookingCalendar
+              providerId={id}
+              userId={user?.id}
+              providerName={name}
+            />
+          </div>
+        </div>
+      )}
+
       <article className="pcard">
         <div className="pcard__accent" aria-hidden="true" />
         <svg className="pcard__bg-paw" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
@@ -119,7 +146,6 @@ export default function ProviderCard({ provider: rawProvider }) {
           <div className="pcard__meta">
             <h3 className="pcard__name">{name}</h3>
             <p className="pcard__service t-sm">{service}</p>
-            {/* Rating: visible para todos si ≥3 reviews */}
             {ratingVisible && (
               <PawRating rating={avg} count={count} size="sm" />
             )}
@@ -201,7 +227,13 @@ export default function ProviderCard({ provider: rawProvider }) {
               )}
             </div>
 
-            {/* Botón de evaluación — requiere interacción verificada */}
+            {/* Botón Agendar llamada — solo si el proveedor tiene availability */}
+            <BookingCalendarTrigger
+              providerId={id}
+              onOpen={handleBookingOpen}
+              t={t}
+            />
+
             {userReview ? (
               <button className="pcard__rate-btn pcard__rate-btn--done" disabled>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor" width="12" height="12" aria-hidden="true">
@@ -241,5 +273,25 @@ export default function ProviderCard({ provider: rawProvider }) {
         )}
       </article>
     </>
+  )
+}
+
+// Sub-componente: solo renderiza el botón si el proveedor tiene availability activa
+import { useAvailableSlots } from '../hooks/useBookings'
+
+function BookingCalendarTrigger({ providerId, onOpen, t }) {
+  const { hasAvailability, loading } = useAvailableSlots(providerId)
+  if (loading || !hasAvailability) return null
+  return (
+    <button className="pcard__btn pcard__btn--book" onClick={onOpen}>
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+        <line x1="16" y1="2" x2="16" y2="6"/>
+        <line x1="8" y1="2" x2="8" y2="6"/>
+        <line x1="3" y1="10" x2="21" y2="10"/>
+      </svg>
+      {t('booking.cta', 'Agendar llamada')}
+    </button>
   )
 }
