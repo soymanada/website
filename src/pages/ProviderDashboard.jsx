@@ -9,6 +9,7 @@ import { supabase } from '../lib/supabase'
 import MetricsSummary      from '../components/dashboard/MetricsSummary'
 import WeeklyActivity      from '../components/dashboard/WeeklyActivity'
 import AutoRecommendations from '../components/dashboard/AutoRecommendations'
+import ManualProveedor     from '../components/dashboard/ManualProveedor'
 import AvailabilityEditor  from '../components/AvailabilityEditor'
 import ProviderInbox       from '../components/ProviderInbox'
 import { useDashboardBookings, updateBookingStatus } from '../hooks/useBookings'
@@ -1013,6 +1014,7 @@ export default function ProviderDashboard() {
     { id: 'herramientas', label: `🛠 ${t('pdash.tab_herramientas')}` },
     { id: 'reservas',     label: `📅 ${t('pdash.tab_reservas')}` },
     { id: 'miplan',       label: `💎 ${t('pdash.tab_miplan')}` },
+    { id: 'manual',       label: '❓ Ayuda' },
   ]
 
   return (
@@ -1097,6 +1099,9 @@ export default function ProviderDashboard() {
               )}
               {activeTab === 'miplan' && (
                 <SectionMiPlan tier={tier} provider={provider} onProviderUpdate={p => setProvider(p)} />
+              )}
+              {activeTab === 'manual' && (
+                <ManualProveedor onNavigate={setActiveTab} />
               )}
             </>
           )}
