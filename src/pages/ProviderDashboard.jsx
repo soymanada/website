@@ -213,6 +213,7 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
   const [form, setForm] = useState({
     calendar_link:        provider?.calendar_link        ?? '',
     payment_link:         provider?.payment_link         ?? '',
+    call_link:            provider?.call_link            ?? '',
     redirect_email:       provider?.redirect_email       ?? '',
     predefined_responses: (Array.isArray(provider?.predefined_responses)
       ? provider.predefined_responses : []).join('\n'),
@@ -249,6 +250,34 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
                 Opcional. Si lo configuras, el migrante verá este link además de la agenda interna.
               </p>
             </div>
+
+            {/* ── Plataforma de videollamada ── */}
+            <div className="pdash__field pdash__field--full" style={{ marginBottom: 16 }}>
+              <label className="pdash__label t-sm">📹 Plataforma para la llamada</label>
+
+              {tier === 'gold' && (
+                <div className="pdash__call-option pdash__call-option--gold" style={{ marginBottom: 10 }}>
+                  <span>✅ <strong>Sala Jitsi de SoyManada</strong> — se genera automáticamente al confirmar una reserva.</span>
+                  <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 2 }}>
+                    Si configuras un link personalizado abajo, ese link tendrá prioridad sobre la sala Jitsi.
+                  </p>
+                </div>
+              )}
+
+              <input
+                className="pdash__input"
+                value={form.call_link}
+                onChange={e => set('call_link', e.target.value)}
+                placeholder="https://zoom.us/j/... · https://meet.google.com/... · https://wa.me/56912345678"
+              />
+              <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 4 }}>
+                Opcional. Pega aquí el link de Zoom, Google Meet, Teams, Whereby, WhatsApp u otro.
+                {tier === 'gold'
+                  ? ' Si lo dejas vacío, se usará la sala Jitsi automática.'
+                  : ' Este link aparecerá en el email de confirmación y en la reserva del migrante.'}
+              </p>
+            </div>
+
             <AvailabilityEditor providerId={provider?.id} />
           </>
         ) : (
@@ -334,6 +363,7 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
         <button className="btn btn-primary pdash__save-btn" style={{ marginTop: 24 }} onClick={() => onSave({
           calendar_link:        form.calendar_link,
           payment_link:         form.payment_link,
+          call_link:            form.call_link,
           redirect_email:       form.redirect_email,
           predefined_responses: form.predefined_responses,
         })} disabled={saving}>
@@ -509,6 +539,9 @@ function SectionReservas({ provider, tier }) {
 
       // Confirmación → email al migrante
       if (newStatus === 'confirmed' && booking?.user_id && provider?.id) {
+        const callLink = provider.call_link
+          || (tier === 'gold' ? `https://meet.jit.si/soymanada-${booking.id}` : null)
+
         supabase.functions.invoke('notify-booking', {
           body: {
             event:         'confirmed',
@@ -518,6 +551,7 @@ function SectionReservas({ provider, tier }) {
             migrant_id:    booking.user_id,
             start_at:      booking.start_at,
             notes:         booking.notes,
+            call_link:     callLink,
           }
         }).catch(() => {})
       }
@@ -979,6 +1013,7 @@ export default function ProviderDashboard() {
     if (form.whatsapp    !== undefined) payload.contact_whatsapp = form.whatsapp || null
     if (form.payment_link  !== undefined) payload.payment_link  = form.payment_link
     if (form.calendar_link !== undefined) payload.calendar_link = form.calendar_link
+    if (form.call_link     !== undefined) payload.call_link     = form.call_link || null
     if (form.redirect_email !== undefined) payload.redirect_email = form.redirect_email
 
     if (form.languages !== undefined)
