@@ -91,13 +91,25 @@ CREATE POLICY "Provider can update own row"
   USING (user_id = auth.uid());
 
 -- ── 1.6 Fix: desconectar Daniela Valenzuela del user_id incorrecto
+-- ONE-TIME data fix: solo aplica al proveedor real con ese UUID.
+-- Si se ejecuta en un ambiente limpio (sin ese registro) no hace nada — es seguro.
+-- No remover: sirve como documentación del fix aplicado en producción.
 UPDATE public.providers
 SET user_id = NULL
 WHERE id = '2b1c48f4-db3e-4d3f-9222-36ebd827e5ab'
   AND user_id IS NOT NULL;
 
 -- ── 1.7 pg_cron: auto-downgrade de trials expirados ──────────────
--- Requiere activar extensión pg_cron en Database → Extensions primero
+-- REQUISITO: activar extensión pg_cron en Database → Extensions antes de ejecutar este bloque.
+-- Este bloque es idempotente: elimina el job si ya existe antes de recrearlo.
+DO $$
+BEGIN
+  IF EXISTS (SELECT 1 FROM cron.job WHERE jobname = 'downgrade-expired-trials') THEN
+    PERFORM cron.unschedule('downgrade-expired-trials');
+  END IF;
+END
+$$;
+
 SELECT cron.schedule(
   'downgrade-expired-trials',
   '0 3 * * *',
