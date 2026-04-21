@@ -1,6 +1,7 @@
 // src/components/BookingCalendar.jsx
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useAuth } from '../hooks/useAuth'
 import { useAvailableSlots, createBooking } from '../hooks/useBookings'
 import './BookingCalendar.css'
 
@@ -15,6 +16,8 @@ const fmtDateKey = (dk) =>
 
 export default function BookingCalendar({ providerId, userId, providerName }) {
   const { t } = useTranslation()
+  const { user } = useAuth()
+  const migrantName = user?.user_metadata?.full_name ?? user?.email ?? null
   const { byDate, hasAvailability, loading } = useAvailableSlots(providerId)
 
   const [selectedDate, setSelectedDate] = useState(null)
@@ -45,6 +48,8 @@ export default function BookingCalendar({ providerId, userId, providerName }) {
       start: selectedSlot.start,
       end:   selectedSlot.end,
       notes,
+      providerName,
+      migrantName,
     })
     if (error) {
       const isOverlap = error.code === '23P01' || error.message?.includes('overlap') || error.message?.includes('exclusion')

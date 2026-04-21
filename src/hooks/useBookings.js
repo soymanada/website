@@ -118,7 +118,7 @@ export function useProviderBookings(providerId) {
 }
 
 // ── Migrant: create a booking ─────────────────────────────────────
-export async function createBooking({ providerId, userId, start, end, notes, providerName }) {
+export async function createBooking({ providerId, userId, start, end, notes, providerName, migrantName }) {
   const { data, error } = await supabase.from('bookings').insert({
     provider_id: providerId,
     user_id:     userId,
@@ -147,11 +147,11 @@ export async function createBooking({ providerId, userId, start, end, notes, pro
     body: {
       booking_id:    data.id,
       provider_id:   providerId,
-      user_id:       userId,
-      start_at:      start.toISOString(),
-      end_at:        end.toISOString(),
-      notes:         notes || null,
       provider_name: providerName || null,
+      migrant_id:    userId,
+      migrant_name:  migrantName || null,
+      start_at:      start.toISOString(),
+      notes:         notes || null,
     },
   }).catch(err => console.warn('[notify-booking]', err))
 
