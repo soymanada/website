@@ -194,8 +194,18 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
     payment_link:         provider?.payment_link         ?? '',
     call_link:            provider?.call_link            ?? '',
     redirect_email:       provider?.redirect_email       ?? '',
-    predefined_responses: (Array.isArray(provider?.predefined_responses)
-      ? provider.predefined_responses : []).join('\n'),
+    predefined_responses: (() => {
+      const raw = provider?.predefined_responses
+      if (!Array.isArray(raw) || raw.length === 0) return [{ q: '', a: '' }]
+      return raw.map(item => {
+        if (typeof item === 'string') {
+          const [q, ...rest] = item.split('\n')
+          return { q: q ?? '', a: rest.join('\n') ?? '' }
+        }
+        if (typeof item === 'object' && item !== null) return { q: item.q ?? '', a: item.a ?? '' }
+        return { q: '', a: '' }
+      })
+    })(),
   })
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
 
@@ -299,11 +309,76 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
                 onChange={e => set('redirect_email', e.target.value)} placeholder="tu@email.com" />
             </div>
             <div className="pdash__field pdash__field--full">
-              <label className="pdash__label t-sm">{t('pdash.predefined_replies_label')}</label>
-              <textarea className="pdash__textarea" rows={5}
-                value={form.predefined_responses}
-                onChange={e => set('predefined_responses', e.target.value)}
-                placeholder="¿Cuánto cuesta una consulta?\nMi primera sesión es gratuita." />
+              <label className="pdash__label t-sm">
+                {t('pdash.predefined_replies_label')}
+              </label>
+              <p className="t-xs" style={{ color: 'var(--text-300)', marginBottom: 10 }}>
+                Define pares de pregunta y respuesta. Aparecerán como respuestas rápidas en tu inbox.
+              </p>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                {form.predefined_responses.map((pair, idx) => (
+                  <div key={idx} style={{
+                    border: '1px solid var(--border-100)',
+                    borderRadius: 8,
+                    padding: '12px 14px',
+                    background: 'var(--bg-100)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 8,
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span className="t-xs" style={{ color: 'var(--text-300)', fontWeight: 600 }}>
+                        Par #{idx + 1}
+                      </span>
+                      {form.predefined_responses.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => set('predefined_responses',
+                            form.predefined_responses.filter((_, i) => i !== idx)
+                          )}
+                          style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-300)', fontSize: 18, lineHeight: 1 }}
+                          title="Eliminar par"
+                        >×</button>
+                      )}
+                    </div>
+                    <input
+                      className="pdash__input"
+                      placeholder="¿Cuál es tu tarifa por consulta?"
+                      value={pair.q}
+                      onChange={e => {
+                        const updated = [...form.predefined_responses]
+                        updated[idx] = { ...updated[idx], q: e.target.value }
+                        set('predefined_responses', updated)
+                      }}
+                    />
+                    <textarea
+                      className="pdash__textarea"
+                      rows={2}
+                      placeholder="Mi consulta inicial es de $50 USD por 30 minutos."
+                      value={pair.a}
+                      onChange={e => {
+                        const updated = [...form.predefined_responses]
+                        updated[idx] = { ...updated[idx], a: e.target.value }
+                        set('predefined_responses', updated)
+                      }}
+                    />
+                  </div>
+                ))}
+              </div>
+
+              <button
+                type="button"
+                className="btn btn-ghost btn-sm"
+                style={{ marginTop: 10, display: 'flex', alignItems: 'center', gap: 6 }}
+                onClick={() => set('predefined_responses', [
+                  ...form.predefined_responses,
+                  { q: '', a: '' }
+                ])}
+              >
+                <span style={{ fontSize: 18, lineHeight: 1 }}>+</span>
+                Agregar pregunta y respuesta
+              </button>
             </div>
           </div>
         ) : (
