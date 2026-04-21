@@ -1,6 +1,6 @@
 // src/pages/ProviderDashboard.jsx
 import React, { useState, useEffect } from 'react'
-import { Link, Navigate } from 'react-router-dom'
+import { Link, Navigate, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import PhoneInput from 'react-phone-number-input'
 import 'react-phone-number-input/style.css'
@@ -243,7 +243,6 @@ function ProviderProfileEditor({ provider, tier, onSave, saving, onAvatarUpload,
   )
 }
 
-// ── Sección Herramientas (Silver/Gold) ──────────────────────────
 function SectionHerramientas({ tier, provider, onSave, saving }) {
   const { t } = useTranslation()
   const isSilverPlus = tier === 'silver' || tier === 'gold'
@@ -263,10 +262,8 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
         <p className="t-sm pdash__section-sub">{t('pdash.herramientas_sub')}</p>
       </div>
 
-      {/* ── WhatsApp visibility — Silver+ ── */}
       <WAVisibilityToggle tier={tier} provider={provider} />
 
-      {/* ── Calendario — Silver+ ── */}
       <div className="pdash__tools-block">
         <div className="pdash__tools-block-header">
           <span className="pdash__tools-block-title t-sm">📅 Calendario de citas</span>
@@ -285,7 +282,6 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
         )}
       </div>
 
-      {/* ── Herramientas avanzadas — Gold ── */}
       <div className="pdash__tools-block" style={{ marginTop: 24 }}>
         <div className="pdash__tools-block-header">
           <span className="pdash__tools-block-title t-sm">🛠 Herramientas avanzadas</span>
@@ -350,7 +346,6 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
   )
 }
 
-// ── Sección métricas completa ────────────────────────────────────
 function SectionMetricas({ tier, metrics, activity, hourlyActivity, feedback, provider, metricsLoading, messagingStats }) {
   const { t } = useTranslation()
   const locked = tier === 'bronze' || !tier
@@ -397,7 +392,6 @@ function SectionMetricas({ tier, metrics, activity, hourlyActivity, feedback, pr
   )
 }
 
-// ── Sección Reservas ─────────────────────────────────────────────
 const STATUS_LABELS = {
   pending:   '⏳ Pendiente',
   confirmed: '✅ Confirmada',
@@ -405,7 +399,6 @@ const STATUS_LABELS = {
   completed: '✔ Completada',
 }
 
-// ── WhatsApp visibility toggle (Silver+) ─────────────────────────
 function WAVisibilityToggle({ tier, provider }) {
   const { t }          = useTranslation()
   const { user }       = useAuth()
@@ -426,7 +419,7 @@ function WAVisibilityToggle({ tier, provider }) {
       setSaved(true)
       setTimeout(() => setSaved(false), 2000)
     } else {
-      setEnabled(!val) // revert on error
+      setEnabled(!val)
       console.warn('[WAVisibilityToggle]', error.message)
     }
   }
@@ -448,10 +441,8 @@ function WAVisibilityToggle({ tier, provider }) {
           <div className="pdash__wa-toggle-right">
             {saved && <span className="t-xs pdash__saved-tag">✓ {t('messaging.saved')}</span>}
             <label className="pdash__switch-label">
-              <input type="checkbox" checked={enabled} onChange={e => toggle(e.target.checked)}
-                style={{ display: 'none' }} />
-              <span className={`pdash__switch${enabled ? ' pdash__switch--on' : ''}`}
-                onClick={() => toggle(!enabled)}>
+              <input type="checkbox" checked={enabled} onChange={e => toggle(e.target.checked)} style={{ display: 'none' }} />
+              <span className={`pdash__switch${enabled ? ' pdash__switch--on' : ''}`} onClick={() => toggle(!enabled)}>
                 <span className="pdash__switch-thumb" />
               </span>
             </label>
@@ -470,7 +461,6 @@ function WAVisibilityToggle({ tier, provider }) {
   )
 }
 
-// ── Mensajes tab ──────────────────────────────────────────────────
 function SectionMensajes({ provider }) {
   const { t } = useTranslation()
   return (
@@ -509,7 +499,6 @@ function SectionReservas({ provider, tier }) {
     setUpdating(id)
     await updateBookingStatus(id, newStatus)
 
-    // Cuando se marca completada → enviar email de solicitud de reseña al migrante
     if (newStatus === 'completed') {
       const booking = bookings.find(b => b.id === id)
       if (booking?.user_id && provider?.slug && provider?.name) {
@@ -568,12 +557,10 @@ function SectionReservas({ provider, tier }) {
                     {b.notes && <p className="t-xs pdash__booking-notes">"{b.notes}"</p>}
                   </div>
                   <div className="pdash__booking-actions">
-                    <button className="btn btn-primary btn-sm" disabled={updating === b.id}
-                      onClick={() => handleStatus(b.id, 'confirmed')}>
+                    <button className="btn btn-primary btn-sm" disabled={updating === b.id} onClick={() => handleStatus(b.id, 'confirmed')}>
                       <span>{t('pdash.reservas_confirm')}</span>
                     </button>
-                    <button className="btn btn-ghost btn-sm" disabled={updating === b.id}
-                      onClick={() => handleStatus(b.id, 'cancelled')}>
+                    <button className="btn btn-ghost btn-sm" disabled={updating === b.id} onClick={() => handleStatus(b.id, 'cancelled')}>
                       <span>{t('pdash.reservas_reject')}</span>
                     </button>
                   </div>
@@ -591,8 +578,7 @@ function SectionReservas({ provider, tier }) {
                     <strong className="t-sm">{fmtDt(b.start_at)}</strong>
                     {b.notes && <p className="t-xs pdash__booking-notes">"{b.notes}"</p>}
                   </div>
-                  <button className="btn btn-ghost btn-sm" disabled={updating === b.id}
-                    onClick={() => handleStatus(b.id, 'completed')}>
+                  <button className="btn btn-ghost btn-sm" disabled={updating === b.id} onClick={() => handleStatus(b.id, 'completed')}>
                     <span>{t('pdash.reservas_complete')}</span>
                   </button>
                 </div>
@@ -619,7 +605,6 @@ function SectionReservas({ provider, tier }) {
   )
 }
 
-// ── Sección Mi Plan ──────────────────────────────────────────────
 const CHECK_ICON = (
   <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
     <circle cx="8" cy="8" r="7" fill="var(--iris-100)"/>
@@ -670,7 +655,6 @@ function UpgradeButton({ planCode, label, className = 'btn btn-primary btn-sm' }
   )
 }
 
-// Early-bird: 3 months free Gold. After this date: 1 month free Gold.
 const EARLY_BIRD_END = new Date('2026-06-30T23:59:59Z')
 
 function TrialBanner({ provider, onActivated }) {
@@ -775,7 +759,6 @@ function SectionMiPlan({ tier, provider, onProviderUpdate }) {
         <p className="t-sm pdash__section-sub">{t('pdash.miplan_sub')}</p>
       </div>
 
-      {/* Plan actual badge */}
       <div className="pdash__plan-current">
         <span className="pdash__plan-current-label t-xs">{t('pdash.miplan_current_label')}</span>
         <div className={`pdash__plan-current-badge pdash__plan-current-badge--${current}`}>
@@ -798,7 +781,6 @@ function SectionMiPlan({ tier, provider, onProviderUpdate }) {
         )}
       </div>
 
-      {/* Trial banner — solo para Bronze sin trial activo */}
       {provider && current === 'bronze' && (
         <TrialBanner provider={provider} onActivated={updated => {
           onProviderUpdate?.(updated)
@@ -806,7 +788,6 @@ function SectionMiPlan({ tier, provider, onProviderUpdate }) {
         }} />
       )}
 
-      {/* Comparación de tiers */}
       <div className="pdash__plan-grid">
         {TIERS_DEF.map(td => {
           const isCurrent = td.key === current
@@ -855,9 +836,9 @@ function SectionMiPlan({ tier, provider, onProviderUpdate }) {
   )
 }
 
-// ── Dashboard principal ──────────────────────────────────────────
 export default function ProviderDashboard() {
   const { user, tier, isAdmin, signOut } = useAuth()
+  const [searchParams, setSearchParams] = useSearchParams()
 
   if (isAdmin) return <Navigate to="/admin" replace />
   const [provider,       setProvider]       = useState(null)
@@ -871,7 +852,17 @@ export default function ProviderDashboard() {
   const [saving,         setSaving]         = useState(false)
   const [avatarUploading,setAvatarUploading]= useState(false)
   const [toast,          setToast]          = useState(null)
-  const [activeTab,      setActiveTab]      = useState('perfil')
+  const [activeTab,      setActiveTab]      = useState(() => {
+    const tab = searchParams.get('tab')
+    return ['perfil', 'mensajes', 'metricas', 'herramientas', 'reservas', 'miplan'].includes(tab) ? tab : 'perfil'
+  })
+
+  useEffect(() => {
+    const tab = searchParams.get('tab')
+    if (['perfil', 'mensajes', 'metricas', 'herramientas', 'reservas', 'miplan'].includes(tab) && tab !== activeTab) {
+      setActiveTab(tab)
+    }
+  }, [searchParams, activeTab])
 
   useEffect(() => {
     document.title = 'Mi perfil | SoyManada'
@@ -881,7 +872,7 @@ export default function ProviderDashboard() {
   useEffect(() => {
     const load = async () => {
       setLoading(true)
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('providers')
         .select('*')
         .eq('user_id', user.id)
@@ -891,7 +882,6 @@ export default function ProviderDashboard() {
       if (data) setProvider(data)
       setLoading(false)
 
-      // Conversation stats — disponible para todos los tiers
       if (data?.id) {
         const cRes = await supabase
           .from('conversations')
@@ -899,9 +889,7 @@ export default function ProviderDashboard() {
           .eq('provider_id', data.id)
         if (cRes.data) {
           const total     = cRes.data.length
-          const responded = cRes.data.filter(c =>
-            c.status === 'replied' || c.status === 'closed'
-          ).length
+          const responded = cRes.data.filter(c => c.status === 'replied' || c.status === 'closed').length
           setMessagingStats({
             total,
             replyRate: total > 0 ? Math.round((responded / total) * 100) : null,
@@ -909,7 +897,6 @@ export default function ProviderDashboard() {
         }
       }
 
-      // Métricas solo para silver/gold
       if (tier === 'silver' || tier === 'gold') {
         setMetricsLoading(true)
         const [mRes, aRes, hRes, fRes] = await Promise.all([
@@ -939,9 +926,7 @@ export default function ProviderDashboard() {
     setAvatarUploading(true)
     const ext = file.name.split('.').pop().toLowerCase()
     const path = `${provider.id}/avatar.${ext}`
-    const { error } = await supabase.storage
-      .from('avatars')
-      .upload(path, file, { upsert: true, contentType: file.type })
+    const { error } = await supabase.storage.from('avatars').upload(path, file, { upsert: true, contentType: file.type })
     if (error) {
       showToast(`Error al subir: ${error.message}`, 'error')
     } else {
@@ -955,10 +940,6 @@ export default function ProviderDashboard() {
 
   const handleSave = async (form) => {
     setSaving(true)
-
-    // Construir el payload con SOLO los campos que existen en la tabla providers de Supabase.
-    // Nunca usar spread del objeto provider completo — puede incluir campos del JSON local
-    // (benefit, testimonial, contact, etc.) que no existen en la DB y rompen el UPDATE.
     const payload = {}
 
     if (form.name        !== undefined) payload.name        = form.name
@@ -984,16 +965,12 @@ export default function ProviderDashboard() {
         ? form.predefined_responses.split('\n').filter(Boolean)
         : form.predefined_responses
 
-    // Traducciones manuales
     if (form.service_en     !== undefined) payload.service_en     = form.service_en
     if (form.service_fr     !== undefined) payload.service_fr     = form.service_fr
     if (form.description_en !== undefined) payload.description_en = form.description_en
     if (form.description_fr !== undefined) payload.description_fr = form.description_fr
 
-    const { error } = await supabase
-      .from('providers')
-      .update(payload)
-      .eq('user_id', user.id)
+    const { error } = await supabase.from('providers').update(payload).eq('user_id', user.id)
 
     setSaving(false)
     if (error) showToast(`Error al guardar: ${error.message}`, 'error')
@@ -1042,9 +1019,13 @@ export default function ProviderDashboard() {
           </div>
           <div className="pdash__tabs">
             {tabs.map(t => (
-              <button key={t.id}
+              <button
+                key={t.id}
                 className={`pdash__tab${activeTab === t.id ? ' pdash__tab--active' : ''}`}
-                onClick={() => setActiveTab(t.id)}>
+                onClick={() => {
+                  setActiveTab(t.id)
+                  setSearchParams({ tab: t.id })
+                }}>
                 {t.label}
               </button>
             ))}
@@ -1065,8 +1046,7 @@ export default function ProviderDashboard() {
               <p className="t-sm" style={{ color: 'var(--text-400)', marginTop: 8 }}>
                 {t('pdash.no_provider_id')} <code style={{ fontSize: '0.75rem', background: 'var(--iris-50)', padding: '2px 6px', borderRadius: 4 }}>{user?.id}</code>
               </p>
-              <p className="t-sm" style={{ color: 'var(--text-400)', marginTop: 4 }}
-                dangerouslySetInnerHTML={{ __html: t('pdash.no_provider_admin_hint') }} />
+              <p className="t-sm" style={{ color: 'var(--text-400)', marginTop: 4 }} dangerouslySetInnerHTML={{ __html: t('pdash.no_provider_admin_hint') }} />
             </div>
           ) : (
             <>
@@ -1074,9 +1054,7 @@ export default function ProviderDashboard() {
                 <ProviderProfileEditor provider={provider} tier={tier} onSave={handleSave} saving={saving}
                   onAvatarUpload={handleAvatarUpload} avatarUploading={avatarUploading} />
               )}
-              {activeTab === 'mensajes' && (
-                <SectionMensajes provider={provider} />
-              )}
+              {activeTab === 'mensajes' && <SectionMensajes provider={provider} />}
               {activeTab === 'metricas' && (
                 <SectionMetricas
                   tier={tier} metrics={metrics} activity={activity}
@@ -1088,20 +1066,14 @@ export default function ProviderDashboard() {
               {activeTab === 'herramientas' && (
                 <SectionHerramientas tier={tier} provider={provider} onSave={handleSave} saving={saving} />
               )}
-              {activeTab === 'reservas' && (
-                <SectionReservas provider={provider} tier={tier} />
-              )}
-              {activeTab === 'miplan' && (
-                <SectionMiPlan tier={tier} provider={provider} onProviderUpdate={p => setProvider(p)} />
-              )}
+              {activeTab === 'reservas' && <SectionReservas provider={provider} tier={tier} />}
+              {activeTab === 'miplan' && <SectionMiPlan tier={tier} provider={provider} onProviderUpdate={p => setProvider(p)} />}
             </>
           )}
         </div>
       </div>
 
-      {toast && (
-        <div className={`pdash__toast pdash__toast--${toast.type}`}>{toast.msg}</div>
-      )}
+      {toast && <div className={`pdash__toast pdash__toast--${toast.type}`}>{toast.msg}</div>}
     </main>
   )
 }
