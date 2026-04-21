@@ -363,7 +363,7 @@ export default function ProviderPage() {
                   <h1 className="ppage__name d-lg">{name}</h1>
                   <p className="ppage__service t-md">{service}</p>
                   {ratingVisible && <PawRating rating={avg} count={count} size="md" />}
-                  {verified && <VerificationBadge variant="pill" theme="dark" />}
+                  {verified && <VerificationBadge variant="pill" theme="light" />}
                 </div>
               </div>
 
