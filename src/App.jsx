@@ -15,6 +15,7 @@ import VerificacionPage     from './pages/VerificacionPage'
 import ProviderPage         from './pages/ProviderPage'
 import FirstStepsPage       from './pages/FirstStepsPage'
 import MigrantAccountPage   from './pages/MigrantAccountPage'
+import BookingRoom          from './pages/BookingRoom'
 import ProtectedRoute       from './components/ProtectedRoute'
 import RemesasFloat        from './components/RemesasFloat'
 import { AuthProvider }     from './hooks/useAuth'
@@ -83,6 +84,11 @@ function Layout() {
         <Route path="/cuenta" element={
           <ProtectedRoute>
             <MigrantAccountPage />
+          </ProtectedRoute>
+        } />
+        <Route path="/sala/:bookingId" element={
+          <ProtectedRoute>
+            <BookingRoom />
           </ProtectedRoute>
         } />
         <Route path="/mi-perfil"            element={
