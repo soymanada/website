@@ -892,7 +892,7 @@ export default function ProviderDashboard() {
     { id: 'metricas',     icon: '📊', label: t('pdash.tab_metricas_label') },
     { id: 'reservas',     icon: '📅', label: t('pdash.tab_reservas_label') },
     { id: 'mensajes',     icon: '💬', label: t('pdash.tab_mensajes_label') },
-    { id: 'manual',       icon: '📖', label: 'Manual' },
+    { id: 'ayuda',        icon: '📖', label: 'Ayuda' },
   ]
 
   const tierLabel = tier
@@ -905,50 +905,52 @@ export default function ProviderDashboard() {
       {/* ── Hero ── */}
       <div className="pdash__hero">
         <div className="pdash__hero-orb" />
-        <div className="pdash__hero-inner">
-          <div>
-            <h1 className="pdash__hero-title d-lg">
-              {provider.name || t('pdash.unnamed')}
-            </h1>
-            {tierLabel && (
-              <span className="pdash__tier-badge">
-                <span className="pdash__tier-dot" />
-                {tierLabel}
-              </span>
-            )}
-          </div>
-          <div className="pdash__hero-right">
-            {provider.slug && (
-              <a
-                href={`/proveedor/${provider.slug}`}
-                target="_blank"
-                rel="noopener noreferrer"
+        <div className="pdash__hero-inner-wrap">
+          <div className="pdash__hero-inner">
+            <div>
+              <h1 className="pdash__hero-title d-lg">
+                {provider.name || t('pdash.unnamed')}
+              </h1>
+              {tierLabel && (
+                <span className="pdash__tier-badge">
+                  <span className="pdash__tier-dot" />
+                  {tierLabel}
+                </span>
+              )}
+            </div>
+            <div className="pdash__hero-right">
+              {provider.slug && (
+                <a
+                  href={`/proveedor/${provider.slug}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="pdash__signout"
+                >
+                  Ver perfil público ↗
+                </a>
+              )}
+              <button
                 className="pdash__signout"
+                onClick={async () => { await supabase.auth.signOut(); window.location.href = '/' }}
               >
-                Ver perfil público ↗
-              </a>
-            )}
-            <button
-              className="pdash__signout"
-              onClick={async () => { await supabase.auth.signOut(); window.location.href = '/' }}
-            >
-              Cerrar sesión
-            </button>
+                Cerrar sesión
+              </button>
+            </div>
           </div>
-        </div>
 
-        {/* Tabs dentro del hero */}
-        <div className="pdash__tabs">
-          {TABS.map(tab => (
-            <button
-              key={tab.id}
-              className={`pdash__tab${activeTab === tab.id ? ' pdash__tab--active' : ''}`}
-              onClick={() => setActiveTab(tab.id)}
-            >
-              <span className="pdash__tab-icon">{tab.icon}</span>
-              <span className="pdash__tab-label">{tab.label}</span>
-            </button>
-          ))}
+          {/* Tabs dentro del hero */}
+          <div className="pdash__tabs">
+            {TABS.map(tab => (
+              <button
+                key={tab.id}
+                className={`pdash__tab${activeTab === tab.id ? ' pdash__tab--active' : ''}`}
+                onClick={() => setActiveTab(tab.id)}
+              >
+                <span className="pdash__tab-icon">{tab.icon}</span>
+                <span className="pdash__tab-label">{tab.label}</span>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -998,7 +1000,7 @@ export default function ProviderDashboard() {
           {activeTab === 'mensajes' && (
             <SectionMensajes provider={provider} />
           )}
-          {activeTab === 'manual' && (
+          {activeTab === 'ayuda' && (
             <ManualProveedor provider={provider} />
           )}
         </div>
