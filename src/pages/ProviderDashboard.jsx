@@ -505,7 +505,7 @@ function WAVisibilityToggle({ tier, provider }) {
       setSaved(true)
       setTimeout(() => setSaved(false), 2000)
     } else {
-      setEnabled(!val) // revert on error
+      setEnabled(!val)
       console.warn('[WAVisibilityToggle]', error.message)
     }
   }
@@ -592,7 +592,6 @@ function SectionReservas({ provider, tier }) {
 
       const booking = bookings.find(b => b.id === id)
 
-      // Confirmación → email al migrante
       if (newStatus === 'confirmed' && booking?.user_id && provider?.id) {
         const callLink = provider.call_link
           || (tier === 'gold' ? `https://meet.jit.si/soymanada-${booking.id}` : null)
@@ -611,7 +610,6 @@ function SectionReservas({ provider, tier }) {
         }).catch(() => {})
       }
 
-      // Completada → solicitud de reseña
       if (newStatus === 'completed' && booking?.user_id && provider?.slug && provider?.name) {
         const bookingDate = new Date(booking.start_at).toLocaleDateString('es-CL', {
           weekday: 'long', day: 'numeric', month: 'long',
@@ -821,13 +819,11 @@ export default function ProviderDashboard() {
 
     const payload = { ...formData }
 
-    // normalize arrays
     if (typeof payload.languages === 'string')
       payload.languages = payload.languages.split(',').map(s => s.trim()).filter(Boolean)
     if (typeof payload.countries === 'string')
       payload.countries = payload.countries.split(',').map(s => s.trim()).filter(Boolean)
 
-    // map whatsapp field
     if ('whatsapp' in payload) {
       payload.contact_whatsapp = payload.whatsapp
       delete payload.whatsapp
@@ -846,7 +842,6 @@ export default function ProviderDashboard() {
       setSaveMsg('✓ ' + t('pdash.saved_ok'))
       setTimeout(() => setSaveMsg(''), 3000)
 
-      // trigger DeepL translation if description changed
       if (payload.description || payload.service) {
         supabase.functions.invoke('translate-provider', {
           body: { provider_id: provider.id }
@@ -897,57 +892,64 @@ export default function ProviderDashboard() {
     { id: 'metricas',     icon: '📊', label: t('pdash.tab_metricas_label') },
     { id: 'reservas',     icon: '📅', label: t('pdash.tab_reservas_label') },
     { id: 'mensajes',     icon: '💬', label: t('pdash.tab_mensajes_label') },
+    { id: 'manual',       icon: '📖', label: 'Manual' },
   ]
+
+  const tierLabel = tier
+    ? tier.charAt(0).toUpperCase() + tier.slice(1)
+    : null
 
   return (
     <div className="pdash">
-      {/* Header */}
-      <div className="pdash__header">
-        <div className="pdash__header-inner">
-          <div className="pdash__header-left">
-            <div className="pdash__header-avatar">
-              {provider.avatar_url
-                ? <img src={provider.avatar_url} alt="Avatar" />
-                : <span>{(provider.name || '?')[0].toUpperCase()}</span>
-              }
-            </div>
-            <div>
-              <h1 className="pdash__header-name">{provider.name || t('pdash.unnamed')}</h1>
-              <div className="pdash__header-meta">
-                {tier && (
-                  <span className={`pdash__badge pdash__badge--${tier}`}>
-                    {tier.charAt(0).toUpperCase() + tier.slice(1)}
-                  </span>
-                )}
-                {provider.slug && (
-                  <a
-                    href={`/proveedor/${provider.slug}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="pdash__profile-link t-xs"
-                  >
-                    Ver perfil público ↗
-                  </a>
-                )}
-              </div>
-            </div>
-          </div>
-          <ManualProveedor provider={provider} />
-        </div>
-      </div>
 
-      {/* Tabs */}
-      <div className="pdash__tabs">
-        {TABS.map(tab => (
-          <button
-            key={tab.id}
-            className={`pdash__tab${activeTab === tab.id ? ' pdash__tab--active' : ''}`}
-            onClick={() => setActiveTab(tab.id)}
-          >
-            <span className="pdash__tab-icon">{tab.icon}</span>
-            <span className="pdash__tab-label">{tab.label}</span>
-          </button>
-        ))}
+      {/* ── Hero ── */}
+      <div className="pdash__hero">
+        <div className="pdash__hero-orb" />
+        <div className="pdash__hero-inner">
+          <div>
+            <h1 className="pdash__hero-title d-lg">
+              {provider.name || t('pdash.unnamed')}
+            </h1>
+            {tierLabel && (
+              <span className="pdash__tier-badge">
+                <span className="pdash__tier-dot" />
+                {tierLabel}
+              </span>
+            )}
+          </div>
+          <div className="pdash__hero-right">
+            {provider.slug && (
+              <a
+                href={`/proveedor/${provider.slug}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="pdash__signout"
+              >
+                Ver perfil público ↗
+              </a>
+            )}
+            <button
+              className="pdash__signout"
+              onClick={async () => { await supabase.auth.signOut(); window.location.href = '/' }}
+            >
+              Cerrar sesión
+            </button>
+          </div>
+        </div>
+
+        {/* Tabs dentro del hero */}
+        <div className="pdash__tabs">
+          {TABS.map(tab => (
+            <button
+              key={tab.id}
+              className={`pdash__tab${activeTab === tab.id ? ' pdash__tab--active' : ''}`}
+              onClick={() => setActiveTab(tab.id)}
+            >
+              <span className="pdash__tab-icon">{tab.icon}</span>
+              <span className="pdash__tab-label">{tab.label}</span>
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Save message */}
@@ -957,45 +959,51 @@ export default function ProviderDashboard() {
         </div>
       )}
 
-      {/* Content */}
-      <div className="pdash__content">
-        {activeTab === 'perfil' && (
-          <ProviderProfileEditor
-            provider={provider}
-            tier={tier}
-            onSave={handleSave}
-            saving={saving}
-            onAvatarUpload={handleAvatarUpload}
-            avatarUploading={avatarUploading}
-          />
-        )}
-        {activeTab === 'herramientas' && (
-          <SectionHerramientas
-            tier={tier}
-            provider={provider}
-            onSave={handleSave}
-            saving={saving}
-          />
-        )}
-        {activeTab === 'metricas' && (
-          <SectionMetricas
-            tier={tier}
-            metrics={metrics}
-            activity={activity}
-            hourlyActivity={hourlyActivity}
-            feedback={feedback}
-            provider={provider}
-            metricsLoading={metricsLoading}
-            messagingStats={messagingStats}
-          />
-        )}
-        {activeTab === 'reservas' && (
-          <SectionReservas provider={provider} tier={tier} />
-        )}
-        {activeTab === 'mensajes' && (
-          <SectionMensajes provider={provider} />
-        )}
+      {/* ── Content ── */}
+      <div className="pdash__body">
+        <div className="pdash__container">
+          {activeTab === 'perfil' && (
+            <ProviderProfileEditor
+              provider={provider}
+              tier={tier}
+              onSave={handleSave}
+              saving={saving}
+              onAvatarUpload={handleAvatarUpload}
+              avatarUploading={avatarUploading}
+            />
+          )}
+          {activeTab === 'herramientas' && (
+            <SectionHerramientas
+              tier={tier}
+              provider={provider}
+              onSave={handleSave}
+              saving={saving}
+            />
+          )}
+          {activeTab === 'metricas' && (
+            <SectionMetricas
+              tier={tier}
+              metrics={metrics}
+              activity={activity}
+              hourlyActivity={hourlyActivity}
+              feedback={feedback}
+              provider={provider}
+              metricsLoading={metricsLoading}
+              messagingStats={messagingStats}
+            />
+          )}
+          {activeTab === 'reservas' && (
+            <SectionReservas provider={provider} tier={tier} />
+          )}
+          {activeTab === 'mensajes' && (
+            <SectionMensajes provider={provider} />
+          )}
+          {activeTab === 'manual' && (
+            <ManualProveedor provider={provider} />
+          )}
+        </div>
       </div>
+
     </div>
   )
 }
