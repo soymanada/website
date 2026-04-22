@@ -62,7 +62,6 @@ function ProviderProfileEditor({ provider, tier, onSave, saving, onAvatarUpload,
     whatsapp:            provider?.contact_whatsapp    ?? '',
     calendar_link:       provider?.calendar_link       ?? '',
     redirect_email:      provider?.redirect_email      ?? '',
-    predefined_responses:(provider?.predefined_responses ?? []).join('\n'),
   })
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
 
@@ -693,10 +692,16 @@ function SectionReservas({ provider, tier }) {
                     <strong className="t-sm">{fmtDt(b.start_at)}</strong>
                     {b.notes && <p className="t-xs pdash__booking-notes">"{b.notes}"</p>}
                   </div>
-                  <button className="btn btn-ghost btn-sm" disabled={updating === b.id}
-                    onClick={() => handleStatus(b.id, 'completed')}>
-                    <span>{t('pdash.reservas_complete')}</span>
-                  </button>
+                  <div className="pdash__booking-actions">
+                    <button className="btn btn-ghost btn-sm" disabled={updating === b.id}
+                      onClick={() => handleStatus(b.id, 'completed')}>
+                      <span>{t('pdash.reservas_complete')}</span>
+                    </button>
+                    <button className="btn btn-ghost btn-sm" disabled={updating === b.id}
+                      onClick={() => handleStatus(b.id, 'cancelled')}>
+                      <span>{t('pdash.reservas_cancel')}</span>
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -704,13 +709,13 @@ function SectionReservas({ provider, tier }) {
 
           {past.length > 0 && (
             <div className="pdash__bookings-group">
-              <h3 className="pdash__bookings-group-title t-sm">{t('pdash.reservas_history')}</h3>
+              <h3 className="pdash__bookings-group-title t-sm">{t('pdash.reservas_past', { count: past.length })}</h3>
               {past.map(b => (
-                <div key={b.id} className="pdash__booking-card pdash__booking-card--past">
-                  <span className="t-xs" style={{ color: 'var(--text-400)' }}>{fmtDt(b.start_at)}</span>
-                  <span className={`pdash__booking-status pdash__booking-status--${b.status}`}>
-                    {STATUS_LABELS[b.status]}
-                  </span>
+                <div key={b.id} className={`pdash__booking-card pdash__booking-card--${b.status}`}>
+                  <div className="pdash__booking-info">
+                    <strong className="t-sm">{fmtDt(b.start_at)}</strong>
+                    <span className="pdash__booking-status t-xs">{STATUS_LABELS[b.status]}</span>
+                  </div>
                 </div>
               ))}
             </div>
@@ -721,377 +726,112 @@ function SectionReservas({ provider, tier }) {
   )
 }
 
-// ── Sección Mi Plan ──────────────────────────────────────────────
-const CHECK_ICON = (
-  <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-    <circle cx="8" cy="8" r="7" fill="var(--iris-100)"/>
-    <path d="M5 8l2.5 2.5 4-4" stroke="var(--iris-600)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
-)
-
-const MP_ENDPOINT = 'https://omlpstrmlxeurrqjbear.supabase.co/functions/v1/create-mercadopago-subscription'
-
-function UpgradeButton({ planCode, label, className = 'btn btn-primary btn-sm' }) {
+// ── Upgrade button ────────────────────────────────────────────────
+function UpgradeButton({ planCode, label }) {
+  const { user } = useAuth()
   const [loading, setLoading] = useState(false)
-  const [error,   setError]   = useState(null)
 
   const handleUpgrade = async () => {
-    setError(null)
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session) { setError('Debes iniciar sesión para continuar.'); return }
     setLoading(true)
     try {
-      const res = await fetch(MP_ENDPOINT, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${session.access_token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ planCode }),
+      const { data, error } = await supabase.functions.invoke('create-checkout', {
+        body: { plan_code: planCode, user_id: user?.id },
       })
-      const data = await res.json()
-      if (!res.ok || !data.init_point) throw new Error(data.error ?? 'Error al crear la suscripción')
-      window.location.href = data.init_point
+      if (error) throw error
+      if (data?.url) window.location.href = data.url
     } catch (err) {
-      setError('Hubo un problema al procesar tu suscripción. Intenta de nuevo.')
+      console.error('[UpgradeButton]', err)
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <div className="pdash__upgrade-btn-wrap">
-      <button className={className} onClick={handleUpgrade} disabled={loading}>
-        {loading
-          ? <><span className="pdash__upgrade-spinner" aria-hidden="true" /> <span>Procesando…</span></>
-          : <span>{label}</span>
-        }
-      </button>
-      {error && <p className="pdash__upgrade-error t-xs">{error}</p>}
-    </div>
+    <button className="btn btn-primary" onClick={handleUpgrade} disabled={loading}>
+      <span>{loading ? 'Redirigiendo…' : label}</span>
+    </button>
   )
 }
 
-// Early-bird: 3 months free Gold. After this date: 1 month free Gold.
-const EARLY_BIRD_END = new Date('2026-06-30T23:59:59Z')
-
-function TrialBanner({ provider, onActivated }) {
-  const [busy,  setBusy]  = useState(false)
-  const [error, setError] = useState(null)
-
-  const now         = new Date()
-  const isEarlyBird = now < EARLY_BIRD_END
-  const trialMonths = isEarlyBird ? 3 : 1
-  const alreadyUsed = !!provider?.trial_activated_at
-  const trialActive = alreadyUsed && provider?.trial_ends_at && new Date(provider.trial_ends_at) > now
-  const daysLeft    = trialActive ? Math.ceil((new Date(provider.trial_ends_at) - now) / 86400000) : 0
-  const earlyBirdDaysLeft = Math.max(0, Math.ceil((EARLY_BIRD_END - now) / 86400000))
-
-  const activate = async () => {
-    setBusy(true); setError(null)
-    const endsAt = new Date(now.getTime() + trialMonths * 30 * 24 * 60 * 60 * 1000)
-    const { data, error: err } = await supabase
-      .from('providers')
-      .update({ tier: 'gold', trial_activated_at: now.toISOString(), trial_ends_at: endsAt.toISOString() })
-      .eq('id', provider.id)
-      .select().single()
-    if (err) { setError('No pudimos activar el trial. Intenta de nuevo.'); setBusy(false); return }
-    onActivated?.(data)
-    setBusy(false)
-  }
-
-  if (trialActive) return (
-    <div className="pdash__trial-banner pdash__trial-banner--active">
-      <span className="pdash__trial-icon">✨</span>
-      <div>
-        <strong>Gold gratuito activo — {daysLeft} {daysLeft === 1 ? 'día' : 'días'} restantes</strong>
-        <p className="t-xs">Aprovecha al máximo tus herramientas Gold antes de que termine.</p>
-      </div>
-    </div>
-  )
-
-  if (alreadyUsed) return (
-    <div className="pdash__trial-banner pdash__trial-banner--expired">
-      <span className="pdash__trial-icon">⏰</span>
-      <div>
-        <strong>Tu período Gold gratuito terminó</strong>
-        <p className="t-xs">Activa Silver o Gold para seguir disfrutando las herramientas premium.</p>
-      </div>
-    </div>
-  )
-
-  return (
-    <div className="pdash__trial-banner pdash__trial-banner--cta">
-      <div>
-        <span className="pdash__trial-pill">{isEarlyBird ? '🚀 Early Bird' : '🎁 Bienvenida'}</span>
-        <strong className="pdash__trial-headline">
-          {isEarlyBird
-            ? `¡${trialMonths} meses Gold GRATIS por ser de los primeros!`
-            : '1 mes Gold GRATIS para nuevos proveedores'}
-        </strong>
-        <p className="t-xs pdash__trial-desc">
-          {isEarlyBird
-            ? `Oferta exclusiva Early Bird. Quedan ${earlyBirdDaysLeft} días para aprovecharla.`
-            : 'Prueba todas las herramientas Gold sin costo durante tu primer mes.'}
-        </p>
-        {error && <p className="pdash__upgrade-error t-xs">{error}</p>}
-        <button className="pdash__trial-cta-btn" onClick={activate} disabled={busy}>
-          {busy
-            ? <><span className="pdash__upgrade-spinner" aria-hidden="true" /> Activando…</>
-            : `Activar ${trialMonths} ${trialMonths === 1 ? 'mes' : 'meses'} Gold gratis`}
-        </button>
-      </div>
-    </div>
-  )
-}
-
-function SectionMiPlan({ tier, provider, onProviderUpdate }) {
-  const { t } = useTranslation()
-  const current = tier ?? 'bronze'
-
-  const TIERS_DEF = [
-    {
-      key: 'bronze', icon: '🥉', label: 'Bronze',
-      price: 'Gratis', priceLocal: null,
-      features: t('pdash.tier_bronze_features', { returnObjects: true }),
-      ctaLabel: null,
-    },
-    {
-      key: 'silver', icon: '🥈', label: 'Silver', planCode: 'activa',
-      price: '$4.990 CLP', priceLocal: null,
-      features: t('pdash.tier_silver_features', { returnObjects: true }),
-      ctaLabel: t('pdash.tier_silver_cta'),
-    },
-    {
-      key: 'gold', icon: '🥇', label: 'Gold', planCode: 'pro',
-      price: '$14.990 CLP', priceLocal: null,
-      features: t('pdash.tier_gold_features', { returnObjects: true }),
-      ctaLabel: t('pdash.tier_gold_cta'),
-    },
-  ]
-
-  return (
-    <div className="pdash__section">
-      <div className="pdash__section-header">
-        <h2 className="pdash__section-title d-md">{t('pdash.tab_miplan_label')}</h2>
-        <p className="t-sm pdash__section-sub">{t('pdash.miplan_sub')}</p>
-      </div>
-
-      {/* Plan actual badge */}
-      <div className="pdash__plan-current">
-        <span className="pdash__plan-current-label t-xs">{t('pdash.miplan_current_label')}</span>
-        <div className={`pdash__plan-current-badge pdash__plan-current-badge--${current}`}>
-          {TIERS_DEF.find(td => td.key === current)?.icon} {current.charAt(0).toUpperCase() + current.slice(1)}
-        </div>
-        {current === 'bronze' && (
-          <p className="t-xs" style={{ color: 'var(--text-400)', marginTop: 8 }}>
-            {t('pdash.miplan_upgrade_bronze')}
-          </p>
-        )}
-        {current === 'silver' && (
-          <p className="t-xs" style={{ color: 'var(--text-400)', marginTop: 8 }}>
-            {t('pdash.miplan_upgrade_silver')}
-          </p>
-        )}
-        {current === 'gold' && (
-          <p className="t-xs" style={{ color: 'var(--text-400)', marginTop: 8 }}>
-            {t('pdash.miplan_max_gold')}
-          </p>
-        )}
-      </div>
-
-      {/* Trial banner — solo para Bronze sin trial activo */}
-      {provider && current === 'bronze' && (
-        <TrialBanner provider={provider} onActivated={updated => {
-          onProviderUpdate?.(updated)
-          window.location.reload()
-        }} />
-      )}
-
-      {/* Comparación de tiers */}
-      <div className="pdash__plan-grid">
-        {TIERS_DEF.map(td => {
-          const isCurrent = td.key === current
-          const isLocked  = (current === 'bronze' && td.key !== 'bronze') ||
-                            (current === 'silver' && td.key === 'gold')
-          return (
-            <div key={td.key} className={`pdash__plan-card${isCurrent ? ' pdash__plan-card--active' : ''}${isLocked ? ' pdash__plan-card--upgrade' : ''}`}>
-              {isCurrent && (
-                <div className="pdash__plan-card-current-tag">{t('pdash.miplan_your_plan')}</div>
-              )}
-              <div className="pdash__plan-card-top">
-                <span className="pdash__plan-card-icon">{td.icon}</span>
-                <div>
-                  <strong className="t-sm" style={{ color: 'var(--iris-900)' }}>{td.label}</strong>
-                  <div className="pdash__plan-card-price">
-                    <span className="pdash__plan-card-price-main">{td.price}</span>
-                    {td.priceLocal && <span className="t-xs" style={{ color: 'var(--text-300)' }}> · {td.priceLocal}/mes</span>}
-                  </div>
-                </div>
-              </div>
-              <ul className="pdash__plan-card-features">
-                {(Array.isArray(td.features) ? td.features : []).map(f => (
-                  <li key={f} className="pdash__plan-card-feature">
-                    {CHECK_ICON}
-                    <span className="t-xs">{f}</span>
-                  </li>
-                ))}
-              </ul>
-              {!isCurrent && td.ctaLabel && td.planCode && (
-                <UpgradeButton
-                  planCode={td.planCode}
-                  label={td.ctaLabel}
-                  className={`btn btn-sm pdash__plan-card-cta ${td.key === 'gold' ? 'pdash__plan-card-cta--gold' : 'btn-primary'}`}
-                />
-              )}
-            </div>
-          )
-        })}
-      </div>
-
-      <p className="t-xs" style={{ color: 'var(--text-300)', textAlign: 'center' }}>
-        Silver $4.990 CLP/mes · Gold $14.990 CLP/mes · Sin compromiso, cancela cuando quieras.{' '}
-        <Link to="/planes" style={{ color: 'var(--iris-500)' }}>Ver página de planes →</Link>
-      </p>
-    </div>
-  )
-}
-
-// ── Dashboard principal ──────────────────────────────────────────
+// ── Main dashboard ────────────────────────────────────────────────
 export default function ProviderDashboard() {
-  const { user, tier, isAdmin, signOut } = useAuth()
+  const { t }    = useTranslation()
+  const { user, loading: authLoading } = useAuth()
 
-  if (isAdmin) return <Navigate to="/admin" replace />
-  const [provider,       setProvider]       = useState(null)
-  const [metrics,        setMetrics]        = useState(null)
-  const [activity,       setActivity]       = useState([])
-  const [hourlyActivity, setHourlyActivity] = useState([])
-  const [feedback,       setFeedback]       = useState([])
-  const [messagingStats, setMessagingStats] = useState(null)
-  const [loading,        setLoading]        = useState(true)
-  const [metricsLoading, setMetricsLoading] = useState(true)
-  const [saving,         setSaving]         = useState(false)
-  const [avatarUploading,setAvatarUploading]= useState(false)
-  const [toast,          setToast]          = useState(null)
-  const [activeTab,      setActiveTab]      = useState('perfil')
+  const [provider,        setProvider]        = useState(null)
+  const [tier,            setTier]            = useState(null)
+  const [providerLoading, setProviderLoading] = useState(true)
+  const [saving,          setSaving]          = useState(false)
+  const [avatarUploading, setAvatarUploading] = useState(false)
+  const [saveMsg,         setSaveMsg]         = useState('')
+  const [activeTab,       setActiveTab]       = useState('perfil')
 
+  // metrics
+  const [metrics,         setMetrics]         = useState(null)
+  const [activity,        setActivity]        = useState([])
+  const [hourlyActivity,  setHourlyActivity]  = useState([])
+  const [feedback,        setFeedback]        = useState([])
+  const [metricsLoading,  setMetricsLoading]  = useState(false)
+  const [messagingStats,  setMessagingStats]  = useState(null)
+
+  // ── load provider ────────────────────────────────────────────────
   useEffect(() => {
-    document.title = 'Mi perfil | SoyManada'
-    return () => { document.title = 'SoyManada – Directorio para la comunidad migrante' }
-  }, [])
-
-  useEffect(() => {
-    const load = async () => {
-      setLoading(true)
+    if (!user) return
+    ;(async () => {
+      setProviderLoading(true)
       const { data, error } = await supabase
         .from('providers')
         .select('*')
         .eq('user_id', user.id)
-        .order('created_at', { ascending: true })
-        .limit(1)
-        .maybeSingle()
-      if (data) setProvider(data)
-      setLoading(false)
-
-      // Conversation stats — disponible para todos los tiers
-      if (data?.id) {
-        const cRes = await supabase
-          .from('conversations')
-          .select('status')
-          .eq('provider_id', data.id)
-        if (cRes.data) {
-          const total     = cRes.data.length
-          const responded = cRes.data.filter(c =>
-            c.status === 'replied' || c.status === 'closed'
-          ).length
-          setMessagingStats({
-            total,
-            replyRate: total > 0 ? Math.round((responded / total) * 100) : null,
-          })
-        }
+        .single()
+      if (!error && data) {
+        setProvider(data)
+        setTier(data.tier ?? null)
       }
+      setProviderLoading(false)
+    })()
+  }, [user])
 
-      // Métricas solo para silver/gold
-      if (tier === 'silver' || tier === 'gold') {
-        setMetricsLoading(true)
-        const [mRes, aRes, hRes, fRes] = await Promise.all([
-          supabase.from('provider_metrics').select('*').eq('provider_id', data?.id).single(),
-          supabase.from('provider_activity_weekly').select('dow, views, contacts').eq('provider_id', data?.id),
-          supabase.from('provider_activity_hourly').select('hour_utc, views').eq('provider_id', data?.id),
-          supabase.from('provider_feedback_keywords').select('keyword, count').eq('provider_id', data?.id).gte('count', 2),
-        ])
-        if (mRes.data)  setMetrics(mRes.data)
-        if (aRes.data)  setActivity(aRes.data)
-        if (hRes.data)  setHourlyActivity(hRes.data)
-        if (fRes.data)  setFeedback(fRes.data)
-        setMetricsLoading(false)
-      }
-    }
-    if (user) load()
-  }, [user, tier])
-
-  const showToast = (msg, type = 'success') => {
-    setToast({ msg, type })
-    setTimeout(() => setToast(null), 3000)
-  }
-
-  const handleAvatarUpload = async (file) => {
+  // ── load metrics ────────────────────────────────────────────────
+  useEffect(() => {
     if (!provider?.id) return
-    if (file.size > 2 * 1024 * 1024) { showToast('La imagen debe ser menor a 2 MB.', 'error'); return }
-    setAvatarUploading(true)
-    const ext = file.name.split('.').pop().toLowerCase()
-    const path = `${provider.id}/avatar.${ext}`
-    const { error } = await supabase.storage
-      .from('avatars')
-      .upload(path, file, { upsert: true, contentType: file.type })
-    if (error) {
-      showToast(`Error al subir: ${error.message}`, 'error')
-    } else {
-      const { data: { publicUrl } } = supabase.storage.from('avatars').getPublicUrl(path)
-      await supabase.from('providers').update({ avatar_url: publicUrl }).eq('id', provider.id)
-      setProvider(p => ({ ...p, avatar_url: publicUrl }))
-      showToast('Foto actualizada.')
-    }
-    setAvatarUploading(false)
-  }
+    ;(async () => {
+      setMetricsLoading(true)
+      const [viewsRes, actRes, hourRes, fbRes, msgRes] = await Promise.all([
+        supabase.rpc('get_provider_metrics',      { p_provider_id: provider.id }),
+        supabase.rpc('get_provider_weekly_activity', { p_provider_id: provider.id }),
+        supabase.rpc('get_provider_hourly_activity', { p_provider_id: provider.id }),
+        supabase.from('provider_feedback').select('rating,comment,created_at').eq('provider_id', provider.id).order('created_at', { ascending: false }).limit(10),
+        supabase.rpc('get_provider_messaging_stats', { p_provider_id: provider.id }),
+      ])
+      if (!viewsRes.error)  setMetrics(viewsRes.data?.[0] ?? null)
+      if (!actRes.error)    setActivity(actRes.data ?? [])
+      if (!hourRes.error)   setHourlyActivity(hourRes.data ?? [])
+      if (!fbRes.error)     setFeedback(fbRes.data ?? [])
+      if (!msgRes.error)    setMessagingStats(msgRes.data?.[0] ?? null)
+      setMetricsLoading(false)
+    })()
+  }, [provider?.id])
 
-  const handleSave = async (form) => {
+  // ── save handler ─────────────────────────────────────────────────
+  const handleSave = async (formData) => {
+    if (!user) return
     setSaving(true)
+    setSaveMsg('')
 
-    // Construir el payload con SOLO los campos que existen en la tabla providers de Supabase.
-    // Nunca usar spread del objeto provider completo — puede incluir campos del JSON local
-    // (benefit, testimonial, contact, etc.) que no existen en la DB y rompen el UPDATE.
-    const payload = {}
+    const payload = { ...formData }
 
-    if (form.name        !== undefined) payload.name        = form.name
-    if (form.description !== undefined) payload.description = form.description
-    if (form.service     !== undefined) payload.service     = form.service
-    if (form.whatsapp    !== undefined) payload.contact_whatsapp = form.whatsapp || null
-    if (form.payment_link  !== undefined) payload.payment_link  = form.payment_link
-    if (form.calendar_link !== undefined) payload.calendar_link = form.calendar_link
-    if (form.call_link     !== undefined) payload.call_link     = form.call_link || null
-    if (form.redirect_email !== undefined) payload.redirect_email = form.redirect_email
+    // normalize arrays
+    if (typeof payload.languages === 'string')
+      payload.languages = payload.languages.split(',').map(s => s.trim()).filter(Boolean)
+    if (typeof payload.countries === 'string')
+      payload.countries = payload.countries.split(',').map(s => s.trim()).filter(Boolean)
 
-    if (form.languages !== undefined)
-      payload.languages = typeof form.languages === 'string'
-        ? form.languages.split(',').map(s => s.trim()).filter(Boolean)
-        : form.languages
-
-    if (form.countries !== undefined)
-      payload.countries = typeof form.countries === 'string'
-        ? form.countries.split(',').map(s => s.trim()).filter(Boolean)
-        : form.countries
-
-    if (form.predefined_responses !== undefined)
-      payload.predefined_responses = typeof form.predefined_responses === 'string'
-        ? form.predefined_responses.split('\n').filter(Boolean)
-        : form.predefined_responses
-
-    // Traducciones manuales
-    if (form.service_en     !== undefined) payload.service_en     = form.service_en
-    if (form.service_fr     !== undefined) payload.service_fr     = form.service_fr
-    if (form.description_en !== undefined) payload.description_en = form.description_en
-    if (form.description_fr !== undefined) payload.description_fr = form.description_fr
+    // map whatsapp field
+    if ('whatsapp' in payload) {
+      payload.contact_whatsapp = payload.whatsapp
+      delete payload.whatsapp
+    }
 
     const { error } = await supabase
       .from('providers')
@@ -1099,116 +839,163 @@ export default function ProviderDashboard() {
       .eq('user_id', user.id)
 
     setSaving(false)
-    if (error) showToast(`Error al guardar: ${error.message}`, 'error')
-    else { showToast('Perfil guardado correctamente.'); setProvider(p => ({ ...p, ...payload })) }
+    if (error) {
+      setSaveMsg('❌ ' + error.message)
+    } else {
+      setProvider(prev => ({ ...prev, ...payload }))
+      setSaveMsg('✓ ' + t('pdash.saved_ok'))
+      setTimeout(() => setSaveMsg(''), 3000)
+
+      // trigger DeepL translation if description changed
+      if (payload.description || payload.service) {
+        supabase.functions.invoke('translate-provider', {
+          body: { provider_id: provider.id }
+        }).catch(() => {})
+      }
+    }
   }
 
-  const { t } = useTranslation()
+  // ── avatar upload ─────────────────────────────────────────────────
+  const handleAvatarUpload = async (file) => {
+    if (!user || !provider) return
+    setAvatarUploading(true)
+    const ext  = file.name.split('.').pop()
+    const path = `${user.id}/avatar.${ext}`
+    const { error: upErr } = await supabase.storage
+      .from('provider-avatars')
+      .upload(path, file, { upsert: true, contentType: file.type })
+    if (upErr) { setAvatarUploading(false); return }
 
-  const tabs = [
-    { id: 'perfil',       label: `👤 ${t('pdash.tab_perfil')}` },
-    { id: 'mensajes',     label: `💬 ${t('pdash.tab_mensajes')}` },
-    { id: 'metricas',     label: `📊 ${t('pdash.tab_metricas')}` },
-    { id: 'herramientas', label: `🛠 ${t('pdash.tab_herramientas')}` },
-    { id: 'reservas',     label: `📅 ${t('pdash.tab_reservas')}` },
-    { id: 'miplan',       label: `💎 ${t('pdash.tab_miplan')}` },
-    { id: 'manual',       label: '❓ Ayuda' },
+    const { data: { publicUrl } } = supabase.storage
+      .from('provider-avatars')
+      .getPublicUrl(path)
+
+    const bust = `${publicUrl}?v=${Date.now()}`
+    await supabase.from('providers').update({ avatar_url: bust }).eq('user_id', user.id)
+    setProvider(prev => ({ ...prev, avatar_url: bust }))
+    setAvatarUploading(false)
+  }
+
+  // ── guards ───────────────────────────────────────────────────────
+  if (authLoading || providerLoading) return (
+    <div className="pdash__loading">
+      <div className="pdash__spinner" />
+    </div>
+  )
+  if (!user) return <Navigate to="/login" replace />
+  if (!provider) return (
+    <div className="pdash__empty">
+      <p>{t('pdash.no_provider')}</p>
+      <Link to="/registro-proveedor" className="btn btn-primary">{t('pdash.register_cta')}</Link>
+    </div>
+  )
+
+  // ── tabs config ──────────────────────────────────────────────────
+  const TABS = [
+    { id: 'perfil',       icon: '👤', label: t('pdash.tab_perfil_label') },
+    { id: 'herramientas', icon: '🛠',  label: t('pdash.tab_herramientas_label') },
+    { id: 'metricas',     icon: '📊', label: t('pdash.tab_metricas_label') },
+    { id: 'reservas',     icon: '📅', label: t('pdash.tab_reservas_label') },
+    { id: 'mensajes',     icon: '💬', label: t('pdash.tab_mensajes_label') },
   ]
 
   return (
-    <main className="pdash">
-      <div className="pdash__hero">
-        <div className="pdash__hero-orb" aria-hidden="true" />
-        <div className="container">
-          <div className="pdash__hero-inner">
+    <div className="pdash">
+      {/* Header */}
+      <div className="pdash__header">
+        <div className="pdash__header-inner">
+          <div className="pdash__header-left">
+            <div className="pdash__header-avatar">
+              {provider.avatar_url
+                ? <img src={provider.avatar_url} alt="Avatar" />
+                : <span>{(provider.name || '?')[0].toUpperCase()}</span>
+              }
+            </div>
             <div>
-              <p className="eyebrow" style={{ color: 'rgba(255,255,255,0.7)', borderColor: 'rgba(255,255,255,0.2)', background: 'rgba(255,255,255,0.1)' }}>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor" width="13" height="13" aria-hidden="true">
-                  <ellipse cx="16" cy="25" rx="8" ry="5.5"/>
-                  <ellipse cx="4.5" cy="15" rx="3.2" ry="4" transform="rotate(-25, 4.5, 15)"/>
-                  <ellipse cx="11" cy="8" rx="3.2" ry="4" transform="rotate(-10, 11, 8)"/>
-                  <ellipse cx="21" cy="8" rx="3.2" ry="4" transform="rotate(10, 21, 8)"/>
-                  <ellipse cx="27.5" cy="15" rx="3.2" ry="4" transform="rotate(25, 27.5, 15)"/>
-                </svg>
-                {t('pdash.hero_eyebrow')}
-              </p>
-              <h1 className="d-lg pdash__hero-title">
-                {provider?.name ?? user?.user_metadata?.full_name ?? 'Mi perfil'}
-              </h1>
-            </div>
-            <div className="pdash__hero-right">
-              <div className={`pdash__tier-badge pdash__tier-badge--${tier ?? 'bronze'}`}>
-                <span className="pdash__tier-dot" />
-                {tier ? tier.charAt(0).toUpperCase() + tier.slice(1) : 'Bronze'}
+              <h1 className="pdash__header-name">{provider.name || t('pdash.unnamed')}</h1>
+              <div className="pdash__header-meta">
+                {tier && (
+                  <span className={`pdash__badge pdash__badge--${tier}`}>
+                    {tier.charAt(0).toUpperCase() + tier.slice(1)}
+                  </span>
+                )}
+                {provider.slug && (
+                  <a
+                    href={`/proveedor/${provider.slug}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="pdash__profile-link t-xs"
+                  >
+                    Ver perfil público ↗
+                  </a>
+                )}
               </div>
-              <button className="pdash__signout t-sm" onClick={signOut}>{t('pdash.signout')}</button>
             </div>
           </div>
-          <div className="pdash__tabs">
-            {tabs.map(t => (
-              <button key={t.id}
-                className={`pdash__tab${activeTab === t.id ? ' pdash__tab--active' : ''}`}
-                onClick={() => setActiveTab(t.id)}>
-                {t.label}
-              </button>
-            ))}
-          </div>
+          <ManualProveedor provider={provider} />
         </div>
       </div>
 
-      <div className="pdash__body section">
-        <div className="container pdash__container">
-          {loading ? (
-            <div className="pdash__loading">
-              <div className="pdash__spinner" />
-              <p className="t-sm" style={{ color: 'var(--text-300)' }}>{t('pdash.loading')}</p>
-            </div>
-          ) : !provider ? (
-            <div className="pdash__no-provider">
-              <p className="t-md" style={{ fontWeight: 600 }}>{t('pdash.no_provider_title')}</p>
-              <p className="t-sm" style={{ color: 'var(--text-400)', marginTop: 8 }}>
-                {t('pdash.no_provider_id')} <code style={{ fontSize: '0.75rem', background: 'var(--iris-50)', padding: '2px 6px', borderRadius: 4 }}>{user?.id}</code>
-              </p>
-              <p className="t-sm" style={{ color: 'var(--text-400)', marginTop: 4 }}
-                dangerouslySetInnerHTML={{ __html: t('pdash.no_provider_admin_hint') }} />
-            </div>
-          ) : (
-            <>
-              {activeTab === 'perfil' && (
-                <ProviderProfileEditor provider={provider} tier={tier} onSave={handleSave} saving={saving}
-                  onAvatarUpload={handleAvatarUpload} avatarUploading={avatarUploading} />
-              )}
-              {activeTab === 'mensajes' && (
-                <SectionMensajes provider={provider} />
-              )}
-              {activeTab === 'metricas' && (
-                <SectionMetricas
-                  tier={tier} metrics={metrics} activity={activity}
-                  hourlyActivity={hourlyActivity} feedback={feedback}
-                  provider={provider} metricsLoading={metricsLoading}
-                  messagingStats={messagingStats}
-                />
-              )}
-              {activeTab === 'herramientas' && (
-                <SectionHerramientas tier={tier} provider={provider} onSave={handleSave} saving={saving} />
-              )}
-              {activeTab === 'reservas' && (
-                <SectionReservas provider={provider} tier={tier} />
-              )}
-              {activeTab === 'miplan' && (
-                <SectionMiPlan tier={tier} provider={provider} onProviderUpdate={p => setProvider(p)} />
-              )}
-              {activeTab === 'manual' && (
-                <ManualProveedor onNavigate={setActiveTab} />
-              )}
-            </>
-          )}
-        </div>
+      {/* Tabs */}
+      <div className="pdash__tabs">
+        {TABS.map(tab => (
+          <button
+            key={tab.id}
+            className={`pdash__tab${activeTab === tab.id ? ' pdash__tab--active' : ''}`}
+            onClick={() => setActiveTab(tab.id)}
+          >
+            <span className="pdash__tab-icon">{tab.icon}</span>
+            <span className="pdash__tab-label">{tab.label}</span>
+          </button>
+        ))}
       </div>
 
-      {toast && (
-        <div className={`pdash__toast pdash__toast--${toast.type}`}>{toast.msg}</div>
+      {/* Save message */}
+      {saveMsg && (
+        <div className={`pdash__save-msg${saveMsg.startsWith('❌') ? ' pdash__save-msg--error' : ''}`}>
+          {saveMsg}
+        </div>
       )}
-    </main>
+
+      {/* Content */}
+      <div className="pdash__content">
+        {activeTab === 'perfil' && (
+          <ProviderProfileEditor
+            provider={provider}
+            tier={tier}
+            onSave={handleSave}
+            saving={saving}
+            onAvatarUpload={handleAvatarUpload}
+            avatarUploading={avatarUploading}
+          />
+        )}
+        {activeTab === 'herramientas' && (
+          <SectionHerramientas
+            tier={tier}
+            provider={provider}
+            onSave={handleSave}
+            saving={saving}
+          />
+        )}
+        {activeTab === 'metricas' && (
+          <SectionMetricas
+            tier={tier}
+            metrics={metrics}
+            activity={activity}
+            hourlyActivity={hourlyActivity}
+            feedback={feedback}
+            provider={provider}
+            metricsLoading={metricsLoading}
+            messagingStats={messagingStats}
+          />
+        )}
+        {activeTab === 'reservas' && (
+          <SectionReservas provider={provider} tier={tier} />
+        )}
+        {activeTab === 'mensajes' && (
+          <SectionMensajes provider={provider} />
+        )}
+      </div>
+    </div>
   )
 }
