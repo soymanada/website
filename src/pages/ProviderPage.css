@@ -45,15 +45,27 @@
   gap: 20px;
   margin-bottom: 36px;
 }
-.ppage__avatar {
+
+/*
+  Fix 1: separamos img.ppage__avatar y div.ppage__avatar--placeholder
+  para que globals.css (img { height: auto }) no expanda la imagen.
+  El <img> recibe width + height + object-fit explícitos.
+  El <div> placeholder mantiene las mismas dimensiones via flex.
+*/
+img.ppage__avatar {
   width: 80px;
   height: 80px;
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
   border: 2px solid var(--iris-100);
+  /* Anula el height: auto del reset global */
+  min-height: 80px;
 }
 .ppage__avatar--placeholder {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -62,6 +74,7 @@
   font-size: 2rem;
   font-weight: 700;
   flex-shrink: 0;
+  border: 2px solid var(--iris-100);
 }
 .ppage__hero-info { display: flex; flex-direction: column; gap: 6px; }
 .ppage__name { color: var(--iris-900); margin: 0; }
