@@ -16,6 +16,7 @@ import ProviderPage         from './pages/ProviderPage'
 import FirstStepsPage       from './pages/FirstStepsPage'
 import MigrantAccountPage   from './pages/MigrantAccountPage'
 import BookingRoom          from './pages/BookingRoom'
+import OpinarPage           from './pages/OpinarPage'
 import ProtectedRoute       from './components/ProtectedRoute'
 import RemesasFloat        from './components/RemesasFloat'
 import { AuthProvider }     from './hooks/useAuth'
@@ -112,6 +113,7 @@ function Layout() {
             <AdminPanel />
           </ProtectedRoute>
         } />
+        <Route path="/opinar"               element={<OpinarPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
