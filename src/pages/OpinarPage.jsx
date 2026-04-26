@@ -19,7 +19,10 @@ export default function OpinarPage() {
   const [provider, setProvider]       = useState(null)
   const [opinionCount, setOpinionCount] = useState(0)
   const [text, setText]               = useState('')
-  const [rating, setRating]           = useState(0)
+  const [rating,      setRating]      = useState(0)
+  const [ratingComm,  setRatingComm]  = useState(0)
+  const [ratingQual,  setRatingQual]  = useState(0)
+  const [ratingPrice, setRatingPrice] = useState(0)
   const [errorMsg, setErrorMsg]       = useState('')
 
   useEffect(() => {
@@ -93,10 +96,13 @@ export default function OpinarPage() {
     setErrorMsg('')
 
     const { error } = await supabase.from('pilot_opinions').insert({
-      provider_id: invite.provider_id,
-      user_id:     user.id,
-      text:        text.trim(),
-      rating:      rating || null,
+      provider_id:  invite.provider_id,
+      user_id:      user.id,
+      text:         text.trim(),
+      rating:       rating      || null,
+      rating_comm:  ratingComm  || null,
+      rating_qual:  ratingQual  || null,
+      rating_price: ratingPrice || null,
     })
 
     if (error) {
@@ -224,25 +230,16 @@ export default function OpinarPage() {
           </span>
         </div>
 
-        {/* Rating opcional */}
+        {/* Ratings opcionales */}
         <div style={{ marginBottom: 20 }}>
-          <label style={labelStyle}>Valoración <span style={{ color: 'var(--text-300)', fontWeight: 400 }}>(opcional)</span></label>
-          <div style={{ display: 'flex', gap: 4 }}>
-            {[1, 2, 3, 4, 5].map(star => (
-              <button
-                key={star}
-                type="button"
-                onClick={() => setRating(prev => prev === star ? 0 : star)}
-                style={{
-                  background: 'none', border: 'none', cursor: 'pointer',
-                  fontSize: 30, lineHeight: 1, padding: '2px 4px',
-                  opacity: star <= rating ? 1 : 0.2,
-                  transition: 'opacity 0.12s',
-                  filter: star <= rating ? 'none' : 'grayscale(1)',
-                }}
-                aria-label={`${star} estrella${star > 1 ? 's' : ''}`}
-              >⭐</button>
-            ))}
+          <label style={{ ...labelStyle, marginBottom: 12 }}>
+            Valoraciones <span style={{ color: 'var(--text-300)', fontWeight: 400 }}>(opcionales)</span>
+          </label>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <PawSelector label="Valoración general"    value={rating}      onChange={setRating}      disabled={status === 'submitting'} />
+            <PawSelector label="Comunicación"          value={ratingComm}  onChange={setRatingComm}  disabled={status === 'submitting'} />
+            <PawSelector label="Calidad del servicio"  value={ratingQual}  onChange={setRatingQual}  disabled={status === 'submitting'} />
+            <PawSelector label="Precio justo"          value={ratingPrice} onChange={setRatingPrice} disabled={status === 'submitting'} />
           </div>
         </div>
 
@@ -402,6 +399,35 @@ function ProviderHeader({ provider }) {
           </div>
         </div>
       )}
+    </div>
+  )
+}
+
+function PawSelector({ label, value, onChange, disabled }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+      <span style={{ fontSize: '0.8rem', color: 'var(--text-500)', fontWeight: 500, minWidth: 0, flex: '1 1 0' }}>
+        {label}
+      </span>
+      <div style={{ display: 'flex', gap: 2, flexShrink: 0 }}>
+        {[1, 2, 3, 4, 5].map(n => (
+          <button
+            key={n}
+            type="button"
+            disabled={disabled}
+            onClick={() => onChange(prev => prev === n ? 0 : n)}
+            style={{
+              background: 'none', border: 'none',
+              cursor: disabled ? 'default' : 'pointer',
+              fontSize: 22, lineHeight: 1, padding: '2px 3px',
+              opacity: n <= value ? 1 : 0.18,
+              transition: 'opacity 0.1s',
+              filter: n <= value ? 'none' : 'grayscale(1)',
+            }}
+            aria-label={`${n} huella${n > 1 ? 's' : ''}`}
+          >🐾</button>
+        ))}
+      </div>
     </div>
   )
 }
