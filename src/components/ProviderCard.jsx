@@ -57,7 +57,7 @@ export default function ProviderCard({ provider: rawProvider }) {
   const [showBooking,    setShowBooking]    = useState(false)
   const viewTracked = useRef(false)
 
-  const { avg, count, visible: ratingVisible } = useProviderRating(id)
+  const { avg, count, visible: ratingVisible, loading: ratingLoading } = useProviderRating(id)
   const { review: userReview, reload: reloadReview } = useUserReview(id, user?.id)
   const { hasInteraction } = useVerifiedInteraction(id, user?.id)
 
@@ -82,6 +82,14 @@ export default function ProviderCard({ provider: rawProvider }) {
     trackEvent(Events.PROVEEDOR_VISITADO, { proveedor_id: id, proveedor_nombre: name, plataforma: 'booking' })
     setShowBooking(true)
   }
+
+  // ── Lógica del bloque de rating en el header de la card ──────────
+  // Tres estados:
+  //   1. Con reseñas suficientes (visible=true): muestra avg + count real
+  //   2. Sin reseñas + usuario con interacción: huellas vacías + hint clickeable
+  //   3. Sin reseñas + sin interacción / no logueado: huellas vacías + hint pasivo
+  const showRatingHint = !ratingLoading && !ratingVisible
+  const ratingHintClickable = showRatingHint && user && !isProvider && hasInteraction && !userReview
 
   return (
     <>
@@ -146,8 +154,36 @@ export default function ProviderCard({ provider: rawProvider }) {
           <div className="pcard__meta">
             <h3 className="pcard__name">{name}</h3>
             <p className="pcard__service t-sm">{service}</p>
-            {ratingVisible && (
-              <PawRating rating={avg} count={count} size="sm" />
+
+            {/* ── Bloque de rating: siempre visible post-carga ── */}
+            {!ratingLoading && (
+              ratingVisible ? (
+                // Estado 1: hay reseñas suficientes → mostrar puntaje real
+                <PawRating rating={avg} count={count} size="sm" />
+              ) : ratingHintClickable ? (
+                // Estado 2: sin reseñas, usuario puede evaluar → hint clickeable
+                <button
+                  className="pcard__rating-gate pcard__rating-gate--active"
+                  onClick={() => setShowReview(true)}
+                  aria-label="Evaluar proveedor"
+                >
+                  <PawRating rating={0} size="sm" />
+                  <span className="pcard__rating-hint t-xs">
+                    {t('reviews.gate_hint_short')}
+                  </span>
+                </button>
+              ) : (
+                // Estado 3: sin reseñas, usuario logueado sin interacción o no logueado
+                <div className="pcard__rating-gate">
+                  <PawRating rating={0} size="sm" />
+                  <span className="pcard__rating-hint t-xs">
+                    {user && !isProvider
+                      ? t('reviews.gate_hint_msg')   // "Escríbele primero para evaluar"
+                      : t('reviews.gate_hint_new')   // "Sé el primero en evaluar"
+                    }
+                  </span>
+                </div>
+              )
             )}
           </div>
         </div>
@@ -234,6 +270,7 @@ export default function ProviderCard({ provider: rawProvider }) {
               t={t}
             />
 
+            {/* Botón de evaluación en zona de acciones — solo si ya puede evaluar */}
             {userReview ? (
               <button className="pcard__rate-btn pcard__rate-btn--done" disabled>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor" width="12" height="12" aria-hidden="true">
@@ -245,7 +282,10 @@ export default function ProviderCard({ provider: rawProvider }) {
                 </svg>
                 {t('reviews.already_rated')}
               </button>
-            ) : hasInteraction ? (
+            ) : hasInteraction && !ratingHintClickable ? (
+              // ratingHintClickable ya abre el modal desde el header;
+              // este botón aparece solo si el rating ya tiene suficientes reseñas
+              // y el usuario puede evaluar (para mantener el CTA visible abajo)
               <button className="pcard__rate-btn" onClick={() => setShowReview(true)}>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor" width="12" height="12" aria-hidden="true">
                   <ellipse cx="16" cy="25" rx="8" ry="5.5"/>
@@ -256,11 +296,7 @@ export default function ProviderCard({ provider: rawProvider }) {
                 </svg>
                 {t('reviews.rate_cta')}
               </button>
-            ) : (
-              <button className="pcard__rate-btn pcard__rate-btn--gate" onClick={() => setShowMsg(true)}>
-                {t('reviews.gate_hint_short')}
-              </button>
-            )}
+            ) : null}
           </>
         ) : (
           <div className="pcard__gate">
