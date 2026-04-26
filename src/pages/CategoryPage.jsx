@@ -54,6 +54,13 @@ export default function CategoryPage() {
 
   const verified = list.filter(p => p.verified).length
 
+  // Orden: verificados primero, luego por tier (Wolf > Cub > Wonderer)
+  const tierOrder = { gold: 3, silver: 2, bronze: 1 }
+  const sorted = [...list].sort((a, b) => {
+    if (a.verified !== b.verified) return (b.verified ? 1 : 0) - (a.verified ? 1 : 0)
+    return (tierOrder[b.tier] || 0) - (tierOrder[a.tier] || 0)
+  })
+
   return (
     <main className="catpage">
       {/* Hero band */}
@@ -117,7 +124,7 @@ export default function CategoryPage() {
             </div>
           ) : (
             <div className="catpage__grid">
-              {list.map(p => <ProviderCard key={p.id} provider={p} />)}
+              {sorted.map(p => <ProviderCard key={p.id} provider={p} />)}
             </div>
           )}
         </div>
