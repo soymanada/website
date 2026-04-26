@@ -14,7 +14,6 @@ export function useProviderRating(providerId) {
       .from('reviews')
       .select('rating, rating_speed, rating_reliability, rating_clarity, rating_value')
       .eq('provider_id', providerId)
-      .eq('status', 'published')
       .then(({ data }) => {
         if (!data?.length) {
           setState({ avg: null, count: 0, visible: false, sub: {}, recommendPct: null, loading: false })
@@ -136,7 +135,6 @@ export async function submitReview({
       rating_clarity:      ratingClarity     || null,
       rating_value:        ratingValue       || null,
       verified,
-      status:              'published',
     },
     { onConflict: 'user_id,provider_id' }
   )
