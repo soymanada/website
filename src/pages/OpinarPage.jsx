@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useSearchParams, Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../hooks/useAuth'
+import VerificationBadge from '../components/VerificationBadge'
 
 const MAX_OPINIONS = 10
 
@@ -46,7 +47,7 @@ export default function OpinarPage() {
       // 2. Datos del proveedor
       const { data: prov } = await supabase
         .from('providers')
-        .select('id, name, service, avatar_url, slug')
+        .select('id, name, service, avatar_url, slug, verified')
         .eq('id', inv.provider_id)
         .single()
 
@@ -287,6 +288,21 @@ export default function OpinarPage() {
           Primeras {MAX_OPINIONS} opiniones de clientes registrados.
           No son "reseñas verificadas" ni implican validación de transacción por SoyManada.
         </p>
+
+        <div style={{
+          marginTop: 16,
+          paddingTop: 14,
+          borderTop: '1px solid var(--border-100, #e5e0d8)',
+          display: 'flex',
+          gap: 8,
+          alignItems: 'flex-start',
+        }}>
+          <span style={{ fontSize: 14, flexShrink: 0, opacity: 0.5 }}>🔒</span>
+          <p style={{ fontSize: '0.72rem', color: 'var(--text-300)', margin: 0, lineHeight: 1.5 }}>
+            Tu cuenta de SoyManada se usa solo para evitar duplicados.
+            Tu nombre no aparece públicamente junto a tu opinión.
+          </p>
+        </div>
       </div>
     </PageShell>
   )
@@ -332,30 +348,60 @@ function PageShell({ children }) {
 function ProviderHeader({ provider }) {
   if (!provider) return null
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 20 }}>
-      {provider.avatar_url
-        ? <img
-            src={provider.avatar_url}
-            alt={provider.name}
-            style={{ width: 52, height: 52, borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }}
-          />
-        : <div style={{
-            width: 52, height: 52, borderRadius: '50%',
-            background: 'var(--iris-100)', flexShrink: 0,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontWeight: 700, color: 'var(--iris-600)', fontSize: '1.3rem',
-          }}>
-            {(provider.name || '?')[0].toUpperCase()}
-          </div>
-      }
-      <div>
-        <strong style={{ display: 'block', color: 'var(--iris-900)', fontSize: '1.1rem', lineHeight: 1.3 }}>
-          {provider.name}
-        </strong>
-        {provider.service && (
-          <span style={{ fontSize: '0.85rem', color: 'var(--text-400)' }}>{provider.service}</span>
-        )}
+    <div style={{ marginBottom: 20 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: provider.verified ? 10 : 0 }}>
+        {provider.avatar_url
+          ? <img
+              src={provider.avatar_url}
+              alt={provider.name}
+              style={{ width: 52, height: 52, borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }}
+            />
+          : <div style={{
+              width: 52, height: 52, borderRadius: '50%',
+              background: 'var(--iris-100)', flexShrink: 0,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontWeight: 700, color: 'var(--iris-600)', fontSize: '1.3rem',
+            }}>
+              {(provider.name || '?')[0].toUpperCase()}
+            </div>
+        }
+        <div>
+          <strong style={{ display: 'block', color: 'var(--iris-900)', fontSize: '1.1rem', lineHeight: 1.3 }}>
+            {provider.name}
+          </strong>
+          {provider.service && (
+            <span style={{ fontSize: '0.85rem', color: 'var(--text-400)' }}>{provider.service}</span>
+          )}
+          {provider.verified && (
+            <div style={{ marginTop: 6 }}>
+              <VerificationBadge variant="pill" theme="light" />
+            </div>
+          )}
+        </div>
       </div>
+
+      {provider.verified && (
+        <div style={{
+          background: 'var(--iris-50, #f3eeff)',
+          border: '1px solid var(--iris-100, #e0d4ff)',
+          borderRadius: 10,
+          padding: '10px 14px',
+          display: 'flex',
+          gap: 10,
+          alignItems: 'flex-start',
+        }}>
+          <span style={{ fontSize: 18, flexShrink: 0, lineHeight: 1.4 }}>🐾</span>
+          <div>
+            <p style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--iris-800)', margin: 0, marginBottom: 3 }}>
+              Proveedor verificado por SoyManada
+            </p>
+            <p style={{ fontSize: '0.75rem', color: 'var(--iris-700)', margin: 0, lineHeight: 1.5 }}>
+              Confirmamos identidad real, documentación válida y actividad legítima en el directorio.
+              La verificación no garantiza resultados pero sí que esta persona es quien dice ser.
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
