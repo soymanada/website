@@ -409,7 +409,7 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
       {!tier && (
         <div className="pdash__upgrade-cta" style={{ marginTop: 24 }}>
           <p className="t-sm"><strong>Activa Cub</strong> por $4.990 CLP/mes para desbloquear el calendario de citas.</p>
-          <UpgradeButton planCode="activa" label="Activar Cub — $4.990 CLP/mes" />
+          <UpgradeButton planCode="activo" label="Activar Cub — $4.990 CLP/mes" />
         </div>
       )}
 
@@ -447,7 +447,7 @@ function SectionMetricas({ tier, metrics, activity, hourlyActivity, feedback, pr
         <MetricsSummary metrics={null} loading={true} />
         <div className="pdash__upgrade-cta">
           <p className="t-sm"><strong>Activa Cub</strong> por $4.990 CLP/mes y desbloquea tus métricas en tiempo real.</p>
-          <UpgradeButton planCode="activa" label="Activar Cub — $4.990 CLP/mes" />
+          <UpgradeButton planCode="activo" label="Activar Cub — $4.990 CLP/mes" />
         </div>
       </div>
     </div>
@@ -485,14 +485,21 @@ const STATUS_LABELS = {
   completed: '✔ Completada',
 }
 
-// ── WhatsApp visibility toggle (Silver+) ─────────────────────────
+// ── WhatsApp visibility toggle (Silver+) + Gold addon ────────────
 function WAVisibilityToggle({ tier, provider }) {
-  const { t }          = useTranslation()
-  const { user }       = useAuth()
-  const isSilverPlus   = tier === 'silver' || tier === 'gold'
+  const { t }        = useTranslation()
+  const { user }     = useAuth()
+  const isSilver     = tier === 'silver'
+  const isGold       = tier === 'gold'
+  const isSilverPlus = isSilver || isGold
+
+  // Silver toggle (show_whatsapp — free)
   const [enabled, setEnabled] = useState(provider?.show_whatsapp ?? false)
   const [saved,   setSaved]   = useState(false)
   const [saving,  setSaving]  = useState(false)
+
+  // Gold addon state (whatsapp_addon — paid)
+  const addonActive = provider?.whatsapp_addon ?? false
 
   const toggle = async (val) => {
     setEnabled(val)
@@ -517,7 +524,20 @@ function WAVisibilityToggle({ tier, provider }) {
         <span className="pdash__tools-block-title t-sm">📱 {t('messaging.whatsapp_toggle_section')}</span>
         <span className="pdash__badge pdash__badge--silver">Cub+</span>
       </div>
-      {isSilverPlus ? (
+
+      {/* Locked for Wonderer */}
+      {!isSilverPlus && (
+        <div className="pdash__tool-card pdash__tool-card--locked">
+          <span className="pdash__tool-icon">📱</span>
+          <div>
+            <strong className="t-sm">{t('messaging.whatsapp_toggle')}</strong>
+            <p className="t-xs" style={{ color: 'var(--text-300)' }}>{t('messaging.whatsapp_tier_lock')}</p>
+          </div>
+        </div>
+      )}
+
+      {/* Silver: free toggle */}
+      {isSilver && (
         <div className="pdash__wa-toggle-row">
           <div>
             <strong className="t-sm">{t('messaging.whatsapp_toggle')}</strong>
@@ -537,13 +557,32 @@ function WAVisibilityToggle({ tier, provider }) {
             </label>
           </div>
         </div>
-      ) : (
-        <div className="pdash__tool-card pdash__tool-card--locked">
-          <span className="pdash__tool-icon">📱</span>
-          <div>
-            <strong className="t-sm">{t('messaging.whatsapp_toggle')}</strong>
-            <p className="t-xs" style={{ color: 'var(--text-300)' }}>{t('messaging.whatsapp_tier_lock')}</p>
-          </div>
+      )}
+
+      {/* Gold: paid addon */}
+      {isGold && (
+        <div className="pdash__wa-addon-block">
+          {addonActive ? (
+            <div className="pdash__wa-addon-active">
+              <span className="pdash__wa-addon-check">✓</span>
+              <div>
+                <strong className="t-sm">WhatsApp visible en tu tarjeta</strong>
+                <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 2 }}>
+                  Los usuarios ven tu número directamente desde la categoría y tu perfil.
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div className="pdash__wa-addon-cta">
+              <div>
+                <strong className="t-sm">Activa WhatsApp en tu tarjeta pública</strong>
+                <p className="t-xs" style={{ color: 'var(--text-400)', marginTop: 4 }}>
+                  Por <strong>$2.000 CLP/mes</strong> tu número aparece visible en las vistas de categoría y tu perfil. Sin intermediarios.
+                </p>
+              </div>
+              <UpgradeButton planCode="whatsapp_addon" label="Activar por $2.000 CLP/mes" variant="secondary" />
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -579,7 +618,7 @@ function SectionReservas({ provider, tier }) {
       <div className="pdash__locked">
         <div className="pdash__upgrade-cta">
           <p className="t-sm"><strong>Activa Cub</strong> por $4.990 CLP/mes para recibir y gestionar reservas de citas.</p>
-          <UpgradeButton planCode="activa" label="Activar Cub — $4.990 CLP/mes" />
+          <UpgradeButton planCode="activo" label="Activar Cub — $4.990 CLP/mes" />
         </div>
       </div>
     </div>
@@ -726,29 +765,39 @@ function SectionReservas({ provider, tier }) {
 }
 
 // ── Upgrade button ────────────────────────────────────────────────
-function UpgradeButton({ planCode, label }) {
+function UpgradeButton({ planCode, label, variant = 'primary' }) {
   const { user } = useAuth()
   const [loading, setLoading] = useState(false)
+  const [err,     setErr]     = useState(null)
 
   const handleUpgrade = async () => {
     setLoading(true)
+    setErr(null)
     try {
       const { data, error } = await supabase.functions.invoke('create-checkout', {
         body: { plan_code: planCode, user_id: user?.id },
       })
       if (error) throw error
-      if (data?.url) window.location.href = data.url
+      if (data?.url) {
+        window.location.href = data.url
+      } else {
+        setErr('No se pudo iniciar el pago. Inténtalo de nuevo.')
+      }
     } catch (err) {
       console.error('[UpgradeButton]', err)
+      setErr('Error al conectar con el sistema de pago. Inténtalo de nuevo.')
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <button className="btn btn-primary" onClick={handleUpgrade} disabled={loading}>
-      <span>{loading ? 'Redirigiendo…' : label}</span>
-    </button>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 6, alignItems: 'flex-start' }}>
+      <button className={`btn btn-${variant}`} onClick={handleUpgrade} disabled={loading}>
+        <span>{loading ? 'Redirigiendo a MercadoPago…' : label}</span>
+      </button>
+      {err && <p className="t-xs" style={{ color: '#c0392b', margin: 0 }}>{err}</p>}
+    </div>
   )
 }
 

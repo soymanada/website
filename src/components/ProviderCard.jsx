@@ -42,11 +42,16 @@ export default function ProviderCard({ provider: rawProvider }) {
   const provider    = resolveProvider(rawProvider, i18n.language)
   const { id, slug, name, service, description, countries, verified, testimonial, benefit, price_clp, price_cad, avatar_url, categorySlug } = provider
   const location    = useLocation()
-  const isMigrantUser = !!user && !isProvider
-  const providerTier = String(rawProvider?.tier || 'bronze').toLowerCase()
+  const isMigrantUser  = !!user && !isProvider
+  const providerTier   = String(rawProvider?.tier || 'bronze').toLowerCase()
   const isBronzeProvider = providerTier === 'bronze'
   const isSegurosCategory = categorySlug === 'seguros' || location.pathname.startsWith('/categoria/seguros')
   const hideWhatsAppForMigrant = isMigrantUser && isSegurosCategory && isBronzeProvider
+
+  // WhatsApp visible if: Silver+ with toggle ON, or Gold with paid addon
+  const whatsappEnabled =
+    rawProvider?.whatsapp_addon === true ||
+    rawProvider?.show_whatsapp  === true
 
   const [isConnecting,   setIsConnecting]   = useState(false)
   const [targetPlatform, setTargetPlatform] = useState('')
@@ -196,7 +201,7 @@ export default function ProviderCard({ provider: rawProvider }) {
               <button className="pcard__btn pcard__btn--msg" onClick={() => setShowMsg(true)}>
                 {t('messaging.cta')}
               </button>
-              {contact.whatsapp && !hideWhatsAppForMigrant && (
+              {contact.whatsapp && whatsappEnabled && !hideWhatsAppForMigrant && (
                 <button className="pcard__btn pcard__btn--wa"
                   onClick={() => handleContact('whatsapp', `https://wa.me/${contact.whatsapp}`)}>
                   {t('provider_card.contact_whatsapp')}

@@ -220,6 +220,34 @@
 .pdash__wa-toggle-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
 .pdash__saved-tag { color: var(--iris-500); font-weight: 600; }
 
+/* WhatsApp Gold addon block */
+.pdash__wa-addon-block { margin-top: 4px; }
+.pdash__wa-addon-active {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #f0fdf4;
+  border: 1px solid #86efac;
+  border-radius: var(--r-md);
+  padding: 12px 16px;
+}
+.pdash__wa-addon-check {
+  color: #16a34a;
+  font-size: 1.1rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.pdash__wa-addon-cta {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: var(--iris-50);
+  border: 1.5px dashed var(--iris-300);
+  border-radius: var(--r-md);
+  padding: 14px 16px;
+}
+
 /* Toggle switch (reused in inbox notifications too) */
 .pdash__switch {
   width: 42px; height: 24px;
