@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../hooks/useAuth'
@@ -6,8 +6,10 @@ import LanguageSwitcher from './LanguageSwitcher'
 import './Header.css'
 
 export default function Header() {
-  const [scrolled,  setScrolled]  = useState(false)
-  const [menuOpen,  setMenuOpen]  = useState(false)
+  const [scrolled,     setScrolled]     = useState(false)
+  const [menuOpen,     setMenuOpen]     = useState(false)
+  const [userMenuOpen, setUserMenuOpen] = useState(false)
+  const userMenuRef = useRef(null)
   const location = useLocation()
   const navigate = useNavigate()
   const { t, i18n } = useTranslation()
@@ -20,7 +22,20 @@ export default function Header() {
     await signOut()
     navigate('/', { replace: true })
     setMenuOpen(false)
+    setUserMenuOpen(false)
   }
+
+  // Close user dropdown on outside click
+  useEffect(() => {
+    if (!userMenuOpen) return
+    const handler = (e) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
+        setUserMenuOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [userMenuOpen])
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 24)
@@ -28,7 +43,7 @@ export default function Header() {
     return () => window.removeEventListener('scroll', fn)
   }, [])
 
-  useEffect(() => { setMenuOpen(false) }, [location])
+  useEffect(() => { setMenuOpen(false); setUserMenuOpen(false) }, [location])
 
   const navLinks = [
     { to: '/categoria/seguros',       label: t('header.nav_seguros') },
@@ -81,21 +96,44 @@ export default function Header() {
           </Link>
           <LanguageSwitcher />
           {user ? (
-            <div className="hdr__user-group">
-              {!isProvider && (
-                <button type="button" className="btn btn-ghost btn-sm hdr__signout" onClick={handleSignOut}>
-                  {t('header.cta_cerrar_sesion')}
-                </button>
-              )}
-              <Link
-                to={isProvider ? '/mi-perfil' : '/cuenta'}
-                className="hdr__avatar"
+            <div className="hdr__user-group" ref={userMenuRef}>
+              <button
+                type="button"
+                className={`hdr__avatar${userMenuOpen ? ' hdr__avatar--open' : ''}`}
+                onClick={() => setUserMenuOpen(v => !v)}
+                aria-haspopup="true"
+                aria-expanded={userMenuOpen}
                 title={user.user_metadata?.full_name || user.user_metadata?.name || user.email}
               >
                 <span className="hdr__avatar-initials">
                   {(user.user_metadata?.full_name?.split(' ')[0] || user.user_metadata?.name?.split(' ')[0] || user.email?.split('@')[0] || '?')}
                 </span>
-              </Link>
+                <svg className="hdr__avatar-caret" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </button>
+              {userMenuOpen && (
+                <div className="hdr__user-menu" role="menu">
+                  <Link
+                    to={isProvider ? '/mi-perfil' : '/cuenta'}
+                    className="hdr__user-menu-item"
+                    role="menuitem"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+                    {isProvider ? t('header.cta_mi_perfil') : t('header.cta_mi_cuenta')}
+                  </Link>
+                  <div className="hdr__user-menu-divider" />
+                  <button
+                    type="button"
+                    className="hdr__user-menu-item hdr__user-menu-item--danger"
+                    role="menuitem"
+                    onClick={handleSignOut}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    {t('header.cta_cerrar_sesion')}
+                  </button>
+                </div>
+              )}
             </div>
           ) : (
             <Link to="/login" className="btn btn-primary btn-sm">
@@ -127,11 +165,9 @@ export default function Header() {
               <Link to={isProvider ? '/mi-perfil' : '/cuenta'} className="btn btn-ghost btn-full">
                 {isProvider ? t('header.cta_mi_perfil') : t('header.cta_mi_cuenta')}
               </Link>
-              {!isProvider && (
-                <button type="button" className="btn btn-secondary btn-full" onClick={handleSignOut}>
-                  {t('header.cta_cerrar_sesion')}
-                </button>
-              )}
+              <button type="button" className="btn btn-secondary btn-full" onClick={handleSignOut}>
+                {t('header.cta_cerrar_sesion')}
+              </button>
             </>
           ) : (
             <Link to="/login" className="btn btn-ghost btn-full">

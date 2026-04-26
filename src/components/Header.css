@@ -174,23 +174,25 @@
   .hdr__drawer         { display: block; }
 }
 
-/* ── Avatar usuario autenticado ──────────────────────────────────── */
+/* ── Avatar / user chip ──────────────────────────────────────────── */
 .hdr__avatar {
   height: 36px;
   min-width: 36px;
-  padding: 0 12px;
+  padding: 0 10px 0 12px;
   border-radius: 100px;
   background: linear-gradient(135deg, var(--iris-600), var(--iris-400));
   display: flex;
   align-items: center;
+  gap: 5px;
   justify-content: center;
   cursor: pointer;
   border: 2px solid var(--iris-300);
   transition: all var(--t-fast);
   flex-shrink: 0;
 }
-.hdr__avatar:hover {
-  transform: scale(1.06);
+.hdr__avatar:hover,
+.hdr__avatar--open {
+  transform: scale(1.04);
   box-shadow: 0 0 0 3px rgba(91,45,158,0.20);
 }
 .hdr__avatar-initials {
@@ -202,18 +204,72 @@
   pointer-events: none;
   white-space: nowrap;
 }
+.hdr__avatar-caret {
+  color: rgba(255,255,255,0.75);
+  flex-shrink: 0;
+  transition: transform var(--t-fast);
+}
+.hdr__avatar--open .hdr__avatar-caret {
+  transform: rotate(180deg);
+}
 
-/* ── User group (avatar + Mi perfil) ────────────────────────────── */
+/* ── User group (chip + dropdown) ────────────────────────────────── */
 .hdr__user-group {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 8px;
 }
-.hdr__signout {
-  white-space: nowrap;
-  color: var(--iris-700) !important;
-  font-weight: 600;
-  padding: 4px 10px;
+
+/* ── Dropdown menu ───────────────────────────────────────────────── */
+.hdr__user-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 180px;
+  background: var(--white);
+  border: 1px solid var(--iris-200);
+  border-radius: var(--r-lg);
+  box-shadow: 0 8px 32px rgba(91,45,158,0.15), 0 2px 8px rgba(0,0,0,0.06);
+  padding: 6px;
+  z-index: 200;
+  animation: menu-in 0.15s var(--ease-out) both;
+}
+@keyframes menu-in {
+  from { opacity: 0; transform: translateY(-6px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+.hdr__user-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: var(--r-md);
+  font-family: var(--font-body);
+  font-size: 0.86rem;
+  font-weight: 500;
+  color: var(--text-600);
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background var(--t-fast), color var(--t-fast);
+  text-align: left;
+}
+.hdr__user-menu-item:hover {
+  background: var(--iris-50);
+  color: var(--iris-700);
+}
+.hdr__user-menu-item--danger { color: var(--text-400); }
+.hdr__user-menu-item--danger:hover {
+  background: #fff1f0;
+  color: #c0392b;
+}
+.hdr__user-menu-divider {
+  height: 1px;
+  background: var(--iris-100);
+  margin: 4px 0;
 }
 
 /* Primeros Pasos featured link */
