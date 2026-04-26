@@ -158,6 +158,102 @@ function ReviewCard({ review, user, canReply, onReviewUpdate }) {
   )
 }
 
+// ── Opiniones piloto ─────────────────────────────────────────────
+const PAW_CATEGORIES = [
+  { key: 'rating',       label: 'General' },
+  { key: 'rating_comm',  label: 'Comunicación' },
+  { key: 'rating_qual',  label: 'Calidad' },
+  { key: 'rating_price', label: 'Precio' },
+]
+
+function PilotPaws({ value }) {
+  if (!value) return <span style={{ color: 'var(--text-200)', fontSize: '0.75rem' }}>—</span>
+  return (
+    <span style={{ letterSpacing: 1 }}>
+      {[1,2,3,4,5].map(n => (
+        <span key={n} style={{ opacity: n <= value ? 1 : 0.15, fontSize: 13 }}>🐾</span>
+      ))}
+    </span>
+  )
+}
+
+function PilotOpinionsList({ providerId }) {
+  const [opinions, setOpinions] = useState([])
+  const [loading,  setLoading]  = useState(true)
+
+  useEffect(() => {
+    supabase
+      .from('pilot_opinions')
+      .select('id, text, rating, rating_comm, rating_qual, rating_price, created_at')
+      .eq('provider_id', providerId)
+      .order('created_at', { ascending: false })
+      .then(({ data }) => { setOpinions(data ?? []); setLoading(false) })
+  }, [providerId])
+
+  if (loading || opinions.length === 0) return null
+
+  // Calcular promedio general (solo de los que tienen rating)
+  const withRating = opinions.filter(o => o.rating)
+  const avgGeneral = withRating.length
+    ? (withRating.reduce((s, o) => s + o.rating, 0) / withRating.length).toFixed(1)
+    : null
+
+  return (
+    <section className="ppage__reviews">
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 16 }}>
+        <h2 className="ppage__section-title" style={{ margin: 0 }}>
+          Experiencias de clientes
+        </h2>
+        {avgGeneral && (
+          <span style={{ fontSize: '0.8rem', color: 'var(--iris-600)', fontWeight: 700 }}>
+            🐾 {avgGeneral} · {opinions.length} {opinions.length === 1 ? 'opinión' : 'opiniones'}
+          </span>
+        )}
+      </div>
+
+      <div className="ppage__reviews-list">
+        {opinions.map(op => {
+          const cats = PAW_CATEGORIES.filter(c => op[c.key])
+          return (
+            <div key={op.id} className="ppage__review">
+              {/* Sub-ratings */}
+              {cats.length > 0 && (
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(2, 1fr)',
+                  gap: '4px 16px',
+                  marginBottom: 10,
+                }}>
+                  {cats.map(c => (
+                    <div key={c.key} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <span style={{ fontSize: '0.72rem', color: 'var(--text-400)', minWidth: 76 }}>
+                        {c.label}
+                      </span>
+                      <PilotPaws value={op[c.key]} />
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Texto */}
+              {op.text && (
+                <p className="ppage__review-comment t-sm">"{op.text}"</p>
+              )}
+
+              {/* Fecha */}
+              <div className="ppage__review-header" style={{ marginTop: 6 }}>
+                <span className="ppage__review-date">
+                  {new Date(op.created_at).toLocaleDateString('es-CL')}
+                </span>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    </section>
+  )
+}
+
 // ── Lista de reseñas ──────────────────────────────────────────────
 function ReviewsList({ providerId, user, userReview, canReply, hasInteraction, onReviewClick, onMessageClick }) {
   const [reviews, setReviews] = useState([])
@@ -403,6 +499,8 @@ export default function ProviderPage() {
                 onReviewClick={() => setShowReview(true)}
                 onMessageClick={() => setShowMsg(true)}
               />
+
+              <PilotOpinionsList providerId={providerId} />
             </div>
 
             {/* ── Sidebar de contacto ── */}
