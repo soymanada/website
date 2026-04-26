@@ -1,25 +1,17 @@
 // src/pages/ProviderPage.jsx
 import { useEffect, useState } from 'react'
-import { useParams, Link, useLocation, useNavigate } from 'react-router-dom'
+import { useParams, Link, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../hooks/useAuth'
 import { resolveProvider } from '../utils/providerI18n'
 import { normalizeProvider } from '../utils/providerNormalize'
-import {
-  useProviderRating,
-  useUserReview,
-  useReviewReactions,
-  submitProviderReply,
-} from '../hooks/useReviews'
-import { useVerifiedInteraction } from '../hooks/useVerifiedInteraction'
 import { trackEvent, Events } from '../utils/analytics'
 import VerificationBadge from '../components/VerificationBadge'
 import PawRating from '../components/PawRating'
-import ReviewModal      from '../components/ReviewModal'
-import MessageModal     from '../components/MessageModal'
-import BookingCalendar  from '../components/BookingCalendar'
-import Interstitial from '../components/Interstitial'
+import MessageModal    from '../components/MessageModal'
+import BookingCalendar from '../components/BookingCalendar'
+import Interstitial    from '../components/Interstitial'
 import './ProviderPage.css'
 
 const COUNTRY_ISO = {
@@ -30,135 +22,7 @@ const COUNTRY_ISO = {
   'Japón': 'jp', 'República Checa': 'cz', 'Suecia': 'se',
 }
 
-// ── Rating bars (Componente 2) ────────────────────────────────────
-function RatingBars({ sub, recommendPct }) {
-  const { t } = useTranslation()
-  const rows = [
-    ['speed',       t('reviews.speed_label')],
-    ['reliability', t('reviews.reliability_label')],
-    ['clarity',     t('reviews.clarity_label')],
-    ['value',       t('reviews.value_label')],
-  ].filter(([key]) => sub[key] != null)
-
-  if (!rows.length && recommendPct == null) return null
-
-  return (
-    <div className="ppage__rating-bars">
-      {rows.map(([key, label]) => (
-        <div key={key} className="ppage__bar-row">
-          <span className="ppage__bar-label t-xs">{label}</span>
-          <div className="ppage__bar-track">
-            <div className="ppage__bar-fill" style={{ width: `${(sub[key] / 5) * 100}%` }} />
-          </div>
-          <span className="ppage__bar-val t-xs">{sub[key].toFixed(1)}</span>
-        </div>
-      ))}
-      {recommendPct != null && (
-        <p className="ppage__recommend t-sm">
-          {t('reviews.recommend_pct', { pct: recommendPct })}
-        </p>
-      )}
-    </div>
-  )
-}
-
-// ── Tarjeta de reseña individual (Componentes 3 + 4) ─────────────
-function ReviewCard({ review, user, canReply, onReviewUpdate }) {
-  const { t }        = useTranslation()
-  const navigate     = useNavigate()
-  const { count, hasReacted, toggle } = useReviewReactions(review.id, user?.id)
-  const [replyText,  setReplyText]  = useState(review.provider_reply ?? '')
-  const [submitting, setSubmitting] = useState(false)
-  // Track if the reply was just submitted in this session
-  const [localReply, setLocalReply] = useState(review.provider_reply ?? null)
-
-  const handlePaw = () => {
-    if (!user) { navigate('/login'); return }
-    toggle()
-  }
-
-  const handleReplySubmit = async () => {
-    if (!replyText.trim()) return
-    setSubmitting(true)
-    const { error } = await submitProviderReply(review.id, replyText)
-    if (!error) {
-      setLocalReply(replyText.trim())
-      onReviewUpdate?.()
-    }
-    setSubmitting(false)
-  }
-
-  return (
-    <div className="ppage__review">
-      <div className="ppage__review-header">
-        <span className="ppage__review-stars">
-          {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
-        </span>
-        {review.verified && (
-          <span className="ppage__verified-badge">
-            ✓ {t('reviews.verified_badge')}
-          </span>
-        )}
-        <span className="ppage__review-date">
-          {new Date(review.created_at).toLocaleDateString('es-CL')}
-        </span>
-      </div>
-
-      {review.comment && (
-        <p className="ppage__review-comment t-sm">"{review.comment}"</p>
-      )}
-
-      {/* Componente 3 — reacción de huella */}
-      <button
-        className={`ppage__reaction${hasReacted ? ' ppage__reaction--active' : ''}`}
-        onClick={handlePaw}
-        title={t('reviews.reaction_tooltip')}
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor" width="14" height="14" aria-hidden="true">
-          <ellipse cx="16" cy="25" rx="8" ry="5.5"/>
-          <ellipse cx="4.5" cy="15" rx="3.2" ry="4" transform="rotate(-25,4.5,15)"/>
-          <ellipse cx="11" cy="8" rx="3.2" ry="4" transform="rotate(-10,11,8)"/>
-          <ellipse cx="21" cy="8" rx="3.2" ry="4" transform="rotate(10,21,8)"/>
-          <ellipse cx="27.5" cy="15" rx="3.2" ry="4" transform="rotate(25,27.5,15)"/>
-        </svg>
-        <span>{count > 0 ? count : ''}</span>
-      </button>
-
-      {/* Componente 4 — respuesta del proveedor (si existe) */}
-      {localReply && (
-        <div className="ppage__provider-reply">
-          <span className="ppage__reply-badge t-xs">{t('reviews.provider_reply_badge')}</span>
-          <p className="ppage__reply-text t-sm">{localReply}</p>
-        </div>
-      )}
-
-      {/* Componente 4 — textarea de respuesta para proveedor elegible */}
-      {canReply && !localReply && (
-        <div className="ppage__reply-form">
-          <textarea
-            className="ppage__reply-textarea"
-            placeholder={t('reviews.provider_reply_placeholder')}
-            value={replyText}
-            onChange={e => setReplyText(e.target.value)}
-            rows={2}
-            maxLength={500}
-          />
-          <button
-            className="ppage__reply-submit"
-            onClick={handleReplySubmit}
-            disabled={!replyText.trim() || submitting}
-          >
-            {submitting
-              ? t('reviews.provider_reply_publishing')
-              : t('reviews.provider_reply_submit')}
-          </button>
-        </div>
-      )}
-    </div>
-  )
-}
-
-// ── Opiniones piloto ─────────────────────────────────────────────
+// ── Sub-categorías de opinión ─────────────────────────────────────
 const PAW_CATEGORIES = [
   { key: 'rating',       label: 'General' },
   { key: 'rating_comm',  label: 'Comunicación' },
@@ -170,14 +34,15 @@ function PilotPaws({ value }) {
   if (!value) return <span style={{ color: 'var(--text-200)', fontSize: '0.75rem' }}>—</span>
   return (
     <span style={{ letterSpacing: 1 }}>
-      {[1,2,3,4,5].map(n => (
+      {[1, 2, 3, 4, 5].map(n => (
         <span key={n} style={{ opacity: n <= value ? 1 : 0.15, fontSize: 13 }}>🐾</span>
       ))}
     </span>
   )
 }
 
-function PilotOpinionsList({ providerId }) {
+// onStats: callback({ avg, count }) para alimentar el hero
+function OpinionsList({ providerId, onStats }) {
   const [opinions, setOpinions] = useState([])
   const [loading,  setLoading]  = useState(true)
 
@@ -187,14 +52,28 @@ function PilotOpinionsList({ providerId }) {
       .select('id, text, rating, rating_comm, rating_qual, rating_price, created_at')
       .eq('provider_id', providerId)
       .order('created_at', { ascending: false })
-      .then(({ data }) => { setOpinions(data ?? []); setLoading(false) })
-  }, [providerId])
+      .then(({ data }) => {
+        const ops = data ?? []
+        setOpinions(ops)
+        setLoading(false)
+
+        // Calcular avg y notificar al padre para el PawRating del hero
+        const withRating = ops.filter(o => o.rating)
+        if (withRating.length > 0) {
+          const avg = Math.round(
+            withRating.reduce((s, o) => s + o.rating, 0) / withRating.length * 10
+          ) / 10
+          onStats?.({ avg, count: ops.length })
+        } else {
+          onStats?.({ avg: null, count: ops.length })
+        }
+      })
+  }, [providerId]) // eslint-disable-line react-hooks/exhaustive-deps
 
   if (loading || opinions.length === 0) return null
 
-  // Calcular promedio general (solo de los que tienen rating)
-  const withRating = opinions.filter(o => o.rating)
-  const avgGeneral = withRating.length
+  const withRating  = opinions.filter(o => o.rating)
+  const avgGeneral  = withRating.length
     ? (withRating.reduce((s, o) => s + o.rating, 0) / withRating.length).toFixed(1)
     : null
 
@@ -216,7 +95,6 @@ function PilotOpinionsList({ providerId }) {
           const cats = PAW_CATEGORIES.filter(c => op[c.key])
           return (
             <div key={op.id} className="ppage__review">
-              {/* Sub-ratings */}
               {cats.length > 0 && (
                 <div style={{
                   display: 'grid',
@@ -235,12 +113,10 @@ function PilotOpinionsList({ providerId }) {
                 </div>
               )}
 
-              {/* Texto */}
               {op.text && (
                 <p className="ppage__review-comment t-sm">"{op.text}"</p>
               )}
 
-              {/* Fecha */}
               <div className="ppage__review-header" style={{ marginTop: 6 }}>
                 <span className="ppage__review-date">
                   {new Date(op.created_at).toLocaleDateString('es-CL')}
@@ -254,67 +130,6 @@ function PilotOpinionsList({ providerId }) {
   )
 }
 
-// ── Lista de reseñas ──────────────────────────────────────────────
-function ReviewsList({ providerId, user, userReview, canReply, hasInteraction, onReviewClick, onMessageClick }) {
-  const [reviews, setReviews] = useState([])
-  const [loading, setLoading] = useState(true)
-  const { t } = useTranslation()
-
-  const load = () => {
-    supabase
-      .from('reviews')
-      .select('id, rating, comment, created_at, provider_reply, provider_reply_at, verified')
-      .eq('provider_id', providerId)
-      .eq('status', 'published')
-      .order('created_at', { ascending: false })
-      .then(({ data }) => { setReviews(data ?? []); setLoading(false) })
-  }
-
-  useEffect(() => { load() }, [providerId]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  if (loading) return null
-
-  if (reviews.length >= 3) {
-    return (
-      <section className="ppage__reviews">
-        <h2 className="ppage__section-title">{t('provider_page.reviews_title')}</h2>
-        <div className="ppage__reviews-list">
-          {reviews.map(r => (
-            <ReviewCard
-              key={r.id}
-              review={r}
-              user={user}
-              canReply={canReply}
-              onReviewUpdate={load}
-            />
-          ))}
-        </div>
-      </section>
-    )
-  }
-
-  // < 3 reviews
-  return (
-    <section className="ppage__reviews ppage__reviews--empty">
-      <h2 className="ppage__section-title">{t('provider_page.reviews_title')}</h2>
-      <p className="ppage__reviews-notice t-sm">{t('provider_page.reviews_min_notice')}</p>
-      {user && !userReview && hasInteraction && (
-        <button className="ppage__reviews-cta" onClick={onReviewClick}>
-          {t('provider_page.reviews_be_first')}
-        </button>
-      )}
-      {user && !userReview && !hasInteraction && (
-        <div className="ppage__review-gate">
-          <p className="ppage__review-gate-hint t-xs">{t('reviews.gate_hint')}</p>
-          <button className="ppage__reviews-cta ppage__reviews-cta--muted" onClick={onMessageClick}>
-            {t('reviews.gate_cta')}
-          </button>
-        </div>
-      )}
-    </section>
-  )
-}
-
 // ── Página principal ──────────────────────────────────────────────
 export default function ProviderPage() {
   const { slug }     = useParams()
@@ -322,13 +137,13 @@ export default function ProviderPage() {
   const { t, i18n } = useTranslation()
   const location     = useLocation()
 
-  const [rawProvider, setRawProvider] = useState(null)
-  const [loading,     setLoading]     = useState(true)
-  const [notFound,    setNotFound]    = useState(false)
-  const [showReview,  setShowReview]  = useState(false)
-  const [showMsg,     setShowMsg]     = useState(false)
+  const [rawProvider,    setRawProvider]    = useState(null)
+  const [loading,        setLoading]        = useState(true)
+  const [notFound,       setNotFound]       = useState(false)
+  const [showMsg,        setShowMsg]        = useState(false)
   const [isConnecting,   setIsConnecting]   = useState(false)
   const [targetPlatform, setTargetPlatform] = useState('')
+  const [opinionStats,   setOpinionStats]   = useState({ avg: null, count: 0 })
 
   useEffect(() => {
     supabase
@@ -347,17 +162,6 @@ export default function ProviderPage() {
   const provider   = rawProvider ? resolveProvider(rawProvider, i18n.language) : null
   const providerId = rawProvider?.id ?? null
 
-  const { avg, count, visible: ratingVisible, sub, recommendPct } = useProviderRating(providerId)
-  const { review: userReview, reload: reloadReview } = useUserReview(providerId, user?.id)
-  const { hasInteraction } = useVerifiedInteraction(providerId, user?.id)
-
-  // Provider can reply if they own this page and have tier silver or gold
-  const canReply = !!(
-    user?.id &&
-    rawProvider?.user_id === user.id &&
-    ['silver', 'gold'].includes(rawProvider?.tier)
-  )
-
   // Dynamic meta title + OG tags
   useEffect(() => {
     if (!provider?.name) return
@@ -365,7 +169,7 @@ export default function ProviderPage() {
     const description = provider.service
       ? t('provider.og_description', { service: provider.service })
       : t('provider.og_description_empty')
-    const url  = window.location.href
+    const url   = window.location.href
     const image = provider.avatar_url || 'https://soymanada.com/og-image.png'
 
     document.title = title
@@ -399,7 +203,7 @@ export default function ProviderPage() {
         if (el) el.setAttribute('content', val)
       })
     }
-  }, [provider?.name, provider?.service, provider?.avatar_url])
+  }, [provider?.name, provider?.service, provider?.avatar_url]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleContact = (platform, url) => {
     trackEvent(Events.CLICK_WHATSAPP, { proveedor_id: providerId, proveedor_nombre: provider?.name, plataforma: platform })
@@ -421,16 +225,6 @@ export default function ProviderPage() {
   return (
     <>
       {isConnecting && <Interstitial providerName={name} platform={targetPlatform} />}
-      {showReview && (
-        <ReviewModal
-          provider={{ id: providerId, name }}
-          userId={user?.id}
-          existingReview={userReview}
-          verified={hasInteraction}
-          onClose={() => setShowReview(false)}
-          onSuccess={reloadReview}
-        />
-      )}
 
       {showMsg && (
         <MessageModal
@@ -458,15 +252,12 @@ export default function ProviderPage() {
                 <div className="ppage__hero-info">
                   <h1 className="ppage__name d-lg">{name}</h1>
                   <p className="ppage__service t-md">{service}</p>
-                  {ratingVisible && <PawRating rating={avg} count={count} size="md" />}
+                  {opinionStats.avg && (
+                    <PawRating rating={opinionStats.avg} count={opinionStats.count} size="md" />
+                  )}
                   {verified && <VerificationBadge variant="pill" theme="light" />}
                 </div>
               </div>
-
-              {/* Componente 2 — barras por categoría */}
-              {ratingVisible && sub && (
-                <RatingBars sub={sub} recommendPct={recommendPct} />
-              )}
 
               {description && (
                 <section className="ppage__section">
@@ -490,17 +281,10 @@ export default function ProviderPage() {
                 />
               )}
 
-              <ReviewsList
+              <OpinionsList
                 providerId={providerId}
-                user={user}
-                userReview={userReview}
-                canReply={canReply}
-                hasInteraction={hasInteraction}
-                onReviewClick={() => setShowReview(true)}
-                onMessageClick={() => setShowMsg(true)}
+                onStats={setOpinionStats}
               />
-
-              <PilotOpinionsList providerId={providerId} />
             </div>
 
             {/* ── Sidebar de contacto ── */}
@@ -530,13 +314,10 @@ export default function ProviderPage() {
                 <div className="ppage__contact-actions">
                   {user ? (
                     <>
-                      {/* Primary CTA: internal messaging — always visible */}
-                      <button className="ppage__btn ppage__btn--msg"
-                        onClick={() => setShowMsg(true)}>
+                      <button className="ppage__btn ppage__btn--msg" onClick={() => setShowMsg(true)}>
                         {t('messaging.cta')}
                       </button>
 
-                      {/* WhatsApp — visible for non-bronze; explicit false hides it */}
                       {contact?.whatsapp &&
                         rawProvider?.tier !== 'bronze' &&
                         (rawProvider?.show_whatsapp ?? true) && (
@@ -552,35 +333,12 @@ export default function ProviderPage() {
                           {t('provider_card.contact_instagram')}
                         </button>
                       )}
+
                       {contact?.website && (
                         <a className="ppage__btn ppage__btn--web"
                           href={contact.website} target="_blank" rel="noopener noreferrer">
                           {t('provider_page.website')}
                         </a>
-                      )}
-
-                      {userReview ? (
-                        <div className="ppage__your-review">
-                          <p className="ppage__your-review-title t-xs">{t('provider_page.your_review_title')}</p>
-                          <span className="ppage__review-stars">
-                            {'★'.repeat(userReview.rating)}{'☆'.repeat(5 - userReview.rating)}
-                          </span>
-                          {userReview.comment && (
-                            <p className="ppage__your-review-comment t-xs">"{userReview.comment}"</p>
-                          )}
-                        </div>
-                      ) : hasInteraction ? (
-                        <button className="ppage__rate-btn" onClick={() => setShowReview(true)}>
-                          {t('reviews.rate_cta')}
-                        </button>
-                      ) : (
-                        <div className="ppage__review-gate">
-                          <p className="ppage__review-gate-hint t-xs">{t('reviews.gate_hint')}</p>
-                          <button className="ppage__rate-btn ppage__rate-btn--muted"
-                            onClick={() => setShowMsg(true)}>
-                            {t('reviews.gate_cta')}
-                          </button>
-                        </div>
                       )}
                     </>
                   ) : (
