@@ -57,7 +57,7 @@ export default function ProviderCard({ provider: rawProvider }) {
   const [showBooking,    setShowBooking]    = useState(false)
   const viewTracked = useRef(false)
 
-  const { avg, count, visible: ratingVisible, loading: ratingLoading } = useProviderRating(id)
+  const { avg, count, visible: ratingVisible, hasRating, loading: ratingLoading } = useProviderRating(id)
   const { review: userReview, reload: reloadReview } = useUserReview(id, user?.id)
   const { hasInteraction } = useVerifiedInteraction(id, user?.id)
 
@@ -83,7 +83,7 @@ export default function ProviderCard({ provider: rawProvider }) {
     setShowBooking(true)
   }
 
-  // ── Lógica del bloque de rating en el header de la card ──────────
+  // ── Lógica del bloque de rating en el header de la card ──────────────
   // Tres estados:
   //   1. Con reseñas suficientes (visible=true): muestra avg + count real
   //   2. Sin reseñas + usuario con interacción: huellas vacías + hint clickeable
@@ -158,8 +158,11 @@ export default function ProviderCard({ provider: rawProvider }) {
             {/* ── Bloque de rating: siempre visible post-carga ── */}
             {!ratingLoading && (
               ratingVisible ? (
-                // Estado 1: hay reseñas suficientes → mostrar puntaje real
+                // Estado 1: hay reseñas suficientes (>= MIN_REVIEWS) → puntaje + count
                 <PawRating rating={avg} count={count} size="sm" />
+              ) : hasRating ? (
+                // Estado 1b: 1–2 reseñas → color real, sin count (muestra de confiar, no estadística)
+                <PawRating rating={avg} size="sm" />
               ) : ratingHintClickable ? (
                 // Estado 2: sin reseñas, usuario puede evaluar → hint clickeable
                 <button
@@ -173,13 +176,13 @@ export default function ProviderCard({ provider: rawProvider }) {
                   </span>
                 </button>
               ) : (
-                // Estado 3: sin reseñas, usuario logueado sin interacción o no logueado
+                // Estado 3: sin reseñas, sin interacción o no logueado
                 <div className="pcard__rating-gate">
                   <PawRating rating={0} size="sm" />
                   <span className="pcard__rating-hint t-xs">
                     {user && !isProvider
-                      ? t('reviews.gate_hint_msg')   // "Escríbele primero para evaluar"
-                      : t('reviews.gate_hint_new')   // "Sé el primero en evaluar"
+                      ? t('reviews.gate_hint_msg')
+                      : t('reviews.gate_hint_new')
                     }
                   </span>
                 </div>
