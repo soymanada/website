@@ -2,11 +2,11 @@
 import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '../lib/supabase'
 
-const MIN_REVIEWS = 3  // mínimo para mostrar el rating en la card
+const MIN_REVIEWS = 3  // mínimo para mostrar el rating público (count + número)
 
 // ── Rating agregado de un proveedor ──────────────────────────────
 export function useProviderRating(providerId) {
-  const [state, setState] = useState({ avg: null, count: 0, visible: false, sub: {}, recommendPct: null, loading: true })
+  const [state, setState] = useState({ avg: null, count: 0, visible: false, hasRating: false, sub: {}, recommendPct: null, loading: true })
 
   useEffect(() => {
     if (!providerId) return
@@ -16,7 +16,7 @@ export function useProviderRating(providerId) {
       .eq('provider_id', providerId)
       .then(({ data }) => {
         if (!data?.length) {
-          setState({ avg: null, count: 0, visible: false, sub: {}, recommendPct: null, loading: false })
+          setState({ avg: null, count: 0, visible: false, hasRating: false, sub: {}, recommendPct: null, loading: false })
           return
         }
         const avg = data.reduce((s, r) => s + r.rating, 0) / data.length
@@ -32,9 +32,10 @@ export function useProviderRating(providerId) {
         )
 
         setState({
-          avg:     Math.round(avg * 10) / 10,
-          count:   data.length,
-          visible: data.length >= MIN_REVIEWS,
+          avg:       Math.round(avg * 10) / 10,
+          count:     data.length,
+          visible:   data.length >= MIN_REVIEWS,  // para mostrar número público
+          hasRating: data.length >= 1,             // para colorear las huellas
           sub: {
             speed:       avgField('rating_speed'),
             reliability: avgField('rating_reliability'),
