@@ -882,7 +882,7 @@ export default function ProviderDashboard() {
   if (!provider) return (
     <div className="pdash__empty">
       <p>{t('pdash.no_provider')}</p>
-      <Link to="/registro-proveedor" className="btn btn-primary">{t('pdash.register_cta')}</Link>
+      <Link to="/registro-proveedores" className="btn btn-primary">{t('pdash.register_cta')}</Link>
     </div>
   )
 
