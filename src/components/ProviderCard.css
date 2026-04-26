@@ -60,6 +60,12 @@
   margin-bottom: 4px;
 }
 .pcard__service { color: var(--text-300); }
+.pcard__no-rating {
+  color: var(--text-200);
+  font-style: italic;
+  margin-top: 4px;
+  display: block;
+}
 
 /* Banner Beneficio */
 .pcard__benefit {
