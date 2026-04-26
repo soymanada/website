@@ -3,7 +3,8 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: var(--iris-500);
+  /* color lo controla el componente via style={{ color: activeColor }} */
+  transition: color 150ms ease;
 }
 .paw-rating--sm { gap: 4px; }
 
@@ -34,7 +35,8 @@
 .paw-rating__score {
   font-family: var(--font-display);
   font-weight: 700;
-  color: var(--iris-800);
+  /* hereda el color activo del contenedor */
+  color: inherit;
   line-height: 1;
 }
 .paw-rating--sm .paw-rating__score { font-size: 0.82rem; }
@@ -46,3 +48,14 @@
 }
 .paw-rating--sm .paw-rating__count { font-size: 0.75rem; }
 .paw-rating--md .paw-rating__count { font-size: 0.82rem; }
+
+/* ── Microcopy emocional ─────────────────────────────────────────── */
+.paw-rating__label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  /* hereda el color semántico del contenedor */
+  color: inherit;
+  line-height: 1;
+  white-space: nowrap;
+}
+.paw-rating--sm .paw-rating__label { font-size: 0.72rem; }
