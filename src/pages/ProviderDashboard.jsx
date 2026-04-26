@@ -14,6 +14,7 @@ import AvailabilityEditor  from '../components/AvailabilityEditor'
 import ProviderInbox       from '../components/ProviderInbox'
 import { useDashboardBookings, updateBookingStatus } from '../hooks/useBookings'
 import './ProviderDashboard.css'
+import { planUiName } from '../config/providerPlans'
 
 // ── Avatar uploader ───────────────────────────────────────────────
 function AvatarUploader({ provider, onUpload, uploading }) {
@@ -153,7 +154,7 @@ function ProviderProfileEditor({ provider, tier, onSave, saving, onAvatarUpload,
               <span className="t-sm" style={{ fontWeight: 700, color: 'var(--text-700)' }}>{lang}</span>
               {provider?.[`description_${suffix}`]
                 ? <span className="pdash__badge pdash__badge--verified" style={{ fontSize: '0.65rem' }}>✔ Traducido</span>
-                : <span className="pdash__badge pdash__badge--silver" style={{ fontSize: '0.65rem' }}>Pendiente</span>
+                : <span className="pdash__badge pdash__badge--silver" style={{ fontSize: '0.65rem' }}>Pendiente · Cub</span>
               }
             </div>
             <div className="pdash__form" style={{ marginTop: 10 }}>
@@ -222,7 +223,7 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
       <div className="pdash__tools-block">
         <div className="pdash__tools-block-header">
           <span className="pdash__tools-block-title t-sm">📅 Calendario de citas</span>
-          <span className="pdash__badge pdash__badge--silver">Silver+</span>
+          <span className="pdash__badge pdash__badge--silver">Cub+</span>
         </div>
         {isSilverPlus ? (
           <>
@@ -283,14 +284,14 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
       <div className="pdash__tools-block" style={{ marginTop: 24 }}>
         <div className="pdash__tools-block-header">
           <span className="pdash__tools-block-title t-sm">🛠 Herramientas avanzadas</span>
-          <span className="pdash__badge pdash__badge--gold">Gold</span>
+          <span className="pdash__badge pdash__badge--gold">Wolf</span>
         </div>
         {isGold ? (
           <div className="pdash__form">
             <div className="pdash__field pdash__field--full">
               <label className="pdash__label t-sm">
                 💳 Link de pago
-                <span className="pdash__badge pdash__badge--gold" style={{ marginLeft: 6 }}>Gold</span>
+                <span className="pdash__badge pdash__badge--gold" style={{ marginLeft: 6 }}>Wolf</span>
               </label>
               <input
                 className="pdash__input"
@@ -398,8 +399,8 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
               ))}
             </div>
             <div className="pdash__upgrade-cta">
-              <p className="t-sm"><strong>Activa Gold</strong> por $14.990 CLP/mes y desbloquea las herramientas avanzadas.</p>
-              <UpgradeButton planCode="pro" label="Activar Gold — $14.990 CLP/mes" />
+              <p className="t-sm"><strong>Activa Wolf</strong> por $9.990 CLP/mes y desbloquea las herramientas avanzadas.</p>
+              <UpgradeButton planCode="pro" label="Activar Wolf — $9.990 CLP/mes" />
             </div>
           </div>
         )}
@@ -407,8 +408,8 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
 
       {!tier && (
         <div className="pdash__upgrade-cta" style={{ marginTop: 24 }}>
-          <p className="t-sm"><strong>Activa Silver</strong> por $4.990 CLP/mes para desbloquear el calendario de citas.</p>
-          <UpgradeButton planCode="activa" label="Activar Silver — $4.990 CLP/mes" />
+          <p className="t-sm"><strong>Activa Cub</strong> por $4.990 CLP/mes para desbloquear el calendario de citas.</p>
+          <UpgradeButton planCode="activa" label="Activar Cub — $4.990 CLP/mes" />
         </div>
       )}
 
@@ -438,15 +439,15 @@ function SectionMetricas({ tier, metrics, activity, hourlyActivity, feedback, pr
     <div className="pdash__section">
       <div className="pdash__section-header">
         <h2 className="pdash__section-title d-md">
-          {t('pdash.tab_metricas_label')} <span className="pdash__badge pdash__badge--silver">Silver</span>
+          {t('pdash.tab_metricas_label')} <span className="pdash__badge pdash__badge--silver">Cub</span>
         </h2>
         <p className="t-sm pdash__section-sub">Entiende cómo los migrantes interactúan con tu perfil.</p>
       </div>
       <div className="pdash__locked">
         <MetricsSummary metrics={null} loading={true} />
         <div className="pdash__upgrade-cta">
-          <p className="t-sm"><strong>Activa Silver</strong> por $4.990 CLP/mes y desbloquea tus métricas en tiempo real.</p>
-          <UpgradeButton planCode="activa" label="Activar Silver — $4.990 CLP/mes" />
+          <p className="t-sm"><strong>Activa Cub</strong> por $4.990 CLP/mes y desbloquea tus métricas en tiempo real.</p>
+          <UpgradeButton planCode="activa" label="Activar Cub — $4.990 CLP/mes" />
         </div>
       </div>
     </div>
@@ -514,7 +515,7 @@ function WAVisibilityToggle({ tier, provider }) {
     <div className="pdash__tools-block">
       <div className="pdash__tools-block-header">
         <span className="pdash__tools-block-title t-sm">📱 {t('messaging.whatsapp_toggle_section')}</span>
-        <span className="pdash__badge pdash__badge--silver">Silver+</span>
+        <span className="pdash__badge pdash__badge--silver">Cub+</span>
       </div>
       {isSilverPlus ? (
         <div className="pdash__wa-toggle-row">
@@ -577,8 +578,8 @@ function SectionReservas({ provider, tier }) {
       </div>
       <div className="pdash__locked">
         <div className="pdash__upgrade-cta">
-          <p className="t-sm"><strong>Activa Silver</strong> por $4.990 CLP/mes para recibir y gestionar reservas de citas.</p>
-          <UpgradeButton planCode="activa" label="Activar Silver — $4.990 CLP/mes" />
+          <p className="t-sm"><strong>Activa Cub</strong> por $4.990 CLP/mes para recibir y gestionar reservas de citas.</p>
+          <UpgradeButton planCode="activa" label="Activar Cub — $4.990 CLP/mes" />
         </div>
       </div>
     </div>
@@ -895,9 +896,7 @@ export default function ProviderDashboard() {
     { id: 'ayuda',        icon: '📖', label: 'Ayuda' },
   ]
 
-  const tierLabel = tier
-    ? tier.charAt(0).toUpperCase() + tier.slice(1)
-    : null
+  const tierLabel = planUiName(tier)
 
   return (
     <div className="pdash">

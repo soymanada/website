@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { trackEvent, Events } from '../utils/analytics'
 import './PricingPage.css'
+// eslint-disable-next-line no-unused-vars
+import { PROVIDER_PLANS } from '../config/providerPlans'
 
 const CHECK = (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -26,12 +28,12 @@ export default function PricingPage() {
   const tiers = [
     {
       key: 'bronze',
-      icon: '🥉',
+      icon: '✨',
       price: t('pricing_page.free'),
       priceLocal: null,
       highlight: false,
       badge: null,
-      ctaKey: 'cta_free',
+      ctaKey: 'cta_wonderer',
       ctaTo: '/registro-proveedores',
       features: [
         'feature_profile',
@@ -42,12 +44,12 @@ export default function PricingPage() {
     },
     {
       key: 'silver',
-      icon: '🥈',
-      price: '$10 USD',
-      priceLocal: '$9.500 CLP',
+      icon: '🐾',
+      price: '$5 USD',
+      priceLocal: '$4.990 CLP',
       highlight: true,
       badge: t('pricing_page.badge_popular'),
-      ctaKey: 'cta_paid',
+      ctaKey: 'cta_cub',
       ctaTo: '/registro-proveedores',
       features: [
         'feature_profile',
@@ -63,12 +65,12 @@ export default function PricingPage() {
     },
     {
       key: 'gold',
-      icon: '🥇',
-      price: '$20 USD',
-      priceLocal: '$19.000 CLP',
+      icon: '🐺',
+      price: '$10 USD',
+      priceLocal: '$9.990 CLP',
       highlight: false,
       badge: t('pricing_page.badge_premium'),
-      ctaKey: 'cta_paid',
+      ctaKey: 'cta_wolf',
       ctaTo: '/registro-proveedores',
       features: [
         'feature_profile',
