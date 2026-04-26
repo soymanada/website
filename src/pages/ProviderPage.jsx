@@ -49,7 +49,7 @@ function OpinionsList({ providerId, onStats }) {
   useEffect(() => {
     supabase
       .from('pilot_opinions')
-      .select('id, text, rating, rating_comm, rating_qual, rating_price, created_at')
+      .select('id, author_name, text, rating, rating_comm, rating_qual, rating_price, created_at')
       .eq('provider_id', providerId)
       .order('created_at', { ascending: false })
       .then(({ data }) => {
@@ -118,6 +118,11 @@ function OpinionsList({ providerId, onStats }) {
               )}
 
               <div className="ppage__review-header" style={{ marginTop: 6 }}>
+                {op.author_name && (
+                  <span className="ppage__review-author">
+                    {op.author_name}
+                  </span>
+                )}
                 <span className="ppage__review-date">
                   {new Date(op.created_at).toLocaleDateString('es-CL')}
                 </span>

@@ -115,9 +115,15 @@ img.ppage__avatar {
   border: 1px solid var(--border-100, #e5e7eb);
   border-radius: var(--r-md);
 }
-.ppage__review-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.ppage__review-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
 .ppage__review-stars { color: var(--iris-500); font-size: 0.9rem; letter-spacing: 1px; }
-.ppage__review-date { font-size: 0.75rem; color: var(--text-400); }
+.ppage__review-author {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-600);
+  flex: 1;
+}
+.ppage__review-date { font-size: 0.75rem; color: var(--text-300); white-space: nowrap; }
 .ppage__review-comment { color: var(--text-600); margin: 0; font-style: italic; }
 
 /* Sidebar contact card */

@@ -95,9 +95,15 @@ export default function OpinarPage() {
     setStatus('submitting')
     setErrorMsg('')
 
+    const authorName =
+      user.user_metadata?.full_name ||
+      user.user_metadata?.name ||
+      null
+
     const { error } = await supabase.from('pilot_opinions').insert({
       provider_id:  invite.provider_id,
       user_id:      user.id,
+      author_name:  authorName,
       text:         text.trim(),
       rating:       rating      || null,
       rating_comm:  ratingComm  || null,
@@ -160,7 +166,8 @@ export default function OpinarPage() {
         </p>
         <p style={{ color: 'var(--text-400)', fontSize: '0.875rem', marginBottom: 20, lineHeight: 1.6 }}>
           Solo pedimos autenticación para evitar opiniones duplicadas.
-          Tu nombre de cuenta no se muestra públicamente junto a tu opinión.
+          Tu nombre aparecerá junto a tu opinión para que la comunidad sepa quién la comparte.
+          Puedes cambiarlo en tu cuenta antes de opinar.
         </p>
         <button
           className="btn btn-primary"
@@ -294,10 +301,10 @@ export default function OpinarPage() {
           gap: 8,
           alignItems: 'flex-start',
         }}>
-          <span style={{ fontSize: 14, flexShrink: 0, opacity: 0.5 }}>🔒</span>
+          <span style={{ fontSize: 14, flexShrink: 0, opacity: 0.5 }}>🐾</span>
           <p style={{ fontSize: '0.72rem', color: 'var(--text-300)', margin: 0, lineHeight: 1.5 }}>
-            Tu cuenta de SoyManada se usa solo para evitar duplicados.
-            Tu nombre no aparece públicamente junto a tu opinión.
+            Tu nombre de cuenta aparecerá junto a tu opinión.
+            Si quieres cambiarlo, visita <a href="/cuenta" style={{ color: 'var(--iris-500)' }}>tu cuenta</a> antes de enviar.
           </p>
         </div>
       </div>
