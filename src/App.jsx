@@ -1,4 +1,4 @@
-import { useEffect, Suspense, Component } from 'react'
+import { useEffect, Component } from 'react'
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import Header               from './components/Header'
 import Footer               from './components/Footer'
