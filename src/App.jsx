@@ -31,8 +31,8 @@ class ErrorBoundary extends Component {
     if (this.state.hasError) {
       return (
         <main style={{ padding: '180px 24px 80px', textAlign: 'center' }}>
-          <h1 style={{ color: 'var(--iris-900)', marginBottom: 16, fontSize: '2rem' }}>Algo salió mal</h1>
-          <p style={{ color: 'var(--text-500)', marginBottom: 24 }}>Ocurrió un error inesperado. Por favor recarga la página.</p>
+          <h1 style={{ color: '#3b1f6e', marginBottom: 16, fontSize: '2rem' }}>Algo salió mal</h1>
+          <p style={{ color: '#6b7280', marginBottom: 24 }}>Ocurrió un error inesperado. Por favor recarga la página.</p>
           <a href="/" className="btn btn-primary" style={{ display: 'inline-flex' }}><span>Volver al inicio</span></a>
         </main>
       )
