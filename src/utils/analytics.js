@@ -12,14 +12,22 @@ export const trackEvent = (eventName, params = {}) => {
 
 export const trackPageView = (path, title) => {
   let pageType = 'otros';
-  if (path === '/')                          pageType = 'home';
-  else if (path.includes('/categoria/'))     pageType = 'categoria';
-  else if (path === '/proveedores')          pageType = 'directorio';
-  else if (path.includes('/registro-proveedores')) pageType = 'registro';
-  else if (path === '/login')                pageType = 'login';
-  else if (path === '/reset-password')       pageType = 'reset_password';
-  else if (path.includes('/proveedor/'))     pageType = 'proveedor';
+  if (path === '/')                                    pageType = 'home';
+  else if (path.includes('/categoria/'))               pageType = 'categoria';
+  else if (path === '/proveedores')                    pageType = 'directorio';
+  else if (path.includes('/registro-proveedores'))     pageType = 'registro';
+  else if (path === '/login')                          pageType = 'login';
+  else if (path === '/reset-password')                 pageType = 'reset_password';
+  else if (path.includes('/proveedor/'))               pageType = 'proveedor';
   else if (['/privacidad', '/terminos'].includes(path)) pageType = 'legal';
+  // ── Rutas nuevas ──────────────────────────────────────────────
+  else if (path === '/primeros-pasos')                 pageType = 'primeros_pasos';
+  else if (path === '/planes')                         pageType = 'planes';
+  else if (path === '/cuenta')                         pageType = 'cuenta';
+  else if (path.includes('/sala/'))                    pageType = 'sala_reserva';
+  else if (path === '/opinar')                         pageType = 'opinar';
+  else if (path === '/mi-perfil')                      pageType = 'mi_perfil';
+  else if (path.startsWith('/admin'))                  pageType = 'admin';
 
   trackEvent('page_view', {
     page_path:  path,
