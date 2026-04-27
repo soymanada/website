@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import categories          from '../data/categories.json'
+import { TIER_RANK }       from '../config/providerPlans'
 import { supabase }        from '../lib/supabase'
 import { normalizeProviders } from '../utils/providerNormalize'
 import ProviderCard        from '../components/ProviderCard'
@@ -54,12 +55,11 @@ export default function CategoryPage() {
 
   const verified = list.filter(p => p.verified).length
 
-  // Orden: verificados primero, luego por tier (Wolf > Cub > Wonderer)
-  const tierOrder = { gold: 3, silver: 2, bronze: 1 }
-  const sorted = [...list].sort((a, b) => {
+  // Verificados primero, luego Wolf > Cub > Wonderer
+  const sorted = useMemo(() => [...list].sort((a, b) => {
     if (a.verified !== b.verified) return (b.verified ? 1 : 0) - (a.verified ? 1 : 0)
-    return (tierOrder[b.tier] || 0) - (tierOrder[a.tier] || 0)
-  })
+    return (TIER_RANK[b.tier] || 0) - (TIER_RANK[a.tier] || 0)
+  }), [list])
 
   return (
     <main className="catpage">

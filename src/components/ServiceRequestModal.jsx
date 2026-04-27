@@ -9,14 +9,16 @@ export default function ServiceRequestModal({ onClose }) {
   const { t } = useTranslation()
   const sorted = [...categories].sort((a, b) => a.order - b.order)
 
-  const [form, setForm] = useState({ description: '', category: '', city: '', email: '' })
-  const [sending, setSending] = useState(false)
-  const [sent,    setSent]    = useState(false)
-  const [err,     setErr]     = useState(null)
+  const [form,     setForm]     = useState({ description: '', category: '', city: '', email: '' })
+  const [sending,  setSending]  = useState(false)
+  const [sent,     setSent]     = useState(false)
+  const [err,      setErr]      = useState(null)
+  const [honeypot, setHoneypot] = useState('')
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
 
   const handleSubmit = async () => {
+    if (honeypot) return // bot trap
     if (!form.description.trim()) return
     setSending(true)
     setErr(null)
@@ -72,7 +74,7 @@ export default function ServiceRequestModal({ onClose }) {
                   onChange={e => set('description', e.target.value)}
                   placeholder={t('forms.request_service_placeholder')}
                   autoFocus
-                  maxLength={1000}
+                  maxLength={500}
                 />
               </div>
 
@@ -93,15 +95,21 @@ export default function ServiceRequestModal({ onClose }) {
                 <label className="fmodal__label t-xs">{t('forms.request_city_label')}</label>
                 <input className="fmodal__input" type="text" value={form.city}
                   onChange={e => set('city', e.target.value)}
-                  placeholder={t('forms.request_city_placeholder')} />
+                  placeholder={t('forms.request_city_placeholder')} maxLength={100} />
               </div>
 
               <div className="fmodal__row">
                 <label className="fmodal__label t-xs">{t('forms.email_optional')}</label>
                 <input className="fmodal__input" type="email" value={form.email}
                   onChange={e => set('email', e.target.value)}
-                  placeholder={t('forms.email_placeholder')} />
+                  placeholder={t('forms.email_placeholder')} maxLength={200} />
               </div>
+              {/* Honeypot — oculto para humanos, bots lo llenan */}
+              <input
+                aria-hidden="true" tabIndex={-1} autoComplete="off"
+                value={honeypot} onChange={e => setHoneypot(e.target.value)}
+                style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }}
+              />
             </div>
 
             {err && <p className="fmodal__error t-xs">{err}</p>}

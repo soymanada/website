@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useSearchParams, Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../hooks/useAuth'
+import { getUserDisplayName } from '../utils/userUtils'
 import VerificationBadge from '../components/VerificationBadge'
 
 const MAX_OPINIONS = 10
@@ -95,10 +96,7 @@ export default function OpinarPage() {
     setStatus('submitting')
     setErrorMsg('')
 
-    const authorName =
-      user.user_metadata?.full_name ||
-      user.user_metadata?.name ||
-      null
+    const authorName = getUserDisplayName(user)
 
     const { error } = await supabase.from('pilot_opinions').insert({
       provider_id:  invite.provider_id,

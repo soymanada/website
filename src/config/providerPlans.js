@@ -26,6 +26,9 @@ export const PROVIDER_PLANS = {
   },
 }
 
+/** Orden numérico para sorting: mayor = mejor tier */
+export const TIER_RANK = { gold: 3, silver: 2, bronze: 1 }
+
 /**
  * Devuelve el nombre visible de un tier dado su código interno.
  * Fallback al código capitalizado si no existe.

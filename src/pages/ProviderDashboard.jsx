@@ -489,9 +489,8 @@ const STATUS_LABELS = {
 function WAVisibilityToggle({ tier, provider }) {
   const { t }        = useTranslation()
   const { user }     = useAuth()
-  const isSilver     = tier === 'silver'
-  const isGold       = tier === 'gold'
-  const isSilverPlus = isSilver || isGold
+  const isSilver = tier === 'silver'
+  const isGold   = tier === 'gold'
 
   // Silver toggle (show_whatsapp — free)
   const [enabled, setEnabled] = useState(provider?.show_whatsapp ?? false)
@@ -526,7 +525,7 @@ function WAVisibilityToggle({ tier, provider }) {
       </div>
 
       {/* Locked for Wonderer */}
-      {!isSilverPlus && (
+      {!isSilver && !isGold && (
         <div className="pdash__tool-card pdash__tool-card--locked">
           <span className="pdash__tool-icon">📱</span>
           <div>
@@ -792,11 +791,11 @@ function UpgradeButton({ planCode, label, variant = 'primary' }) {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 6, alignItems: 'flex-start' }}>
+    <div className="pdash__upgrade-btn-wrap">
       <button className={`btn btn-${variant}`} onClick={handleUpgrade} disabled={loading}>
         <span>{loading ? 'Redirigiendo a MercadoPago…' : label}</span>
       </button>
-      {err && <p className="t-xs" style={{ color: '#c0392b', margin: 0 }}>{err}</p>}
+      {err && <p className="pdash__upgrade-error t-xs">{err}</p>}
     </div>
   )
 }

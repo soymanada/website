@@ -309,7 +309,8 @@
     "gate_text": "Rejoins-nous gratuitement — vois les contacts, laisse ton empreinte 🐾 et aide la communauté à mieux choisir.",
     "gate_cta": "Rejoindre gratuitement",
     "profile_link": "Voir le profil complet →",
-    "profile_link_remesas": "Voir les avis →"
+    "profile_link_remesas": "Voir les avis →",
+    "no_opinions": "Aucun avis pour l'instant"
   },
   "providers_page": {
     "title": "Répertoire des fournisseurs",

@@ -309,7 +309,8 @@
     "gate_text": "Join for free — see contacts, leave your paw print 🐾 and help the community choose better.",
     "gate_cta": "Join free",
     "profile_link": "View full profile →",
-    "profile_link_remesas": "View reviews →"
+    "profile_link_remesas": "View reviews →",
+    "no_opinions": "No reviews yet"
   },
   "providers_page": {
     "title": "Provider directory",

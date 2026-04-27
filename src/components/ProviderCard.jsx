@@ -48,10 +48,8 @@ export default function ProviderCard({ provider: rawProvider }) {
   const isSegurosCategory = categorySlug === 'seguros' || location.pathname.startsWith('/categoria/seguros')
   const hideWhatsAppForMigrant = isMigrantUser && isSegurosCategory && isBronzeProvider
 
-  // WhatsApp visible if: Silver+ with toggle ON, or Gold with paid addon
-  const whatsappEnabled =
-    rawProvider?.whatsapp_addon === true ||
-    rawProvider?.show_whatsapp  === true
+  // Computed in normalizeProvider: show_whatsapp (Silver toggle) OR whatsapp_addon (Gold paid)
+  const whatsappEnabled = rawProvider?.whatsappEnabled ?? false
 
   const [isConnecting,   setIsConnecting]   = useState(false)
   const [targetPlatform, setTargetPlatform] = useState('')
@@ -141,7 +139,7 @@ export default function ProviderCard({ provider: rawProvider }) {
             {!ratingLoading && (
               avg
                 ? <PawRating rating={avg} count={count} size="sm" />
-                : <span className="pcard__no-rating t-xs">Sin opiniones aún</span>
+                : <span className="pcard__no-rating t-xs">{t('provider_card.no_opinions')}</span>
             )}
           </div>
         </div>

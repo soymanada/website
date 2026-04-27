@@ -17,14 +17,16 @@ import './FormModal.css'
 
 export default function CategorySuggestionModal({ onClose }) {
   const { t } = useTranslation()
-  const [form, setForm] = useState({ role: '', name: '', city: '', message: '', email: '' })
-  const [sending, setSending] = useState(false)
-  const [sent,    setSent]    = useState(false)
-  const [err,     setErr]     = useState(null)
+  const [form,     setForm]     = useState({ role: '', name: '', city: '', message: '', email: '' })
+  const [sending,  setSending]  = useState(false)
+  const [sent,     setSent]     = useState(false)
+  const [err,      setErr]      = useState(null)
+  const [honeypot, setHoneypot] = useState('')
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
 
   const handleSubmit = async () => {
+    if (honeypot) return // bot trap
     if (!form.message.trim()) return
     setSending(true)
     setErr(null)
@@ -81,26 +83,32 @@ export default function CategorySuggestionModal({ onClose }) {
                 <label className="fmodal__label t-xs">{t('forms.name_label')}</label>
                 <input className="fmodal__input" type="text" value={form.name}
                   onChange={e => set('name', e.target.value)}
-                  placeholder={t('forms.name_placeholder')} />
+                  placeholder={t('forms.name_placeholder')} maxLength={100} />
               </div>
               <div className="fmodal__row">
                 <label className="fmodal__label t-xs">{t('forms.city_label')}</label>
                 <input className="fmodal__input" type="text" value={form.city}
                   onChange={e => set('city', e.target.value)}
-                  placeholder={t('forms.city_placeholder')} />
+                  placeholder={t('forms.city_placeholder')} maxLength={100} />
               </div>
               <div className="fmodal__row">
                 <label className="fmodal__label t-xs">{t('forms.suggest_message_label')}</label>
                 <textarea className="fmodal__textarea" rows={4} value={form.message}
                   onChange={e => set('message', e.target.value)}
-                  placeholder={t('forms.suggest_message_placeholder')} />
+                  placeholder={t('forms.suggest_message_placeholder')} maxLength={500} />
               </div>
               <div className="fmodal__row">
                 <label className="fmodal__label t-xs">{t('forms.email_optional')}</label>
                 <input className="fmodal__input" type="email" value={form.email}
                   onChange={e => set('email', e.target.value)}
-                  placeholder={t('forms.email_placeholder')} />
+                  placeholder={t('forms.email_placeholder')} maxLength={200} />
               </div>
+              {/* Honeypot — oculto para humanos, bots lo llenan */}
+              <input
+                aria-hidden="true" tabIndex={-1} autoComplete="off"
+                value={honeypot} onChange={e => setHoneypot(e.target.value)}
+                style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }}
+              />
             </div>
 
             {err && <p className="fmodal__error t-xs">{err}</p>}

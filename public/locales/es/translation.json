@@ -307,7 +307,8 @@
     "gate_text": "Únete gratis — ve los contactos, deja tu huella 🐾 y ayuda a la comunidad a elegir mejor.",
     "gate_cta": "Entrar gratis",
     "profile_link": "Ver perfil completo →",
-    "profile_link_remesas": "Ver opiniones y evaluaciones →"
+    "profile_link_remesas": "Ver opiniones y evaluaciones →",
+    "no_opinions": "Sin opiniones aún"
   },
   "providers_page": {
     "title": "Directorio de proveedores",

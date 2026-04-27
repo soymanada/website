@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../hooks/useAuth'
+import { getUserDisplayName } from '../utils/userUtils'
 import LanguageSwitcher from './LanguageSwitcher'
 import './Header.css'
 
@@ -25,7 +26,6 @@ export default function Header() {
     setUserMenuOpen(false)
   }
 
-  // Close user dropdown on outside click
   useEffect(() => {
     if (!userMenuOpen) return
     const handler = (e) => {
@@ -103,10 +103,10 @@ export default function Header() {
                 onClick={() => setUserMenuOpen(v => !v)}
                 aria-haspopup="true"
                 aria-expanded={userMenuOpen}
-                title={user.user_metadata?.full_name || user.user_metadata?.name || user.email}
+                title={getUserDisplayName(user) ?? user.email}
               >
                 <span className="hdr__avatar-initials">
-                  {(user.user_metadata?.full_name?.split(' ')[0] || user.user_metadata?.name?.split(' ')[0] || user.email?.split('@')[0] || '?')}
+                  {(getUserDisplayName(user) ?? '?').split(' ')[0]}
                 </span>
                 <svg className="hdr__avatar-caret" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <polyline points="6 9 12 15 18 9"/>

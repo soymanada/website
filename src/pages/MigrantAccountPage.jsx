@@ -3,6 +3,7 @@ import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../hooks/useAuth'
 import { supabase } from '../lib/supabase'
+import { getUserDisplayName } from '../utils/userUtils'
 import PawIcon from '../components/PawIcon'
 import './LoginPage.css'
 import './MigrantAccountPage.css'
@@ -34,11 +35,7 @@ export default function MigrantAccountPage() {
     return <Navigate to="/mi-perfil" replace />
   }
 
-  const displayName =
-    user?.user_metadata?.full_name ||
-    user?.user_metadata?.name ||
-    user?.email?.split('@')[0] ||
-    '—'
+  const displayName = getUserDisplayName(user) ?? '—'
 
   const handleSignOut = async () => {
     await signOut()
@@ -70,8 +67,7 @@ export default function MigrantAccountPage() {
     } else {
       setNameMsg({ ok: true, text: '¡Nombre actualizado!' })
       setEditingName(false)
-      // Recargar sesión para reflejar cambio en Header
-      await supabase.auth.refreshSession()
+      // updateUser() fires USER_UPDATED on onAuthStateChange — Header updates automatically
     }
   }
 

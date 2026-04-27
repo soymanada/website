@@ -9,11 +9,13 @@ export function usePilotRating(providerId) {
   useEffect(() => {
     if (!providerId) { setState({ avg: null, count: 0, loading: false }); return }
 
+    let mounted = true
     supabase
       .from('pilot_opinions')
       .select('rating')
       .eq('provider_id', providerId)
       .then(({ data }) => {
+        if (!mounted) return
         const ops        = data ?? []
         const withRating = ops.filter(o => o.rating)
         const avg        = withRating.length
@@ -21,6 +23,7 @@ export function usePilotRating(providerId) {
           : null
         setState({ avg, count: ops.length, loading: false })
       })
+    return () => { mounted = false }
   }, [providerId])
 
   return state
