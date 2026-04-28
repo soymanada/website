@@ -68,8 +68,11 @@ export default function ProviderCard({ provider: rawProvider }) {
 
   const handleContact = (platform, url) => {
     insertEvent(id, 'contact_click')
-    trackEvent(Events.PROVEEDOR_VISITADO, { proveedor_id: id, proveedor_nombre: name })
-    trackEvent(Events.CLICK_WHATSAPP, { proveedor_id: id, proveedor_nombre: name, plataforma: platform })
+    trackEvent(Events.CONTACT_PROVIDER, {
+      provider_name:     name,
+      provider_category: provider.categorySlug,
+      contact_type:      'external_link',
+    })
     setTargetPlatform(platform === 'whatsapp' ? 'WhatsApp' : 'Instagram')
     setIsConnecting(true)
     setTimeout(() => { window.open(url, '_blank', 'noopener,noreferrer'); setIsConnecting(false) }, 1500)
@@ -207,7 +210,10 @@ export default function ProviderCard({ provider: rawProvider }) {
               )}
               {contact.phone && (
                 <a className="pcard__btn pcard__btn--phone" href={`tel:+${contact.phone}`}
-                  onClick={() => trackEvent(Events.PROVEEDOR_VISITADO, { proveedor_id: id, proveedor_nombre: name, plataforma: 'phone' })}>
+                  onClick={() => {
+                    insertEvent(id, 'contact_click')
+                    trackEvent(Events.CONTACT_PROVIDER, { provider_name: name, provider_category: provider.categorySlug, contact_type: 'external_link' })
+                  }}>
                   {t('provider_card.contact_phone')}
                 </a>
               )}

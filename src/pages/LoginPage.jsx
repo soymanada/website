@@ -27,6 +27,11 @@ export default function LoginPage() {
   const [error,     setError]     = useState(null)
   const [success,   setSuccess]   = useState(null)
 
+  // Título de pestaña
+  useEffect(() => {
+    document.title = mode === 'register' ? 'Crear cuenta | SoyManada' : 'Ingresar | SoyManada'
+  }, [mode])
+
   // Redirigir si ya tiene sesión
   useEffect(() => {
     if (user) navigate(from, { replace: true })

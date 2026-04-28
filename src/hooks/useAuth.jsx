@@ -23,14 +23,13 @@ export function AuthProvider({ children }) {
   }
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
-      loadProfile(session?.user?.id)
-    })
-
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setSession(session)
-      loadProfile(session?.user?.id)
+
+      // INITIAL_SESSION cubre el caso que antes manejaba getSession()
+      if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'USER_UPDATED') {
+        loadProfile(session?.user?.id)
+      }
 
       if (event === 'SIGNED_IN') {
         const method = session?.user?.app_metadata?.provider ?? 'email'
@@ -38,9 +37,11 @@ export function AuthProvider({ children }) {
         if (isNew) trackEvent(Events.SIGN_UP, { method })
         else       trackEvent(Events.LOGIN,   { method })
       }
+
       if (event === 'SIGNED_OUT') {
         trackEvent(Events.LOGOUT)
         setProfile(null)
+        setProfileLoading(false)
       }
     })
 

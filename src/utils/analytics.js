@@ -53,6 +53,7 @@ export const Events = {
   // Proveedores
   PROVEEDOR_VISITADO:   'proveedor_visitado',
   CLICK_WHATSAPP:       'click_whatsapp_proveedor',
+  CONTACT_PROVIDER:     'contact_provider',           // outbound contact (whatsapp/instagram/phone)
   CLICK_APPLY_PROVIDER: 'click_apply_provider',
 
   // Auth gate

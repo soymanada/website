@@ -189,7 +189,7 @@
     "whatsapp_toggle_section": "WhatsApp visibility",
     "whatsapp_toggle": "Show WhatsApp on my public profile",
     "whatsapp_toggle_hint": "When active, migrants see your number directly on your profile.",
-    "whatsapp_tier_lock": "Available on Activa or Pro plan.",
+    "whatsapp_tier_lock": "Available on Cob or Wolf plan.",
     "send_error": "We couldn't send your message. Please try again.",
     "select_conversation": "Select a conversation"
   },
@@ -627,7 +627,10 @@
     "reviews_be_first": "Leave my review",
     "your_review_title": "Your review",
     "meta_title": "{{name}} — SoyManada",
-    "calendar_cta": "📅 Book a call"
+    "calendar_cta": "📅 Book a call",
+    "share_profile": "Share profile",
+    "share_copied": "Link copied!",
+    "share_text_fallback": "Check out this provider on SoyManada"
   },
   "remesas_comp": {
     "title": "Compare rates in real time",

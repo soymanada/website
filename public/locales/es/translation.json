@@ -187,7 +187,7 @@
     "whatsapp_toggle_section": "Visibilidad de WhatsApp",
     "whatsapp_toggle": "Mostrar WhatsApp en mi perfil público",
     "whatsapp_toggle_hint": "Cuando está activo, los migrantes ven tu número directamente en tu perfil.",
-    "whatsapp_tier_lock": "Disponible en plan Activa o Pro.",
+    "whatsapp_tier_lock": "Disponible en plan Cob o Wolf.",
     "send_error": "No pudimos enviar tu mensaje. Inténtalo de nuevo.",
     "select_conversation": "Selecciona una conversación"
   },
@@ -624,7 +624,10 @@
     "reviews_be_first": "Dejar mi opinión",
     "your_review_title": "Tu evaluación",
     "meta_title": "{{name}} — SoyManada",
-    "calendar_cta": "📅 Reservar cita"
+    "calendar_cta": "📅 Reservar cita",
+    "share_profile": "Compartir perfil",
+    "share_copied": "¡Link copiado!",
+    "share_text_fallback": "Mira este proveedor en SoyManada"
   },
   "remesas_comp": {
     "title": "Compara tasas en tiempo real",

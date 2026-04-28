@@ -17,6 +17,11 @@ export default function ResetPasswordPage() {
   const [error,    setError]    = useState(null)
   const [success,  setSuccess]  = useState(null)
 
+  // Título de pestaña
+  useEffect(() => {
+    document.title = 'Recuperar contraseña | SoyManada'
+  }, [])
+
   // Si Supabase redirige con #access_token en la URL → modo nueva contraseña
   useEffect(() => {
     const hash = window.location.hash

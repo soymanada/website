@@ -189,7 +189,7 @@
     "whatsapp_toggle_section": "Visibilité WhatsApp",
     "whatsapp_toggle": "Afficher WhatsApp sur mon profil public",
     "whatsapp_toggle_hint": "Quand actif, les migrants voient votre numéro directement sur votre profil.",
-    "whatsapp_tier_lock": "Disponible avec le plan Activa ou Pro.",
+    "whatsapp_tier_lock": "Disponible avec le plan Cob ou Wolf.",
     "send_error": "Nous n'avons pas pu envoyer votre message. Veuillez réessayer.",
     "select_conversation": "Sélectionnez une conversation"
   },
@@ -627,7 +627,10 @@
     "reviews_be_first": "Laisser mon avis",
     "your_review_title": "Votre avis",
     "meta_title": "{{name}} — SoyManada",
-    "calendar_cta": "📅 Réserver un appel"
+    "calendar_cta": "📅 Réserver un appel",
+    "share_profile": "Partager le profil",
+    "share_copied": "Lien copié !",
+    "share_text_fallback": "Découvrez ce fournisseur sur SoyManada"
   },
   "remesas_comp": {
     "title": "Comparez les taux en temps réel",

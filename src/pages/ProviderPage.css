@@ -181,6 +181,75 @@ img.ppage__avatar {
 .ppage__btn--cal  { background: var(--iris-600); color: #fff; }
 .ppage__btn--gate { background: var(--iris-600); color: #fff; }
 
+/* Managed payment card */
+.ppage__payment-card {
+  margin-top: 12px;
+  padding: 16px 20px;
+  border-radius: var(--r-lg);
+  border: 1.5px solid var(--iris-200);
+  background: var(--white);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.ppage__payment-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.ppage__payment-price {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--iris-800);
+  margin-top: 4px;
+}
+.ppage__btn--pay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: var(--r-md);
+  border: none;
+  background: var(--iris-600);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+.ppage__btn--pay:hover { opacity: 0.88; }
+.ppage__btn--pay:disabled { opacity: 0.6; cursor: not-allowed; }
+.ppage__payment-error {
+  color: #dc2626;
+  margin-top: -4px;
+}
+
+/* Share button */
+.ppage__share-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  margin-top: 8px;
+  padding: 9px 16px;
+  border-radius: var(--r-md);
+  border: 1.5px solid var(--iris-200);
+  background: transparent;
+  color: var(--iris-600);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.ppage__share-btn:hover {
+  background: var(--iris-50);
+  border-color: var(--iris-300);
+}
+
 .ppage__rate-btn {
   padding: 10px 16px;
   border-radius: var(--r-md);
