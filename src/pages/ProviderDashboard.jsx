@@ -1304,52 +1304,62 @@ export default function ProviderDashboard() {
       {/* ── Hero ── */}
       <div className="pdash__hero">
         <div className="pdash__hero-orb" />
-        <div className="pdash__hero-inner-wrap">
-          <div className="pdash__hero-inner">
-            <div>
-              <h1 className="pdash__hero-title d-lg">
-                {provider.name || t('pdash.unnamed')}
-              </h1>
-              {tierLabel && (
-                <span className="pdash__tier-badge">
-                  <span className="pdash__tier-dot" />
-                  {tierLabel}
-                </span>
-              )}
-            </div>
-            <div className="pdash__hero-right">
-              {provider.slug && (
-                <a
-                  href={`/proveedor/${provider.slug}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="pdash__signout"
-                >
-                  Ver perfil público ↗
-                </a>
-              )}
-              <button
-                className="pdash__signout"
-                onClick={async () => { await supabase.auth.signOut(); window.location.href = '/' }}
-              >
-                Cerrar sesión
-              </button>
-            </div>
-          </div>
+        <div className="pdash__hero-center">
 
-          {/* Tabs dentro del hero */}
-          <div className="pdash__tabs">
-            {TABS.map(tab => (
-              <button
-                key={tab.id}
-                className={`pdash__tab${activeTab === tab.id ? ' pdash__tab--active' : ''}`}
-                onClick={() => setActiveTab(tab.id)}
+          {/* Avatar */}
+          {provider.avatar_url
+            ? <img src={provider.avatar_url} alt="" className="pdash__hero-avatar" />
+            : (
+              <div className="pdash__hero-avatar-placeholder">
+                {(provider.name || '?')[0].toUpperCase()}
+              </div>
+            )
+          }
+
+          {/* Nombre + tier */}
+          <h1 className="pdash__hero-title d-lg">
+            {provider.name || t('pdash.unnamed')}
+          </h1>
+          {tierLabel && (
+            <span className="pdash__tier-badge">
+              <span className="pdash__tier-dot" />
+              {tierLabel}
+            </span>
+          )}
+
+          {/* Links rápidos */}
+          <div className="pdash__hero-links">
+            {provider.slug && (
+              <a
+                href={`/proveedor/${provider.slug}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="pdash__hero-link"
               >
-                <span className="pdash__tab-icon">{tab.icon}</span>
-                <span className="pdash__tab-label">{tab.label}</span>
-              </button>
-            ))}
+                Ver perfil público ↗
+              </a>
+            )}
+            <button
+              className="pdash__hero-link"
+              onClick={async () => { await supabase.auth.signOut(); window.location.href = '/' }}
+            >
+              Cerrar sesión
+            </button>
           </div>
+        </div>
+
+        {/* Tabs */}
+        <div className="pdash__tabs">
+          {TABS.map(tab => (
+            <button
+              key={tab.id}
+              className={`pdash__tab${activeTab === tab.id ? ' pdash__tab--active' : ''}`}
+              onClick={() => setActiveTab(tab.id)}
+            >
+              <span className="pdash__tab-icon">{tab.icon}</span>
+              <span className="pdash__tab-label">{tab.label}</span>
+            </button>
+          ))}
         </div>
       </div>
 
