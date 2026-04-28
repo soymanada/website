@@ -659,21 +659,6 @@ function SectionMetricas({ tier, metrics, activity, hourlyActivity, feedback, pr
         provider={provider}
       />
 
-      {/* Responder reseñas — Wolf only */}
-      <div className="pdash__subsection-title label" style={{ marginTop: 24 }}>
-        💬 Responder reseñas
-        <span className="pdash__badge pdash__badge--gold" style={{ marginLeft: 8 }}>Wolf</span>
-      </div>
-      {tier === 'wolf' ? (
-        <ReviewReplies provider={provider} />
-      ) : (
-        <div className="pdash__upgrade-cta" style={{ marginTop: 8 }}>
-          <p className="t-sm">
-            <strong>Con Wolf</strong> puedes responder las reseñas que dejan tus clientes. Muestra profesionalismo y fideliza tu comunidad.
-          </p>
-          <UpgradeButton planCode="pro" label="Activar Wolf — $9.990 CLP/mes" />
-        </div>
-      )}
     </div>
   )
 }
@@ -791,6 +776,158 @@ function WAVisibilityToggle({ tier, provider }) {
           )}
         </div>
       )}
+    </div>
+  )
+}
+
+// ── Reseñas tab (Wolf) ───────────────────────────────────────────
+function SectionReseñas({ provider, tier }) {
+  const isWolf = tier === 'wolf'
+  return (
+    <div className="pdash__section">
+      <div className="pdash__section-header">
+        <h2 className="pdash__section-title d-md">
+          Reseñas de clientes
+          <span className="pdash__badge pdash__badge--gold" style={{ marginLeft: 10 }}>Wolf</span>
+        </h2>
+        <p className="t-sm pdash__section-sub">
+          Lee lo que tus clientes dicen de ti y responde públicamente desde aquí.
+        </p>
+      </div>
+
+      {isWolf ? (
+        <ReviewReplies provider={provider} />
+      ) : (
+        <div className="pdash__locked">
+          {/* Preview borroso */}
+          <div className="pdash__reseñas-preview">
+            {[1,2,3].map(i => (
+              <div key={i} className="pdash__reply-card pdash__reply-card--blur">
+                <div className="pdash__reply-meta">
+                  <span className="t-sm pdash__reply-author">Cliente {i}</span>
+                  <span className="pdash__reply-stars">🐾🐾🐾🐾🐾</span>
+                </div>
+                <p className="pdash__reply-text t-sm">"Excelente servicio, muy recomendado."</p>
+              </div>
+            ))}
+          </div>
+          <div className="pdash__upgrade-cta">
+            <p className="t-sm">
+              <strong>Con Wolf</strong> puedes responder las reseñas que dejan tus clientes.
+              Muestra profesionalismo y fideliza tu comunidad migrante.
+            </p>
+            <UpgradeButton planCode="pro" label="Activar Wolf — $9.990 CLP/mes" />
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ── Planes tab ────────────────────────────────────────────────────
+const PLAN_FEATURES = {
+  bronze: [
+    { label: 'Perfil público en el directorio', included: true },
+    { label: 'Descripción y foto de perfil',    included: true },
+    { label: 'Redes sociales e Instagram',       included: true },
+    { label: 'Métricas de visitas en tiempo real', included: false },
+    { label: 'WhatsApp visible en perfil',        included: false },
+    { label: 'Calendario de reservas',            included: false },
+    { label: 'Inbox de mensajes directos',        included: false },
+    { label: 'Cobro gestionado por SoyManada',    included: false },
+    { label: 'Responder reseñas públicamente',    included: false },
+    { label: 'Badge destacado en búsquedas',      included: false },
+  ],
+  cob: [
+    { label: 'Perfil público en el directorio', included: true },
+    { label: 'Descripción y foto de perfil',    included: true },
+    { label: 'Redes sociales e Instagram',       included: true },
+    { label: 'Métricas de visitas en tiempo real', included: true },
+    { label: 'WhatsApp visible en perfil',        included: true },
+    { label: 'Calendario de reservas',            included: true },
+    { label: 'Inbox de mensajes directos',        included: true },
+    { label: 'Cobro gestionado por SoyManada',    included: false },
+    { label: 'Responder reseñas públicamente',    included: false },
+    { label: 'Badge destacado en búsquedas',      included: false },
+  ],
+  wolf: [
+    { label: 'Perfil público en el directorio', included: true },
+    { label: 'Descripción y foto de perfil',    included: true },
+    { label: 'Redes sociales e Instagram',       included: true },
+    { label: 'Métricas de visitas en tiempo real', included: true },
+    { label: 'WhatsApp visible en perfil',        included: true },
+    { label: 'Calendario de reservas',            included: true },
+    { label: 'Inbox de mensajes directos',        included: true },
+    { label: 'Cobro gestionado por SoyManada',    included: true },
+    { label: 'Responder reseñas públicamente',    included: true },
+    { label: 'Badge destacado en búsquedas',      included: true },
+  ],
+}
+
+function SectionPlanes({ tier }) {
+  const PLANS = [
+    { code: 'bronze', name: 'Wonderer', icon: '✨', price: 'Gratis',         planCode: null },
+    { code: 'cob',    name: 'Cob',      icon: '🐾', price: '$4.990 CLP/mes', planCode: 'activo' },
+    { code: 'wolf',   name: 'Wolf',     icon: '🐺', price: '$9.990 CLP/mes', planCode: 'pro' },
+  ]
+  return (
+    <div className="pdash__section">
+      <div className="pdash__section-header">
+        <h2 className="pdash__section-title d-md">Planes y beneficios</h2>
+        <p className="t-sm pdash__section-sub">
+          Compara lo que incluye cada plan y actualiza cuando quieras.
+        </p>
+      </div>
+
+      <div className="pdash__plans-grid">
+        {PLANS.map(plan => {
+          const isCurrent = tier === plan.code
+          const features  = PLAN_FEATURES[plan.code]
+          return (
+            <div
+              key={plan.code}
+              className={`pdash__plan-card${isCurrent ? ' pdash__plan-card--current' : ''}${plan.code === 'wolf' ? ' pdash__plan-card--featured' : ''}`}
+            >
+              {isCurrent && (
+                <div className="pdash__plan-badge">Tu plan actual</div>
+              )}
+              {plan.code === 'wolf' && !isCurrent && (
+                <div className="pdash__plan-badge pdash__plan-badge--featured">Más popular</div>
+              )}
+
+              <div className="pdash__plan-header">
+                <span className="pdash__plan-icon">{plan.icon}</span>
+                <h3 className="pdash__plan-name">{plan.name}</h3>
+                <p className="pdash__plan-price">{plan.price}</p>
+              </div>
+
+              <ul className="pdash__plan-features">
+                {features.map((f, i) => (
+                  <li key={i} className={`pdash__plan-feature${f.included ? '' : ' pdash__plan-feature--off'}`}>
+                    <span className="pdash__plan-check">{f.included ? '✓' : '✕'}</span>
+                    {f.label}
+                  </li>
+                ))}
+              </ul>
+
+              {!isCurrent && plan.planCode && (
+                <div style={{ marginTop: 16 }}>
+                  <UpgradeButton
+                    planCode={plan.planCode}
+                    label={`Activar ${plan.name}`}
+                    variant="primary"
+                  />
+                </div>
+              )}
+              {isCurrent && (
+                <p className="t-xs" style={{ color: 'var(--iris-500)', fontWeight: 600, marginTop: 16, textAlign: 'center' }}>
+                  ✓ Plan activo
+                </p>
+              )}
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
 }
@@ -1152,8 +1289,10 @@ export default function ProviderDashboard() {
     { id: 'perfil',       icon: '👤', label: t('pdash.tab_perfil_label') },
     { id: 'herramientas', icon: '🛠',  label: t('pdash.tab_herramientas_label') },
     { id: 'metricas',     icon: '📊', label: t('pdash.tab_metricas_label') },
+    { id: 'reseñas',      icon: '💬', label: 'Reseñas' },
     { id: 'reservas',     icon: '📅', label: t('pdash.tab_reservas_label') },
-    { id: 'mensajes',     icon: '💬', label: t('pdash.tab_mensajes_label') },
+    { id: 'mensajes',     icon: '✉️',  label: t('pdash.tab_mensajes_label') },
+    { id: 'planes',       icon: '🐺', label: 'Planes' },
     { id: 'ayuda',        icon: '📖', label: 'Ayuda' },
   ]
 
@@ -1254,11 +1393,17 @@ export default function ProviderDashboard() {
               messagingStats={messagingStats}
             />
           )}
+          {activeTab === 'reseñas' && (
+            <SectionReseñas provider={provider} tier={tier} />
+          )}
           {activeTab === 'reservas' && (
             <SectionReservas provider={provider} tier={tier} />
           )}
           {activeTab === 'mensajes' && (
             <SectionMensajes provider={provider} />
+          )}
+          {activeTab === 'planes' && (
+            <SectionPlanes tier={tier} />
           )}
           {activeTab === 'ayuda' && (
             <ManualProveedor provider={provider} />
