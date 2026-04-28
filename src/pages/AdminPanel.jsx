@@ -108,8 +108,8 @@ function UsersPanel() {
               <label>Tier
                 <select value={invForm.tier} onChange={e => setInvForm(p => ({ ...p, tier: e.target.value }))}>
                   <option value="bronze">bronze</option>
-                  <option value="silver">silver</option>
-                  <option value="gold">gold</option>
+                  <option value="cob">cob</option>
+                  <option value="wolf">wolf</option>
                 </select>
               </label>
             )}
@@ -173,8 +173,8 @@ function UsersPanel() {
                 <select value={editing.tier}
                   onChange={e => setEditing(p => ({ ...p, tier: e.target.value }))}>
                   <option value="bronze">bronze</option>
-                  <option value="silver">silver</option>
-                  <option value="gold">gold</option>
+                  <option value="cob">cob</option>
+                  <option value="wolf">wolf</option>
                 </select>
               </label>
             )}
@@ -464,8 +464,8 @@ function ProvidersPanel() {
                   <label>Tier
                     <select value={editing.tier} onChange={e => setEd('tier', e.target.value)}>
                       <option value="bronze">bronze</option>
-                      <option value="silver">silver</option>
-                      <option value="gold">gold</option>
+                      <option value="cob">cob</option>
+                      <option value="wolf">wolf</option>
                     </select>
                   </label>
                   <label>Avatar URL

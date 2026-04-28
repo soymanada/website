@@ -43,7 +43,7 @@ export default function PricingPage() {
       ],
     },
     {
-      key: 'silver',
+      key: 'cob',
       icon: '🐾',
       price: '$5 USD',
       priceLocal: '$4.990 CLP',
@@ -64,7 +64,7 @@ export default function PricingPage() {
       ],
     },
     {
-      key: 'gold',
+      key: 'wolf',
       icon: '🐺',
       price: '$10 USD',
       priceLocal: '$9.990 CLP',

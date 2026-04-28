@@ -184,16 +184,18 @@ function ProviderProfileEditor({ provider, tier, onSave, saving, onAvatarUpload,
   )
 }
 
-// ── Sección Herramientas (Silver/Gold) ──────────────────────────
+// ── Sección Herramientas (Cob/Wolf) ─────────────────────────────
 function SectionHerramientas({ tier, provider, onSave, saving }) {
   const { t } = useTranslation()
-  const isSilverPlus = tier === 'silver' || tier === 'gold'
-  const isGold       = tier === 'gold'
+  const isCobPlus = tier === 'cob' || tier === 'wolf'
+  const isWolf    = tier === 'wolf'
   const [form, setForm] = useState({
     calendar_link:        provider?.calendar_link        ?? '',
     payment_link:         provider?.payment_link         ?? '',
     call_link:            provider?.call_link            ?? '',
     redirect_email:       provider?.redirect_email       ?? '',
+    service_description:  provider?.service_description  ?? '',
+    service_amount_clp:   provider?.service_amount_clp   ?? '',
     predefined_responses: (() => {
       const raw = provider?.predefined_responses
       if (!Array.isArray(raw) || raw.length === 0) return [{ q: '', a: '' }]
@@ -225,7 +227,7 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
           <span className="pdash__tools-block-title t-sm">📅 Calendario de citas</span>
           <span className="pdash__badge pdash__badge--silver">Cub+</span>
         </div>
-        {isSilverPlus ? (
+        {isCobPlus ? (
           <>
             <div className="pdash__field pdash__field--full" style={{ marginBottom: 16 }}>
               <label className="pdash__label t-sm">Link de agenda (Calendly, Cal.com, etc.)</label>
@@ -244,7 +246,7 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
             <div className="pdash__field pdash__field--full" style={{ marginBottom: 16 }}>
               <label className="pdash__label t-sm">📹 Plataforma para la llamada</label>
 
-              {tier === 'gold' && (
+              {tier === 'wolf' && (
                 <div className="pdash__call-option pdash__call-option--gold" style={{ marginBottom: 10 }}>
                   <span>✅ <strong>Sala Jitsi de SoyManada</strong> — se genera automáticamente al confirmar una reserva.</span>
                   <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 2 }}>
@@ -261,7 +263,7 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
               />
               <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 4 }}>
                 Opcional. Pega aquí el link de Zoom, Google Meet, Teams, Whereby, WhatsApp u otro.
-                {tier === 'gold'
+                {tier === 'wolf'
                   ? ' Si lo dejas vacío, se usará la sala Jitsi automática.'
                   : ' Este link aparecerá en el email de confirmación y en la reserva del migrante.'}
               </p>
@@ -270,13 +272,76 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
             <AvailabilityEditor providerId={provider?.id} />
           </>
         ) : (
-          <div className="pdash__tool-card pdash__tool-card--locked">
-            <span className="pdash__tool-icon">📅</span>
-            <div>
-              <strong className="t-sm">Agenda de llamada</strong>
-              <p className="t-xs" style={{ color: 'var(--text-300)' }}>Los migrantes reservan un horario contigo directamente desde tu perfil.</p>
+          <>
+            <div className="pdash__tool-card pdash__tool-card--locked">
+              <span className="pdash__tool-icon">📅</span>
+              <div>
+                <strong className="t-sm">Agenda de llamada</strong>
+                <p className="t-xs" style={{ color: 'var(--text-300)' }}>Los migrantes reservan un horario contigo directamente desde tu perfil.</p>
+              </div>
+            </div>
+            <div className="pdash__upgrade-cta">
+              <p className="t-sm"><strong>Activa Cub</strong> por $4.990 CLP/mes para habilitar el calendario de citas.</p>
+              <UpgradeButton planCode="activo" label="Activar Cub — $4.990 CLP/mes" />
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* ── Cobro gestionado — Gold (Wolf) ── */}
+      <div className="pdash__tools-block" style={{ marginTop: 24 }}>
+        <div className="pdash__tools-block-header">
+          <span className="pdash__tools-block-title t-sm">💳 Cobro gestionado por SoyManada</span>
+          <span className="pdash__badge pdash__badge--gold">Wolf</span>
+        </div>
+        {isWolf ? (
+          <div className="pdash__form">
+            <p className="t-xs" style={{ color: 'var(--text-300)', marginBottom: 14 }}>
+              Define un servicio con precio fijo. Tus clientes podrán pagarlo directamente desde tu perfil
+              con tarjeta de crédito — Mercado Pago gestiona las cuotas automáticamente.
+            </p>
+            <div className="pdash__field pdash__field--full">
+              <label className="pdash__label t-sm">Nombre del servicio</label>
+              <input
+                className="pdash__input"
+                value={form.service_description}
+                onChange={e => set('service_description', e.target.value)}
+                placeholder="ej. Asesoría inicial 1h · Traducción certificada 1 documento"
+                maxLength={120}
+              />
+            </div>
+            <div className="pdash__field">
+              <label className="pdash__label t-sm">Precio (CLP)</label>
+              <input
+                className="pdash__input"
+                type="number"
+                min="1000"
+                step="100"
+                value={form.service_amount_clp}
+                onChange={e => set('service_amount_clp', e.target.value)}
+                placeholder="ej. 25000"
+              />
+              <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 4 }}>
+                El pago lo procesa Mercado Pago. El cliente elige cuántas cuotas desde su tarjeta.
+              </p>
             </div>
           </div>
+        ) : (
+          <>
+            <div className="pdash__tool-card pdash__tool-card--locked">
+              <span className="pdash__tool-icon">💳</span>
+              <div>
+                <strong className="t-sm">Cobro gestionado</strong>
+                <p className="t-xs" style={{ color: 'var(--text-300)' }}>
+                  Tus clientes pagan con tarjeta directamente desde tu perfil. El botón de pago aparece en tu ficha pública.
+                </p>
+              </div>
+            </div>
+            <div className="pdash__upgrade-cta">
+              <p className="t-sm"><strong>El cobro gestionado</strong> está disponible para proveedores Wolf. Mejora tu plan para activar esta opción.</p>
+              <UpgradeButton planCode="pro" label="Activar Wolf — $9.990 CLP/mes" />
+            </div>
+          </>
         )}
       </div>
 
@@ -286,7 +351,7 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
           <span className="pdash__tools-block-title t-sm">🛠 Herramientas avanzadas</span>
           <span className="pdash__badge pdash__badge--gold">Wolf</span>
         </div>
-        {isGold ? (
+        {isWolf ? (
           <div className="pdash__form">
             <div className="pdash__field pdash__field--full">
               <label className="pdash__label t-sm">
@@ -406,19 +471,21 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
         )}
       </div>
 
-      {!tier && (
+      {!isCobPlus && (
         <div className="pdash__upgrade-cta" style={{ marginTop: 24 }}>
-          <p className="t-sm"><strong>Activa Cub</strong> por $4.990 CLP/mes para desbloquear el calendario de citas.</p>
+          <p className="t-sm"><strong>Activa Cub</strong> por $4.990 CLP/mes para desbloquear WhatsApp y el calendario de citas.</p>
           <UpgradeButton planCode="activo" label="Activar Cub — $4.990 CLP/mes" />
         </div>
       )}
 
-      {(isSilverPlus) && (
+      {(isCobPlus) && (
         <button className="btn btn-primary pdash__save-btn" style={{ marginTop: 24 }} onClick={() => onSave({
           calendar_link:        form.calendar_link,
           payment_link:         form.payment_link,
           call_link:            form.call_link,
           redirect_email:       form.redirect_email,
+          service_description:  form.service_description.trim() || null,
+          service_amount_clp:   form.service_amount_clp ? parseInt(form.service_amount_clp, 10) : null,
           predefined_responses: form.predefined_responses
             .filter(p => p.q.trim() || p.a.trim())
             .map(p => `${p.q.trim()}\n${p.a.trim()}`),
@@ -489,8 +556,8 @@ const STATUS_LABELS = {
 function WAVisibilityToggle({ tier, provider }) {
   const { t }        = useTranslation()
   const { user }     = useAuth()
-  const isSilver = tier === 'silver'
-  const isGold   = tier === 'gold'
+  const isCob  = tier === 'cob'
+  const isWolf = tier === 'wolf'
 
   // Silver toggle (show_whatsapp — free)
   const [enabled, setEnabled] = useState(provider?.show_whatsapp ?? false)
@@ -525,18 +592,24 @@ function WAVisibilityToggle({ tier, provider }) {
       </div>
 
       {/* Locked for Wonderer */}
-      {!isSilver && !isGold && (
-        <div className="pdash__tool-card pdash__tool-card--locked">
-          <span className="pdash__tool-icon">📱</span>
-          <div>
-            <strong className="t-sm">{t('messaging.whatsapp_toggle')}</strong>
-            <p className="t-xs" style={{ color: 'var(--text-300)' }}>{t('messaging.whatsapp_tier_lock')}</p>
+      {!isCob && !isWolf && (
+        <>
+          <div className="pdash__tool-card pdash__tool-card--locked">
+            <span className="pdash__tool-icon">📱</span>
+            <div>
+              <strong className="t-sm">{t('messaging.whatsapp_toggle')}</strong>
+              <p className="t-xs" style={{ color: 'var(--text-300)' }}>{t('messaging.whatsapp_tier_lock')}</p>
+            </div>
           </div>
-        </div>
+          <div className="pdash__upgrade-cta">
+            <p className="t-sm"><strong>Activa Cub</strong> por $4.990 CLP/mes para mostrar tu WhatsApp en tu perfil público.</p>
+            <UpgradeButton planCode="activo" label="Activar Cub — $4.990 CLP/mes" />
+          </div>
+        </>
       )}
 
       {/* Silver: free toggle */}
-      {isSilver && (
+      {isCob && (
         <div className="pdash__wa-toggle-row">
           <div>
             <strong className="t-sm">{t('messaging.whatsapp_toggle')}</strong>
@@ -559,7 +632,7 @@ function WAVisibilityToggle({ tier, provider }) {
       )}
 
       {/* Gold: paid addon */}
-      {isGold && (
+      {isWolf && (
         <div className="pdash__wa-addon-block">
           {addonActive ? (
             <div className="pdash__wa-addon-active">
@@ -606,9 +679,9 @@ function SectionReservas({ provider, tier }) {
   const { t } = useTranslation()
   const { bookings, loading, reload } = useDashboardBookings(provider?.id)
   const [updating, setUpdating] = useState(null)
-  const isSilverPlus = tier === 'silver' || tier === 'gold'
+  const isCobPlus = tier === 'cob' || tier === 'wolf'
 
-  if (!isSilverPlus) return (
+  if (!isCobPlus) return (
     <div className="pdash__section">
       <div className="pdash__section-header">
         <h2 className="pdash__section-title d-md">{t('pdash.tab_reservas_label')}</h2>
@@ -633,7 +706,7 @@ function SectionReservas({ provider, tier }) {
 
       if (newStatus === 'confirmed' && booking?.user_id && provider?.id) {
         const callLink = provider.call_link
-          || (tier === 'gold' ? `https://meet.jit.si/soymanada-${booking.id}` : null)
+          || (tier === 'wolf' ? `https://meet.jit.si/soymanada-${booking.id}` : null)
 
         supabase.functions.invoke('notify-booking', {
           body: {
@@ -776,15 +849,14 @@ function UpgradeButton({ planCode, label, variant = 'primary' }) {
       const { data, error } = await supabase.functions.invoke('create-checkout', {
         body: { plan_code: planCode, user_id: user?.id },
       })
-      if (error) throw error
-      if (data?.url) {
-        window.location.href = data.url
-      } else {
-        setErr('No se pudo iniciar el pago. Inténtalo de nuevo.')
+      if (error || !data?.init_point) {
+        setErr('No pudimos iniciar el pago en este momento. Inténtalo de nuevo en unos minutos.')
+        return
       }
+      window.location.href = data.init_point
     } catch (err) {
       console.error('[UpgradeButton]', err)
-      setErr('Error al conectar con el sistema de pago. Inténtalo de nuevo.')
+      setErr('No pudimos iniciar el pago en este momento. Inténtalo de nuevo en unos minutos.')
     } finally {
       setLoading(false)
     }
@@ -820,6 +892,13 @@ export default function ProviderDashboard() {
   const [feedback,        setFeedback]        = useState([])
   const [metricsLoading,  setMetricsLoading]  = useState(false)
   const [messagingStats,  setMessagingStats]  = useState(null)
+
+  // ── título de pestaña ───────────────────────────────────────────
+  useEffect(() => {
+    document.title = provider?.name
+      ? `${provider.name} — Mi perfil | SoyManada`
+      : 'Mi perfil | SoyManada'
+  }, [provider?.name])
 
   // ── load provider ────────────────────────────────────────────────
   useEffect(() => {

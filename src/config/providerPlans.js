@@ -1,6 +1,6 @@
 // src/config/providerPlans.js
 // Fuente única de verdad para nombres visibles y precios de planes de proveedor.
-// Las keys internas (bronze / silver / gold) no cambian — solo la capa visible.
+// Tiers internos (DB, Edge Functions, RLS): bronze / cob / wolf
 
 export const PROVIDER_PLANS = {
   bronze: {
@@ -10,15 +10,15 @@ export const PROVIDER_PLANS = {
     priceCLP: 0,
     priceUSD: 0,
   },
-  silver: {
-    code:     'silver',
-    uiName:   'Cub',
+  cob: {
+    code:     'cob',
+    uiName:   'Cob',
     icon:     '🐾',
     priceCLP: 4990,
     priceUSD: 5,
   },
-  gold: {
-    code:     'gold',
+  wolf: {
+    code:     'wolf',
     uiName:   'Wolf',
     icon:     '🐺',
     priceCLP: 9990,
@@ -27,7 +27,7 @@ export const PROVIDER_PLANS = {
 }
 
 /** Orden numérico para sorting: mayor = mejor tier */
-export const TIER_RANK = { gold: 3, silver: 2, bronze: 1 }
+export const TIER_RANK = { wolf: 3, cob: 2, bronze: 1 }
 
 /**
  * Devuelve el nombre visible de un tier dado su código interno.

@@ -26,9 +26,12 @@ const PLANS: Record<string, { title: string; price: number }> = {
   activo:         { title: 'Plan Activo – SoyManada',       price: 4990  },
   pro:            { title: 'Plan Pro – SoyManada',          price: 9990  },
   whatsapp_addon: { title: 'Add-on WhatsApp – SoyManada',   price: 2000  },
-  // acepta también nombres legacy del brief
-  silver:         { title: 'Plan Activo – SoyManada',       price: 4990  },
-  gold:           { title: 'Plan Pro – SoyManada',          price: 9990  },
+  // nombres canónicos nuevos
+  cob:            { title: 'Plan Cob – SoyManada',          price: 4990  },
+  wolf:           { title: 'Plan Wolf – SoyManada',         price: 9990  },
+  // aliases legacy (por si algún link antiguo los usa)
+  silver:         { title: 'Plan Cob – SoyManada',          price: 4990  },
+  gold:           { title: 'Plan Wolf – SoyManada',         price: 9990  },
 }
 
 serve(async (req) => {

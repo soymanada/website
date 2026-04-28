@@ -7,6 +7,7 @@ import { useAuth } from '../hooks/useAuth'
 import { resolveProvider } from '../utils/providerI18n'
 import { normalizeProvider } from '../utils/providerNormalize'
 import { trackEvent, Events } from '../utils/analytics'
+import { buildUtmUrl }        from '../utils/utm'
 import VerificationBadge from '../components/VerificationBadge'
 import PawRating from '../components/PawRating'
 import MessageModal    from '../components/MessageModal'
@@ -149,6 +150,9 @@ export default function ProviderPage() {
   const [isConnecting,   setIsConnecting]   = useState(false)
   const [targetPlatform, setTargetPlatform] = useState('')
   const [opinionStats,   setOpinionStats]   = useState({ avg: null, count: 0 })
+  const [shareCopied,    setShareCopied]    = useState(false)
+  const [paymentLoading, setPaymentLoading] = useState(false)
+  const [paymentError,   setPaymentError]   = useState(null)
 
   useEffect(() => {
     supabase
@@ -211,10 +215,68 @@ export default function ProviderPage() {
   }, [provider?.name, provider?.service, provider?.avatar_url]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleContact = (platform, url) => {
-    trackEvent(Events.CLICK_WHATSAPP, { proveedor_id: providerId, proveedor_nombre: provider?.name, plataforma: platform })
+    trackEvent(Events.CONTACT_PROVIDER, {
+      provider_name:     provider?.name,
+      provider_category: rawProvider?.categorySlug,
+      contact_type:      'external_link',
+    })
     setTargetPlatform(platform === 'whatsapp' ? 'WhatsApp' : 'Instagram')
     setIsConnecting(true)
     setTimeout(() => { window.open(url, '_blank', 'noopener,noreferrer'); setIsConnecting(false) }, 1500)
+  }
+
+  const handleShare = async () => {
+    const shareUrl = buildUtmUrl(`/proveedor/${slug}`, {
+      source:   'share',
+      medium:   'referral',
+      campaign: 'provider_share',
+    })
+    trackEvent('share_provider', {
+      provider_name:     provider?.name,
+      provider_category: rawProvider?.categorySlug,
+      share_url:         shareUrl,
+    })
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: provider?.name,
+          text:  provider?.service ?? t('provider_page.share_text_fallback'),
+          url:   shareUrl,
+        })
+      } catch (_) { /* usuario canceló */ }
+    } else {
+      await navigator.clipboard.writeText(shareUrl)
+      setShareCopied(true)
+      setTimeout(() => setShareCopied(false), 2500)
+    }
+  }
+
+  const handlePayment = async () => {
+    setPaymentError(null)
+    setPaymentLoading(true)
+    try {
+      const { data, error } = await supabase.functions.invoke('mercadopago-create-payment', {
+        body: {
+          provider_id:  providerId,
+          amount_clp:   rawProvider.service_amount_clp,
+          description:  rawProvider.service_description,
+          redirect_url: window.location.href,
+        },
+      })
+      if (error?.message?.includes('FORBIDDEN_TIER') || data?.error === 'FORBIDDEN_TIER') {
+        setPaymentError('Esta función está disponible solo para proveedores Wolf. Actualiza tu plan en tu panel de cuenta.')
+        return
+      }
+      if (error || !data?.init_point) {
+        setPaymentError('No pudimos iniciar el pago en este momento. Inténtalo de nuevo en unos minutos.')
+        return
+      }
+      window.location.href = data.init_point
+    } catch {
+      setPaymentError('No pudimos iniciar el pago en este momento. Inténtalo de nuevo en unos minutos.')
+    } finally {
+      setPaymentLoading(false)
+    }
   }
 
   if (loading) return <main className="ppage ppage--loading"><p>{t('provider_page.loading')}</p></main>
@@ -278,7 +340,7 @@ export default function ProviderPage() {
                 </div>
               )}
 
-              {['silver', 'gold'].includes(rawProvider?.tier) && (
+              {['cob', 'wolf'].includes(rawProvider?.tier) && (
                 <BookingCalendar
                   providerId={providerId}
                   userId={user?.id}
@@ -356,6 +418,50 @@ export default function ProviderPage() {
                   )}
                 </div>
               </div>
+
+              {/* ── Cobro gestionado ── */}
+              {rawProvider?.tier === 'wolf' && rawProvider?.service_amount_clp > 0 && rawProvider?.service_description && (
+                <div className="ppage__payment-card">
+                  <div className="ppage__payment-info">
+                    <span className="t-xs" style={{ color: 'var(--text-300)' }}>Servicio</span>
+                    <strong className="t-sm">{rawProvider.service_description}</strong>
+                    <span className="ppage__payment-price">
+                      ${rawProvider.service_amount_clp.toLocaleString('es-CL')} CLP
+                    </span>
+                  </div>
+                  {user ? (
+                    <>
+                      <button
+                        className="ppage__btn ppage__btn--pay"
+                        onClick={handlePayment}
+                        disabled={paymentLoading}
+                      >
+                        {paymentLoading ? 'Redirigiendo…' : '💳 Pagar este servicio'}
+                      </button>
+                      {paymentError && (
+                        <p className="t-xs ppage__payment-error">{paymentError}</p>
+                      )}
+                    </>
+                  ) : (
+                    <Link
+                      to="/login"
+                      state={{ from: location }}
+                      className="ppage__btn ppage__btn--pay"
+                    >
+                      Ingresar para pagar
+                    </Link>
+                  )}
+                </div>
+              )}
+
+              {/* ── Compartir ── */}
+              <button className="ppage__share-btn" onClick={handleShare}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+                  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                </svg>
+                {shareCopied ? t('provider_page.share_copied') : t('provider_page.share_profile')}
+              </button>
             </aside>
           </div>
         </div>

@@ -12,11 +12,14 @@ const SB_URL          = Deno.env.get('SUPABASE_URL')              ?? ''
 const SB_SERVICE      = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
 
 // Mapeo plan_code → tier en providers
+// Fuente única: bronze / cob / wolf
 const PLAN_TO_TIER: Record<string, string> = {
-  activo: 'activo',
-  silver: 'activo',
-  pro:    'pro',
-  gold:   'pro',
+  activo: 'cob',
+  silver: 'cob',
+  cob:    'cob',
+  pro:    'wolf',
+  gold:   'wolf',
+  wolf:   'wolf',
 }
 
 serve(async (req) => {
