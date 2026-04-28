@@ -426,6 +426,22 @@ export default function ProviderPage() {
                 </div>
               </div>
 
+              {/* ── Link de pago externo (Fase 0) ── */}
+              {rawProvider?.payment_link && (
+                <a
+                  href={rawProvider.payment_link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ppage__btn ppage__btn--pay"
+                  onClick={() => trackEvent(Events.PAYMENT_LINK_CLICK, {
+                    provider_id: rawProvider.id,
+                    provider_name: rawProvider.name,
+                  })}
+                >
+                  💳 {t('provider.pay_button')}
+                </a>
+              )}
+
               {/* ── Cobro gestionado ── */}
               {rawProvider?.tier === 'wolf' && rawProvider?.service_amount_clp > 0 && rawProvider?.service_description && (
                 <div className="ppage__payment-card">

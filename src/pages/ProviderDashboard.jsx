@@ -63,8 +63,21 @@ function ProviderProfileEditor({ provider, tier, onSave, saving, onAvatarUpload,
     whatsapp:            provider?.contact_whatsapp    ?? '',
     calendar_link:       provider?.calendar_link       ?? '',
     redirect_email:      provider?.redirect_email      ?? '',
+    payment_link:        provider?.payment_link        ?? '',
   })
-  const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
+  const [payLinkError, setPayLinkError] = useState('')
+  const set = (k, v) => {
+    setForm(f => ({ ...f, [k]: v }))
+    if (k === 'payment_link') setPayLinkError('')
+  }
+
+  const handleSave = () => {
+    if (form.payment_link && !form.payment_link.startsWith('https://')) {
+      setPayLinkError(t('errors.url_must_be_https'))
+      return
+    }
+    onSave(form)
+  }
 
   return (
     <div className="pdash__section">
@@ -119,6 +132,22 @@ function ProviderProfileEditor({ provider, tier, onSave, saving, onAvatarUpload,
           />
         </div>
 
+        {/* Link de pago — disponible para todos los tiers */}
+        <div className="pdash__field pdash__field--full">
+          <label className="pdash__label t-sm">💳 {t('provider.payment_link_label')}</label>
+          <input
+            className={`pdash__input${payLinkError ? ' pdash__input--error' : ''}`}
+            type="url"
+            value={form.payment_link}
+            onChange={e => set('payment_link', e.target.value)}
+            placeholder="https://mpago.la/tu-link · https://wise.com/pay/..."
+          />
+          {payLinkError
+            ? <p className="t-xs pdash__field-error">{payLinkError}</p>
+            : <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 4 }}>{t('provider.payment_link_hint')}</p>
+          }
+        </div>
+
         <div className="pdash__field--full pdash__verified-notice">
           <span className="pdash__badge pdash__badge--verified" style={{ gap: 6 }}>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor" width="11" height="11" aria-hidden="true">
@@ -131,7 +160,7 @@ function ProviderProfileEditor({ provider, tier, onSave, saving, onAvatarUpload,
           <p className="t-xs" style={{ color: 'var(--text-500)' }}>{t('pdash.badge_assigned_text')}</p>
         </div>
 
-        <button className="btn btn-primary pdash__save-btn" onClick={() => onSave(form)} disabled={saving}>
+        <button className="btn btn-primary pdash__save-btn" onClick={handleSave} disabled={saving}>
           <span>{saving ? t('pdash.saving') : t('pdash.save_changes')}</span>
         </button>
       </div>
@@ -191,7 +220,6 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
   const isWolf    = tier === 'wolf'
   const [form, setForm] = useState({
     calendar_link:        provider?.calendar_link        ?? '',
-    payment_link:         provider?.payment_link         ?? '',
     call_link:            provider?.call_link            ?? '',
     redirect_email:       provider?.redirect_email       ?? '',
     service_description:  provider?.service_description  ?? '',
@@ -354,21 +382,6 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
         {isWolf ? (
           <div className="pdash__form">
             <div className="pdash__field pdash__field--full">
-              <label className="pdash__label t-sm">
-                💳 Link de pago
-                <span className="pdash__badge pdash__badge--gold" style={{ marginLeft: 6 }}>Wolf</span>
-              </label>
-              <input
-                className="pdash__input"
-                value={form.payment_link}
-                onChange={e => set('payment_link', e.target.value)}
-                placeholder="https://wise.com/pay/... · https://link.mercadopago.com/..."
-              />
-              <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 4 }}>
-                Aparece como botón en tu perfil público. Acepta cualquier link de cobro (Wise, MercadoPago, PayPal, etc.).
-              </p>
-            </div>
-            <div className="pdash__field pdash__field--full">
               <label className="pdash__label t-sm">✉️ Email para redirección de consultas</label>
               <input className="pdash__input" type="email" value={form.redirect_email}
                 onChange={e => set('redirect_email', e.target.value)} placeholder="tu@email.com" />
@@ -481,7 +494,6 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
       {(isCobPlus) && (
         <button className="btn btn-primary pdash__save-btn" style={{ marginTop: 24 }} onClick={() => onSave({
           calendar_link:        form.calendar_link,
-          payment_link:         form.payment_link,
           call_link:            form.call_link,
           redirect_email:       form.redirect_email,
           service_description:  form.service_description.trim() || null,

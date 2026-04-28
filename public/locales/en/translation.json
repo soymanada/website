@@ -769,7 +769,11 @@
   },
   "provider": {
     "og_description": "{{service}} — Verified provider on SoyManada, the trusted directory for the Hispanic migrant community.",
-    "og_description_empty": "Verified provider on SoyManada, the trusted directory for the Hispanic migrant community."
+    "og_description_empty": "Verified provider on SoyManada, the trusted directory for the Hispanic migrant community.",
+    "payment_link_label": "Payment link",
+    "payment_link_hint": "Paste your Mercado Pago, Wise or other payment link here. Migrants will see it on your profile.",
+    "pay_button": "Pay for this service",
+    "accepts_online_payment": "Accepts online payment"
   },
   "admin": {
     "title": "Admin Panel",
@@ -878,5 +882,8 @@
     "error_type": "Only JPG, PNG or WebP images are allowed.",
     "error_size": "The image cannot exceed 5 MB.",
     "error_upload": "There was an error uploading your photo. Please try again."
+  },
+  "errors": {
+    "url_must_be_https": "Link must start with https://"
   }
 }

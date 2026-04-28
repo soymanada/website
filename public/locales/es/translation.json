@@ -767,7 +767,11 @@
   },
   "provider": {
     "og_description": "{{service}} — Proveedor verificado en SoyManada, el directorio de confianza para la comunidad migrante.",
-    "og_description_empty": "Proveedor verificado en SoyManada, el directorio de confianza para la comunidad migrante."
+    "og_description_empty": "Proveedor verificado en SoyManada, el directorio de confianza para la comunidad migrante.",
+    "payment_link_label": "Link de pago",
+    "payment_link_hint": "Pega aquí tu link de Mercado Pago, Wise u otro método. El migrante lo verá en tu perfil.",
+    "pay_button": "Pagar este servicio",
+    "accepts_online_payment": "Acepta pago online"
   },
   "admin": {
     "title": "Panel de Administración",
@@ -876,5 +880,8 @@
     "error_type": "Solo se permiten imágenes JPG, PNG o WebP.",
     "error_size": "La imagen no puede superar los 5 MB.",
     "error_upload": "Hubo un error al subir la foto. Por favor intenta de nuevo."
+  },
+  "errors": {
+    "url_must_be_https": "El link debe comenzar con https://"
   }
 }

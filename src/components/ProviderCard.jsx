@@ -129,6 +129,11 @@ export default function ProviderCard({ provider: rawProvider }) {
           <ellipse cx="27.5" cy="15" rx="3.2" ry="4" transform="rotate(25, 27.5, 15)"/>
         </svg>
         {verified && <VerificationBadge variant="pill" theme="light" />}
+        {rawProvider?.payment_link && (
+          <span className="pcard__payment-badge" title={t('provider.accepts_online_payment')}>
+            💳
+          </span>
+        )}
 
         <div className="pcard__header">
           {avatar_url && (

@@ -210,6 +210,8 @@
 }
 .pdash__input::placeholder, .pdash__textarea::placeholder { color: var(--text-100); }
 .pdash__field-hint { color: var(--text-300); margin-top: 4px; }
+.pdash__input--error { border-color: #dc2626 !important; }
+.pdash__field-error  { color: #dc2626; margin-top: 4px; font-size: 0.8rem; }
 
 /* PhoneInput in dashboard */
 .pdash__phone-input { --PhoneInputCountryFlag-height: 1em; }

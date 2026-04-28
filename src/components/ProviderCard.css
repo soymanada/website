@@ -351,3 +351,12 @@
   color: var(--text-500);
   margin-bottom: 4px;
 }
+
+/* ── Payment badge ───────────────────────────────────────────────── */
+.pcard__payment-badge {
+  font-size: 0.75rem;
+  line-height: 1;
+  cursor: default;
+  display: inline-flex;
+  align-items: center;
+}

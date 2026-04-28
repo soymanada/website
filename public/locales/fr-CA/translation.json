@@ -769,7 +769,11 @@
   },
   "provider": {
     "og_description": "{{service}} — Fournisseur vérifié sur SoyManada, le répertoire de confiance pour la communauté migrante hispanophone.",
-    "og_description_empty": "Fournisseur vérifié sur SoyManada, le répertoire de confiance pour la communauté migrante hispanophone."
+    "og_description_empty": "Fournisseur vérifié sur SoyManada, le répertoire de confiance pour la communauté migrante hispanophone.",
+    "payment_link_label": "Lien de paiement",
+    "payment_link_hint": "Collez votre lien Mercado Pago, Wise ou autre ici. Les migrants le verront sur votre profil.",
+    "pay_button": "Payer ce service",
+    "accepts_online_payment": "Accepte le paiement en ligne"
   },
   "admin": {
     "title": "Panneau d'administration",
@@ -878,5 +882,8 @@
     "error_type": "Seules les images JPG, PNG ou WebP sont autorisées.",
     "error_size": "L'image ne peut pas dépasser 5 Mo.",
     "error_upload": "Une erreur s'est produite lors du téléchargement. Veuillez réessayer."
+  },
+  "errors": {
+    "url_must_be_https": "Le lien doit commencer par https://"
   }
 }
