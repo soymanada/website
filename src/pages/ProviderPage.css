@@ -461,3 +461,28 @@ img.ppage__avatar {
   padding: 1px 8px;
   letter-spacing: 0.01em;
 }
+
+/* ── Provider response on review card ───────────────────────────── */
+.ppage__review-response {
+  margin-top: 10px;
+  background: var(--iris-50, #f0f0ff);
+  border-left: 3px solid var(--iris-400, #7c7cf8);
+  border-radius: 0 var(--r-sm, 6px) var(--r-sm, 6px) 0;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.ppage__review-response-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--iris-500, #6366f1);
+}
+.ppage__review-response-text {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--text-600);
+  font-style: normal;
+}

@@ -497,6 +497,124 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
   )
 }
 
+// ── Responder reseñas (Wolf) ──────────────────────────────────────
+function ReviewReplies({ provider }) {
+  const [opinions,  setOpinions]  = useState([])
+  const [loading,   setLoading]   = useState(true)
+  const [replyText, setReplyText] = useState({})  // { [id]: string }
+  const [editing,   setEditing]   = useState({})  // { [id]: bool }
+  const [saving,    setSaving]    = useState({})  // { [id]: bool }
+  const [saved,     setSaved]     = useState({})  // { [id]: bool }
+
+  useEffect(() => {
+    if (!provider?.id) return
+    supabase
+      .from('pilot_opinions')
+      .select('id, author_name, text, rating, created_at, provider_response, provider_response_at')
+      .eq('provider_id', provider.id)
+      .order('created_at', { ascending: false })
+      .then(({ data }) => {
+        setOpinions(data ?? [])
+        setLoading(false)
+      })
+  }, [provider?.id]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handleSave = async (opId) => {
+    const text = replyText[opId]?.trim()
+    if (!text) return
+    setSaving(s => ({ ...s, [opId]: true }))
+    const now = new Date().toISOString()
+    const { error } = await supabase
+      .from('pilot_opinions')
+      .update({ provider_response: text, provider_response_at: now })
+      .eq('id', opId)
+    setSaving(s => ({ ...s, [opId]: false }))
+    if (!error) {
+      setOpinions(ops => ops.map(o =>
+        o.id === opId ? { ...o, provider_response: text, provider_response_at: now } : o
+      ))
+      setEditing(e => ({ ...e, [opId]: false }))
+      setReplyText(r => ({ ...r, [opId]: '' }))
+      setSaved(s => ({ ...s, [opId]: true }))
+      setTimeout(() => setSaved(s => ({ ...s, [opId]: false })), 2500)
+    }
+  }
+
+  const startEdit = (op) => {
+    setReplyText(r => ({ ...r, [op.id]: op.provider_response ?? '' }))
+    setEditing(e => ({ ...e, [op.id]: true }))
+  }
+
+  if (loading) return (
+    <p className="t-sm" style={{ color: 'var(--text-300)', padding: '8px 0' }}>Cargando reseñas…</p>
+  )
+  if (opinions.length === 0) return (
+    <p className="t-sm" style={{ color: 'var(--text-300)', padding: '8px 0' }}>
+      Aún no tienes reseñas de clientes.
+    </p>
+  )
+
+  return (
+    <div className="pdash__review-replies">
+      {opinions.map(op => {
+        const hasResponse = op.provider_response && !editing[op.id]
+        return (
+          <div key={op.id} className="pdash__reply-card">
+            <div className="pdash__reply-meta">
+              <span className="t-sm pdash__reply-author">{op.author_name ?? 'Anónimo'}</span>
+              {op.rating && (
+                <span className="pdash__reply-stars">{'🐾'.repeat(op.rating)}</span>
+              )}
+              <span className="pdash__reply-date t-xs">
+                {new Date(op.created_at).toLocaleDateString('es-CL')}
+              </span>
+            </div>
+
+            {op.text && (
+              <p className="pdash__reply-text t-sm">"{op.text}"</p>
+            )}
+
+            {hasResponse ? (
+              <div className="pdash__reply-response">
+                <span className="pdash__reply-response-label t-xs">Tu respuesta:</span>
+                <p className="t-sm pdash__reply-response-text">{op.provider_response}</p>
+                <button className="btn btn-ghost btn-sm" onClick={() => startEdit(op)}>
+                  Editar respuesta
+                </button>
+              </div>
+            ) : (
+              <div className="pdash__reply-form">
+                <textarea
+                  className="pdash__reply-input"
+                  placeholder="Escribe tu respuesta para este cliente…"
+                  value={replyText[op.id] ?? ''}
+                  onChange={e => setReplyText(r => ({ ...r, [op.id]: e.target.value }))}
+                  rows={2}
+                />
+                <div className="pdash__reply-actions">
+                  {editing[op.id] && (
+                    <button className="btn btn-ghost btn-sm"
+                      onClick={() => setEditing(e => ({ ...e, [op.id]: false }))}>
+                      Cancelar
+                    </button>
+                  )}
+                  <button
+                    className="btn btn-primary btn-sm"
+                    onClick={() => handleSave(op.id)}
+                    disabled={saving[op.id] || !replyText[op.id]?.trim()}
+                  >
+                    {saving[op.id] ? 'Guardando…' : saved[op.id] ? '✓ Guardado' : 'Responder'}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
 // ── Sección métricas completa ────────────────────────────────────
 function SectionMetricas({ tier, metrics, activity, hourlyActivity, feedback, provider, metricsLoading, messagingStats }) {
   const { t } = useTranslation()
@@ -540,6 +658,22 @@ function SectionMetricas({ tier, metrics, activity, hourlyActivity, feedback, pr
         feedback={feedback}
         provider={provider}
       />
+
+      {/* Responder reseñas — Wolf only */}
+      <div className="pdash__subsection-title label" style={{ marginTop: 24 }}>
+        💬 Responder reseñas
+        <span className="pdash__badge pdash__badge--gold" style={{ marginLeft: 8 }}>Wolf</span>
+      </div>
+      {tier === 'wolf' ? (
+        <ReviewReplies provider={provider} />
+      ) : (
+        <div className="pdash__upgrade-cta" style={{ marginTop: 8 }}>
+          <p className="t-sm">
+            <strong>Con Wolf</strong> puedes responder las reseñas que dejan tus clientes. Muestra profesionalismo y fideliza tu comunidad.
+          </p>
+          <UpgradeButton planCode="pro" label="Activar Wolf — $9.990 CLP/mes" />
+        </div>
+      )}
     </div>
   )
 }

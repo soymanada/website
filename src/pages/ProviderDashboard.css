@@ -565,3 +565,75 @@
   padding: 8px 12px;
   font-size: 0.85rem;
 }
+
+/* ── Review replies (Wolf) ──────────────────────────────────────── */
+.pdash__review-replies {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+.pdash__reply-card {
+  background: var(--surface-1, #f9f9fb);
+  border: 1px solid var(--border-100, #e8e8f0);
+  border-radius: var(--r-md, 10px);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.pdash__reply-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.pdash__reply-author { font-weight: 600; color: var(--text-700); }
+.pdash__reply-stars  { font-size: 0.78rem; letter-spacing: 1px; }
+.pdash__reply-date   { margin-left: auto; color: var(--text-300); white-space: nowrap; }
+.pdash__reply-text   { color: var(--text-500); font-style: italic; margin: 0; }
+
+.pdash__reply-response {
+  background: var(--iris-50, #f0f0ff);
+  border-left: 3px solid var(--iris-400, #7c7cf8);
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.pdash__reply-response-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--iris-500, #6366f1);
+}
+.pdash__reply-response-text { margin: 0; color: var(--text-600); }
+
+.pdash__reply-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.pdash__reply-input {
+  width: 100%;
+  border: 1px solid var(--border-200, #dcdcec);
+  border-radius: var(--r-sm, 6px);
+  padding: 8px 10px;
+  font-size: 0.88rem;
+  font-family: inherit;
+  color: var(--text-700);
+  resize: vertical;
+  background: #fff;
+  box-sizing: border-box;
+}
+.pdash__reply-input:focus {
+  outline: none;
+  border-color: var(--iris-400, #7c7cf8);
+  box-shadow: 0 0 0 2px var(--iris-100, #e0e0ff);
+}
+.pdash__reply-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
