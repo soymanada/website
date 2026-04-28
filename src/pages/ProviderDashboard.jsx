@@ -1337,22 +1337,19 @@ export default function ProviderDashboard() {
             </div>
           </div>
 
-        </div>
-      </div>
-
-      {/* ── Tab nav — sticky bar blanca ── */}
-      <div className="pdash__tabnav">
-        <div className="pdash__tabnav-inner">
-          {TABS.map(tab => (
-            <button
-              key={tab.id}
-              className={`pdash__tab${activeTab === tab.id ? ' pdash__tab--active' : ''}`}
-              onClick={() => setActiveTab(tab.id)}
-            >
-              <span className="pdash__tab-icon">{tab.icon}</span>
-              <span className="pdash__tab-label">{tab.label}</span>
-            </button>
-          ))}
+          {/* Tabs dentro del hero */}
+          <div className="pdash__tabs">
+            {TABS.map(tab => (
+              <button
+                key={tab.id}
+                className={`pdash__tab${activeTab === tab.id ? ' pdash__tab--active' : ''}`}
+                onClick={() => setActiveTab(tab.id)}
+              >
+                <span className="pdash__tab-icon">{tab.icon}</span>
+                <span className="pdash__tab-label">{tab.label}</span>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 

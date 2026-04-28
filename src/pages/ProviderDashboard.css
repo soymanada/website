@@ -4,7 +4,7 @@
 .pdash__hero {
   position: relative; overflow: hidden;
   background: linear-gradient(160deg, var(--iris-900) 0%, var(--iris-700) 100%);
-  padding: 140px 24px 32px;
+  padding: 140px 24px 0;
 }
 .pdash__hero-orb {
   position: absolute; width: 500px; height: 500px; border-radius: 50%;
@@ -37,42 +37,34 @@
   animation: pulse-dot 2s ease-in-out infinite;
 }
 
-/* Tab nav — barra sticky blanca debajo del hero */
-.pdash__tabnav {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: #fff;
-  border-bottom: 1px solid var(--border-100, #e8e8f0);
-  box-shadow: 0 1px 6px rgba(0,0,0,0.06);
-}
-.pdash__tabnav-inner {
+/* Tabs — dentro del hero, sin scrollbar visible */
+.pdash__tabs {
   display: flex;
-  gap: 0;
-  max-width: 760px;
-  margin: 0 auto;
-  padding: 0 24px;
+  gap: 4px;
   overflow-x: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  /* Separar visualmente del contenido: fade hacia abajo */
+  margin-top: 8px;
 }
-.pdash__tabnav-inner::-webkit-scrollbar { display: none; }
+.pdash__tabs::-webkit-scrollbar { display: none; }
 
 .pdash__tab {
-  padding: 14px 18px;
+  padding: 12px 20px;
+  border-radius: 12px 12px 0 0;
   font-family: var(--font-body); font-size: 0.875rem; font-weight: 500;
-  color: var(--text-400);
+  color: rgba(255,255,255,0.60);
   cursor: pointer;
   transition: all var(--t-fast); white-space: nowrap;
   border-bottom: 3px solid transparent;
   background: none;
-  border-top: none; border-left: none; border-right: none;
 }
-.pdash__tab:hover { color: var(--iris-600, #4f46e5); }
+.pdash__tab:hover { color: rgba(255,255,255,0.85); }
 .pdash__tab--active {
-  color: var(--iris-700, #4338ca);
+  color: var(--white);
   font-weight: 700;
-  border-bottom-color: var(--iris-500, #6366f1);
+  border-bottom-color: var(--gold);
+  background: rgba(255,255,255,0.08);
 }
 
 /* Body */
