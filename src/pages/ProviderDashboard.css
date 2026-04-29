@@ -787,3 +787,53 @@
 .pdash__plan-feature--off .pdash__plan-check {
   color: var(--text-200);
 }
+
+/* ── Stripe Connect block ────────────────────────────────────────── */
+.pdash__stripe-block {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 4px 0;
+}
+.pdash__stripe-state {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.pdash__stripe-status {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: var(--r-md, 10px);
+  border: 1px solid var(--border-100, #e8e8f0);
+  font-size: 0.88rem;
+}
+.pdash__stripe-status span:first-child { font-size: 1.2rem; flex-shrink: 0; margin-top: 1px; }
+.pdash__stripe-status--idle { background: var(--iris-50); border-color: var(--iris-200); }
+.pdash__stripe-status--warn { background: #fffbeb; border-color: #fde68a; }
+.pdash__stripe-status--ok   { background: #f0fdf4; border-color: #86efac; color: #166534; }
+
+.pdash__stripe-caps {
+  display: flex;
+  gap: 12px;
+}
+.pdash__stripe-cap {
+  font-size: 0.8rem;
+  color: var(--text-300);
+  padding: 4px 10px;
+  border-radius: 100px;
+  background: var(--iris-100);
+  font-weight: 500;
+}
+.pdash__stripe-cap--on {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.pdash__stripe-disclaimer {
+  color: var(--text-200);
+  margin-top: 4px;
+  font-size: 0.75rem;
+  line-height: 1.5;
+}

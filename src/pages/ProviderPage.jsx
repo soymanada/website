@@ -157,9 +157,11 @@ export default function ProviderPage() {
   const [isConnecting,   setIsConnecting]   = useState(false)
   const [targetPlatform, setTargetPlatform] = useState('')
   const [opinionStats,   setOpinionStats]   = useState({ avg: null, count: 0 })
-  const [shareCopied,    setShareCopied]    = useState(false)
-  const [paymentLoading, setPaymentLoading] = useState(false)
-  const [paymentError,   setPaymentError]   = useState(null)
+  const [shareCopied,       setShareCopied]       = useState(false)
+  const [paymentLoading,    setPaymentLoading]    = useState(false)
+  const [paymentError,      setPaymentError]      = useState(null)
+  const [stripeLoading,     setStripeLoading]     = useState(false)
+  const [stripeError,       setStripeError]       = useState(null)
 
   useEffect(() => {
     supabase
@@ -255,6 +257,32 @@ export default function ProviderPage() {
       await navigator.clipboard.writeText(shareUrl)
       setShareCopied(true)
       setTimeout(() => setShareCopied(false), 2500)
+    }
+  }
+
+  // ── Stripe Checkout (cuando el proveedor tiene stripe_charges_enabled) ──
+  const handleStripeCheckout = async () => {
+    setStripeError(null)
+    setStripeLoading(true)
+    try {
+      const { data, error } = await supabase.functions.invoke('stripe-create-checkout', {
+        body: {
+          provider_id:  rawProvider.id,
+          amount_clp:   rawProvider.service_amount_clp,
+          description:  rawProvider.service_description,
+          success_url:  `${window.location.origin}/pago/exito?session_id={CHECKOUT_SESSION_ID}`,
+          cancel_url:   `${window.location.origin}/pago/cancelado`,
+        },
+      })
+      if (error || !data?.url) {
+        setStripeError('No pudimos iniciar el pago en este momento. Inténtalo de nuevo.')
+        return
+      }
+      window.location.href = data.url
+    } catch {
+      setStripeError('No pudimos conectar con el sistema de pagos. Inténtalo de nuevo.')
+    } finally {
+      setStripeLoading(false)
     }
   }
 
@@ -452,27 +480,60 @@ export default function ProviderPage() {
                       ${rawProvider.service_amount_clp.toLocaleString('es-CL')} CLP
                     </span>
                   </div>
-                  {user ? (
+
+                  {/* Stripe Checkout (prioritario si está habilitado) */}
+                  {rawProvider?.stripe_charges_enabled ? (
                     <>
-                      <button
-                        className="ppage__btn ppage__btn--pay"
-                        onClick={handlePayment}
-                        disabled={paymentLoading}
-                      >
-                        {paymentLoading ? 'Redirigiendo…' : '💳 Pagar este servicio'}
-                      </button>
-                      {paymentError && (
-                        <p className="t-xs ppage__payment-error">{paymentError}</p>
+                      {user ? (
+                        <>
+                          <button
+                            className="ppage__btn ppage__btn--pay ppage__btn--stripe"
+                            onClick={handleStripeCheckout}
+                            disabled={stripeLoading}
+                          >
+                            {stripeLoading ? 'Redirigiendo a Stripe…' : '🔐 Pagar este servicio'}
+                          </button>
+                          <p className="ppage__stripe-note">
+                            Pago seguro con Stripe · Tu información está protegida
+                          </p>
+                          {stripeError && (
+                            <p className="t-xs ppage__payment-error">{stripeError}</p>
+                          )}
+                        </>
+                      ) : (
+                        <Link
+                          to="/login"
+                          state={{ from: location }}
+                          className="ppage__btn ppage__btn--pay"
+                        >
+                          Ingresar para pagar
+                        </Link>
                       )}
                     </>
                   ) : (
-                    <Link
-                      to="/login"
-                      state={{ from: location }}
-                      className="ppage__btn ppage__btn--pay"
-                    >
-                      Ingresar para pagar
-                    </Link>
+                    /* Fallback MercadoPago mientras Stripe no esté habilitado */
+                    user ? (
+                      <>
+                        <button
+                          className="ppage__btn ppage__btn--pay"
+                          onClick={handlePayment}
+                          disabled={paymentLoading}
+                        >
+                          {paymentLoading ? 'Redirigiendo…' : '💳 Pagar este servicio'}
+                        </button>
+                        {paymentError && (
+                          <p className="t-xs ppage__payment-error">{paymentError}</p>
+                        )}
+                      </>
+                    ) : (
+                      <Link
+                        to="/login"
+                        state={{ from: location }}
+                        className="ppage__btn ppage__btn--pay"
+                      >
+                        Ingresar para pagar
+                      </Link>
+                    )
                   )}
                 </div>
               )}

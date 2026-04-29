@@ -17,6 +17,8 @@ import FirstStepsPage       from './pages/FirstStepsPage'
 import MigrantAccountPage   from './pages/MigrantAccountPage'
 import BookingRoom          from './pages/BookingRoom'
 import OpinarPage           from './pages/OpinarPage'
+import PaymentSuccessPage   from './pages/PaymentSuccessPage'
+import PaymentCancelPage    from './pages/PaymentCancelPage'
 import ProtectedRoute       from './components/ProtectedRoute'
 import RemesasFloat        from './components/RemesasFloat'
 import { AuthProvider }     from './hooks/useAuth'
@@ -114,6 +116,9 @@ function Layout() {
           </ProtectedRoute>
         } />
         <Route path="/opinar"               element={<OpinarPage />} />
+        {/* Stripe payment return URLs */}
+        <Route path="/pago/exito"           element={<PaymentSuccessPage />} />
+        <Route path="/pago/cancelado"       element={<PaymentCancelPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />

@@ -1,0 +1,66 @@
+/* src/pages/PaymentCancelPage.css */
+
+.paycancel {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px 60px;
+  background: var(--ivory);
+}
+
+.paycancel__card {
+  background: #fff;
+  border: 1.5px solid var(--iris-200);
+  border-radius: 20px;
+  padding: 48px 40px;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 8px 40px rgba(99,60,180,0.08);
+}
+
+.paycancel__icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #fee2e2;
+  color: #dc2626;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0 auto 20px;
+}
+
+.paycancel__title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--iris-900);
+  margin-bottom: 12px;
+}
+
+.paycancel__body {
+  font-size: 0.95rem;
+  color: var(--text-500);
+  line-height: 1.65;
+  margin-bottom: 12px;
+}
+
+.paycancel__note {
+  font-size: 0.82rem;
+  color: var(--text-300);
+  margin-bottom: 28px;
+}
+.paycancel__note a { color: var(--iris-600); text-decoration: underline; }
+
+.paycancel__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+@media (max-width: 480px) {
+  .paycancel__card { padding: 32px 20px; }
+}

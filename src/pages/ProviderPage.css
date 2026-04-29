@@ -486,3 +486,43 @@ img.ppage__avatar {
   color: var(--text-600);
   font-style: normal;
 }
+
+/* ── Stripe checkout button ──────────────────────────────────────── */
+.ppage__btn--stripe {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 13px 20px;
+  border: none;
+  border-radius: var(--r-md);
+  background: #635bff;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.18s, opacity 0.18s;
+  letter-spacing: 0.01em;
+}
+.ppage__btn--stripe:hover:not(:disabled) { background: #4f46e5; }
+.ppage__btn--stripe:disabled { opacity: 0.55; cursor: default; }
+
+.ppage__stripe-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 6px;
+  font-size: 0.72rem;
+  color: var(--text-400);
+  line-height: 1.4;
+}
+.ppage__stripe-note svg { flex-shrink: 0; }
+
+.ppage__stripe-error {
+  margin-top: 6px;
+  font-size: 0.78rem;
+  color: #dc2626;
+  text-align: center;
+}

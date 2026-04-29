@@ -213,6 +213,149 @@ function ProviderProfileEditor({ provider, tier, onSave, saving, onAvatarUpload,
   )
 }
 
+// ── Stripe Connect block (Wolf) ──────────────────────────────────
+function StripeConnectBlock({ provider }) {
+  // Estados de onboarding leídos directamente desde la DB (vía provider)
+  const accountId      = provider?.stripe_account_id
+  const onboardingDone = provider?.stripe_onboarding_complete
+  const chargesEnabled = provider?.stripe_charges_enabled
+  const payoutsEnabled = provider?.stripe_payouts_enabled
+
+  const [loading, setLoading] = useState(false)
+  const [error,   setError]   = useState('')
+
+  // Deriva el estado visual
+  const stripeStatus = !accountId
+    ? 'unconnected'                   // nunca inició onboarding
+    : chargesEnabled
+      ? 'enabled'                     // puede cobrar
+      : onboardingDone
+        ? 'requirements_pending'      // completó flujo pero Stripe pide más datos
+        : 'onboarding_incomplete'     // tiene cuenta pero no terminó el flujo
+
+  const handleConnect = async () => {
+    setLoading(true)
+    setError('')
+    try {
+      const { data, error: fnErr } = await supabase.functions.invoke('stripe-create-account-link', {
+        body: {
+          return_url: `${window.location.origin}/mi-perfil?stripe=return`,
+          refresh_url: `${window.location.origin}/mi-perfil?stripe=refresh`,
+        },
+      })
+      if (fnErr || !data?.url) {
+        setError('No pudimos iniciar la verificación en este momento. Inténtalo de nuevo.')
+        return
+      }
+      window.location.href = data.url
+    } catch {
+      setError('No pudimos conectar con Stripe. Inténtalo de nuevo en unos minutos.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div className="pdash__stripe-block">
+      <p className="t-xs" style={{ color: 'var(--text-300)', marginBottom: 14 }}>
+        Usamos <strong>Stripe</strong> para procesar pagos de forma segura.
+        Tu dinero llega directo a tu cuenta bancaria.
+      </p>
+
+      {/* Estado: sin cuenta */}
+      {stripeStatus === 'unconnected' && (
+        <div className="pdash__stripe-state">
+          <div className="pdash__stripe-status pdash__stripe-status--idle">
+            <span>🔗</span>
+            <div>
+              <strong className="t-sm">Configura tus cobros seguros</strong>
+              <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 2 }}>
+                Conecta tu cuenta bancaria a través de Stripe. Es rápido y seguro.
+              </p>
+            </div>
+          </div>
+          <button className="btn btn-primary" onClick={handleConnect} disabled={loading}>
+            <span>{loading ? 'Redirigiendo a Stripe…' : '🔐 Conectar mi cuenta Stripe'}</span>
+          </button>
+        </div>
+      )}
+
+      {/* Estado: onboarding incompleto */}
+      {stripeStatus === 'onboarding_incomplete' && (
+        <div className="pdash__stripe-state">
+          <div className="pdash__stripe-status pdash__stripe-status--warn">
+            <span>⚠️</span>
+            <div>
+              <strong className="t-sm">Verifica tu cuenta para recibir pagos</strong>
+              <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 2 }}>
+                Iniciaste el proceso pero aún no lo completaste. Vuelve a Stripe para terminar.
+              </p>
+            </div>
+          </div>
+          <button className="btn btn-primary" onClick={handleConnect} disabled={loading}>
+            <span>{loading ? 'Redirigiendo a Stripe…' : '→ Completar verificación de pagos'}</span>
+          </button>
+        </div>
+      )}
+
+      {/* Estado: requisitos pendientes (Stripe pide más info) */}
+      {stripeStatus === 'requirements_pending' && (
+        <div className="pdash__stripe-state">
+          <div className="pdash__stripe-status pdash__stripe-status--warn">
+            <span>📋</span>
+            <div>
+              <strong className="t-sm">Stripe necesita más información</strong>
+              <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 2 }}>
+                Completaste el flujo pero hay requisitos adicionales pendientes. Entra a Stripe para resolverlos.
+              </p>
+            </div>
+          </div>
+          <button className="btn btn-primary" onClick={handleConnect} disabled={loading}>
+            <span>{loading ? 'Redirigiendo a Stripe…' : '→ Ver requisitos pendientes'}</span>
+          </button>
+        </div>
+      )}
+
+      {/* Estado: habilitado */}
+      {stripeStatus === 'enabled' && (
+        <div className="pdash__stripe-state">
+          <div className="pdash__stripe-status pdash__stripe-status--ok">
+            <span>✅</span>
+            <div>
+              <strong className="t-sm">Listo para recibir pagos</strong>
+              <p className="t-xs" style={{ marginTop: 2 }}>
+                Tu cuenta Stripe está verificada.
+                {payoutsEnabled
+                  ? ' Los depósitos se activan automáticamente.'
+                  : ' Los depósitos estarán disponibles pronto.'}
+              </p>
+            </div>
+          </div>
+          <div className="pdash__stripe-caps">
+            <span className={`pdash__stripe-cap${chargesEnabled ? ' pdash__stripe-cap--on' : ''}`}>
+              {chargesEnabled ? '✓' : '○'} Cobros
+            </span>
+            <span className={`pdash__stripe-cap${payoutsEnabled ? ' pdash__stripe-cap--on' : ''}`}>
+              {payoutsEnabled ? '✓' : '○'} Depósitos
+            </span>
+          </div>
+          <button className="btn btn-ghost btn-sm" onClick={handleConnect} disabled={loading}>
+            <span>Gestionar cuenta en Stripe ↗</span>
+          </button>
+        </div>
+      )}
+
+      {error && (
+        <p className="t-xs" style={{ color: '#dc2626', marginTop: 10 }}>{error}</p>
+      )}
+
+      <p className="t-xs pdash__stripe-disclaimer">
+        SoyManada usa Stripe para el procesamiento. No almacenamos datos de tu cuenta bancaria.
+      </p>
+    </div>
+  )
+}
+
 // ── Sección Herramientas (Cob/Wolf) ─────────────────────────────
 function SectionHerramientas({ tier, provider, onSave, saving }) {
   const { t } = useTranslation()
@@ -371,6 +514,34 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
             </div>
           </>
         )}
+      </div>
+
+      {/* ── Cobros seguros con Stripe — Wolf ── */}
+      <div className="pdash__tools-block" style={{ marginTop: 24 }}>
+        <div className="pdash__tools-block-header">
+          <span className="pdash__tools-block-title t-sm">🔐 Cobros seguros con Stripe</span>
+          <span className="pdash__badge pdash__badge--gold">Wolf</span>
+        </div>
+        {isWolf
+          ? <StripeConnectBlock provider={provider} />
+          : (
+            <>
+              <div className="pdash__tool-card pdash__tool-card--locked">
+                <span className="pdash__tool-icon">🔐</span>
+                <div>
+                  <strong className="t-sm">Recibe pagos con Stripe</strong>
+                  <p className="t-xs" style={{ color: 'var(--text-300)' }}>
+                    Conecta tu cuenta Stripe para recibir pagos directamente desde tu perfil.
+                  </p>
+                </div>
+              </div>
+              <div className="pdash__upgrade-cta">
+                <p className="t-sm"><strong>Activa Wolf</strong> para conectar Stripe y recibir pagos seguros de tus clientes.</p>
+                <UpgradeButton planCode="pro" label="Activar Wolf — $9.990 CLP/mes" />
+              </div>
+            </>
+          )
+        }
       </div>
 
       {/* ── Herramientas avanzadas — Gold ── */}
