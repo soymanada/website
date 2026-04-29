@@ -3,6 +3,10 @@
 //
 // IMPORTANTE: deployer con --no-verify-jwt porque Stripe no envía token Supabase.
 // Verificación de firma vía stripe.webhooks.constructEventAsync + raw body.
+//
+// Idempotencia: INSERT con status='processing' ANTES de procesar.
+// El UNIQUE constraint sobre stripe_event_id actúa como mutex:
+// cualquier reintento concurrente de Stripe recibe 23505 y es descartado.
 
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
@@ -14,10 +18,10 @@ const SB_URL                = Deno.env.get('SUPABASE_URL')               ?? ''
 const SB_SERVICE            = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')  ?? ''
 
 const stripe = new Stripe(STRIPE_SECRET_KEY, {
-  apiVersion:  '2024-06-20',
-  httpClient:  Stripe.createFetchHttpClient(),
+  apiVersion: '2024-06-20',
+  httpClient: Stripe.createFetchHttpClient(),
 })
-const admin  = createClient(SB_URL, SB_SERVICE)
+const admin = createClient(SB_URL, SB_SERVICE)
 
 serve(async (req) => {
   if (req.method !== 'POST') {
@@ -39,20 +43,29 @@ serve(async (req) => {
 
   console.log(`[stripe-webhook] ${event.type} | ${event.id} | livemode=${event.livemode}`)
 
-  // ── 3. Idempotencia: verificar si ya fue procesado ───────────────────────
-  const { data: existing } = await admin
-    .from('stripe_webhook_events')
-    .select('id')
-    .eq('stripe_event_id', event.id)
-    .maybeSingle()
+  // ── 3. Claim del evento: INSERT antes de procesar ────────────────────────
+  // El UNIQUE(stripe_event_id) actúa como mutex.
+  // Si Stripe reintenta mientras el primero está en vuelo, el segundo recibe
+  // error 23505 (unique_violation) y retorna 200 sin reprocesar.
+  const { error: claimError } = await admin.from('stripe_webhook_events').insert({
+    stripe_event_id: event.id,
+    event_type:      event.type,
+    livemode:        event.livemode,
+    status:          'processing',
+  })
 
-  if (existing) {
-    console.log(`[stripe-webhook] Ya procesado ${event.id} — omitiendo`)
-    return new Response(JSON.stringify({ ok: true, skipped: true }), { status: 200 })
+  if (claimError) {
+    if (claimError.code === '23505') {
+      // Ya existe un registro: procesado, fallido o en vuelo
+      console.log(`[stripe-webhook] Ya procesado/procesando ${event.id} — omitiendo`)
+      return new Response(JSON.stringify({ ok: true, skipped: true }), { status: 200 })
+    }
+    console.error(`[stripe-webhook] Error al hacer claim de ${event.id}:`, claimError)
+    return new Response(JSON.stringify({ error: claimError.message }), { status: 500 })
   }
 
   // ── 4. Procesar evento ───────────────────────────────────────────────────
-  let status       = 'processed'
+  let finalStatus  = 'processed'
   let errorMessage: string | null = null
 
   try {
@@ -65,29 +78,28 @@ serve(async (req) => {
         break
       default:
         console.log(`[stripe-webhook] Evento no manejado: ${event.type}`)
-        status = 'skipped'
+        finalStatus = 'skipped'
     }
   } catch (err) {
     console.error(`[stripe-webhook] Error procesando ${event.type}:`, err)
-    status       = 'failed'
+    finalStatus  = 'failed'
     errorMessage = String(err)
   }
 
-  // ── 5. Registrar evento (éxito o fallo) ──────────────────────────────────
-  await admin.from('stripe_webhook_events').insert({
-    stripe_event_id: event.id,
-    event_type:      event.type,
-    livemode:        event.livemode,
-    status,
-    payload_json:    event as unknown as Record<string, unknown>,
-    error_message:   errorMessage,
-  })
+  // ── 5. Actualizar registro con estado final y payload ────────────────────
+  await admin.from('stripe_webhook_events').update({
+    status:        finalStatus,
+    payload_json:  event as unknown as Record<string, unknown>,
+    error_message: errorMessage,
+  }).eq('stripe_event_id', event.id)
 
-  if (status === 'failed') {
+  console.log(`[stripe-webhook] ${event.id} → ${finalStatus}`)
+
+  if (finalStatus === 'failed') {
     return new Response(JSON.stringify({ error: errorMessage }), { status: 500 })
   }
 
-  return new Response(JSON.stringify({ ok: true, status }), { status: 200 })
+  return new Response(JSON.stringify({ ok: true, status: finalStatus }), { status: 200 })
 })
 
 // ── checkout.session.completed ───────────────────────────────────────────────
@@ -125,12 +137,11 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session, eventId
 
 // ── account.updated ──────────────────────────────────────────────────────────
 async function handleAccountUpdated(account: Stripe.Account) {
-  const req = account.requirements
+  const req      = account.requirements
   const dueCount =
     (req?.currently_due?.length  ?? 0) +
     (req?.eventually_due?.length ?? 0)
 
-  // Onboarding completo si el proveedor puede cobrar y envió sus datos
   const onboardingComplete = (account.charges_enabled === true) && (account.details_submitted === true)
 
   const { error } = await admin
