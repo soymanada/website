@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proveedor Manada — Panel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=Plus+Jakarta+Sans:wght@400..700&display=swap" rel="stylesheet">
+<style>
+/* ===== TOKENS ===== */
+:root {
+  --brand: #5b21b6;
+  --brand-dark: #3b0764;
+  --brand-mid: #7c3aed;
+  --brand-light: #ede9fe;
+  --brand-faint: #f5f3ff;
+  --gold: #f5c842;
+  --gold-dark: #d4a017;
+
+  --cub-color: #7c3aed;
+  --wolf-color: #1e293b;
+  --cub-bg: #ede9fe;
+  --wolf-bg: #e2e8f0;
+
+  --color-bg: #f8f7fb;
+  --color-surface: #ffffff;
+  --color-surface-2: #f4f2f9;
+  --color-border: rgba(91,33,182,0.12);
+  --color-divider: #e5e1f0;
+  --color-text: #1e1b2e;
+  --color-text-muted: #6b6480;
+  --color-text-faint: #b0a8c8;
+  --color-success: #16a34a;
+  --color-error: #9333ea;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 1px 3px rgba(91,33,182,0.07);
+  --shadow-md: 0 4px 16px rgba(91,33,182,0.10);
+  --shadow-lg: 0 12px 40px rgba(91,33,182,0.14);
+
+  --topbar-h: 56px;
+  --nav-h: 48px;
+
+  --font-body: 'Inter', sans-serif;
+  --font-display: 'Plus Jakarta Sans', sans-serif;
+
+  --text-xs: clamp(0.75rem,0.7rem + 0.2vw,0.8125rem);
+  --text-sm: clamp(0.8125rem,0.78rem + 0.2vw,0.875rem);
+  --text-base: clamp(0.9375rem,0.9rem + 0.2vw,1rem);
+  --text-lg: clamp(1.0625rem,1rem + 0.35vw,1.25rem);
+  --text-xl: clamp(1.375rem,1.2rem + 0.8vw,1.75rem);
+}
+
+[data-theme="dark"] {
+  --brand: #a78bfa;
+  --brand-dark: #7c3aed;
+  --brand-mid: #c4b5fd;
+  --brand-light: #2e1b4a;
+  --brand-faint: #1e1334;
+  --gold: #fbbf24;
+  --gold-dark: #f59e0b;
+  --cub-bg: #2e1b4a;
+  --wolf-bg: #1e293b;
+  --color-bg: #0f0d18;
+  --color-surface: #18152a;
+  --color-surface-2: #211d32;
+  --color-border: rgba(167,139,250,0.14);
+  --color-divider: #2a2540;
+  --color-text: #ede9fe;
+  --color-text-muted: #9d94bb;
+  --color-text-faint: #554d72;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.4);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.5);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-text);
+  background: var(--color-bg);
+  min-height: 100dvh;
+}
+img { display:block; max-width:100%; }
+button { cursor:pointer; border:none; background:none; font:inherit; color:inherit; }
+
+/* ===== TOPBAR ===== */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--brand-dark);
+  height: var(--topbar-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  gap: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.topbar-logo {
+  width: 32px; height: 32px;
+  background: rgba(255,255,255,0.15);
+  border-radius: var(--radius-md);
+  display: flex; align-items:center; justify-content:center;
+  font-size: 18px;
+}
+.topbar-brand-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-base);
+  color: #fff;
+  line-height: 1;
+}
+.topbar-brand-sub {
+  font-size: var(--text-xs);
+  color: rgba(255,255,255,0.55);
+  line-height: 1;
+}
+.topbar-center {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  justify-content: center;
+}
+.topbar-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255,255,255,0.1);
+  border-radius: var(--radius-full);
+  padding: 4px 14px 4px 6px;
+  border: 1px solid rgba(255,255,255,0.12);
+  flex-shrink: 0;
+}
+.user-dot {
+  width: 8px; height: 8px;
+  background: #4ade80;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.user-name {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+}
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.topbar-action-btn {
+  display: flex; align-items:center; gap:4px;
+  padding: 5px 10px;
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: rgba(255,255,255,0.8);
+  border: 1px solid rgba(255,255,255,0.15);
+  transition: all 180ms ease;
+  white-space: nowrap;
+}
+.topbar-action-btn:hover { background:rgba(255,255,255,0.12); color:#fff; }
+.theme-btn {
+  width:32px; height:32px;
+  display:flex; align-items:center; justify-content:center;
+  border-radius: var(--radius-full);
+  color:rgba(255,255,255,0.7);
+  border:1px solid rgba(255,255,255,0.15);
+  font-size: 15px;
+  transition: all 180ms ease;
+}
+.theme-btn:hover { background:rgba(255,255,255,0.12); color:#fff; }
+
+/* ===== SUBNAV ===== */
+.subnav {
+  position: sticky;
+  top: var(--topbar-h);
+  z-index: 90;
+  background: var(--brand);
+  height: var(--nav-h);
+  display: flex;
+  align-items: stretch;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.subnav::-webkit-scrollbar { display:none; }
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 16px;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: rgba(255,255,255,0.65);
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: all 180ms ease;
+  cursor: pointer;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+.nav-item:hover { color: rgba(255,255,255,0.9); background: rgba(255,255,255,0.06); }
+.nav-item.active {
+  color: #fff;
+  border-bottom-color: var(--gold);
+  background: rgba(255,255,255,0.05);
+}
+.nav-icon { font-size: 14px; }
+
+/* ===== LAYOUT ===== */
+.page-container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 32px 20px 80px;
+}
+.page-header { margin-bottom: 32px; }
+.page-title {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.2;
+}
+.page-subtitle {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-top: 4px;
+}
+
+/* ===== PLAN BADGE ===== */
+.plan-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.plan-badge.wonderer { background: rgba(245,200,66,0.15); color: var(--gold-dark); }
+.plan-badge.cub { background: var(--cub-bg); color: var(--cub-color); }
+.plan-badge.wolf { background: var(--wolf-bg); color: var(--wolf-color); }
+[data-theme="dark"] .plan-badge.wolf { color: #94a3b8; }
+
+/* ===== PLAN CARDS ===== */
+.plans-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 40px;
+}
+@media (max-width: 700px) { .plans-grid { grid-template-columns: 1fr; } }
+.plan-card {
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: 24px 20px 20px;
+  position: relative;
+  transition: box-shadow 220ms ease, border-color 220ms ease;
+  box-shadow: var(--shadow-sm);
+}
+.plan-card:hover { box-shadow: var(--shadow-md); }
+.plan-card.current { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(91,33,182,0.1), var(--shadow-md); }
+.plan-card.popular { border-color: var(--brand-mid); box-shadow: var(--shadow-md); }
+.plan-current-tag {
+  position: absolute; top: -11px; left: 50%; transform: translateX(-50%);
+  background: var(--brand); color: #fff;
+  font-size: var(--text-xs); font-weight: 700;
+  padding: 3px 12px; border-radius: var(--radius-full);
+  white-space: nowrap; letter-spacing: 0.05em; text-transform: uppercase;
+}
+.plan-popular-tag {
+  position: absolute; top: -11px; left: 50%; transform: translateX(-50%);
+  background: linear-gradient(135deg, var(--brand-mid), var(--brand)); color: #fff;
+  font-size: var(--text-xs); font-weight: 700;
+  padding: 3px 12px; border-radius: var(--radius-full);
+  white-space: nowrap; letter-spacing: 0.05em; text-transform: uppercase;
+}
+.plan-emoji { font-size: 28px; margin-bottom: 8px; text-align:center; }
+.plan-name { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 700; text-align: center; margin-bottom: 2px; }
+.plan-price { font-size: var(--text-sm); text-align: center; margin-bottom: 16px; }
+.plan-price.free { color: var(--brand); font-weight: 600; }
+.plan-price.paid { color: var(--brand-mid); font-weight: 700; }
+.plan-features { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+.plan-feature { display: flex; align-items: flex-start; gap: 8px; font-size: var(--text-sm); color: var(--color-text-muted); line-height: 1.4; }
+.plan-feature.on { color: var(--color-text); }
+.feat-icon { flex-shrink: 0; font-size: 13px; margin-top: 1px; }
+.feat-icon.check { color: var(--color-success); }
+.feat-icon.cross { color: var(--color-text-faint); }
+.plan-cta { width: 100%; margin-top: 20px; padding: 9px 16px; border-radius: var(--radius-full); font-size: var(--text-sm); font-weight: 600; transition: all 200ms ease; border: 1.5px solid transparent; }
+.plan-cta.current-btn { background: var(--color-surface-2); color: var(--color-text-muted); border-color: var(--color-border); cursor: default; font-weight: 500; }
+.plan-cta.upgrade-cub { background: var(--cub-bg); color: var(--cub-color); border-color: var(--cub-color); }
+.plan-cta.upgrade-cub:hover { background: var(--cub-color); color: #fff; }
+.plan-cta.upgrade-wolf { background: linear-gradient(135deg, var(--brand), var(--brand-mid)); color: #fff; }
+.plan-cta.upgrade-wolf:hover { filter: brightness(1.1); box-shadow: 0 4px 14px rgba(124,58,237,0.4); }
+
+/* ===== DIVIDER ===== */
+.section-divider { display: flex; align-items: center; gap: 12px; margin: 36px 0 28px; }
+.section-divider-line { flex: 1; height: 1px; background: var(--color-divider); }
+.section-divider-label { font-family: var(--font-display); font-size: var(--text-sm); font-weight: 700; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap; }
+
+/* ===== TOOLS ===== */
+.tools-intro { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 16px 20px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+.tools-intro-text { font-size: var(--text-sm); color: var(--color-text-muted); }
+.tools-intro-text strong { color: var(--color-text); }
+.tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); gap: 12px; }
+.tool-card { background: var(--color-surface); border: 1.5px solid var(--color-border); border-radius: var(--radius-lg); padding: 16px 18px; display: flex; align-items: center; gap: 14px; transition: box-shadow 200ms ease, border-color 200ms ease; position: relative; overflow: hidden; }
+.tool-card:hover { box-shadow: var(--shadow-sm); }
+.tool-card.unlocked { border-color: rgba(22,163,74,0.2); }
+.tool-card.unlocked:hover { border-color: rgba(22,163,74,0.4); }
+.tool-card.locked { opacity: 0.6; }
+.tool-card.locked::after { content:''; position:absolute; inset:0; background: repeating-linear-gradient(-45deg,transparent,transparent 10px,rgba(91,33,182,0.015) 10px,rgba(91,33,182,0.015) 20px); pointer-events:none; }
+.tool-icon-wrap { width: 42px; height: 42px; border-radius: var(--radius-md); display: flex; align-items:center; justify-content:center; font-size: 20px; flex-shrink: 0; }
+.tool-icon-wrap.green { background: rgba(22,163,74,0.1); }
+.tool-icon-wrap.purple { background: var(--brand-faint); }
+.tool-icon-wrap.gray { background: var(--color-surface-2); }
+.tool-info { flex: 1; min-width: 0; }
+.tool-name { font-size: var(--text-sm); font-weight: 600; color: var(--color-text); margin-bottom: 2px; }
+.tool-desc { font-size: var(--text-xs); color: var(--color-text-muted); line-height: 1.4; }
+.tool-status { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; flex-shrink: 0; }
+.tool-configured { font-size: var(--text-xs); color: var(--color-text-faint); font-style: italic; text-align: right; }
+.tool-configure-btn { font-size: var(--text-xs); font-weight: 600; color: var(--brand); background: var(--brand-faint); border: 1px solid rgba(91,33,182,0.2); border-radius: var(--radius-full); padding: 3px 10px; transition: all 180ms ease; white-space: nowrap; }
+.tool-configure-btn:hover { background: var(--brand); color: #fff; }
+
+/* ===== UPGRADE BANNER ===== */
+.upgrade-banner { margin-top: 36px; background: linear-gradient(135deg, var(--brand-dark) 0%, var(--brand) 60%, var(--brand-mid) 100%); border-radius: var(--radius-xl); padding: 28px 32px; display: flex; align-items: center; justify-content: space-between; gap: 20px; box-shadow: var(--shadow-lg); }
+@media (max-width: 600px) { .upgrade-banner { flex-direction: column; text-align: center; } }
+.banner-title { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 700; color: #fff; margin-bottom: 4px; }
+.banner-sub { font-size: var(--text-sm); color: rgba(255,255,255,0.7); }
+.banner-actions { display:flex; gap:10px; flex-shrink:0; flex-wrap:wrap; }
+.banner-btn { padding: 9px 20px; border-radius: var(--radius-full); font-size: var(--text-sm); font-weight: 700; transition: all 200ms ease; white-space: nowrap; }
+.banner-btn.cub { background: rgba(255,255,255,0.15); color: #fff; border: 1.5px solid rgba(255,255,255,0.3); }
+.banner-btn.cub:hover { background: rgba(255,255,255,0.25); }
+.banner-btn.wolf { background: var(--gold); color: #1e1b2e; border: 1.5px solid var(--gold); }
+.banner-btn.wolf:hover { background: var(--gold-dark); border-color: var(--gold-dark); box-shadow: 0 4px 14px rgba(245,200,66,0.4); }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-brand">
+    <div class="topbar-logo">🐺</div>
+    <div>
+      <div class="topbar-brand-name">SoyManada</div>
+      <div class="topbar-brand-sub">Proveedor</div>
+    </div>
+  </div>
+  <div class="topbar-center">
+    <div class="topbar-user">
+      <div class="user-dot"></div>
+      <span class="user-name">Wonderer</span>
+    </div>
+  </div>
+  <div class="topbar-actions">
+    <button class="topbar-action-btn"><span>↗</span> Ver perfil</button>
+    <button class="theme-btn" data-theme-toggle aria-label="Cambiar tema">🌙</button>
+  </div>
+</header>
+<nav class="subnav">
+  <a class="nav-item" href="#"><span class="nav-icon">👤</span> Perfil</a>
+  <a class="nav-item" href="#"><span class="nav-icon">🛠</span> Herramientas</a>
+  <a class="nav-item" href="#"><span class="nav-icon">📊</span> Métricas</a>
+  <a class="nav-item" href="#"><span class="nav-icon">💬</span> Reseñas</a>
+  <a class="nav-item" href="#"><span class="nav-icon">📅</span> Reservas</a>
+  <a class="nav-item" href="#"><span class="nav-icon">✉️</span> Mensajes</a>
+  <a class="nav-item active" href="#"><span class="nav-icon">✨</span> Planes</a>
+  <a class="nav-item" href="#"><span class="nav-icon">⚙️</span> Ajustes</a>
+</nav>
+<main class="page-container">
+  <div class="page-header">
+    <h1 class="page-title">Planes y Herramientas</h1>
+    <p class="page-subtitle">Tu plan actual determina qué herramientas tienes disponibles. Actualiza cuando quieras.</p>
+  </div>
+  <div class="plans-grid">
+    <div class="plan-card current">
+      <div class="plan-current-tag">TU PLAN ACTUAL</div>
+      <div class="plan-emoji">✨</div>
+      <div class="plan-name">Wonderer</div>
+      <div class="plan-price free">Gratis</div>
+      <ul class="plan-features">
+        <li class="plan-feature on"><span class="feat-icon check">✓</span> Perfil público en el directorio</li>
+        <li class="plan-feature on"><span class="feat-icon check">✓</span> Descripción y foto de perfil</li>
+        <li class="plan-feature on"><span class="feat-icon check">✓</span> Redes sociales e Instagram</li>
+        <li class="plan-feature on"><span class="feat-icon check">✓</span> Link de pago externo</li>
+        <li class="plan-feature"><span class="feat-icon cross">✗</span> Métricas de visitas</li>
+        <li class="plan-feature"><span class="feat-icon cross">✗</span> WhatsApp visible</li>
+        <li class="plan-feature"><span class="feat-icon cross">✗</span> Calendario de reservas</li>
+        <li class="plan-feature"><span class="feat-icon cross">✗</span> Inbox de mensajes</li>
+        <li class="plan-feature"><span class="feat-icon cross">✗</span> Cobros por Stripe</li>
+      </ul>
+      <button class="plan-cta current-btn">Plan activo</button>
+    </div>
+    <div class="plan-card">
+      <div class="plan-emoji">🐾</div>
+      <div class="plan-name">Cub</div>
+      <div class="plan-price paid">$4.990 CLP/mes</div>
+      <ul class="plan-features">
+        <li class="plan-feature on"><span class="feat-icon check">✓</span> Todo lo de Wonderer</li>
+        <li class="plan-feature on"><span class="feat-icon check">✓</span> Métricas en tiempo real</li>
+        <li class="plan-feature on"><span class="feat-icon check">✓</span> WhatsApp visible en perfil</li>
+        <li class="plan-feature on"><span class="feat-icon check">✓</span> Calendario de reservas</li>
+        <li class="plan-feature on"><span class="feat-icon check">✓</span> Inbox de mensajes directos</li>
+        <li class="plan-feature"><span class="feat-icon cross">✗</span> Cobros gestionados</li>
+        <li class="plan-feature"><span class="feat-icon cross">✗</span> Responder reseñas</li>
+        <li class="plan-feature"><span class="feat-icon cross">✗</span> Badge destacado</li>
+      </ul>
+      <button class="plan-cta upgrade-cub">Activar Cub — $4.990/mes</button>
+    </div>
+    <div class="plan-card popular">
+      <div class="plan-popular-tag">MÁS POPULAR</div>
+      <div class="plan-emoji">🐺</div>
+      <div class="plan-name">Wolf</div>
+      <div class="plan-price paid">$9.990 CLP/mes</div>
+      <ul class="plan-features">
+        <li class="plan-feature on"><span class="feat-icon check">✓</span> Todo lo de Cub</li>
+        <li class="plan-feature on"><span class="feat-icon check">✓</span> Cobros gestionados (Stripe)</li>
+        <li class="plan-feature on"><span class="feat-icon check">✓</span> Responder reseñas públicas</li>
+        <li class="plan-feature on"><span class="feat-icon check">✓</span> Badge destacado en directorio</li>
+        <li class="plan-feature on"><span class="feat-icon check">✓</span> Posición preferencial</li>
+        <li class="plan-feature on"><span class="feat-icon check">✓</span> Soporte prioritario</li>
+      </ul>
+      <button class="plan-cta upgrade-wolf">Activar Wolf — $9.990/mes</button>
+    </div>
+  </div>
+  <div class="section-divider">
+    <div class="section-divider-line"></div>
+    <span class="section-divider-label">🛠 Herramientas disponibles en tu plan</span>
+    <div class="section-divider-line"></div>
+  </div>
+  <div class="tools-intro">
+    <div>💡</div>
+    <p class="tools-intro-text"><strong>Tienes 1 de 9 herramientas activas.</strong> Las herramientas con candado se desbloquean al cambiar de plan.</p>
+  </div>
+  <div class="tools-grid">
+    <div class="tool-card unlocked">
+      <div class="tool-icon-wrap green">💳</div>
+      <div class="tool-info"><div class="tool-name">Link de pago externo</div><div class="tool-desc">Muestra tu link de cobro propio en el perfil</div></div>
+      <div class="tool-status"><span class="plan-badge wonderer">✨ Wonderer</span><button class="tool-configure-btn">Configurar →</button></div>
+    </div>
+    <div class="tool-card locked">
+      <div class="tool-icon-wrap purple">📊</div>
+      <div class="tool-info"><div class="tool-name">Métricas de visitas</div><div class="tool-desc">Visitas al perfil, fuentes de tráfico y tendencias</div></div>
+      <div class="tool-status"><span class="plan-badge cub">🐾 Cub</span><span class="tool-configured">Bloqueado</span></div>
+    </div>
+    <div class="tool-card locked">
+      <div class="tool-icon-wrap purple">💬</div>
+      <div class="tool-info"><div class="tool-name">WhatsApp visible</div><div class="tool-desc">Tu número aparece en el perfil público</div></div>
+      <div class="tool-status"><span class="plan-badge cub">🐾 Cub</span><span class="tool-configured">Bloqueado</span></div>
+    </div>
+    <div class="tool-card locked">
+      <div class="tool-icon-wrap purple">📅</div>
+      <div class="tool-info"><div class="tool-name">Calendario de reservas</div><div class="tool-desc">Agenda de citas para que clientes reserven</div></div>
+      <div class="tool-status"><span class="plan-badge cub">🐾 Cub</span><span class="tool-configured">Bloqueado</span></div>
+    </div>
+    <div class="tool-card locked">
+      <div class="tool-icon-wrap purple">✉️</div>
+      <div class="tool-info"><div class="tool-name">Inbox de mensajes</div><div class="tool-desc">Recibe y responde mensajes directos de clientes</div></div>
+      <div class="tool-status"><span class="plan-badge cub">🐾 Cub</span><span class="tool-configured">Bloqueado</span></div>
+    </div>
+    <div class="tool-card locked">
+      <div class="tool-icon-wrap gray">💰</div>
+      <div class="tool-info"><div class="tool-name">Cobros gestionados</div><div class="tool-desc">Acepta pagos vía Stripe desde tu perfil</div></div>
+      <div class="tool-status"><span class="plan-badge wolf">🐺 Wolf</span><span class="tool-configured">Bloqueado</span></div>
+    </div>
+    <div class="tool-card locked">
+      <div class="tool-icon-wrap gray">⭐</div>
+      <div class="tool-info"><div class="tool-name">Responder reseñas</div><div class="tool-desc">Responde públicamente a reseñas de clientes</div></div>
+      <div class="tool-status"><span class="plan-badge wolf">🐺 Wolf</span><span class="tool-configured">Bloqueado</span></div>
+    </div>
+    <div class="tool-card locked">
+      <div class="tool-icon-wrap gray">🏅</div>
+      <div class="tool-info"><div class="tool-name">Badge destacado</div><div class="tool-desc">Sello de confianza en el directorio de búsqueda</div></div>
+      <div class="tool-status"><span class="plan-badge wolf">🐺 Wolf</span><span class="tool-configured">Bloqueado</span></div>
+    </div>
+    <div class="tool-card locked">
+      <div class="tool-icon-wrap gray">🔝</div>
+      <div class="tool-info"><div class="tool-name">Posición preferencial</div><div class="tool-desc">Aparece primero en búsquedas de tu categoría</div></div>
+      <div class="tool-status"><span class="plan-badge wolf">🐺 Wolf</span><span class="tool-configured">Bloqueado</span></div>
+    </div>
+  </div>
+  <div class="upgrade-banner">
+    <div>
+      <div class="banner-title">Desbloquea más con un upgrade 🚀</div>
+      <div class="banner-sub">Cancela cuando quieras. Sin permanencia mínima.</div>
+    </div>
+    <div class="banner-actions">
+      <button class="banner-btn cub">🐾 Activar Cub — $4.990/mes</button>
+      <button class="banner-btn wolf">🐺 Ir a Wolf — $9.990/mes</button>
+    </div>
+  </div>
+</main>
+<script>
+(function(){
+  const t=document.querySelector('[data-theme-toggle]');
+  const r=document.documentElement;
+  let d=window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+  r.setAttribute('data-theme',d);
+  updateIcon();
+  if(t) t.addEventListener('click',()=>{ d=d==='dark'?'light':'dark'; r.setAttribute('data-theme',d); updateIcon(); });
+  function updateIcon(){ if(t) t.textContent=d==='dark'?'☀️':'🌙'; }
+  document.querySelectorAll('.nav-item').forEach(item=>{
+    item.addEventListener('click',e=>{ e.preventDefault(); document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active')); item.classList.add('active'); });
+  });
+})();
+</script>
+</body>
+</html>
