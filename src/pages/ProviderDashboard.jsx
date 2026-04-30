@@ -243,11 +243,15 @@ function StripeConnectBlock({ provider }) {
           refresh_url: `${window.location.origin}/mi-perfil?stripe=refresh`,
         },
       })
-      if (fnErr || !data?.url) {
+      // Soportamos dos shapes de respuesta:
+      //   { url: "https://..." }                — formato que esperamos del edge fn
+      //   { account_link: { url: "..." } }      — shape raw de la API de Stripe
+      const redirectUrl = data?.url ?? data?.account_link?.url
+      if (fnErr || !redirectUrl) {
         setError('No pudimos iniciar la verificación en este momento. Inténtalo de nuevo.')
         return
       }
-      window.location.href = data.url
+      window.location.href = redirectUrl
     } catch {
       setError('No pudimos conectar con Stripe. Inténtalo de nuevo en unos minutos.')
     } finally {

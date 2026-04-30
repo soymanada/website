@@ -265,6 +265,9 @@ export default function ProviderPage() {
     setStripeError(null)
     setStripeLoading(true)
     try {
+      // SEGURIDAD: amount_clp y description son referencia UI.
+      // El backend (stripe-create-checkout) DEBE leer el precio desde la DB
+      // usando provider_id — no confiar en los valores del body del cliente.
       const { data, error } = await supabase.functions.invoke('stripe-create-checkout', {
         body: {
           provider_id:  rawProvider.id,
