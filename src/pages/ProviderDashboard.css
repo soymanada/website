@@ -837,3 +837,62 @@
   font-size: 0.75rem;
   line-height: 1.5;
 }
+
+/* ── Herramienta activa (no bloqueada) — Bronze view ───────────── */
+.pdash__tool-active {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 18px;
+  border: 1.5px solid var(--iris-100);
+  border-radius: var(--r-md);
+  background: var(--iris-50, #f5f3ff);
+  margin-bottom: 20px;
+}
+.pdash__tool-active .pdash__tool-icon {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ── Bloque de upgrade único (al fondo de la sección) ──────────── */
+.pdash__upgrade-solo {
+  border: 1.5px solid var(--iris-100);
+  border-radius: var(--r-lg);
+  background: var(--ivory, #faf9f7);
+  padding: 24px 22px;
+}
+.pdash__upgrade-solo--subtle {
+  background: transparent;
+  border-color: var(--border-100, #e5e7eb);
+}
+.pdash__upgrade-solo-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--iris-800);
+  margin: 0 0 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.pdash__upgrade-solo-tiers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 600px) {
+  .pdash__upgrade-solo-tiers { grid-template-columns: 1fr; }
+}
+.pdash__upgrade-solo-tier {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid var(--iris-100);
+  border-radius: var(--r-md);
+}
+.pdash__upgrade-solo-tier .t-sm {
+  color: var(--text-600);
+  line-height: 1.55;
+  margin: 0;
+}

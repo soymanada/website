@@ -360,11 +360,15 @@ function StripeConnectBlock({ provider }) {
   )
 }
 
-// ── Sección Herramientas (Cob/Wolf) ─────────────────────────────
+// ── Sección Herramientas ─────────────────────────────────────────
+// Diseñada desde la abundancia: muestra lo que TIENES, no lo que te falta.
+// Un único bloque de upgrade al fondo, nunca intercalado.
 function SectionHerramientas({ tier, provider, onSave, saving }) {
   const { t } = useTranslation()
   const isCobPlus = tier === 'cob' || tier === 'wolf'
   const isWolf    = tier === 'wolf'
+  const isBronze  = !isCobPlus
+
   const [form, setForm] = useState({
     calendar_link:        provider?.calendar_link        ?? '',
     call_link:            provider?.call_link            ?? '',
@@ -386,94 +390,104 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
   })
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
 
+  // Título y subtítulo por tier (de posesión, no de carencia)
+  const sectionTitle = isWolf
+    ? 'Tus herramientas'
+    : isCobPlus
+      ? 'Tus herramientas activas'
+      : 'Herramientas disponibles'
+  const sectionSub = isWolf
+    ? 'Configura tus canales de contacto, agenda y cobros.'
+    : isCobPlus
+      ? 'Todo lo que tienes activo en tu plan Cub.'
+      : 'Las herramientas incluidas en tu plan Wonderer.'
+
   return (
     <div className="pdash__section">
       <div className="pdash__section-header">
-        <h2 className="pdash__section-title d-md">{t('pdash.tab_herramientas_label')}</h2>
-        <p className="t-sm pdash__section-sub">{t('pdash.herramientas_sub')}</p>
+        <h2 className="pdash__section-title d-md">{sectionTitle}</h2>
+        <p className="t-sm pdash__section-sub">{sectionSub}</p>
       </div>
 
-      {/* ── WhatsApp visibility — Silver+ ── */}
-      <WAVisibilityToggle tier={tier} provider={provider} />
-
-      {/* ── Calendario — Silver+ ── */}
-      <div className="pdash__tools-block">
-        <div className="pdash__tools-block-header">
-          <span className="pdash__tools-block-title t-sm">📅 Calendario de citas</span>
-          <span className="pdash__badge pdash__badge--silver">Cub+</span>
+      {/* ── Bronze: herramienta activa disponible ── */}
+      {isBronze && (
+        <div className="pdash__tool-active">
+          <span className="pdash__tool-icon">💳</span>
+          <div>
+            <strong className="t-sm">Link de pago externo</strong>
+            <p className="t-xs" style={{
+              color: provider?.payment_link ? 'var(--green-700, #15803d)' : 'var(--text-300)',
+              marginTop: 3,
+            }}>
+              {provider?.payment_link
+                ? '✓ Configurado — visible en tu perfil público.'
+                : 'Aún no configurado. Puedes añadirlo desde la pestaña Perfil.'}
+            </p>
+          </div>
         </div>
-        {isCobPlus ? (
-          <>
-            <div className="pdash__field pdash__field--full" style={{ marginBottom: 16 }}>
-              <label className="pdash__label t-sm">Link de agenda (Calendly, Cal.com, etc.)</label>
-              <input
-                className="pdash__input"
-                value={form.calendar_link}
-                onChange={e => set('calendar_link', e.target.value)}
-                placeholder="https://calendly.com/tu-nombre"
-              />
-              <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 4 }}>
-                Opcional. Si lo configuras, el migrante verá este link además de la agenda interna.
-              </p>
-            </div>
+      )}
 
-            {/* ── Plataforma de videollamada ── */}
-            <div className="pdash__field pdash__field--full" style={{ marginBottom: 16 }}>
-              <label className="pdash__label t-sm">📹 Plataforma para la llamada</label>
+      {/* ── Cub+: WhatsApp toggle ── */}
+      {isCobPlus && <WAVisibilityToggle tier={tier} provider={provider} />}
 
-              {tier === 'wolf' && (
-                <div className="pdash__call-option pdash__call-option--gold" style={{ marginBottom: 10 }}>
-                  <span>✅ <strong>Sala Jitsi de SoyManada</strong> — se genera automáticamente al confirmar una reserva.</span>
-                  <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 2 }}>
-                    Si configuras un link personalizado abajo, ese link tendrá prioridad sobre la sala Jitsi.
-                  </p>
-                </div>
-              )}
+      {/* ── Cub+: Calendario y videollamada ── */}
+      {isCobPlus && (
+        <div className="pdash__tools-block">
+          <div className="pdash__tools-block-header">
+            <span className="pdash__tools-block-title t-sm">📅 Calendario de citas</span>
+          </div>
 
-              <input
-                className="pdash__input"
-                value={form.call_link}
-                onChange={e => set('call_link', e.target.value)}
-                placeholder="https://zoom.us/j/... · https://meet.google.com/... · https://wa.me/56912345678"
-              />
-              <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 4 }}>
-                Opcional. Pega aquí el link de Zoom, Google Meet, Teams, Whereby, WhatsApp u otro.
-                {tier === 'wolf'
-                  ? ' Si lo dejas vacío, se usará la sala Jitsi automática.'
-                  : ' Este link aparecerá en el email de confirmación y en la reserva del migrante.'}
-              </p>
-            </div>
+          <div className="pdash__field pdash__field--full" style={{ marginBottom: 16 }}>
+            <label className="pdash__label t-sm">Link de agenda (Calendly, Cal.com, etc.)</label>
+            <input
+              className="pdash__input"
+              value={form.calendar_link}
+              onChange={e => set('calendar_link', e.target.value)}
+              placeholder="https://calendly.com/tu-nombre"
+            />
+            <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 4 }}>
+              Opcional. Si lo configuras, el migrante verá este link además de la agenda interna.
+            </p>
+          </div>
 
-            <AvailabilityEditor providerId={provider?.id} />
-          </>
-        ) : (
-          <>
-            <div className="pdash__tool-card pdash__tool-card--locked">
-              <span className="pdash__tool-icon">📅</span>
-              <div>
-                <strong className="t-sm">Agenda de llamada</strong>
-                <p className="t-xs" style={{ color: 'var(--text-300)' }}>Los migrantes reservan un horario contigo directamente desde tu perfil.</p>
+          <div className="pdash__field pdash__field--full" style={{ marginBottom: 16 }}>
+            <label className="pdash__label t-sm">📹 Plataforma para la llamada</label>
+            {isWolf && (
+              <div className="pdash__call-option pdash__call-option--gold" style={{ marginBottom: 10 }}>
+                <span>✅ <strong>Sala Jitsi de SoyManada</strong> — se genera automáticamente al confirmar una reserva.</span>
+                <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 2 }}>
+                  Si configuras un link personalizado abajo, ese link tendrá prioridad sobre la sala Jitsi.
+                </p>
               </div>
-            </div>
-            <div className="pdash__upgrade-cta">
-              <p className="t-sm"><strong>Activa Cub</strong> por $4.990 CLP/mes para habilitar el calendario de citas.</p>
-              <UpgradeButton planCode="activo" label="Activar Cub — $4.990 CLP/mes" />
-            </div>
-          </>
-        )}
-      </div>
+            )}
+            <input
+              className="pdash__input"
+              value={form.call_link}
+              onChange={e => set('call_link', e.target.value)}
+              placeholder="https://zoom.us/j/... · https://meet.google.com/... · https://wa.me/56912345678"
+            />
+            <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 4 }}>
+              Opcional. Pega aquí el link de Zoom, Google Meet, Teams, Whereby, WhatsApp u otro.
+              {isWolf
+                ? ' Si lo dejas vacío, se usará la sala Jitsi automática.'
+                : ' Este link aparecerá en el email de confirmación y en la reserva del migrante.'}
+            </p>
+          </div>
 
-      {/* ── Cobro gestionado — Gold (Wolf) ── */}
-      <div className="pdash__tools-block" style={{ marginTop: 24 }}>
-        <div className="pdash__tools-block-header">
-          <span className="pdash__tools-block-title t-sm">💳 Cobro gestionado por SoyManada</span>
-          <span className="pdash__badge pdash__badge--gold">Wolf</span>
+          <AvailabilityEditor providerId={provider?.id} />
         </div>
-        {isWolf ? (
+      )}
+
+      {/* ── Wolf: Cobro gestionado ── */}
+      {isWolf && (
+        <div className="pdash__tools-block" style={{ marginTop: 24 }}>
+          <div className="pdash__tools-block-header">
+            <span className="pdash__tools-block-title t-sm">💳 Cobro gestionado por SoyManada</span>
+          </div>
           <div className="pdash__form">
             <p className="t-xs" style={{ color: 'var(--text-300)', marginBottom: 14 }}>
               Define un servicio con precio fijo. Tus clientes podrán pagarlo directamente desde tu perfil
-              con tarjeta de crédito — Mercado Pago gestiona las cuotas automáticamente.
+              con tarjeta de crédito.
             </p>
             <div className="pdash__field pdash__field--full">
               <label className="pdash__label t-sm">Nombre del servicio</label>
@@ -497,64 +511,29 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
                 placeholder="ej. 25000"
               />
               <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 4 }}>
-                El pago lo procesa Mercado Pago. El cliente elige cuántas cuotas desde su tarjeta.
+                El cliente elige cuántas cuotas desde su tarjeta.
               </p>
             </div>
           </div>
-        ) : (
-          <>
-            <div className="pdash__tool-card pdash__tool-card--locked">
-              <span className="pdash__tool-icon">💳</span>
-              <div>
-                <strong className="t-sm">Cobro gestionado</strong>
-                <p className="t-xs" style={{ color: 'var(--text-300)' }}>
-                  Tus clientes pagan con tarjeta directamente desde tu perfil. El botón de pago aparece en tu ficha pública.
-                </p>
-              </div>
-            </div>
-            <div className="pdash__upgrade-cta">
-              <p className="t-sm"><strong>El cobro gestionado</strong> está disponible para proveedores Wolf. Mejora tu plan para activar esta opción.</p>
-              <UpgradeButton planCode="pro" label="Activar Wolf — $9.990 CLP/mes" />
-            </div>
-          </>
-        )}
-      </div>
-
-      {/* ── Cobros seguros con Stripe — Wolf ── */}
-      <div className="pdash__tools-block" style={{ marginTop: 24 }}>
-        <div className="pdash__tools-block-header">
-          <span className="pdash__tools-block-title t-sm">🔐 Cobros seguros con Stripe</span>
-          <span className="pdash__badge pdash__badge--gold">Wolf</span>
         </div>
-        {isWolf
-          ? <StripeConnectBlock provider={provider} />
-          : (
-            <>
-              <div className="pdash__tool-card pdash__tool-card--locked">
-                <span className="pdash__tool-icon">🔐</span>
-                <div>
-                  <strong className="t-sm">Recibe pagos con Stripe</strong>
-                  <p className="t-xs" style={{ color: 'var(--text-300)' }}>
-                    Conecta tu cuenta Stripe para recibir pagos directamente desde tu perfil.
-                  </p>
-                </div>
-              </div>
-              <div className="pdash__upgrade-cta">
-                <p className="t-sm"><strong>Activa Wolf</strong> para conectar Stripe y recibir pagos seguros de tus clientes.</p>
-                <UpgradeButton planCode="pro" label="Activar Wolf — $9.990 CLP/mes" />
-              </div>
-            </>
-          )
-        }
-      </div>
+      )}
 
-      {/* ── Herramientas avanzadas — Gold ── */}
-      <div className="pdash__tools-block" style={{ marginTop: 24 }}>
-        <div className="pdash__tools-block-header">
-          <span className="pdash__tools-block-title t-sm">🛠 Herramientas avanzadas</span>
-          <span className="pdash__badge pdash__badge--gold">Wolf</span>
+      {/* ── Wolf: Cobros seguros con Stripe ── */}
+      {isWolf && (
+        <div className="pdash__tools-block" style={{ marginTop: 24 }}>
+          <div className="pdash__tools-block-header">
+            <span className="pdash__tools-block-title t-sm">🔐 Cobros seguros con Stripe</span>
+          </div>
+          <StripeConnectBlock provider={provider} />
         </div>
-        {isWolf ? (
+      )}
+
+      {/* ── Wolf: Herramientas avanzadas ── */}
+      {isWolf && (
+        <div className="pdash__tools-block" style={{ marginTop: 24 }}>
+          <div className="pdash__tools-block-header">
+            <span className="pdash__tools-block-title t-sm">🛠 Herramientas avanzadas</span>
+          </div>
           <div className="pdash__form">
             <div className="pdash__field pdash__field--full">
               <label className="pdash__label t-sm">✉️ Email para redirección de consultas</label>
@@ -568,7 +547,6 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
               <p className="t-xs" style={{ color: 'var(--text-300)', marginBottom: 10 }}>
                 Define pares de pregunta y respuesta. Aparecerán como respuestas rápidas en tu inbox.
               </p>
-
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                 {form.predefined_responses.map((pair, idx) => (
                   <div key={idx} style={{
@@ -581,9 +559,7 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
                     gap: 8,
                   }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span className="t-xs" style={{ color: 'var(--text-300)', fontWeight: 600 }}>
-                        Par #{idx + 1}
-                      </span>
+                      <span className="t-xs" style={{ color: 'var(--text-300)', fontWeight: 600 }}>Par #{idx + 1}</span>
                       {form.predefined_responses.length > 1 && (
                         <button
                           type="button"
@@ -619,54 +595,22 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
                   </div>
                 ))}
               </div>
-
               <button
                 type="button"
                 className="btn btn-ghost btn-sm"
                 style={{ marginTop: 10, display: 'flex', alignItems: 'center', gap: 6 }}
-                onClick={() => set('predefined_responses', [
-                  ...form.predefined_responses,
-                  { q: '', a: '' }
-                ])}
+                onClick={() => set('predefined_responses', [...form.predefined_responses, { q: '', a: '' }])}
               >
                 <span style={{ fontSize: 18, lineHeight: 1 }}>+</span>
                 Agregar pregunta y respuesta
               </button>
             </div>
           </div>
-        ) : (
-          <div className="pdash__locked">
-            <div className="pdash__tools-preview">
-              {[
-                { icon: '💳', name: 'Link de pago', desc: 'Recibe pagos directamente desde tu perfil público.' },
-                { icon: '💬', name: t('pdash.tool_canned_name'), desc: t('pdash.tool_canned_desc') },
-                { icon: '✉️', name: t('pdash.tool_redirect_name'), desc: t('pdash.tool_redirect_desc') },
-              ].map(tool => (
-                <div key={tool.name} className="pdash__tool-card pdash__tool-card--locked">
-                  <span className="pdash__tool-icon">{tool.icon}</span>
-                  <div>
-                    <strong className="t-sm">{tool.name}</strong>
-                    <p className="t-xs" style={{ color: 'var(--text-300)' }}>{tool.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="pdash__upgrade-cta">
-              <p className="t-sm"><strong>Activa Wolf</strong> por $9.990 CLP/mes y desbloquea las herramientas avanzadas.</p>
-              <UpgradeButton planCode="pro" label="Activar Wolf — $9.990 CLP/mes" />
-            </div>
-          </div>
-        )}
-      </div>
-
-      {!isCobPlus && (
-        <div className="pdash__upgrade-cta" style={{ marginTop: 24 }}>
-          <p className="t-sm"><strong>Activa Cub</strong> por $4.990 CLP/mes para desbloquear WhatsApp y el calendario de citas.</p>
-          <UpgradeButton planCode="activo" label="Activar Cub — $4.990 CLP/mes" />
         </div>
       )}
 
-      {(isCobPlus) && (
+      {/* ── Botón guardar (Cub+) ── */}
+      {isCobPlus && (
         <button className="btn btn-primary pdash__save-btn" style={{ marginTop: 24 }} onClick={() => onSave({
           calendar_link:        form.calendar_link,
           call_link:            form.call_link,
@@ -679,6 +623,36 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
         })} disabled={saving}>
           <span>{saving ? t('pdash.saving') : t('pdash.save_herramientas')}</span>
         </button>
+      )}
+
+      {/* ── Bloque de upgrade único — siempre al fondo, nunca intercalado ── */}
+
+      {/* Bronze: muestra Cub + Wolf juntos */}
+      {isBronze && (
+        <div className="pdash__upgrade-solo" style={{ marginTop: 32 }}>
+          <p className="pdash__upgrade-solo-title">Desbloquea más herramientas</p>
+          <div className="pdash__upgrade-solo-tiers">
+            <div className="pdash__upgrade-solo-tier">
+              <p className="t-sm">🐾 <strong>Cub</strong> — WhatsApp visible, agenda de citas, métricas e inbox de mensajes.</p>
+              <UpgradeButton planCode="activo" label="Activar Cub — $4.990/mes" variant="secondary" />
+            </div>
+            <div className="pdash__upgrade-solo-tier">
+              <p className="t-sm">🐺 <strong>Wolf</strong> — Todo lo anterior + cobros con Stripe, responder reseñas y más.</p>
+              <UpgradeButton planCode="pro" label="Activar Wolf — $9.990/mes" variant="secondary" />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Cub: muestra solo Wolf */}
+      {isCobPlus && !isWolf && (
+        <div className="pdash__upgrade-solo pdash__upgrade-solo--subtle" style={{ marginTop: 32 }}>
+          <p className="t-sm">
+            🐺 ¿Quieres más? El plan <strong>Wolf</strong> incluye cobros con Stripe,
+            respuestas predefinidas y badge destacado en búsquedas.
+          </p>
+          <UpgradeButton planCode="pro" label="Ver plan Wolf" variant="secondary" />
+        </div>
       )}
     </div>
   )
