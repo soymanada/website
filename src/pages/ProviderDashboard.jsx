@@ -234,12 +234,17 @@ function StripeConnectBlock({ provider }) {
         : 'onboarding_incomplete'     // tiene cuenta pero no terminó el flujo
 
   const handleConnect = async () => {
+    // Guard: si provider.id no está disponible, no llamamos a Supabase
+    if (!provider?.id) {
+      setError('No se pudo identificar tu perfil. Recarga la página e inténtalo de nuevo.')
+      return
+    }
     setLoading(true)
     setError('')
     try {
       const { data, error: fnErr } = await supabase.functions.invoke('stripe-create-account-link', {
         body: {
-          provider_id:  provider?.id,
+          provider_id:  provider.id,   // UUID del proveedor (requerido por la Edge Function)
           return_url:   `${window.location.origin}/mi-perfil?stripe=return`,
           refresh_url:  `${window.location.origin}/mi-perfil?stripe=refresh`,
         },
@@ -1341,13 +1346,16 @@ export default function ProviderDashboard() {
     })()
   }, [user])
 
-  // ── load metrics ────────────────────────────────────────────────
+  // ── load metrics (solo Cub+) ─────────────────────────────────────
+  // Bronze no tiene métricas — omitir las llamadas evita 404s en consola
   useEffect(() => {
     if (!provider?.id) return
+    const isCobPlus = tier === 'cob' || tier === 'wolf'
+    if (!isCobPlus) return
     ;(async () => {
       setMetricsLoading(true)
       const [viewsRes, actRes, hourRes, fbRes, msgRes] = await Promise.all([
-        supabase.rpc('get_provider_metrics',      { p_provider_id: provider.id }),
+        supabase.rpc('get_provider_metrics',         { p_provider_id: provider.id }),
         supabase.rpc('get_provider_weekly_activity', { p_provider_id: provider.id }),
         supabase.rpc('get_provider_hourly_activity', { p_provider_id: provider.id }),
         supabase.from('provider_feedback').select('rating,comment,created_at').eq('provider_id', provider.id).order('created_at', { ascending: false }).limit(10),
@@ -1360,7 +1368,7 @@ export default function ProviderDashboard() {
       if (!msgRes.error)    setMessagingStats(msgRes.data?.[0] ?? null)
       setMetricsLoading(false)
     })()
-  }, [provider?.id])
+  }, [provider?.id, tier])
 
   // ── save handler ─────────────────────────────────────────────────
   const handleSave = async (formData) => {
