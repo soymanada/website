@@ -1,7 +1,7 @@
 .pcard {
   position: relative;
   background: var(--white);
-  border: 1px solid var(--iris-200);
+  border: 1px solid oklch(from var(--text-700, #1a1a2e) l c h / 0.08);
   border-radius: var(--r-xl);
   padding: 28px 28px 28px 32px;
   display: flex;
@@ -9,22 +9,17 @@
   gap: 18px;
   transition: all var(--t-med) var(--ease-out);
   overflow: hidden;
+  box-shadow: 0 1px 3px oklch(0 0 0 / 0.04), 0 1px 2px oklch(0 0 0 / 0.03);
 }
 .pcard:hover {
-  border-color: var(--iris-400);
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-4px);
+  border-color: oklch(from var(--text-700, #1a1a2e) l c h / 0.13);
+  box-shadow: 0 8px 24px oklch(0 0 0 / 0.08), 0 2px 8px oklch(0 0 0 / 0.04);
+  transform: translateY(-3px);
 }
 
 .pcard__accent {
-  position: absolute;
-  top: 0; left: 0; bottom: 0;
-  width: 4px;
-  background: linear-gradient(180deg, var(--iris-500), var(--iris-300));
-  border-radius: var(--r-xl) 0 0 var(--r-xl);
-  transition: width var(--t-med) var(--ease-out);
+  display: none;
 }
-.pcard:hover .pcard__accent { width: 6px; }
 
 .pcard__header {
   display: flex;
@@ -37,7 +32,7 @@
   border-radius: var(--r-md);
   object-fit: cover;
   flex-shrink: 0;
-  border: 1px solid var(--iris-100);
+  border: 1px solid oklch(from var(--text-700, #1a1a2e) l c h / 0.08);
 }
 
 .pcard__bg-paw {
