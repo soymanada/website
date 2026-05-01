@@ -72,7 +72,30 @@
   animation: pulse-dot 2s ease-in-out infinite;
 }
 
-/* Tabs — dentro del hero, centradas, sin scrollbar */
+/* Tabs — wrapper con fades laterales para indicar scroll */
+.pdash__tabs-wrap {
+  position: relative;
+  max-width: 760px;
+  margin: 0 auto;
+}
+.pdash__tabs-wrap::before,
+.pdash__tabs-wrap::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 40px;
+  pointer-events: none;
+  z-index: 2;
+}
+.pdash__tabs-wrap::before {
+  left: 0;
+  background: linear-gradient(to right, var(--iris-900, #2e1065) 10%, transparent);
+}
+.pdash__tabs-wrap::after {
+  right: 0;
+  background: linear-gradient(to left, var(--iris-700, #5b21b6) 10%, transparent);
+}
+
 .pdash__tabs {
   display: flex;
   justify-content: center;
@@ -80,12 +103,14 @@
   overflow-x: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  max-width: 760px;
-  margin: 0 auto;
 }
 .pdash__tabs::-webkit-scrollbar { display: none; }
 
 .pdash__tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
   padding: 13px 18px;
   font-family: var(--font-body); font-size: 0.82rem; font-weight: 500;
   color: rgba(255,255,255,0.55);
@@ -100,6 +125,14 @@
   color: var(--white);
   font-weight: 700;
   border-bottom-color: var(--gold);
+}
+.pdash__tab-icon { font-size: 1rem; line-height: 1; }
+.pdash__tab-label { font-size: 0.75rem; }
+
+/* Mobile: solo iconos para que entren todas las tabs */
+@media (max-width: 600px) {
+  .pdash__tab { padding: 12px 14px; }
+  .pdash__tab-label { display: none; }
 }
 
 /* Body */
@@ -895,4 +928,39 @@
   color: var(--text-600);
   line-height: 1.55;
   margin: 0;
+}
+
+/* ── Wolf teaser card (para Cub en Herramientas) ────────────────── */
+.pdash__upgrade-wolf-teaser {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px 22px;
+  border: 1.5px solid var(--iris-200);
+  border-radius: var(--r-lg);
+  background: linear-gradient(135deg, var(--iris-50, #f5f3ff) 0%, #fff 100%);
+}
+.pdash__upgrade-wolf-icon {
+  font-size: 2rem;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.pdash__upgrade-wolf-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.pdash__upgrade-wolf-name {
+  font-weight: 700;
+  color: var(--iris-900);
+  margin: 0;
+}
+.pdash__upgrade-wolf-perks {
+  color: var(--text-400);
+  line-height: 1.55;
+  margin: 0 0 4px;
+}
+@media (max-width: 480px) {
+  .pdash__upgrade-wolf-teaser { flex-direction: column; gap: 10px; }
 }

@@ -625,33 +625,30 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
         </button>
       )}
 
-      {/* ── Bloque de upgrade único — siempre al fondo, nunca intercalado ── */}
+      {/* ── Planes integrados — siempre al fondo, nunca intercalado ── */}
 
-      {/* Bronze: muestra Cub + Wolf juntos */}
+      {/* Bronze: comparación completa de los 3 planes */}
       {isBronze && (
-        <div className="pdash__upgrade-solo" style={{ marginTop: 32 }}>
-          <p className="pdash__upgrade-solo-title">Desbloquea más herramientas</p>
-          <div className="pdash__upgrade-solo-tiers">
-            <div className="pdash__upgrade-solo-tier">
-              <p className="t-sm">🐾 <strong>Cub</strong> — WhatsApp visible, agenda de citas, métricas e inbox de mensajes.</p>
-              <UpgradeButton planCode="activo" label="Activar Cub — $4.990/mes" variant="secondary" />
-            </div>
-            <div className="pdash__upgrade-solo-tier">
-              <p className="t-sm">🐺 <strong>Wolf</strong> — Todo lo anterior + cobros con Stripe, responder reseñas y más.</p>
-              <UpgradeButton planCode="pro" label="Activar Wolf — $9.990/mes" variant="secondary" />
-            </div>
-          </div>
+        <div className="pdash__upgrade-solo" style={{ marginTop: 40 }}>
+          <p className="pdash__upgrade-solo-title">Planes y beneficios</p>
+          <p className="t-xs" style={{ color: 'var(--text-400)', marginBottom: 20 }}>
+            Compara lo que incluye cada plan y actualiza cuando quieras.
+          </p>
+          <PlanCompare tier={tier} />
         </div>
       )}
 
-      {/* Cub: muestra solo Wolf */}
+      {/* Cub: tarjeta Wolf con lo que suma */}
       {isCobPlus && !isWolf && (
-        <div className="pdash__upgrade-solo pdash__upgrade-solo--subtle" style={{ marginTop: 32 }}>
-          <p className="t-sm">
-            🐺 ¿Quieres más? El plan <strong>Wolf</strong> incluye cobros con Stripe,
-            respuestas predefinidas y badge destacado en búsquedas.
-          </p>
-          <UpgradeButton planCode="pro" label="Ver plan Wolf" variant="secondary" />
+        <div className="pdash__upgrade-wolf-teaser" style={{ marginTop: 40 }}>
+          <div className="pdash__upgrade-wolf-icon">🐺</div>
+          <div className="pdash__upgrade-wolf-body">
+            <p className="t-sm pdash__upgrade-wolf-name">Plan Wolf — $9.990 CLP/mes</p>
+            <p className="t-xs pdash__upgrade-wolf-perks">
+              Cobros con Stripe · Responder reseñas · Respuestas predefinidas · Badge destacado en búsquedas
+            </p>
+            <UpgradeButton planCode="pro" label="Activar Wolf" variant="secondary" />
+          </div>
         </div>
       )}
     </div>
@@ -985,7 +982,7 @@ function SectionReseñas({ provider, tier }) {
   )
 }
 
-// ── Planes tab ────────────────────────────────────────────────────
+// ── Grid de comparación de planes (reutilizable) ─────────────────
 const PLAN_FEATURES = {
   bronze: [
     { label: 'Perfil público en el directorio', included: true },
@@ -1025,70 +1022,53 @@ const PLAN_FEATURES = {
   ],
 }
 
-function SectionPlanes({ tier }) {
+// PlanCompare — grid de 3 columnas, usable inline en Herramientas
+function PlanCompare({ tier }) {
   const PLANS = [
     { code: 'bronze', name: 'Wonderer', icon: '✨', price: 'Gratis',         planCode: null },
     { code: 'cob',    name: 'Cob',      icon: '🐾', price: '$4.990 CLP/mes', planCode: 'activo' },
     { code: 'wolf',   name: 'Wolf',     icon: '🐺', price: '$9.990 CLP/mes', planCode: 'pro' },
   ]
   return (
-    <div className="pdash__section">
-      <div className="pdash__section-header">
-        <h2 className="pdash__section-title d-md">Planes y beneficios</h2>
-        <p className="t-sm pdash__section-sub">
-          Compara lo que incluye cada plan y actualiza cuando quieras.
-        </p>
-      </div>
-
-      <div className="pdash__plans-grid">
-        {PLANS.map(plan => {
-          const isCurrent = tier === plan.code
-          const features  = PLAN_FEATURES[plan.code]
-          return (
-            <div
-              key={plan.code}
-              className={`pdash__plan-card${isCurrent ? ' pdash__plan-card--current' : ''}${plan.code === 'wolf' ? ' pdash__plan-card--featured' : ''}`}
-            >
-              {isCurrent && (
-                <div className="pdash__plan-badge">Tu plan actual</div>
-              )}
-              {plan.code === 'wolf' && !isCurrent && (
-                <div className="pdash__plan-badge pdash__plan-badge--featured">Más popular</div>
-              )}
-
-              <div className="pdash__plan-header">
-                <span className="pdash__plan-icon">{plan.icon}</span>
-                <h3 className="pdash__plan-name">{plan.name}</h3>
-                <p className="pdash__plan-price">{plan.price}</p>
-              </div>
-
-              <ul className="pdash__plan-features">
-                {features.map((f, i) => (
-                  <li key={i} className={`pdash__plan-feature${f.included ? '' : ' pdash__plan-feature--off'}`}>
-                    <span className="pdash__plan-check">{f.included ? '✓' : '✕'}</span>
-                    {f.label}
-                  </li>
-                ))}
-              </ul>
-
-              {!isCurrent && plan.planCode && (
-                <div style={{ marginTop: 16 }}>
-                  <UpgradeButton
-                    planCode={plan.planCode}
-                    label={`Activar ${plan.name}`}
-                    variant="primary"
-                  />
-                </div>
-              )}
-              {isCurrent && (
-                <p className="t-xs" style={{ color: 'var(--iris-500)', fontWeight: 600, marginTop: 16, textAlign: 'center' }}>
-                  ✓ Plan activo
-                </p>
-              )}
+    <div className="pdash__plans-grid">
+      {PLANS.map(plan => {
+        const isCurrent = tier === plan.code
+        const features  = PLAN_FEATURES[plan.code]
+        return (
+          <div
+            key={plan.code}
+            className={`pdash__plan-card${isCurrent ? ' pdash__plan-card--current' : ''}${plan.code === 'wolf' ? ' pdash__plan-card--featured' : ''}`}
+          >
+            {isCurrent && <div className="pdash__plan-badge">Tu plan actual</div>}
+            {plan.code === 'wolf' && !isCurrent && (
+              <div className="pdash__plan-badge pdash__plan-badge--featured">Más popular</div>
+            )}
+            <div className="pdash__plan-header">
+              <span className="pdash__plan-icon">{plan.icon}</span>
+              <h3 className="pdash__plan-name">{plan.name}</h3>
+              <p className="pdash__plan-price">{plan.price}</p>
             </div>
-          )
-        })}
-      </div>
+            <ul className="pdash__plan-features">
+              {features.map((f, i) => (
+                <li key={i} className={`pdash__plan-feature${f.included ? '' : ' pdash__plan-feature--off'}`}>
+                  <span className="pdash__plan-check">{f.included ? '✓' : '✕'}</span>
+                  {f.label}
+                </li>
+              ))}
+            </ul>
+            {!isCurrent && plan.planCode && (
+              <div style={{ marginTop: 16 }}>
+                <UpgradeButton planCode={plan.planCode} label={`Activar ${plan.name}`} variant="primary" />
+              </div>
+            )}
+            {isCurrent && (
+              <p className="t-xs" style={{ color: 'var(--iris-500)', fontWeight: 600, marginTop: 16, textAlign: 'center' }}>
+                ✓ Plan activo
+              </p>
+            )}
+          </div>
+        )
+      })}
     </div>
   )
 }
@@ -1453,7 +1433,6 @@ export default function ProviderDashboard() {
     { id: 'reseñas',      icon: '💬', label: 'Reseñas' },
     { id: 'reservas',     icon: '📅', label: t('pdash.tab_reservas_label') },
     { id: 'mensajes',     icon: '✉️',  label: t('pdash.tab_mensajes_label') },
-    { id: 'planes',       icon: '🐺', label: 'Planes' },
     { id: 'ayuda',        icon: '📖', label: 'Ayuda' },
   ]
 
@@ -1509,18 +1488,20 @@ export default function ProviderDashboard() {
           </div>
         </div>
 
-        {/* Tabs */}
-        <div className="pdash__tabs">
-          {TABS.map(tab => (
-            <button
-              key={tab.id}
-              className={`pdash__tab${activeTab === tab.id ? ' pdash__tab--active' : ''}`}
-              onClick={() => setActiveTab(tab.id)}
-            >
-              <span className="pdash__tab-icon">{tab.icon}</span>
-              <span className="pdash__tab-label">{tab.label}</span>
-            </button>
-          ))}
+        {/* Tabs — envueltos en wrapper para fades laterales */}
+        <div className="pdash__tabs-wrap">
+          <div className="pdash__tabs">
+            {TABS.map(tab => (
+              <button
+                key={tab.id}
+                className={`pdash__tab${activeTab === tab.id ? ' pdash__tab--active' : ''}`}
+                onClick={() => setActiveTab(tab.id)}
+              >
+                <span className="pdash__tab-icon">{tab.icon}</span>
+                <span className="pdash__tab-label">{tab.label}</span>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -1572,9 +1553,6 @@ export default function ProviderDashboard() {
           )}
           {activeTab === 'mensajes' && (
             <SectionMensajes provider={provider} />
-          )}
-          {activeTab === 'planes' && (
-            <SectionPlanes tier={tier} />
           )}
           {activeTab === 'ayuda' && (
             <ManualProveedor provider={provider} />
