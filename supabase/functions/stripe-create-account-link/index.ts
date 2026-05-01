@@ -39,7 +39,8 @@ serve(async (req) => {
     if (authError || !user) return json({ error: 'Unauthorized' }, 401)
 
     // ── Validar body ───────────────────────────────────────────────────────
-    const { provider_id } = await req.json()
+    const body = await req.json()
+    const { provider_id, return_url, refresh_url } = body
     if (!provider_id) return json({ error: 'Falta provider_id' }, 400)
 
     // ── Verificar que el proveedor existe y pertenece al usuario ──────────
@@ -88,10 +89,14 @@ serve(async (req) => {
     }
 
     // ── Generar Account Link de onboarding ─────────────────────────────────
+    // return_url y refresh_url pueden venir del body (frontend) o se usan los defaults
+    const resolvedReturnUrl  = return_url  ?? `${BASE_URL}/mi-perfil?stripe=return`
+    const resolvedRefreshUrl = refresh_url ?? `${BASE_URL}/mi-perfil?stripe=refresh`
+
     const accountLink = await stripe.accountLinks.create({
       account:     stripeAccountId,
-      refresh_url: `${BASE_URL}/dashboard/stripe-onboarding?refresh=1&provider_id=${provider_id}`,
-      return_url:  `${BASE_URL}/dashboard/stripe-onboarding?success=1&provider_id=${provider_id}`,
+      refresh_url: resolvedRefreshUrl,
+      return_url:  resolvedReturnUrl,
       type:        'account_onboarding',
     })
 

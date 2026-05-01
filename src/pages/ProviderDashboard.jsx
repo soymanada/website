@@ -239,8 +239,9 @@ function StripeConnectBlock({ provider }) {
     try {
       const { data, error: fnErr } = await supabase.functions.invoke('stripe-create-account-link', {
         body: {
-          return_url: `${window.location.origin}/mi-perfil?stripe=return`,
-          refresh_url: `${window.location.origin}/mi-perfil?stripe=refresh`,
+          provider_id:  provider?.id,
+          return_url:   `${window.location.origin}/mi-perfil?stripe=return`,
+          refresh_url:  `${window.location.origin}/mi-perfil?stripe=refresh`,
         },
       })
       // Soportamos dos shapes de respuesta:
