@@ -1,0 +1,102 @@
+.beta-banner {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 38px;
+  z-index: 200;
+  background: linear-gradient(90deg, var(--iris-900) 0%, #4a1f8a 50%, var(--iris-700) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: banner-in 0.5s var(--ease-out, cubic-bezier(.22,.61,.36,1)) both;
+}
+
+@keyframes banner-in {
+  from { transform: translateY(-100%); opacity: 0; }
+  to   { transform: translateY(0);     opacity: 1; }
+}
+
+.beta-banner__inner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 900px;
+  width: 100%;
+  padding: 0 48px 0 16px;
+  position: relative;
+}
+
+.beta-banner__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 99px;
+  padding: 2px 9px 2px 6px;
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.95);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.beta-banner__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #7fffb2;
+  box-shadow: 0 0 0 0 rgba(127,255,178,0.6);
+  animation: pulse-dot 2.2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes pulse-dot {
+  0%   { box-shadow: 0 0 0 0   rgba(127,255,178,0.6); }
+  60%  { box-shadow: 0 0 0 5px rgba(127,255,178,0); }
+  100% { box-shadow: 0 0 0 0   rgba(127,255,178,0); }
+}
+
+.beta-banner__text {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.9);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.beta-banner__close {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: rgba(255,255,255,0.65);
+  transition: color var(--t-fast, 0.18s), background var(--t-fast, 0.18s);
+  flex-shrink: 0;
+}
+
+.beta-banner__close:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.12);
+}
+
+@media (max-width: 600px) {
+  .beta-banner__text {
+    font-size: 0.72rem;
+  }
+  .beta-banner__inner {
+    gap: 8px;
+    padding: 0 40px 0 12px;
+  }
+}

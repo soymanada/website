@@ -1,6 +1,7 @@
 import { useEffect, Component } from 'react'
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import Header               from './components/Header'
+import BetaBanner           from './components/BetaBanner'
 import Footer               from './components/Footer'
 import Home                 from './pages/Home'
 import CategoryPage         from './pages/CategoryPage'
@@ -83,6 +84,7 @@ function Layout() {
       <AnalyticsListener />
       <GotoRedirect />
       <ScrollTop />
+      <BetaBanner />
       <Header />
       <Routes>
         <Route path="/"                element={<Home />} />

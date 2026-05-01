@@ -1,9 +1,9 @@
 .hdr {
   position: fixed;
-  top: 0; left: 0; right: 0;
+  top: var(--banner-h, 0px); left: 0; right: 0;
   z-index: 100;
   padding: 20px 0;
-  transition: padding var(--t-med) var(--ease-out), background var(--t-med), box-shadow var(--t-med);
+  transition: padding var(--t-med) var(--ease-out), background var(--t-med), box-shadow var(--t-med), top 0.35s var(--ease-out);
 }
 
 .hdr--scrolled {

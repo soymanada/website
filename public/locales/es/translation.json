@@ -883,5 +883,10 @@
   },
   "errors": {
     "url_must_be_https": "El link debe comenzar con https://"
+  },
+  "beta_banner": {
+    "message": "Estamos en versión beta — el lanzamiento oficial llega muy pronto 🚀",
+    "close": "Cerrar aviso",
+    "aria_label": "Aviso de versión beta"
   }
 }

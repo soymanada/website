@@ -885,5 +885,10 @@
   },
   "errors": {
     "url_must_be_https": "Link must start with https://"
+  },
+  "beta_banner": {
+    "message": "We're in beta — official launch coming very soon 🚀",
+    "close": "Dismiss",
+    "aria_label": "Beta version notice"
   }
 }
