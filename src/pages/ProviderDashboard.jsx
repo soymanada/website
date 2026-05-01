@@ -248,7 +248,15 @@ function StripeConnectBlock({ provider }) {
       //   { account_link: { url: "..." } }      — shape raw de la API de Stripe
       const redirectUrl = data?.url ?? data?.account_link?.url
       if (fnErr || !redirectUrl) {
-        setError('No pudimos iniciar la verificación en este momento. Inténtalo de nuevo.')
+        // Distinguimos "función no deployada aún" de error real
+        const isNotDeployed =
+          fnErr?.message?.toLowerCase().includes('not found') ||
+          fnErr?.status === 404 ||
+          String(fnErr?.message).includes('404')
+        setError(isNotDeployed
+          ? 'La conexión con Stripe está siendo habilitada. Estará disponible pronto — escríbenos a hola@soymanada.com si tienes urgencia.'
+          : 'No pudimos iniciar la verificación en este momento. Inténtalo de nuevo.'
+        )
         return
       }
       window.location.href = redirectUrl
@@ -350,7 +358,9 @@ function StripeConnectBlock({ provider }) {
       )}
 
       {error && (
-        <p className="t-xs" style={{ color: '#dc2626', marginTop: 10 }}>{error}</p>
+        <div className={`pdash__stripe-error-msg${error.includes('siendo habilitada') ? ' pdash__stripe-error-msg--info' : ''}`}>
+          {error}
+        </div>
       )}
 
       <p className="t-xs pdash__stripe-disclaimer">

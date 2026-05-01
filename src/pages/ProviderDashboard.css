@@ -870,6 +870,19 @@
   font-size: 0.75rem;
   line-height: 1.5;
 }
+.pdash__stripe-error-msg {
+  margin-top: 10px;
+  font-size: 0.78rem;
+  color: #dc2626;
+  line-height: 1.5;
+}
+.pdash__stripe-error-msg--info {
+  color: var(--iris-700);
+  background: var(--iris-50);
+  border: 1px solid var(--iris-100);
+  border-radius: var(--r-sm);
+  padding: 8px 12px;
+}
 
 /* ── Herramienta activa (no bloqueada) — Bronze view ───────────── */
 .pdash__tool-active {
