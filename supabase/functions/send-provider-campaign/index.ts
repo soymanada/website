@@ -1,8 +1,7 @@
 // send-provider-campaign
-// Envía email a todos los proveedores activos (o a uno de prueba).
 // Uso:
-//   Test:  POST con body { "test_email": "proveedormanada@gmail.com" }
-//   Todos: POST con body { "send_all": true }
+//   Test:  POST { "test_email": "proveedormanada@gmail.com" }
+//   Todos: POST { "send_all": true }
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
@@ -26,7 +25,6 @@ serve(async (req) => {
 
     const admin = createClient(SUPABASE_URL, SERVICE_KEY)
 
-    // Fetch active providers linked to a real user account
     const { data: providers, error: provErr } = await admin
       .from('providers')
       .select('id, name, slug, user_id')
@@ -39,24 +37,21 @@ serve(async (req) => {
     const results: { name: string; email: string; status: string; id?: string }[] = []
 
     for (const prov of providers ?? []) {
-      // Get email from auth.users via admin
       const { data: { user }, error: userErr } = await admin.auth.admin.getUserById(prov.user_id)
       if (userErr || !user?.email) continue
 
       const recipientEmail = test_email ?? user.email
 
-      // In test mode: only send to the provider whose auth email matches test_email
       if (test_email && user.email.toLowerCase() !== test_email.toLowerCase()) continue
 
-      // Look up pilot_invites token for this provider
+      // Fetch pilot invite token (no is_active filter — any existing record counts)
       const { data: invite } = await admin
         .from('pilot_invites')
         .select('token')
         .eq('provider_id', prov.id)
-        .eq('is_active', true)
         .maybeSingle()
 
-      // Count how many reviews have already been used
+      // Count reviews already received
       const { count: usedCount } = await admin
         .from('pilot_opinions')
         .select('id', { count: 'exact', head: true })
@@ -68,8 +63,8 @@ serve(async (req) => {
       const firstName  = prov.name.split(/\s+/)[0]
 
       const { ok, id, message } = await sendEmail({
-        to:          recipientEmail,
-        provName:    firstName,
+        to: recipientEmail,
+        provName: firstName,
         profileUrl,
         opinarUrl,
         remaining,
@@ -77,7 +72,6 @@ serve(async (req) => {
 
       results.push({ name: prov.name, email: recipientEmail, status: ok ? 'sent' : `error: ${message}`, id })
 
-      // Test mode: stop after first match
       if (test_email) break
     }
 
@@ -106,7 +100,7 @@ async function sendEmail({ to, provName, profileUrl, opinarUrl, remaining }: {
     body: JSON.stringify({
       from:    NOTIFY_FROM,
       to:      [to],
-      subject: `${provName}, tu perfil en SoyManada está activo — compártelo 🎉`,
+      subject: `${provName}, tu perfil en SoyManada está activo 🐾 compártelo con tus clientes`,
       html:    buildEmail({ provName, profileUrl, opinarUrl, remaining }),
     }),
   })
@@ -120,130 +114,148 @@ function buildEmail({ provName, profileUrl, opinarUrl, remaining }: {
   opinarUrl: string | null
   remaining: number
 }) {
+  const pawBar = '🐾🐾🐾🐾🐾'
   return `<!DOCTYPE html>
 <html lang="es">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
-<body style="margin:0;padding:0;background:#f4f4f4;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f4;padding:32px 16px">
+<body style="margin:0;padding:0;background:#f0eeff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f0eeff;padding:32px 16px">
 <tr><td align="center">
 <table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%">
 
-  <!-- Header -->
-  <tr><td style="background:#2d5a27;border-radius:10px 10px 0 0;padding:28px 36px;text-align:center">
-    <div style="font-size:24px;font-weight:800;color:#ffffff;letter-spacing:-0.5px">SoyManada</div>
-    <div style="font-size:13px;color:#b8d4a8;margin-top:4px">Directorio para la comunidad migrante en Canadá</div>
+  <!-- Header morado -->
+  <tr><td style="background:#4338ca;border-radius:10px 10px 0 0;padding:28px 36px;text-align:center">
+    <div style="font-size:26px;font-weight:800;color:#ffffff;letter-spacing:-0.5px">SoyManada</div>
+    <div style="font-size:12px;color:#c7d2fe;margin-top:6px;letter-spacing:0.5px">${pawBar}</div>
+    <div style="font-size:13px;color:#c7d2fe;margin-top:6px">Directorio verificado para la comunidad migrante en Canadá</div>
   </td></tr>
 
   <!-- Body -->
   <tr><td style="background:#ffffff;padding:36px;border:1px solid #e5e5e5;border-top:none">
 
-    <p style="font-size:18px;font-weight:700;color:#2d5a27;margin:0 0 16px">
+    <p style="font-size:18px;font-weight:700;color:#4338ca;margin:0 0 14px">
       Hola ${provName} 👋
     </p>
 
-    <p style="font-size:15px;line-height:1.75;color:#333;margin:0 0 20px">
-      Tu perfil en SoyManada está <strong>activo y visible</strong> para cientos de migrantes latinoamericanos que buscan servicios de confianza en Canadá. Gracias por ser parte de esta comunidad desde el comienzo.
+    <p style="font-size:15px;line-height:1.75;color:#333;margin:0 0 24px">
+      Tu perfil en SoyManada está <strong>activo y visible</strong> para cientos de migrantes
+      latinoamericanos que buscan servicios de confianza en Canadá.
+      Gracias por ser parte de esta comunidad desde el comienzo. 🐾
     </p>
 
-    <p style="font-size:16px;font-weight:700;color:#2d5a27;margin:0 0 6px">🔗 Tus links para recibir evaluaciones</p>
+    <!-- Links de evaluación -->
+    <p style="font-size:16px;font-weight:700;color:#4338ca;margin:0 0 6px">🔗 Tus links para recibir evaluaciones</p>
     <p style="font-size:14px;line-height:1.7;color:#555;margin:0 0 18px">
-      Tienes <strong>dos canales</strong> para que tus clientes te evalúen — uno para clientes nuevos sin cuenta, y otro para quienes ya están en SoyManada:
+      Tienes <strong>dos canales</strong> para que tus clientes te evalúen —
+      uno para clientes externos sin cuenta, y otro para quienes ya están en SoyManada:
     </p>
 
-    <!-- External review link (opinar token) -->
+    <!-- Cuadro azul: link externo opinar?token= -->
     ${opinarUrl ? `
-    <table width="100%" cellpadding="0" cellspacing="0" style="background:#eef6ff;border:1.5px solid #1a73e8;border-radius:8px;margin:24px 0">
+    <table width="100%" cellpadding="0" cellspacing="0" style="background:#eef6ff;border:1.5px solid #4338ca;border-radius:8px;margin:0 0 20px">
     <tr><td style="padding:22px 24px">
-      <div style="font-size:13px;font-weight:700;color:#1a3a5c;margin-bottom:6px">📬 Tu link para clientes externos</div>
-      <p style="font-size:13px;line-height:1.7;color:#444;margin:0 0 14px">
-        Este link es exclusivo para que tus clientes actuales — los que aún no están en SoyManada —
-        puedan evaluarte <strong>sin necesidad de registrarse</strong>. Tienes
-        <strong>${remaining} cupo${remaining !== 1 ? 's' : ''} disponible${remaining !== 1 ? 's' : ''}</strong> de 10 en total.
-        Úsalos con tus mejores clientes.
+      <div style="font-size:14px;font-weight:700;color:#312e81;margin-bottom:8px">📬 Link exclusivo para clientes externos</div>
+      <p style="font-size:13px;line-height:1.75;color:#444;margin:0 0 12px">
+        Este link permite que tus clientes actuales te evalúen
+        <strong>sin necesidad de registrarse</strong> en SoyManada.
+        Tienes <strong style="color:#4338ca">${remaining} cupo${remaining !== 1 ? 's' : ''} disponible${remaining !== 1 ? 's' : ''}</strong>
+        de 10 en total — úsalos con tus mejores clientes. 🐾
       </p>
-      <div style="background:#fff;border:1px solid #c5d8f5;border-radius:6px;padding:10px 14px;font-size:12px;color:#555;word-break:break-all;margin-bottom:14px">
+      <div style="background:#fff;border:1px solid #c7d2fe;border-radius:6px;padding:10px 14px;font-size:12px;color:#4338ca;word-break:break-all;margin-bottom:16px;font-weight:600">
         ${opinarUrl}
       </div>
-      <a href="${opinarUrl}" style="background:#1a73e8;color:#fff;padding:10px 22px;border-radius:6px;text-decoration:none;font-weight:700;font-size:13px;display:inline-block">
-        Compartir link de evaluación →
+      <a href="${opinarUrl}" style="background:#4338ca;color:#fff;padding:11px 24px;border-radius:6px;text-decoration:none;font-weight:700;font-size:13px;display:inline-block">
+        🐾 Compartir link de evaluación
       </a>
     </td></tr>
-    </table>` : ''}
+    </table>` : `
+    <table width="100%" cellpadding="0" cellspacing="0" style="background:#fff3cd;border:1px solid #ffc107;border-radius:8px;margin:0 0 20px">
+    <tr><td style="padding:16px 20px">
+      <p style="margin:0;font-size:13px;color:#856404">
+        ⚠️ Tu link de evaluaciones aún no está activado. Escríbenos a hola@soymanada.com para activarlo.
+      </p>
+    </td></tr>
+    </table>`}
 
-    <!-- Profile link (for registered SoyManada users) -->
-    <p style="font-size:13px;color:#666;margin:0 0 8px;font-weight:600">🔗 Tu perfil (para usuarios de SoyManada)</p>
-    <p style="font-size:12px;color:#888;margin:0 0 20px;line-height:1.6">
-      Los migrantes ya registrados en SoyManada pueden evaluarte directamente desde tu perfil público:
-      <a href="${profileUrl}" style="color:#2d5a27">${profileUrl}</a>
-    </p>
+    <!-- Link perfil SoyManada -->
+    <table width="100%" cellpadding="0" cellspacing="0" style="background:#f6f5ff;border:1px solid #c7d2fe;border-radius:8px;margin:0 0 24px">
+    <tr><td style="padding:16px 20px">
+      <div style="font-size:13px;font-weight:700;color:#4338ca;margin-bottom:6px">🐾 Tu perfil público (para usuarios registrados en SoyManada)</div>
+      <a href="${profileUrl}" style="font-size:13px;color:#4338ca;word-break:break-all">${profileUrl}</a>
+      <p style="margin:8px 0 0;font-size:12px;color:#6b7280">
+        Los migrantes ya registrados pueden evaluarte directamente desde aquí.
+        Compártelo también en redes sociales.
+      </p>
+    </td></tr>
+    </table>
 
-    <!-- Francisco Aleuy reference profile -->
-    <table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 28px">
-    <tr><td style="background:#f9f9f9;border:1px solid #e0e0e0;border-radius:6px;padding:16px 20px">
+    <!-- Ejemplo perfil Francisco Aleuy -->
+    <table width="100%" cellpadding="0" cellspacing="0" style="background:#f9f9f9;border:1px solid #e0e0e0;border-radius:8px;margin:0 0 28px">
+    <tr><td style="padding:16px 20px">
       <p style="margin:0 0 8px;font-size:14px;font-weight:700;color:#333">👀 ¿Cómo se verá tu perfil?</p>
       <p style="margin:0;font-size:14px;line-height:1.75;color:#555">
         Creamos un perfil de ejemplo en la categoría <strong>Seguros</strong> — el de
-        <a href="https://soymanada.com/proveedor/francisco-aleuy" style="color:#2d5a27;font-weight:600;text-decoration:none">Francisco Aleuy</a> —
-        para que puedas ver exactamente cómo lucirá tu perfil cuando un migrante lo encuentre.
-        Incluye foto, descripción, sistema de contacto y sección de reseñas.
+        <a href="${SITE_URL}/proveedor/francisco-aleuy" style="color:#4338ca;font-weight:600;text-decoration:none">Francisco Aleuy</a> —
+        para que veas exactamente cómo lucirá tu perfil cuando un migrante lo encuentre:
+        foto, descripción, contacto y sección de reseñas. 🐾
       </p>
     </td></tr>
     </table>
 
-    <!-- Benefits -->
-    <p style="font-size:15px;font-weight:700;color:#2d5a27;margin:28px 0 12px">
+    <!-- Beneficios -->
+    <p style="font-size:15px;font-weight:700;color:#4338ca;margin:0 0 12px">
       🎁 Lo que tienes con SoyManada este año
     </p>
-    <table width="100%" cellpadding="0" cellspacing="0">
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 24px">
       ${[
-        ['✅', 'Perfil verificado con badge de confianza para tus clientes'],
+        ['🐾', 'Perfil verificado con badge de confianza para tus clientes'],
         ['💬', 'Mensajería directa: migrantes pueden escribirte desde tu perfil'],
         ['📊', 'Métricas de visitas y contactos en tu panel'],
-        ['📅', 'Sistema de reservas (ya disponible para planes activos)'],
+        ['📅', 'Sistema de reservas (disponible para planes activos)'],
         ['🚀', 'Acceso anticipado a nuevas funciones antes que nadie'],
         ['🤝', 'Comunidad exclusiva de proveedores verificados de confianza'],
       ].map(([icon, text]) => `
-      <tr><td style="padding:6px 0;font-size:14px;color:#444;line-height:1.5">
-        <span style="margin-right:8px">${icon}</span>${text}
+      <tr><td style="padding:7px 0;font-size:14px;color:#444;line-height:1.5;border-bottom:1px solid #f3f4f6">
+        <span style="margin-right:10px">${icon}</span>${text}
       </td></tr>`).join('')}
     </table>
 
-    <!-- Feedback box -->
-    <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0">
-    <tr><td style="background:#fff8e1;border-left:4px solid #f9a825;border-radius:0 6px 6px 0;padding:18px 20px">
-      <div style="font-size:14px;font-weight:700;color:#5d4037;margin-bottom:10px">💬 Queremos escucharte — en serio</div>
+    <!-- Feedback -->
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin:4px 0 28px">
+    <tr><td style="background:#fff8e1;border-left:4px solid #f59e0b;border-radius:0 8px 8px 0;padding:20px 22px">
+      <div style="font-size:14px;font-weight:700;color:#92400e;margin-bottom:10px">💬 Queremos escucharte — en serio</div>
       <p style="font-size:14px;line-height:1.75;color:#555;margin:0 0 10px">
         Estamos en etapa piloto y <strong>es probable que encuentres cosas que no funcionan como deberían</strong>.
-        No te preocupes — eso es exactamente por lo que estamos aquí. Si algo falla, si algo podría ser mejor,
-        o si tienes una idea para hacer la plataforma más útil para ti y tus clientes:
+        Eso es exactamente por lo que estamos aquí. Si algo falla, si tienes una idea o simplemente quieres
+        decirnos algo:
       </p>
-      <ul style="margin:0;padding-left:18px;font-size:14px;line-height:2;color:#555">
-        <li>Reporta errores que encuentres</li>
+      <ul style="margin:0;padding-left:18px;font-size:14px;line-height:2.1;color:#555">
+        <li>Reporta errores que encuentres 🐾</li>
         <li>Sugiere funciones que necesitas</li>
         <li>Propón mejoras a tu perfil o al directorio</li>
         <li>Cuéntanos cómo te está yendo con tus clientes migrantes</li>
       </ul>
-      <p style="font-size:14px;line-height:1.75;color:#555;margin:10px 0 0">
+      <p style="font-size:14px;line-height:1.75;color:#555;margin:12px 0 0">
         <strong>Responde este email directamente</strong> — llega al equipo y lo leeremos.
-        Tu participación en este período es lo que hace que SoyManada mejore para toda la comunidad.
       </p>
     </td></tr>
     </table>
 
-    <p style="font-size:13px;line-height:1.7;color:#777;margin:0">
-      Gracias por confiar en SoyManada.<br>
+    <p style="font-size:13px;line-height:1.8;color:#777;margin:0">
+      Gracias por confiar en SoyManada. 🐾<br>
       — El equipo de SoyManada
     </p>
 
   </td></tr>
 
   <!-- Footer -->
-  <tr><td style="background:#f5f5f5;border-radius:0 0 10px 10px;padding:18px 36px;text-align:center">
-    <p style="margin:0;font-size:11px;color:#999;line-height:1.6">
+  <tr><td style="background:#ede9fe;border-radius:0 0 10px 10px;padding:18px 36px;text-align:center">
+    <p style="margin:0;font-size:11px;color:#6b7280;line-height:1.8">
+      ${pawBar}<br>
       Recibiste este email porque eres proveedor verificado en SoyManada.<br>
-      <a href="${profileUrl}" style="color:#2d5a27;text-decoration:none">Ver tu perfil</a>
+      <a href="${profileUrl}" style="color:#4338ca;text-decoration:none">Ver tu perfil</a>
       &nbsp;·&nbsp;
-      <a href="mailto:hola@soymanada.com" style="color:#2d5a27;text-decoration:none">Contactar al equipo</a>
+      <a href="mailto:hola@soymanada.com" style="color:#4338ca;text-decoration:none">Contactar al equipo</a>
     </p>
   </td></tr>
 
