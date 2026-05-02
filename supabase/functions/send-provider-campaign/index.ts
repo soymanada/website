@@ -48,6 +48,22 @@ serve(async (req) => {
       // In test mode: only send to the provider whose auth email matches test_email
       if (test_email && user.email.toLowerCase() !== test_email.toLowerCase()) continue
 
+      // Look up pilot_invites token for this provider
+      const { data: invite } = await admin
+        .from('pilot_invites')
+        .select('token')
+        .eq('provider_id', prov.id)
+        .eq('is_active', true)
+        .maybeSingle()
+
+      // Count how many reviews have already been used
+      const { count: usedCount } = await admin
+        .from('pilot_opinions')
+        .select('id', { count: 'exact', head: true })
+        .eq('provider_id', prov.id)
+
+      const opinarUrl  = invite?.token ? `${SITE_URL}/opinar?token=${invite.token}` : null
+      const remaining  = Math.max(0, 10 - (usedCount ?? 0))
       const profileUrl = `${SITE_URL}/proveedor/${prov.slug}`
       const firstName  = prov.name.split(/\s+/)[0]
 
@@ -55,6 +71,8 @@ serve(async (req) => {
         to:          recipientEmail,
         provName:    firstName,
         profileUrl,
+        opinarUrl,
+        remaining,
       })
 
       results.push({ name: prov.name, email: recipientEmail, status: ok ? 'sent' : `error: ${message}`, id })
@@ -72,10 +90,12 @@ serve(async (req) => {
   }
 })
 
-async function sendEmail({ to, provName, profileUrl }: {
+async function sendEmail({ to, provName, profileUrl, opinarUrl, remaining }: {
   to: string
   provName: string
   profileUrl: string
+  opinarUrl: string | null
+  remaining: number
 }) {
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
@@ -87,14 +107,19 @@ async function sendEmail({ to, provName, profileUrl }: {
       from:    NOTIFY_FROM,
       to:      [to],
       subject: `${provName}, tu perfil en SoyManada está activo — compártelo 🎉`,
-      html:    buildEmail({ provName, profileUrl }),
+      html:    buildEmail({ provName, profileUrl, opinarUrl, remaining }),
     }),
   })
   const data = await res.json()
   return { ok: res.ok, id: data.id, message: data.message }
 }
 
-function buildEmail({ provName, profileUrl }: { provName: string; profileUrl: string }) {
+function buildEmail({ provName, profileUrl, opinarUrl, remaining }: {
+  provName: string
+  profileUrl: string
+  opinarUrl: string | null
+  remaining: number
+}) {
   return `<!DOCTYPE html>
 <html lang="es">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
@@ -120,32 +145,37 @@ function buildEmail({ provName, profileUrl }: { provName: string; profileUrl: st
       Tu perfil en SoyManada está <strong>activo y visible</strong> para cientos de migrantes latinoamericanos que buscan servicios de confianza en Canadá. Gracias por ser parte de esta comunidad desde el comienzo.
     </p>
 
-    <!-- Review link box -->
-    <table width="100%" cellpadding="0" cellspacing="0" style="background:#f6faf5;border:1.5px solid #2d5a27;border-radius:8px;margin:24px 0">
-    <tr><td style="padding:24px;text-align:center">
-      <div style="font-size:13px;font-weight:600;color:#555;margin-bottom:8px">🔗 Tu link de evaluaciones</div>
-      <div style="font-size:12px;color:#888;margin-bottom:18px;word-break:break-all">${profileUrl}</div>
-      <a href="${profileUrl}" style="background:#2d5a27;color:#ffffff;padding:12px 28px;border-radius:6px;text-decoration:none;font-weight:700;font-size:14px;display:inline-block">
-        Ver mi perfil →
-      </a>
-      <div style="font-size:12px;color:#888;margin-top:14px;line-height:1.6">
-        Comparte este link con tus clientes por <strong>WhatsApp</strong>, redes sociales o email.<br>
-        Desde ahí pueden dejarte una reseña directamente en tu perfil.
-      </div>
-    </td></tr>
-    </table>
+    <p style="font-size:16px;font-weight:700;color:#2d5a27;margin:0 0 6px">🔗 Tus links para recibir evaluaciones</p>
+    <p style="font-size:14px;line-height:1.7;color:#555;margin:0 0 18px">
+      Tienes <strong>dos canales</strong> para que tus clientes te evalúen — uno para clientes nuevos sin cuenta, y otro para quienes ya están en SoyManada:
+    </p>
 
-    <!-- 10-user quota notice -->
-    <table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 24px">
-    <tr><td style="background:#e8f4fd;border-left:4px solid #1a73e8;border-radius:0 6px 6px 0;padding:14px 18px">
-      <p style="margin:0;font-size:14px;line-height:1.7;color:#1a3a5c">
-        <strong>📬 Cupo piloto: 10 evaluaciones</strong><br>
-        Durante esta fase piloto, cada proveedor puede recibir hasta <strong>10 reseñas</strong> de sus clientes.
-        Aprovecha para escribirles directamente a tus mejores clientes y pedirles que te dejen su experiencia.
-        Cada reseña construye tu reputación en la plataforma desde el día uno.
+    <!-- External review link (opinar token) -->
+    ${opinarUrl ? `
+    <table width="100%" cellpadding="0" cellspacing="0" style="background:#eef6ff;border:1.5px solid #1a73e8;border-radius:8px;margin:24px 0">
+    <tr><td style="padding:22px 24px">
+      <div style="font-size:13px;font-weight:700;color:#1a3a5c;margin-bottom:6px">📬 Tu link para clientes externos</div>
+      <p style="font-size:13px;line-height:1.7;color:#444;margin:0 0 14px">
+        Este link es exclusivo para que tus clientes actuales — los que aún no están en SoyManada —
+        puedan evaluarte <strong>sin necesidad de registrarse</strong>. Tienes
+        <strong>${remaining} cupo${remaining !== 1 ? 's' : ''} disponible${remaining !== 1 ? 's' : ''}</strong> de 10 en total.
+        Úsalos con tus mejores clientes.
       </p>
+      <div style="background:#fff;border:1px solid #c5d8f5;border-radius:6px;padding:10px 14px;font-size:12px;color:#555;word-break:break-all;margin-bottom:14px">
+        ${opinarUrl}
+      </div>
+      <a href="${opinarUrl}" style="background:#1a73e8;color:#fff;padding:10px 22px;border-radius:6px;text-decoration:none;font-weight:700;font-size:13px;display:inline-block">
+        Compartir link de evaluación →
+      </a>
     </td></tr>
-    </table>
+    </table>` : ''}
+
+    <!-- Profile link (for registered SoyManada users) -->
+    <p style="font-size:13px;color:#666;margin:0 0 8px;font-weight:600">🔗 Tu perfil (para usuarios de SoyManada)</p>
+    <p style="font-size:12px;color:#888;margin:0 0 20px;line-height:1.6">
+      Los migrantes ya registrados en SoyManada pueden evaluarte directamente desde tu perfil público:
+      <a href="${profileUrl}" style="color:#2d5a27">${profileUrl}</a>
+    </p>
 
     <!-- Francisco Aleuy reference profile -->
     <table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 28px">
