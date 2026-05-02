@@ -135,6 +135,31 @@ function buildEmail({ provName, profileUrl }: { provName: string; profileUrl: st
     </td></tr>
     </table>
 
+    <!-- 10-user quota notice -->
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 24px">
+    <tr><td style="background:#e8f4fd;border-left:4px solid #1a73e8;border-radius:0 6px 6px 0;padding:14px 18px">
+      <p style="margin:0;font-size:14px;line-height:1.7;color:#1a3a5c">
+        <strong>📬 Cupo piloto: 10 evaluaciones</strong><br>
+        Durante esta fase piloto, cada proveedor puede recibir hasta <strong>10 reseñas</strong> de sus clientes.
+        Aprovecha para escribirles directamente a tus mejores clientes y pedirles que te dejen su experiencia.
+        Cada reseña construye tu reputación en la plataforma desde el día uno.
+      </p>
+    </td></tr>
+    </table>
+
+    <!-- Francisco Aleuy reference profile -->
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 28px">
+    <tr><td style="background:#f9f9f9;border:1px solid #e0e0e0;border-radius:6px;padding:16px 20px">
+      <p style="margin:0 0 8px;font-size:14px;font-weight:700;color:#333">👀 ¿Cómo se verá tu perfil?</p>
+      <p style="margin:0;font-size:14px;line-height:1.75;color:#555">
+        Creamos un perfil de ejemplo en la categoría <strong>Seguros</strong> — el de
+        <a href="https://soymanada.com/proveedor/francisco-aleuy" style="color:#2d5a27;font-weight:600;text-decoration:none">Francisco Aleuy</a> —
+        para que puedas ver exactamente cómo lucirá tu perfil cuando un migrante lo encuentre.
+        Incluye foto, descripción, sistema de contacto y sección de reseñas.
+      </p>
+    </td></tr>
+    </table>
+
     <!-- Benefits -->
     <p style="font-size:15px;font-weight:700;color:#2d5a27;margin:28px 0 12px">
       🎁 Lo que tienes con SoyManada este año
@@ -156,12 +181,21 @@ function buildEmail({ provName, profileUrl }: { provName: string; profileUrl: st
     <!-- Feedback box -->
     <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0">
     <tr><td style="background:#fff8e1;border-left:4px solid #f9a825;border-radius:0 6px 6px 0;padding:18px 20px">
-      <div style="font-size:14px;font-weight:700;color:#5d4037;margin-bottom:8px">💬 Queremos escucharte</div>
-      <p style="font-size:14px;line-height:1.75;color:#555;margin:0">
-        Estamos en etapa piloto y <strong>tu opinión vale más que cualquier otra cosa</strong>.
-        Si encuentras algo que no funciona, si tienes una propuesta, o simplemente quieres
-        decirnos algo — responde este email directamente. Cada mensaje que recibamos en este
-        período nos ayuda a mejorar para toda la comunidad.
+      <div style="font-size:14px;font-weight:700;color:#5d4037;margin-bottom:10px">💬 Queremos escucharte — en serio</div>
+      <p style="font-size:14px;line-height:1.75;color:#555;margin:0 0 10px">
+        Estamos en etapa piloto y <strong>es probable que encuentres cosas que no funcionan como deberían</strong>.
+        No te preocupes — eso es exactamente por lo que estamos aquí. Si algo falla, si algo podría ser mejor,
+        o si tienes una idea para hacer la plataforma más útil para ti y tus clientes:
+      </p>
+      <ul style="margin:0;padding-left:18px;font-size:14px;line-height:2;color:#555">
+        <li>Reporta errores que encuentres</li>
+        <li>Sugiere funciones que necesitas</li>
+        <li>Propón mejoras a tu perfil o al directorio</li>
+        <li>Cuéntanos cómo te está yendo con tus clientes migrantes</li>
+      </ul>
+      <p style="font-size:14px;line-height:1.75;color:#555;margin:10px 0 0">
+        <strong>Responde este email directamente</strong> — llega al equipo y lo leeremos.
+        Tu participación en este período es lo que hace que SoyManada mejore para toda la comunidad.
       </p>
     </td></tr>
     </table>
