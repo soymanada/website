@@ -661,7 +661,7 @@ function SectionHerramientas({ tier, provider, onSave, saving }) {
           <div className="pdash__upgrade-wolf-body">
             <p className="t-sm pdash__upgrade-wolf-name">Plan Wolf — $9.990 CLP/mes</p>
             <p className="t-xs pdash__upgrade-wolf-perks">
-              Cobros con Stripe · Responder reseñas · Respuestas predefinidas · Badge destacado en búsquedas
+              Cobros seguros con Stripe · Responder reseñas · Respuestas predefinidas
             </p>
             <UpgradeButton planCode="pro" label="Activar Wolf" variant="secondary" />
           </div>
@@ -1001,40 +1001,40 @@ function SectionReseñas({ provider, tier }) {
 // ── Grid de comparación de planes (reutilizable) ─────────────────
 const PLAN_FEATURES = {
   bronze: [
-    { label: 'Perfil público en el directorio', included: true },
-    { label: 'Descripción y foto de perfil',    included: true },
-    { label: 'Redes sociales e Instagram',       included: true },
+    { label: 'Perfil público en el directorio',   included: true },
+    { label: 'Descripción y foto de perfil',       included: true },
+    { label: 'Redes sociales e Instagram',         included: true },
+    { label: 'Link de pago externo',               included: true },
     { label: 'Métricas de visitas en tiempo real', included: false },
-    { label: 'WhatsApp visible en perfil',        included: false },
-    { label: 'Calendario de reservas',            included: false },
-    { label: 'Inbox de mensajes directos',        included: false },
-    { label: 'Cobro gestionado por SoyManada',    included: false },
-    { label: 'Responder reseñas públicamente',    included: false },
-    { label: 'Badge destacado en búsquedas',      included: false },
+    { label: 'WhatsApp visible en perfil',         included: false },
+    { label: 'Calendario de reservas',             included: false },
+    { label: 'Inbox de mensajes directos',         included: false },
+    { label: 'Cobros seguros con Stripe',          included: false },
+    { label: 'Responder reseñas públicamente',     included: false },
   ],
   cob: [
-    { label: 'Perfil público en el directorio', included: true },
-    { label: 'Descripción y foto de perfil',    included: true },
-    { label: 'Redes sociales e Instagram',       included: true },
+    { label: 'Perfil público en el directorio',   included: true },
+    { label: 'Descripción y foto de perfil',       included: true },
+    { label: 'Redes sociales e Instagram',         included: true },
+    { label: 'Link de pago externo',               included: true },
     { label: 'Métricas de visitas en tiempo real', included: true },
-    { label: 'WhatsApp visible en perfil',        included: true },
-    { label: 'Calendario de reservas',            included: true },
-    { label: 'Inbox de mensajes directos',        included: true },
-    { label: 'Cobro gestionado por SoyManada',    included: false },
-    { label: 'Responder reseñas públicamente',    included: false },
-    { label: 'Badge destacado en búsquedas',      included: false },
+    { label: 'WhatsApp visible en perfil',         included: true },
+    { label: 'Calendario de reservas',             included: true },
+    { label: 'Inbox de mensajes directos',         included: true },
+    { label: 'Cobros seguros con Stripe',          included: false },
+    { label: 'Responder reseñas públicamente',     included: false },
   ],
   wolf: [
-    { label: 'Perfil público en el directorio', included: true },
-    { label: 'Descripción y foto de perfil',    included: true },
-    { label: 'Redes sociales e Instagram',       included: true },
+    { label: 'Perfil público en el directorio',   included: true },
+    { label: 'Descripción y foto de perfil',       included: true },
+    { label: 'Redes sociales e Instagram',         included: true },
+    { label: 'Link de pago externo',               included: true },
     { label: 'Métricas de visitas en tiempo real', included: true },
-    { label: 'WhatsApp visible en perfil',        included: true },
-    { label: 'Calendario de reservas',            included: true },
-    { label: 'Inbox de mensajes directos',        included: true },
-    { label: 'Cobro gestionado por SoyManada',    included: true },
-    { label: 'Responder reseñas públicamente',    included: true },
-    { label: 'Badge destacado en búsquedas',      included: true },
+    { label: 'WhatsApp visible en perfil',         included: true },
+    { label: 'Calendario de reservas',             included: true },
+    { label: 'Inbox de mensajes directos',         included: true },
+    { label: 'Cobros seguros con Stripe',          included: true },
+    { label: 'Responder reseñas públicamente',     included: true },
   ],
 }
 
@@ -1354,17 +1354,20 @@ export default function ProviderDashboard() {
     if (!isCobPlus) return
     ;(async () => {
       setMetricsLoading(true)
+      // Nombres sin prefijo get_ — coinciden con las funciones creadas en Supabase
+      // pilot_opinions es la tabla real de reseñas (provider_feedback no existe)
       const [viewsRes, actRes, hourRes, fbRes, msgRes] = await Promise.all([
-        supabase.rpc('get_provider_metrics',         { p_provider_id: provider.id }),
-        supabase.rpc('get_provider_weekly_activity', { p_provider_id: provider.id }),
-        supabase.rpc('get_provider_hourly_activity', { p_provider_id: provider.id }),
-        supabase.from('provider_feedback').select('rating,comment,created_at').eq('provider_id', provider.id).order('created_at', { ascending: false }).limit(10),
-        supabase.rpc('get_provider_messaging_stats', { p_provider_id: provider.id }),
+        supabase.rpc('provider_metrics',         { p_provider_id: provider.id }),
+        supabase.rpc('provider_weekly_activity', { p_provider_id: provider.id }),
+        supabase.rpc('provider_hourly_activity', { p_provider_id: provider.id }),
+        supabase.from('pilot_opinions').select('rating, text, created_at').eq('provider_id', provider.id).order('created_at', { ascending: false }).limit(10),
+        supabase.rpc('provider_messaging_stats', { p_provider_id: provider.id }),
       ])
       if (!viewsRes.error)  setMetrics(viewsRes.data?.[0] ?? null)
       if (!actRes.error)    setActivity(actRes.data ?? [])
       if (!hourRes.error)   setHourlyActivity(hourRes.data ?? [])
-      if (!fbRes.error)     setFeedback(fbRes.data ?? [])
+      // pilot_opinions usa 'text' como campo de reseña — mapeamos a 'comment' para AutoRecommendations
+      if (!fbRes.error)     setFeedback((fbRes.data ?? []).map(f => ({ rating: f.rating, comment: f.text, created_at: f.created_at })))
       if (!msgRes.error)    setMessagingStats(msgRes.data?.[0] ?? null)
       setMetricsLoading(false)
     })()
@@ -1574,7 +1577,7 @@ export default function ProviderDashboard() {
             <SectionMensajes provider={provider} />
           )}
           {activeTab === 'ayuda' && (
-            <ManualProveedor provider={provider} />
+            <ManualProveedor provider={provider} onNavigate={setActiveTab} />
           )}
         </div>
       </div>

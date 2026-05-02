@@ -72,28 +72,10 @@
   animation: pulse-dot 2s ease-in-out infinite;
 }
 
-/* Tabs — wrapper con fades laterales para indicar scroll */
+/* Tabs — wrapper */
 .pdash__tabs-wrap {
-  position: relative;
   max-width: 760px;
   margin: 0 auto;
-}
-.pdash__tabs-wrap::before,
-.pdash__tabs-wrap::after {
-  content: '';
-  position: absolute;
-  top: 0; bottom: 0;
-  width: 40px;
-  pointer-events: none;
-  z-index: 2;
-}
-.pdash__tabs-wrap::before {
-  left: 0;
-  background: linear-gradient(to right, var(--iris-900, #2e1065) 10%, transparent);
-}
-.pdash__tabs-wrap::after {
-  right: 0;
-  background: linear-gradient(to left, var(--iris-700, #5b21b6) 10%, transparent);
 }
 
 .pdash__tabs {

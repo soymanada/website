@@ -18,7 +18,7 @@ Campos esenciales:
 • **Países donde operas** — separados por coma. Ej: Canadá, Chile.
 • **Idiomas** — los idiomas en que puedes atender.
 
-Recuerda hacer clic en **Guardar cambios** al final de la página.`,
+Recuerda hacer clic en **Guardar cambios** al final de la sección.`,
     links: [{ label: 'Ir a Mi Perfil', tab: 'perfil' }],
   },
   {
@@ -37,97 +37,120 @@ Pasos:
 Recomendación: usa una foto tuya real o el logo de tu marca con fondo claro.`,
     links: [{ label: 'Ir a Mi Perfil', tab: 'perfil' }],
   },
+  {
+    id: 'perfil-pago-externo',
+    category: 'Mi Perfil',
+    icon: '💳',
+    title: 'Agregar un link de pago externo',
+    content: `Disponible en **todos los planes**, incluyendo Wonderer. Puedes agregar un link de cobro que aparecerá como botón en tu perfil público.
+
+Acepta cualquier plataforma de pago:
+• MercadoPago: https://mpago.la/tu-link
+• Wise: https://wise.com/pay/tu-nombre
+• PayPal: https://paypal.me/tu-nombre
+• Cualquier otra plataforma con URL directa
+
+Pasos:
+1. Ve a la pestaña **Mi Perfil**.
+2. En la sección "Contacto y pagos", pega tu link en el campo "Link de pago".
+3. El link debe comenzar con https://
+4. Haz clic en **Guardar cambios**.
+
+El botón aparecerá en tu perfil inmediatamente.`,
+    links: [{ label: 'Ir a Mi Perfil', tab: 'perfil' }],
+  },
 
   // ── HERRAMIENTAS ─────────────────────────────────────────────
+  {
+    id: 'herramientas-whatsapp',
+    category: 'Herramientas',
+    icon: '📱',
+    title: 'Activar tu WhatsApp en el perfil',
+    content: `Disponible desde el plan **Cub**. Por defecto, tu número no es visible en el perfil público. Puedes activarlo manualmente.
+
+Pasos:
+1. Ve a **Herramientas**.
+2. En la sección "WhatsApp", activa el toggle.
+3. Se guarda automáticamente.
+
+Cuando está activado, los migrantes ven un botón de WhatsApp en tu perfil y pueden contactarte directamente.
+
+⚠️ Asegúrate de haber ingresado tu número en **Mi Perfil → WhatsApp** antes de activar esta opción.`,
+    links: [{ label: 'Ir a Herramientas', tab: 'herramientas' }],
+  },
   {
     id: 'herramientas-agenda',
     category: 'Herramientas',
     icon: '📅',
     title: 'Configurar tu agenda de citas',
-    content: `La agenda te permite recibir reservas directamente desde tu perfil público. Disponible desde el plan **Silver**.
+    content: `La agenda te permite recibir reservas directamente desde tu perfil público. Disponible desde el plan **Cub**.
 
-Tienes dos opciones de agenda:
+Tienes dos opciones:
 
 **Opción A — Agenda interna de SoyManada (recomendada)**
 1. Ve a **Herramientas → Calendario de citas**.
 2. Usa el editor de disponibilidad para marcar tus bloques horarios libres.
-3. Los migrantes verán esos bloques y podrán reservar sin salir de SoyManada.
+3. Los migrantes podrán reservar directamente desde tu perfil.
 
 **Opción B — Link externo (Calendly, Cal.com, etc.)**
 1. Pega tu link de Calendly o Cal.com en el campo "Link de agenda".
-2. Guarda. Tu perfil público mostrará ese link como botón adicional.
+2. Guarda. Tu perfil mostrará ese link como botón adicional.
 
-Puedes usar ambas opciones al mismo tiempo.
+Puedes usar ambas al mismo tiempo.
 
 **Plataforma de videollamada**
-En la misma sección puedes configurar dónde se realizará la llamada:
-• **Gold:** se genera automáticamente una sala Jitsi de SoyManada al confirmar la reserva.
-• **Todos los planes:** pega un link de Zoom, Google Meet, Teams, Whereby o WhatsApp en el campo "Plataforma para la llamada". Ese link aparecerá en el email de confirmación del migrante. Si lo dejas vacío en Gold, se usa la sala Jitsi automática.`,
+En la misma sección configuras dónde se realizará la llamada:
+• **Plan Wolf:** se genera una sala automática de SoyManada (Jitsi) al confirmar cada reserva.
+• **Todos los planes:** pega un link de Zoom, Google Meet, Teams o WhatsApp. Ese link aparece en el email de confirmación del migrante.`,
     links: [{ label: 'Ir a Herramientas', tab: 'herramientas' }],
   },
   {
-    id: 'herramientas-pago',
+    id: 'herramientas-stripe',
     category: 'Herramientas',
-    icon: '💳',
-    title: 'Configurar tu link de pago',
-    content: `Disponible en el plan **Gold**. Agrega un link de cobro que aparecerá como botón en tu perfil público.
-
-Acepta cualquier plataforma:
-• Wise: https://wise.com/pay/tu-nombre
-• MercadoPago: https://link.mercadopago.com/...
-• PayPal: https://paypal.me/tu-nombre
+    icon: '🔐',
+    title: 'Configurar cobros seguros con Stripe (Wolf)',
+    content: `Disponible en el plan **Wolf**. Conecta tu cuenta bancaria a través de Stripe para recibir pagos con tarjeta directamente desde tu perfil.
 
 Pasos:
-1. Ve a **Herramientas → Herramientas avanzadas**.
-2. Pega tu link en el campo "Link de pago".
-3. Haz clic en **Guardar**.
+1. Ve a **Herramientas → Cobros seguros con Stripe**.
+2. Haz clic en **Conectar mi cuenta Stripe**.
+3. Serás redirigido al portal de Stripe para verificar tu identidad y cuenta bancaria.
+4. Una vez completado, vuelves automáticamente a SoyManada.
 
-El botón aparecerá en tu perfil inmediatamente.`,
-    links: [{ label: 'Ir a Herramientas', tab: 'herramientas' }],
-  },
-  {
-    id: 'herramientas-whatsapp',
-    category: 'Herramientas',
-    icon: '📱',
-    title: 'Activar visibilidad de WhatsApp',
-    content: `Por defecto, tu número de WhatsApp **no es visible** en tu perfil público. Puedes activarlo desde el plan **Silver**.
+Estados posibles:
+• **Sin conectar** — aún no iniciaste el proceso.
+• **Onboarding incompleto** — iniciaste pero no terminaste. Haz clic en "Completar verificación".
+• **Requisitos pendientes** — Stripe necesita más información. Entra a "Ver requisitos pendientes".
+• **Activo** — tu cuenta está verificada y puedes recibir pagos.
 
-Pasos:
-1. Ve a **Herramientas**.
-2. En la sección "Visibilidad de WhatsApp", activa el toggle.
-3. Se guarda automáticamente.
-
-Cuando está activado, los migrantes ven un botón de WhatsApp en tu perfil y pueden contactarte directamente.
-
-⚠️ Asegúrate de haber ingresado tu número en Mi Perfil antes de activar esta opción.`,
+Cuando está activo, el botón de pago con Stripe aparece en tu perfil público.`,
     links: [{ label: 'Ir a Herramientas', tab: 'herramientas' }],
   },
   {
     id: 'herramientas-email',
     category: 'Herramientas',
     icon: '✉️',
-    title: 'Email de redirección de consultas',
-    content: `Disponible en el plan **Gold**. Permite que las consultas de migrantes lleguen también a tu correo personal, además del inbox de SoyManada.
+    title: 'Email de redirección de consultas (Wolf)',
+    content: `Disponible en el plan **Wolf**. Cada mensaje nuevo en tu inbox de SoyManada también te llega a tu correo personal.
 
 Pasos:
 1. Ve a **Herramientas → Herramientas avanzadas**.
 2. Ingresa tu email en el campo "Email para redirección de consultas".
-3. Haz clic en **Guardar**.
-
-A partir de ese momento, cada mensaje nuevo en tu inbox de SoyManada también te llegará a ese correo.`,
+3. Haz clic en **Guardar**.`,
     links: [{ label: 'Ir a Herramientas', tab: 'herramientas' }],
   },
   {
     id: 'herramientas-respuestas',
     category: 'Herramientas',
     icon: '💬',
-    title: 'Respuestas predefinidas',
-    content: `Disponible en el plan **Gold**. Las respuestas predefinidas son textos que puedes guardar y usar rápidamente al responder mensajes, sin tener que escribirlos desde cero cada vez.
+    title: 'Respuestas predefinidas (Wolf)',
+    content: `Disponible en el plan **Wolf**. Define textos que puedes reutilizar rápidamente al responder mensajes en tu inbox.
 
 Cómo configurarlas:
 1. Ve a **Herramientas → Herramientas avanzadas**.
-2. En el campo "Respuestas predefinidas", escribe cada respuesta en una línea separada.
-3. Haz clic en **Guardar**.
+2. Haz clic en **Agregar pregunta y respuesta**.
+3. Escribe la pregunta frecuente y la respuesta correspondiente.
+4. Puedes agregar varios pares. Haz clic en **Guardar**.
 
 Ejemplo de respuestas útiles:
 • "Mi primera consulta es gratuita y dura 30 minutos."
@@ -136,39 +159,74 @@ Ejemplo de respuestas útiles:
     links: [{ label: 'Ir a Herramientas', tab: 'herramientas' }],
   },
 
+  // ── RESEÑAS ───────────────────────────────────────────────────
+  {
+    id: 'reseñas-responder',
+    category: 'Reseñas',
+    icon: '⭐',
+    title: 'Cómo responder reseñas de clientes (Wolf)',
+    content: `Disponible en el plan **Wolf**. Cuando un migrante deja una reseña en tu perfil, puedes responderla públicamente desde la pestaña Reseñas.
+
+Pasos:
+1. Ve a la pestaña **Reseñas**.
+2. Verás las reseñas de tus clientes con autor, calificación y texto.
+3. Haz clic en el área de texto debajo de la reseña, escribe tu respuesta y haz clic en **Responder**.
+4. Tu respuesta aparecerá en tu perfil público debajo de esa reseña.
+
+Para editar una respuesta ya publicada, haz clic en **Editar respuesta**.
+
+Las respuestas públicas muestran profesionalismo y generan confianza en nuevos migrantes que visiten tu perfil.`,
+    links: [{ label: 'Ir a Reseñas', tab: 'reseñas' }],
+  },
+  {
+    id: 'reseñas-como-llegan',
+    category: 'Reseñas',
+    icon: '📬',
+    title: '¿Cómo recibo reseñas de mis clientes?',
+    content: `Las reseñas se generan automáticamente después de una cita completada.
+
+Flujo:
+1. Un migrante reserva y confirmas la cita.
+2. Una vez que la cita ocurre, marcas la reserva como **Completada** en la pestaña Reservas.
+3. SoyManada envía automáticamente un email al migrante invitándolo a dejar una reseña.
+4. Si el migrante deja la reseña, aparece en tu perfil público y en tu pestaña Reseñas.
+
+No puedes solicitar ni eliminar reseñas manualmente — el proceso es automático para garantizar la autenticidad.`,
+    links: [{ label: 'Ir a Reservas', tab: 'reservas' }],
+  },
+
   // ── RESERVAS ──────────────────────────────────────────────────
   {
     id: 'reservas-gestionar',
     category: 'Reservas',
     icon: '🗓',
     title: 'Cómo gestionar reservas pendientes',
-    content: `Cuando un migrante reserva una cita contigo, aparece en la pestaña **Reservas** con estado "Pendiente".
+    content: `Cuando un migrante reserva una cita contigo, aparece en la pestaña **Reservas** con estado "Pendiente". Disponible desde el plan **Cub**.
 
 Acciones disponibles:
-• **Confirmar** — acepta la reserva. El migrante recibe un email de confirmación con el link a la sala de videollamada.
-• **Rechazar** — cancela la reserva. El migrante es notificado.
+• **Confirmar** — acepta la reserva. El migrante recibe un email con los detalles y el link a la sala de videollamada.
+• **Rechazar** — cancela la reserva. El migrante es notificado automáticamente.
 
-Una vez confirmada, la reserva pasa a la sección "Confirmadas". Cuando la cita se realice, márcala como **Completada** para habilitar la solicitud de reseña al migrante.
-
-Las reservas requieren el plan **Silver o superior**.`,
+Una vez confirmada, la reserva aparece en "Confirmadas". Cuando la cita se realice, márcala como **Completada** para habilitar la solicitud de reseña al migrante.`,
     links: [{ label: 'Ir a Reservas', tab: 'reservas' }],
   },
   {
     id: 'reservas-confirmacion-email',
     category: 'Reservas',
     icon: '📧',
-    title: 'Qué recibe el migrante al confirmar',
-    content: `Cuando confirmas una reserva, SoyManada envía automáticamente dos emails:
+    title: 'Qué recibe el migrante al confirmar una cita',
+    content: `Cuando confirmas una reserva, SoyManada envía automáticamente emails a ambas partes.
 
 **Al migrante:**
-- Asunto: "Tu cita con [tu nombre] fue confirmada – SoyManada"
-- Contenido: fecha y hora de la cita, notas si las hay, y un botón para entrar a la sala de videollamada en SoyManada.
+- Fecha y hora de la cita
+- Notas si las hay
+- Botón para entrar a la sala de videollamada
 
 **A ti (proveedor):**
-- Asunto: "Cita confirmada con [nombre del migrante] – SoyManada"
-- Contenido: resumen de la cita y link a la sala.
+- Resumen de la cita
+- Link a la sala
 
-La sala de videollamada se genera automáticamente al confirmar y es accesible desde \`soymanada.github.io/website/sala/[id-reserva]\`.
+La sala de videollamada se genera automáticamente al confirmar y es accesible desde la pestaña **Reservas** en tu cuenta y en la del migrante.
 
 No necesitas hacer nada adicional — el sistema se encarga de todo.`,
     links: [{ label: 'Ir a Reservas', tab: 'reservas' }],
@@ -179,57 +237,55 @@ No necesitas hacer nada adicional — el sistema se encarga de todo.`,
     id: 'planes-diferencias',
     category: 'Planes',
     icon: '💎',
-    title: 'Diferencias entre Bronze, Silver y Gold',
+    title: 'Diferencias entre Wonderer, Cub y Wolf',
     content: `SoyManada tiene tres planes para proveedores:
 
-**🥉 Bronze — Gratis**
+**✨ Wonderer — Gratis**
 - Perfil público en el directorio
-- Inbox de mensajes básico
-- Sin agenda ni reservas
+- Descripción, foto y redes sociales
+- Link de pago externo (Wise, MercadoPago, etc.)
 
-**🥈 Silver — $4.990 CLP/mes**
-- Todo lo de Bronze
+**🐾 Cub — $4.990 CLP/mes**
+- Todo lo de Wonderer
+- Métricas de visitas en tiempo real
+- WhatsApp visible en tu perfil
 - Agenda de citas y reservas
-- Visibilidad de WhatsApp en perfil
-- Métricas de visitas y contactos
-- Link de agenda externa (Calendly, etc.)
+- Inbox de mensajes directos
 
-**🥇 Gold — $14.990 CLP/mes**
-- Todo lo de Silver
+**🐺 Wolf — $9.990 CLP/mes**
+- Todo lo de Cub
+- Cobros seguros con Stripe (tarjeta desde tu perfil)
+- Responder reseñas públicamente
 - Email de redirección de consultas
-- Respuestas predefinidas
-- Link de pago en perfil (Wise, etc.)
-- Traducciones automáticas (EN/FR)
+- Respuestas predefinidas en el inbox
 
-Puedes cambiar de plan en cualquier momento desde la pestaña **Mi Plan**.`,
-    links: [{ label: 'Ver Mi Plan', tab: 'miplan' }],
+Puedes comparar los planes y actualizar desde la pestaña **Herramientas** (al final de la sección).`,
+    links: [{ label: 'Ver planes', tab: 'herramientas' }],
   },
   {
-    id: 'planes-trial',
+    id: 'planes-cambio',
     category: 'Planes',
-    icon: '🎁',
-    title: 'Cómo activar el trial gratuito',
-    content: `Los nuevos proveedores reciben un período de **Gold gratuito** para probar todas las herramientas sin costo.
+    icon: '🔄',
+    title: 'Cómo cambiar de plan',
+    content: `Puedes actualizar tu plan en cualquier momento desde la pestaña **Herramientas**.
 
-• **Early Bird (hasta el 30 Jun 2026):** 3 meses gratis de Gold.
-• **Después del Early Bird:** 1 mes gratis de Gold.
+Pasos:
+1. Ve a **Herramientas**.
+2. Desplázate hasta el final de la sección — encontrarás la comparación de planes.
+3. Haz clic en **Activar Cub** o **Activar Wolf** según el plan que desees.
+4. Serás redirigido a MercadoPago para completar el pago.
+5. Una vez procesado, tu plan se activa automáticamente.
 
-Cómo activarlo:
-1. Ve a la pestaña **Mi Plan**.
-2. Si eres elegible, verás el banner "Gold GRATIS".
-3. Haz clic en **Activar X meses Gold gratis**.
-4. El plan se activa inmediatamente, sin tarjeta de crédito.
-
-El trial se puede usar una sola vez. Cuando termine, el plan vuelve a Bronze automáticamente a menos que actives una suscripción.`,
-    links: [{ label: 'Ir a Mi Plan', tab: 'miplan' }],
+El cobro es mensual y puedes cancelar cuando quieras.`,
+    links: [{ label: 'Ir a Herramientas', tab: 'herramientas' }],
   },
 ]
 
 const CATEGORIES = [...new Set(ARTICLES.map(a => a.category))]
 
 export default function ManualProveedor({ onNavigate }) {
-  const [search,      setSearch]      = useState('')
-  const [openId,      setOpenId]      = useState(null)
+  const [search,         setSearch]         = useState('')
+  const [openId,         setOpenId]         = useState(null)
   const [activeCategory, setActiveCategory] = useState('Todos')
 
   const filtered = ARTICLES.filter(a => {
@@ -244,7 +300,6 @@ export default function ManualProveedor({ onNavigate }) {
 
   const renderContent = (text) =>
     text.split('\n').map((line, i) => {
-      // Bold via **text**
       const parts = line.split(/\*\*(.*?)\*\*/g)
       const rendered = parts.map((part, j) =>
         j % 2 === 1 ? <strong key={j}>{part}</strong> : part
@@ -302,14 +357,14 @@ export default function ManualProveedor({ onNavigate }) {
         </div>
       )}
 
-      {/* Lista de artículos — agrupados por categoría cuando no hay búsqueda */}
+      {/* Lista — agrupada por categoría cuando no hay búsqueda */}
       {!search && activeCategory === 'Todos'
         ? CATEGORIES.map(cat => {
             const catArticles = filtered.filter(a => a.category === cat)
             if (catArticles.length === 0) return null
             return (
               <div key={cat} className="manual__group">
-                <h3 className="manual__group-title t-sm">{cat}</h3>
+                <h3 className="manual__group-title t-sm">{cat.toUpperCase()}</h3>
                 {catArticles.map(a => (
                   <ArticleCard key={a.id} article={a} open={openId === a.id}
                     onToggle={() => toggle(a.id)} onNavigate={onNavigate}
