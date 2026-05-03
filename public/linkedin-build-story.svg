@@ -25,23 +25,26 @@
   <text x="60" y="163" font-size="50" font-weight="800" fill="#7B4DC8" letter-spacing="-0.5">al lanzamiento.</text>
 
   <!-- Subtitle -->
-  <text x="60" y="194" font-size="14" fill="#A07DE0">Directorio de proveedores para migrantes latinoamericanos · ~1 mes · 50 commits · React + Supabase + IA</text>
+  <text x="60" y="194" font-size="14" fill="#A07DE0">Directorio de proveedores para migrantes latinoamericanos · 52 días · 304 commits · React + Supabase + IA</text>
 
   <!-- Stats pills -->
-  <rect x="60" y="210" width="122" height="26" rx="13" fill="#3D1A78" stroke="#5B2D9E" stroke-width="1"/>
-  <text x="121" y="227" font-size="12" fill="#C4B0F0" text-anchor="middle" font-weight="500">50 commits</text>
+  <rect x="60" y="210" width="130" height="26" rx="13" fill="#3D1A78" stroke="#5B2D9E" stroke-width="1"/>
+  <text x="125" y="227" font-size="12" fill="#C4B0F0" text-anchor="middle" font-weight="500">304 commits</text>
 
-  <rect x="194" y="210" width="90" height="26" rx="13" fill="#3D1A78" stroke="#5B2D9E" stroke-width="1"/>
-  <text x="239" y="227" font-size="12" fill="#C4B0F0" text-anchor="middle" font-weight="500">~1 mes</text>
+  <rect x="202" y="210" width="94" height="26" rx="13" fill="#3D1A78" stroke="#5B2D9E" stroke-width="1"/>
+  <text x="249" y="227" font-size="12" fill="#C4B0F0" text-anchor="middle" font-weight="500">52 días</text>
 
-  <rect x="296" y="210" width="110" height="26" rx="13" fill="#3D1A78" stroke="#5B2D9E" stroke-width="1"/>
-  <text x="351" y="227" font-size="12" fill="#C4B0F0" text-anchor="middle" font-weight="500">1 fundador</text>
+  <rect x="308" y="210" width="110" height="26" rx="13" fill="#3D1A78" stroke="#5B2D9E" stroke-width="1"/>
+  <text x="363" y="227" font-size="12" fill="#C4B0F0" text-anchor="middle" font-weight="500">1 fundador</text>
 
-  <rect x="418" y="210" width="160" height="26" rx="13" fill="#3D1A78" stroke="#5B2D9E" stroke-width="1"/>
-  <text x="498" y="227" font-size="12" fill="#C4B0F0" text-anchor="middle" font-weight="500">React + Supabase</text>
+  <rect x="430" y="210" width="160" height="26" rx="13" fill="#3D1A78" stroke="#5B2D9E" stroke-width="1"/>
+  <text x="510" y="227" font-size="12" fill="#C4B0F0" text-anchor="middle" font-weight="500">React + Supabase</text>
 
-  <rect x="590" y="210" width="200" height="26" rx="13" fill="#3D1A78" stroke="#5B2D9E" stroke-width="1"/>
-  <text x="690" y="227" font-size="12" fill="#C4B0F0" text-anchor="middle" font-weight="500">Stripe + Mercado Pago</text>
+  <rect x="602" y="210" width="200" height="26" rx="13" fill="#3D1A78" stroke="#5B2D9E" stroke-width="1"/>
+  <text x="702" y="227" font-size="12" fill="#C4B0F0" text-anchor="middle" font-weight="500">Stripe + Mercado Pago</text>
+
+  <!-- Date range, right aligned -->
+  <text x="1140" y="222" font-size="12" fill="#5B2D9E" text-anchor="end">12 mar → 2 may 2026</text>
 
   <!-- Timeline line: card centers at 177, 459, 741, 1023 -->
   <line x1="177" y1="432" x2="1023" y2="432" stroke="url(#tl)" stroke-width="2"/>
@@ -51,56 +54,60 @@
   <rect x="54" y="252" width="246" height="4" rx="2" fill="#7B4DC8"/>
   <circle cx="177" cy="432" r="8" fill="#7B4DC8"/>
   <circle cx="177" cy="432" r="3.5" fill="#FFFFFF"/>
-  <text x="177" y="273" font-size="10" fill="#A07DE0" text-anchor="middle" font-weight="700" letter-spacing="2">FASE  01</text>
-  <text x="177" y="297" font-size="19" fill="#FFFFFF" text-anchor="middle" font-weight="700">Fundación</text>
-  <line x1="74" y1="307" x2="280" y2="307" stroke="#5B2D9E" stroke-width="1" stroke-opacity="0.5"/>
-  <text x="70" y="323" font-size="12" fill="#C4B0F0">· Registro de proveedores</text>
-  <text x="70" y="341" font-size="12" fill="#C4B0F0">· Auth + Supabase RLS</text>
-  <text x="70" y="359" font-size="12" fill="#C4B0F0">· i18n: ES / EN / FR-CA</text>
-  <text x="70" y="377" font-size="12" fill="#C4B0F0">· Categorias + routing</text>
-  <text x="70" y="395" font-size="12" fill="#C4B0F0">· Security hardening</text>
+  <text x="177" y="270" font-size="10" fill="#7B4DC8" text-anchor="middle" font-weight="700" letter-spacing="1">12 MAR</text>
+  <text x="177" y="287" font-size="10" fill="#A07DE0" text-anchor="middle" font-weight="700" letter-spacing="2">FASE  01</text>
+  <text x="177" y="308" font-size="17" fill="#FFFFFF" text-anchor="middle" font-weight="700">Fundación</text>
+  <line x1="74" y1="317" x2="280" y2="317" stroke="#5B2D9E" stroke-width="1" stroke-opacity="0.5"/>
+  <text x="70" y="333" font-size="12" fill="#C4B0F0">· Primer commit oficial</text>
+  <text x="70" y="351" font-size="12" fill="#C4B0F0">· Deploy: soymanada.com</text>
+  <text x="70" y="369" font-size="12" fill="#C4B0F0">· Primer proveedor real</text>
+  <text x="70" y="387" font-size="12" fill="#C4B0F0">· GA4 + SVG icons</text>
+  <text x="70" y="405" font-size="12" fill="#C4B0F0">· Categorías + routing</text>
 
-  <!-- CARD 2 — Confianza (x=336, w=246, center=459) -->
+  <!-- CARD 2 — El Gran Sprint (x=336, w=246, center=459) -->
   <rect x="336" y="252" width="246" height="163" rx="10" fill="#2D1057" fill-opacity="0.85" stroke="#5B2D9E" stroke-width="1"/>
   <rect x="336" y="252" width="246" height="4" rx="2" fill="#8B5DCE"/>
   <circle cx="459" cy="432" r="8" fill="#8B5DCE"/>
   <circle cx="459" cy="432" r="3.5" fill="#FFFFFF"/>
-  <text x="459" y="273" font-size="10" fill="#A07DE0" text-anchor="middle" font-weight="700" letter-spacing="2">FASE  02</text>
-  <text x="459" y="297" font-size="19" fill="#FFFFFF" text-anchor="middle" font-weight="700">Confianza</text>
-  <line x1="356" y1="307" x2="562" y2="307" stroke="#5B2D9E" stroke-width="1" stroke-opacity="0.5"/>
-  <text x="352" y="323" font-size="12" fill="#C4B0F0">· Opiniones 🐾 + sub-ratings</text>
-  <text x="352" y="341" font-size="12" fill="#C4B0F0">· Beta cerrada 7 proveedores</text>
-  <text x="352" y="359" font-size="12" fill="#C4B0F0">· Badges de verificación</text>
-  <text x="352" y="377" font-size="12" fill="#C4B0F0">· Tokens anti-fraude</text>
-  <text x="352" y="395" font-size="12" fill="#C4B0F0">· Rating visible desde 3 reseñas</text>
+  <text x="459" y="270" font-size="10" fill="#8B5DCE" text-anchor="middle" font-weight="700" letter-spacing="1">25 MAR · 103 commits</text>
+  <text x="459" y="287" font-size="10" fill="#A07DE0" text-anchor="middle" font-weight="700" letter-spacing="2">FASE  02</text>
+  <text x="459" y="308" font-size="17" fill="#FFFFFF" text-anchor="middle" font-weight="700">El Gran Sprint</text>
+  <line x1="356" y1="317" x2="562" y2="317" stroke="#5B2D9E" stroke-width="1" stroke-opacity="0.5"/>
+  <text x="352" y="333" font-size="12" fill="#C4B0F0">· Auth Google OAuth</text>
+  <text x="352" y="351" font-size="12" fill="#C4B0F0">· Supabase + RLS completo</text>
+  <text x="352" y="369" font-size="12" fill="#C4B0F0">· i18n ES / EN / FR-CA</text>
+  <text x="352" y="387" font-size="12" fill="#C4B0F0">· Dashboard + Admin panel</text>
+  <text x="352" y="405" font-size="12" fill="#C4B0F0">· Comparador remesas</text>
 
-  <!-- CARD 3 — Dashboard (x=618, w=246, center=741) -->
+  <!-- CARD 3 — Crecimiento (x=618, w=246, center=741) -->
   <rect x="618" y="252" width="246" height="163" rx="10" fill="#2D1057" fill-opacity="0.85" stroke="#5B2D9E" stroke-width="1"/>
   <rect x="618" y="252" width="246" height="4" rx="2" fill="#A070D8"/>
   <circle cx="741" cy="432" r="8" fill="#A070D8"/>
   <circle cx="741" cy="432" r="3.5" fill="#FFFFFF"/>
-  <text x="741" y="273" font-size="10" fill="#A07DE0" text-anchor="middle" font-weight="700" letter-spacing="2">FASE  03</text>
-  <text x="741" y="297" font-size="19" fill="#FFFFFF" text-anchor="middle" font-weight="700">Dashboard</text>
-  <line x1="638" y1="307" x2="844" y2="307" stroke="#5B2D9E" stroke-width="1" stroke-opacity="0.5"/>
-  <text x="634" y="323" font-size="12" fill="#C4B0F0">· Panel del proveedor</text>
-  <text x="634" y="341" font-size="12" fill="#C4B0F0">· Tiers Wonderer / Cub / Wolf</text>
-  <text x="634" y="359" font-size="12" fill="#C4B0F0">· Analytics + UTM tracking</text>
-  <text x="634" y="377" font-size="12" fill="#C4B0F0">· Addon WhatsApp</text>
-  <text x="634" y="395" font-size="12" fill="#C4B0F0">· Responder reseñas publicas</text>
+  <text x="741" y="270" font-size="10" fill="#A070D8" text-anchor="middle" font-weight="700" letter-spacing="1">ABR · SEMANAS 3-4</text>
+  <text x="741" y="287" font-size="10" fill="#A07DE0" text-anchor="middle" font-weight="700" letter-spacing="2">FASE  03</text>
+  <text x="741" y="308" font-size="17" fill="#FFFFFF" text-anchor="middle" font-weight="700">Crecimiento</text>
+  <line x1="638" y1="317" x2="844" y2="317" stroke="#5B2D9E" stroke-width="1" stroke-opacity="0.5"/>
+  <text x="634" y="333" font-size="12" fill="#C4B0F0">· Messaging + booking</text>
+  <text x="634" y="351" font-size="12" fill="#C4B0F0">· Emails via Resend</text>
+  <text x="634" y="369" font-size="12" fill="#C4B0F0">· Guía primeros pasos</text>
+  <text x="634" y="387" font-size="12" fill="#C4B0F0">· ManadaStories carousel</text>
+  <text x="634" y="405" font-size="12" fill="#C4B0F0">· SEO + OG meta tags</text>
 
-  <!-- CARD 4 — Lanzamiento (x=900, w=246, center=1023) — GOLD -->
+  <!-- CARD 4 — Confianza y Lanzamiento (x=900, w=246, center=1023) — GOLD -->
   <rect x="900" y="252" width="246" height="163" rx="10" fill="#120800" fill-opacity="0.9" stroke="#C9953A" stroke-width="1" stroke-opacity="0.6"/>
   <rect x="900" y="252" width="246" height="4" rx="2" fill="#C9953A"/>
   <circle cx="1023" cy="432" r="8" fill="#C9953A"/>
   <circle cx="1023" cy="432" r="3.5" fill="#FFFFFF"/>
-  <text x="1023" y="273" font-size="10" fill="#C9953A" text-anchor="middle" font-weight="700" letter-spacing="2">FASE  04</text>
-  <text x="1023" y="297" font-size="19" fill="#FFFFFF" text-anchor="middle" font-weight="700">Lanzamiento</text>
-  <line x1="920" y1="307" x2="1126" y2="307" stroke="#C9953A" stroke-width="1" stroke-opacity="0.4"/>
-  <text x="916" y="323" font-size="12" fill="#F0D89A">· Stripe Connect</text>
-  <text x="916" y="341" font-size="12" fill="#F0D89A">· Mercado Pago</text>
-  <text x="916" y="359" font-size="12" fill="#F0D89A">· Email campaign proveedores</text>
-  <text x="916" y="377" font-size="12" fill="#F0D89A">· Directorio en producción</text>
-  <text x="916" y="395" font-size="12" fill="#F0D89A">· Launch público 🚀</text>
+  <text x="1023" y="270" font-size="10" fill="#C9953A" text-anchor="middle" font-weight="700" letter-spacing="1">ABR-MAY · SEMANA 5-7</text>
+  <text x="1023" y="287" font-size="10" fill="#C9953A" text-anchor="middle" font-weight="700" letter-spacing="2">FASE  04</text>
+  <text x="1023" y="308" font-size="17" fill="#FFFFFF" text-anchor="middle" font-weight="700">Confianza + Launch</text>
+  <line x1="920" y1="317" x2="1126" y2="317" stroke="#C9953A" stroke-width="1" stroke-opacity="0.4"/>
+  <text x="916" y="333" font-size="12" fill="#F0D89A">· Opiniones 🐾 + tiers</text>
+  <text x="916" y="351" font-size="12" fill="#F0D89A">· Beta 7 proveedores</text>
+  <text x="916" y="369" font-size="12" fill="#F0D89A">· Stripe Connect</text>
+  <text x="916" y="387" font-size="12" fill="#F0D89A">· Mercado Pago</text>
+  <text x="916" y="405" font-size="12" fill="#F0D89A">· Launch público 🚀</text>
 
   <!-- Footer divider -->
   <line x1="60" y1="458" x2="1140" y2="458" stroke="#3D1A78" stroke-width="1"/>
@@ -129,8 +136,8 @@
   <rect x="490" y="523" width="64" height="22" rx="11" fill="#1E0A3C" stroke="#5B2D9E" stroke-width="1"/>
   <text x="522" y="538" font-size="11" fill="#C4B0F0" text-anchor="middle">i18next</text>
 
-  <rect x="566" y="523" width="78" height="22" rx="11" fill="#1E0A3C" stroke="#5B2D9E" stroke-width="1"/>
-  <text x="605" y="538" font-size="11" fill="#C4B0F0" text-anchor="middle">gh-pages</text>
+  <rect x="566" y="523" width="54" height="22" rx="11" fill="#1E0A3C" stroke="#5B2D9E" stroke-width="1"/>
+  <text x="593" y="538" font-size="11" fill="#C4B0F0" text-anchor="middle">Resend</text>
 
   <!-- Built with Claude badge -->
   <rect x="856" y="496" width="284" height="56" rx="12" fill="#1E0A3C" stroke="#7B4DC8" stroke-width="1.5"/>
@@ -142,7 +149,7 @@
   <text x="60" y="590" font-size="12" fill="#3D1A78">#SoyManada  #BuildInPublic  #ReactJS  #Supabase  #Migrantes  #AICode  #Claude</text>
   <text x="1140" y="590" font-size="14" fill="#7B4DC8" text-anchor="end" font-weight="600">soymanada.com</text>
 
-  <!-- Decorative paw (circles) bottom right -->
+  <!-- Decorative paw bottom right -->
   <circle cx="1130" cy="617" r="14" fill="#2D1057" fill-opacity="0.5"/>
   <circle cx="1107" cy="602" r="7" fill="#2D1057" fill-opacity="0.4"/>
   <circle cx="1121" cy="598" r="7" fill="#2D1057" fill-opacity="0.4"/>
