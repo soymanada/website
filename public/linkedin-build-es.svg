@@ -1,0 +1,168 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg"
+     font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#120826"/>
+      <stop offset="100%" stop-color="#2D1057"/>
+    </linearGradient>
+    <linearGradient id="ctl" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#C9953A"/>
+      <stop offset="100%" stop-color="#7B4DC8"/>
+    </linearGradient>
+    <linearGradient id="div" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5B2D9E" stop-opacity="0"/>
+      <stop offset="25%" stop-color="#5B2D9E" stop-opacity="0.7"/>
+      <stop offset="75%" stop-color="#5B2D9E" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#5B2D9E" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="1110" cy="85" r="240" fill="#5B2D9E" fill-opacity="0.07"/>
+  <circle cx="70" cy="565" r="180" fill="#7B4DC8" fill-opacity="0.05"/>
+
+  <!-- Brand badge -->
+  <rect x="60" y="34" width="158" height="24" rx="12" fill="#3D1A78" stroke="#5B2D9E" stroke-width="1"/>
+  <text x="139" y="50" font-size="11" fill="#A07DE0" text-anchor="middle" font-weight="700" letter-spacing="2">🐾  SOYMANADA</text>
+
+  <!-- Date range badge (right) -->
+  <rect x="972" y="34" width="168" height="24" rx="12" fill="#3D1A78" stroke="#5B2D9E" stroke-width="1"/>
+  <text x="1056" y="50" font-size="11" fill="#A07DE0" text-anchor="middle" font-weight="600">Nov 2024 → May 2026</text>
+
+  <!-- HEADLINE -->
+  <text x="60" y="100" font-size="46" font-weight="800" fill="#FFFFFF" letter-spacing="-0.5">18 meses de comunidad.</text>
+  <text x="60" y="152" font-size="46" font-weight="800" fill="#7B4DC8" letter-spacing="-0.5">52 días de código.</text>
+
+  <!-- Subtitle -->
+  <text x="60" y="182" font-size="14" fill="#A07DE0">Directorio de confianza para migrantes latinoamericanos — la comunidad primero, el código después.</text>
+
+  <!-- Stats pills -->
+  <rect x="60" y="197" width="136" height="26" rx="13" fill="#3D1A78" stroke="#5B2D9E" stroke-width="1"/>
+  <text x="128" y="214" font-size="12" fill="#C4B0F0" text-anchor="middle" font-weight="500">500+ migrantes</text>
+
+  <rect x="208" y="197" width="160" height="26" rx="13" fill="#3D1A78" stroke="#5B2D9E" stroke-width="1"/>
+  <text x="288" y="214" font-size="12" fill="#C4B0F0" text-anchor="middle" font-weight="500">18 meses comunidad</text>
+
+  <rect x="380" y="197" width="122" height="26" rx="13" fill="#3D1A78" stroke="#5B2D9E" stroke-width="1"/>
+  <text x="441" y="214" font-size="12" fill="#C4B0F0" text-anchor="middle" font-weight="500">304 commits</text>
+
+  <rect x="514" y="197" width="116" height="26" rx="13" fill="#3D1A78" stroke="#5B2D9E" stroke-width="1"/>
+  <text x="572" y="214" font-size="12" fill="#C4B0F0" text-anchor="middle" font-weight="500">52 días de build</text>
+
+  <rect x="642" y="197" width="160" height="26" rx="13" fill="#3D1A78" stroke="#5B2D9E" stroke-width="1"/>
+  <text x="722" y="214" font-size="12" fill="#C4B0F0" text-anchor="middle" font-weight="500">1 fundador + Claude</text>
+
+  <!-- ========== MAIN SECTION ========== -->
+
+  <!-- Vertical divider at x=494 -->
+  <line x1="494" y1="230" x2="494" y2="502" stroke="url(#div)" stroke-width="1.5"/>
+
+  <!-- ===== LEFT: LA COMUNIDAD (x=60-473) ===== -->
+
+  <text x="80" y="243" font-size="10" fill="#C9953A" font-weight="700" letter-spacing="3">LA COMUNIDAD</text>
+
+  <!-- Vertical timeline line -->
+  <line x1="95" y1="263" x2="95" y2="452" stroke="url(#ctl)" stroke-width="2"/>
+
+  <!-- MILESTONE 1: Nov 2024 -->
+  <circle cx="95" cy="258" r="7" fill="#C9953A"/>
+  <circle cx="95" cy="258" r="3" fill="#FFFFFF"/>
+  <text x="113" y="255" font-size="10" fill="#C9953A" font-weight="700" letter-spacing="2">NOV 2024</text>
+  <text x="113" y="270" font-size="13" fill="#FFFFFF" font-weight="700">Nace el grupo de WhatsApp</text>
+  <text x="113" y="285" font-size="12" fill="#C4B0F0">"Manada a Canadá" — la idea se convierte en comunidad</text>
+  <text x="113" y="300" font-size="12" fill="#C4B0F0">Migrantes hispanohablantes apoyándose entre sí</text>
+
+  <!-- MILESTONE 2: Feb 24, 2026 -->
+  <circle cx="95" cy="350" r="7" fill="#B5803A"/>
+  <circle cx="95" cy="350" r="3" fill="#FFFFFF"/>
+  <text x="113" y="347" font-size="10" fill="#C9953A" font-weight="700" letter-spacing="2">24 FEB 2026</text>
+  <text x="113" y="362" font-size="13" fill="#FFFFFF" font-weight="700">Discovery con proveedores</text>
+  <text x="113" y="377" font-size="12" fill="#C4B0F0">Entrevistas · Llamadas · Formularios con proveedores reales</text>
+  <text x="113" y="392" font-size="12" fill="#C4B0F0">Dolores y necesidades reales documentadas</text>
+
+  <!-- MILESTONE 3: Mar 12, 2026 -->
+  <circle cx="95" cy="452" r="7" fill="#7B4DC8"/>
+  <circle cx="95" cy="452" r="3" fill="#FFFFFF"/>
+  <text x="113" y="449" font-size="10" fill="#A07DE0" font-weight="700" letter-spacing="2">12 MAR 2026</text>
+  <text x="113" y="464" font-size="13" fill="#FFFFFF" font-weight="700">Primer commit oficial →</text>
+
+  <!-- Community bottom stat -->
+  <rect x="68" y="477" width="400" height="26" rx="8" fill="#2D1057" stroke="#C9953A" stroke-width="1" stroke-opacity="0.5"/>
+  <text x="268" y="494" font-size="11" fill="#F0D89A" text-anchor="middle" font-weight="500">500+ migrantes latinoamericanos · 18 meses de inteligencia comunitaria real</text>
+
+  <!-- ===== RIGHT: EL CÓDIGO (x=516-1140) ===== -->
+
+  <text x="536" y="243" font-size="10" fill="#A07DE0" font-weight="700" letter-spacing="3">EL CÓDIGO</text>
+  <text x="746" y="243" font-size="10" fill="#5B2D9E" font-weight="600">12 mar → 2 may 2026 · Construido con Claude</text>
+
+  <!-- 2x2 mini-cards: col1 x=516-807 (w=291), col2 x=828-1119 (w=291) -->
+  <!-- row1 y=252-352 (h=100), row2 y=362-462 (h=100) -->
+
+  <!-- CARD A: Fundación -->
+  <rect x="516" y="252" width="291" height="100" rx="8" fill="#2D1057" fill-opacity="0.85" stroke="#5B2D9E" stroke-width="1"/>
+  <rect x="516" y="252" width="291" height="4" rx="2" fill="#7B4DC8"/>
+  <text x="524" y="270" font-size="9" fill="#A07DE0" font-weight="700" letter-spacing="2">FASE 01 · 12 MAR</text>
+  <text x="524" y="286" font-size="15" fill="#FFFFFF" font-weight="700">Fundación</text>
+  <line x1="524" y1="293" x2="795" y2="293" stroke="#5B2D9E" stroke-width="1" stroke-opacity="0.5"/>
+  <text x="524" y="308" font-size="11" fill="#C4B0F0">· Auth + Supabase + RLS</text>
+  <text x="524" y="324" font-size="11" fill="#C4B0F0">· i18n: ES / EN / FR-CA</text>
+  <text x="524" y="340" font-size="11" fill="#C4B0F0">· Primeros proveedores reales</text>
+
+  <!-- CARD B: El Gran Sprint -->
+  <rect x="828" y="252" width="291" height="100" rx="8" fill="#2D1057" fill-opacity="0.85" stroke="#5B2D9E" stroke-width="1"/>
+  <rect x="828" y="252" width="291" height="4" rx="2" fill="#8B5DCE"/>
+  <text x="836" y="270" font-size="9" fill="#A07DE0" font-weight="700" letter-spacing="2">FASE 02 · 25 MAR</text>
+  <text x="836" y="286" font-size="15" fill="#FFFFFF" font-weight="700">El Gran Sprint</text>
+  <line x1="836" y1="293" x2="1107" y2="293" stroke="#5B2D9E" stroke-width="1" stroke-opacity="0.5"/>
+  <text x="836" y="308" font-size="11" fill="#C4B0F0">· 103 commits en 4 días</text>
+  <text x="836" y="324" font-size="11" fill="#C4B0F0">· Dashboard + Panel admin</text>
+  <text x="836" y="340" font-size="11" fill="#C4B0F0">· Comparador de remesas</text>
+
+  <!-- CARD C: Crecimiento -->
+  <rect x="516" y="362" width="291" height="100" rx="8" fill="#2D1057" fill-opacity="0.85" stroke="#5B2D9E" stroke-width="1"/>
+  <rect x="516" y="362" width="291" height="4" rx="2" fill="#A070D8"/>
+  <text x="524" y="380" font-size="9" fill="#A07DE0" font-weight="700" letter-spacing="2">FASE 03 · ABRIL</text>
+  <text x="524" y="396" font-size="15" fill="#FFFFFF" font-weight="700">Crecimiento</text>
+  <line x1="524" y1="403" x2="795" y2="403" stroke="#5B2D9E" stroke-width="1" stroke-opacity="0.5"/>
+  <text x="524" y="418" font-size="11" fill="#C4B0F0">· Messaging + Emails Resend</text>
+  <text x="524" y="434" font-size="11" fill="#C4B0F0">· SEO + ManadaStories</text>
+  <text x="524" y="450" font-size="11" fill="#C4B0F0">· Booking + herramientas</text>
+
+  <!-- CARD D: Lanzamiento (gold) -->
+  <rect x="828" y="362" width="291" height="100" rx="8" fill="#120800" fill-opacity="0.9" stroke="#C9953A" stroke-width="1" stroke-opacity="0.7"/>
+  <rect x="828" y="362" width="291" height="4" rx="2" fill="#C9953A"/>
+  <text x="836" y="380" font-size="9" fill="#C9953A" font-weight="700" letter-spacing="2">FASE 04 · 2 MAY</text>
+  <text x="836" y="396" font-size="15" fill="#FFFFFF" font-weight="700">Lanzamiento 🚀</text>
+  <line x1="836" y1="403" x2="1107" y2="403" stroke="#C9953A" stroke-width="1" stroke-opacity="0.4"/>
+  <text x="836" y="418" font-size="11" fill="#F0D89A">· Stripe Connect</text>
+  <text x="836" y="434" font-size="11" fill="#F0D89A">· Mercado Pago</text>
+  <text x="836" y="450" font-size="11" fill="#F0D89A">· Directorio en producción</text>
+
+  <!-- Code bottom stat -->
+  <rect x="516" y="472" width="603" height="26" rx="8" fill="#1E0A3C" stroke="#7B4DC8" stroke-width="1" stroke-opacity="0.4"/>
+  <text x="817" y="489" font-size="11" fill="#A07DE0" text-anchor="middle" font-weight="500">304 commits · React + Supabase + Stripe + Mercado Pago · i18next · Resend</text>
+
+  <!-- ========== FOOTER ========== -->
+  <line x1="60" y1="511" x2="1140" y2="511" stroke="#3D1A78" stroke-width="1"/>
+
+  <!-- Quote -->
+  <text x="60" y="535" font-size="13" fill="#7B4DC8" font-weight="600" font-style="italic">"La comunidad siempre va primero. El código lo hizo posible."</text>
+
+  <!-- Built with Claude badge -->
+  <rect x="852" y="519" width="288" height="48" rx="10" fill="#1E0A3C" stroke="#7B4DC8" stroke-width="1.5"/>
+  <polygon points="872,543 881,534 890,543 881,552" fill="#7B4DC8"/>
+  <text x="900" y="538" font-size="10" fill="#A07DE0" font-weight="500">Copiloto de código:</text>
+  <text x="900" y="555" font-size="15" fill="#FFFFFF" font-weight="800">Claude · Anthropic</text>
+
+  <!-- Bottom row -->
+  <text x="60" y="581" font-size="11" fill="#3D1A70">#SoyManada  #BuildInPublic  #ComunidadPrimero  #ReactJS  #Supabase  #Claude  #Migrantes</text>
+  <text x="1140" y="581" font-size="13" fill="#7B4DC8" text-anchor="end" font-weight="600">soymanada.com</text>
+
+  <!-- Paw decoration -->
+  <circle cx="1130" cy="615" r="12" fill="#2D1057" fill-opacity="0.4"/>
+  <circle cx="1110" cy="603" r="6" fill="#2D1057" fill-opacity="0.35"/>
+  <circle cx="1122" cy="599" r="6" fill="#2D1057" fill-opacity="0.35"/>
+  <circle cx="1136" cy="599" r="6" fill="#2D1057" fill-opacity="0.35"/>
+  <circle cx="1148" cy="603" r="6" fill="#2D1057" fill-opacity="0.35"/>
+</svg>
