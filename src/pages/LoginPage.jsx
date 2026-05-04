@@ -9,8 +9,8 @@ import PawIcon from '../components/PawIcon'
 import './LoginPage.css'
 
 export default function LoginPage() {
-  const { t }       = useTranslation()
-  const { user }    = useAuth()
+  const { t }            = useTranslation()
+  const { user, loading: authLoading } = useAuth()
   const navigate    = useNavigate()
   const location    = useLocation()
   // Si viene de una ruta protegida o del gate, volver ahí tras el login
@@ -27,10 +27,18 @@ export default function LoginPage() {
   const [error,     setError]     = useState(null)
   const [success,   setSuccess]   = useState(null)
 
-  // Redirigir si ya tiene sesión
+  // Título de pestaña
   useEffect(() => {
-    if (user) navigate(from, { replace: true })
-  }, [user, navigate, from])
+    document.title = mode === 'register' ? 'Crear cuenta | SoyManada' : 'Ingresar | SoyManada'
+  }, [mode])
+
+  // Redirigir si ya tiene sesión (guard against looping back to /login)
+  useEffect(() => {
+    if (!authLoading && user) {
+      const dest = from === '/login' ? '/proveedores' : from
+      navigate(dest, { replace: true })
+    }
+  }, [authLoading, user, navigate, from])
 
   // Capturar error OAuth en URL hash
   useEffect(() => {
@@ -69,7 +77,10 @@ export default function LoginPage() {
         const { error } = await supabase.auth.signUp({
           email,
           password,
-          options: { data: { full_name: name } }
+          options: {
+            data: { full_name: name },
+            emailRedirectTo: `${import.meta.env.VITE_SITE_URL ?? window.location.origin}/login`,
+          },
         })
         if (error) throw error
         trackEvent(Events.SIGN_UP, { method: 'email' })
@@ -97,6 +108,10 @@ export default function LoginPage() {
     setError(null)
     setSuccess(null)
   }
+
+  // While Supabase is resolving the session (e.g., consuming email confirmation token from URL),
+  // don't flash the login form — just show a blank page, the redirect effect will fire once ready.
+  if (authLoading) return null
 
   return (
     <main className="lgp">

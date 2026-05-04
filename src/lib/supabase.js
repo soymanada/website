@@ -7,4 +7,9 @@ if (!supabaseUrl || !supabaseKey) {
   console.error('[Supabase] Faltan variables de entorno VITE_SUPABASE_URL o VITE_SUPABASE_ANON_KEY')
 }
 
-export const supabase = createClient(supabaseUrl, supabaseKey)
+export const supabase = createClient(supabaseUrl, supabaseKey, {
+  auth: {
+    flowType: 'implicit',
+    detectSessionInUrl: true,
+  },
+})
