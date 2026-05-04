@@ -13,10 +13,35 @@ export default function MigrantAccountPage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
 
-  const [editingName, setEditingName] = useState(false)
-  const [newName,     setNewName]     = useState('')
-  const [nameSaving,  setNameSaving]  = useState(false)
-  const [nameMsg,     setNameMsg]     = useState(null) // { ok: bool, text: string }
+  const [editingName,   setEditingName]   = useState(false)
+  const [newName,       setNewName]       = useState('')
+  const [nameSaving,    setNameSaving]    = useState(false)
+  const [nameMsg,       setNameMsg]       = useState(null) // { ok: bool, text: string }
+
+  const [changingPw,    setChangingPw]    = useState(false)
+  const [pwNew,         setPwNew]         = useState('')
+  const [pwConfirm,     setPwConfirm]     = useState('')
+  const [pwSaving,      setPwSaving]      = useState(false)
+  const [pwMsg,         setPwMsg]         = useState(null) // { ok: bool, text: string }
+
+  // Detectar si el usuario usa Google OAuth (no tiene contraseña propia)
+  const isOAuthUser = user?.app_metadata?.provider !== 'email'
+
+  const cancelPw = () => { setChangingPw(false); setPwNew(''); setPwConfirm(''); setPwMsg(null) }
+
+  const savePw = async () => {
+    if (pwNew.length < 6) { setPwMsg({ ok: false, text: 'La contraseña debe tener al menos 6 caracteres.' }); return }
+    if (pwNew !== pwConfirm) { setPwMsg({ ok: false, text: 'Las contraseñas no coinciden.' }); return }
+    setPwSaving(true); setPwMsg(null)
+    const { error } = await supabase.auth.updateUser({ password: pwNew })
+    setPwSaving(false)
+    if (error) {
+      setPwMsg({ ok: false, text: 'No se pudo actualizar la contraseña. Inténtalo de nuevo.' })
+    } else {
+      setPwMsg({ ok: true, text: '✓ Contraseña actualizada correctamente.' })
+      setTimeout(cancelPw, 2000)
+    }
+  }
 
   useEffect(() => {
     document.title = t('account_page.meta_title')
@@ -157,6 +182,60 @@ export default function MigrantAccountPage() {
             <span className="macct__label t-sm">{t('account_page.email_label')}</span>
             <span className="macct__value">{user?.email ?? '—'}</span>
           </div>
+
+          {/* Contraseña — solo para usuarios email/password */}
+          {!isOAuthUser && (
+            <div className="macct__row">
+              <div className="macct__row-head">
+                <span className="macct__label t-sm">Contraseña</span>
+                {!changingPw && (
+                  <button type="button" className="macct__edit-btn t-xs" onClick={() => setChangingPw(true)}>
+                    Cambiar
+                  </button>
+                )}
+              </div>
+
+              {changingPw ? (
+                <div className="macct__name-edit">
+                  <input
+                    className="macct__name-input"
+                    type="password"
+                    value={pwNew}
+                    onChange={e => setPwNew(e.target.value)}
+                    placeholder="Nueva contraseña (mín. 6 caracteres)"
+                    autoFocus
+                    disabled={pwSaving}
+                  />
+                  <input
+                    className="macct__name-input"
+                    type="password"
+                    value={pwConfirm}
+                    onChange={e => setPwConfirm(e.target.value)}
+                    onKeyDown={e => { if (e.key === 'Enter') savePw(); if (e.key === 'Escape') cancelPw() }}
+                    placeholder="Confirmar nueva contraseña"
+                    disabled={pwSaving}
+                    style={{ marginTop: 8 }}
+                  />
+                  <div className="macct__name-actions">
+                    <button type="button" className="btn btn-primary btn-sm" onClick={savePw}
+                      disabled={pwSaving || !pwNew || !pwConfirm}>
+                      <span>{pwSaving ? 'Guardando…' : 'Guardar'}</span>
+                    </button>
+                    <button type="button" className="btn btn-ghost btn-sm" onClick={cancelPw} disabled={pwSaving}>
+                      Cancelar
+                    </button>
+                  </div>
+                  {pwMsg && (
+                    <p className={`macct__name-msg t-xs${pwMsg.ok ? ' macct__name-msg--ok' : ' macct__name-msg--err'}`}>
+                      {pwMsg.text}
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <span className="macct__value" style={{ letterSpacing: '0.15em', color: 'var(--text-300)' }}>••••••••</span>
+              )}
+            </div>
+          )}
         </div>
 
         <div className="macct__actions">

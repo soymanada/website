@@ -52,7 +52,28 @@ function AvatarUploader({ provider, onUpload, uploading }) {
 
 // ── Editor de perfil ─────────────────────────────────────────────
 function ProviderProfileEditor({ provider, onSave, saving, onAvatarUpload, avatarUploading }) {
-  const { t } = useTranslation()
+  const { t }    = useTranslation()
+  const { user } = useAuth()
+
+  // Cambio de contraseña
+  const isOAuthUser = user?.app_metadata?.provider !== 'email'
+  const [changingPw, setChangingPw] = useState(false)
+  const [pwNew,      setPwNew]      = useState('')
+  const [pwConfirm,  setPwConfirm]  = useState('')
+  const [pwSaving,   setPwSaving]   = useState(false)
+  const [pwMsg,      setPwMsg]      = useState(null) // { ok: bool, text: string }
+
+  const cancelPw = () => { setChangingPw(false); setPwNew(''); setPwConfirm(''); setPwMsg(null) }
+  const savePw = async () => {
+    if (pwNew.length < 6) { setPwMsg({ ok: false, text: 'Mínimo 6 caracteres.' }); return }
+    if (pwNew !== pwConfirm) { setPwMsg({ ok: false, text: 'Las contraseñas no coinciden.' }); return }
+    setPwSaving(true); setPwMsg(null)
+    const { error } = await supabase.auth.updateUser({ password: pwNew })
+    setPwSaving(false)
+    if (error) setPwMsg({ ok: false, text: 'No se pudo actualizar. Inténtalo de nuevo.' })
+    else { setPwMsg({ ok: true, text: '✓ Contraseña actualizada.' }); setTimeout(cancelPw, 2000) }
+  }
+
   const [form, setForm] = useState({
     name:                provider?.name                ?? '',
     description:         provider?.description         ?? '',
@@ -163,6 +184,54 @@ function ProviderProfileEditor({ provider, onSave, saving, onAvatarUpload, avata
           <span>{saving ? t('pdash.saving') : t('pdash.save_changes')}</span>
         </button>
       </div>
+
+      {/* Cambio de contraseña — solo para usuarios email/password */}
+      {!isOAuthUser && (
+        <div className="pdash__pw-section">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+            <p className="label pdash__section-label" style={{ margin: 0 }}>Contraseña</p>
+            {!changingPw && (
+              <button type="button" className="btn btn-ghost btn-sm" onClick={() => setChangingPw(true)}>
+                Cambiar contraseña
+              </button>
+            )}
+          </div>
+
+          {changingPw ? (
+            <div className="pdash__form">
+              <div className="pdash__field">
+                <label className="pdash__label t-sm">Nueva contraseña</label>
+                <input className="pdash__input" type="password" value={pwNew}
+                  onChange={e => setPwNew(e.target.value)}
+                  placeholder="Mínimo 6 caracteres" autoFocus disabled={pwSaving} />
+              </div>
+              <div className="pdash__field">
+                <label className="pdash__label t-sm">Confirmar contraseña</label>
+                <input className="pdash__input" type="password" value={pwConfirm}
+                  onChange={e => setPwConfirm(e.target.value)}
+                  onKeyDown={e => { if (e.key === 'Enter') savePw(); if (e.key === 'Escape') cancelPw() }}
+                  placeholder="Repite la nueva contraseña" disabled={pwSaving} />
+              </div>
+              {pwMsg && (
+                <p className="t-xs" style={{ color: pwMsg.ok ? 'var(--green-700, #15803d)' : '#dc2626', marginTop: 4 }}>
+                  {pwMsg.text}
+                </p>
+              )}
+              <div style={{ display: 'flex', gap: 8, marginTop: 4 }}>
+                <button type="button" className="btn btn-primary btn-sm" onClick={savePw}
+                  disabled={pwSaving || !pwNew || !pwConfirm}>
+                  <span>{pwSaving ? 'Guardando…' : 'Guardar contraseña'}</span>
+                </button>
+                <button type="button" className="btn btn-ghost btn-sm" onClick={cancelPw} disabled={pwSaving}>
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          ) : (
+            <p className="t-xs" style={{ color: 'var(--text-300)' }}>••••••••</p>
+          )}
+        </div>
+      )}
 
       {/* Traducciones automáticas */}
       <div className="pdash__translations">

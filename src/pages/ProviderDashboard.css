@@ -959,3 +959,10 @@
 @media (max-width: 480px) {
   .pdash__upgrade-wolf-teaser { flex-direction: column; gap: 10px; }
 }
+
+/* Sección cambio de contraseña */
+.pdash__pw-section {
+  border-top: 1px solid var(--border-100);
+  padding-top: 20px;
+  margin-top: 24px;
+}
