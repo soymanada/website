@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>SoyManada</title>
+    <script>
+      // SPA redirect para GitHub Pages.
+      // Codifica el path en la query string y redirige al root,
+      // donde index.html lo restaura antes de que React Router monte.
+      // pathSegmentsToKeep = 0 porque se usa dominio personalizado (soymanada.com)
+      var l = window.location;
+      l.replace(
+        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+        '/?/' +
+        l.pathname.slice(1).replace(/&/g, '~and~') +
+        (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+        l.hash
+      );
+    </script>
+  </head>
+  <body></body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <meta 
+      name="description" 
+      content="SoyManada – El directorio de confianza para la comunidad migrante. Conecta con servicios verificados." 
+    />
+
+    <!-- Open Graph -->
+    <meta property="og:type"        content="website" />
+    <meta property="og:url"         content="https://soymanada.com/" />
+    <meta property="og:title"       content="SoyManada – Directorio para la comunidad migrante" />
+    <meta property="og:description" content="Encuentra proveedores verificados de seguros, migración, traducciones, banca y más. Hecho para la comunidad hispanohablante." />
+    <meta property="og:image"       content="https://soymanada.com/og-image.png" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card"        content="summary_large_image" />
+    <meta name="twitter:title"       content="SoyManada – Directorio para la comunidad migrante" />
+    <meta name="twitter:description" content="Encuentra proveedores verificados de seguros, migración, traducciones, banca y más. Hecho para la comunidad hispanohablante." />
+    <meta name="twitter:image"       content="https://soymanada.com/og-image.png" />
+    
+    <title>SoyManada – Directorio para la comunidad migrante</title>
+
+    <!-- SPA restore: decodifica el path que 404.html codificó en la query string -->
+    <script>
+      (function(l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function(s) {
+            return s.replace(/~and~/g, '&');
+          });
+          window.history.replaceState(
+            null, null,
+            l.pathname.slice(0, -1) + decoded[0] +
+            (decoded[1] ? '?' + decoded[1] : '') +
+            l.hash
+          );
+        }
+      }(window.location));
+    </script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8THTZR9NSJ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      /**
+       * IMPORTANTE: 'send_page_view: false' para evitar duplicados, 
+       * ya que React Router maneja las vistas en App.jsx
+       */
+      gtag('config', 'G-8THTZR9NSJ', { send_page_view: false });
+    </script>
+    <script type="module" crossorigin src="/assets/index-BFBW1Elg.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/react-BqAAhpKt.js">
+    <link rel="modulepreload" crossorigin href="/assets/supabase-C9oWVvfZ.js">
+    <link rel="modulepreload" crossorigin href="/assets/i18n-DfBN_uai.js">
+    <link rel="modulepreload" crossorigin href="/assets/icons-BqoWYjdG.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-BCtLfnaI.css">
+  </head>
+  <body>
+    <div id="root"></div>
+
+  </body>
+</html>
