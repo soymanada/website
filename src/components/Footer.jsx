@@ -66,7 +66,7 @@ export default function Footer() {
             <nav className="footer__links">
               <Link to="/registro-proveedores">{t('footer.link_proveedor')}</Link>
               <Link to="/verificacion">{t('footer.link_verificacion')}</Link>
-              <Link to="/planes">{t('pricing_page.link_pricing')}</Link>
+              {/* <Link to="/planes">{t('pricing_page.link_pricing')}</Link> — desactivado período gratuito */}
               <a href="https://chat.whatsapp.com/CMIWk9cQkEIDso4Ll6JG8j" target="_blank" rel="noopener noreferrer">{t('footer.link_whatsapp')}</a>
               <button className="footer__feedback-btn" onClick={() => setShowFeedback(true)}>
                 {t('feedback.footer_cta')}

@@ -522,3 +522,33 @@
   font-size: 0.85rem;
   color: #dc2626;
 }
+
+/* Banner período gratuito */
+.free-period-banner {
+  display: flex;
+  gap: 0.875rem;
+  align-items: flex-start;
+  background: rgba(123, 77, 200, 0.07);
+  border: 1px solid rgba(123, 77, 200, 0.25);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.75rem;
+  font-size: 0.875rem;
+  color: #4c1d95;
+}
+.free-period-icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.free-period-banner strong {
+  display: block;
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+  color: #3b1f6e;
+}
+.free-period-banner p {
+  margin: 0;
+  color: #6d28d9;
+  line-height: 1.5;
+}

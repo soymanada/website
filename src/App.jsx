@@ -10,15 +10,15 @@ import LoginPage            from './pages/LoginPage'
 import ProviderDashboard    from './pages/ProviderDashboard'
 import ResetPasswordPage    from './pages/ResetPasswordPage'
 import AdminPanel           from './pages/AdminPanel'
-import PricingPage          from './pages/PricingPage'
+// import PricingPage          from './pages/PricingPage'          // desactivado — período gratuito
 import VerificacionPage     from './pages/VerificacionPage'
 import ProviderPage         from './pages/ProviderPage'
 import FirstStepsPage       from './pages/FirstStepsPage'
 import MigrantAccountPage   from './pages/MigrantAccountPage'
 import BookingRoom          from './pages/BookingRoom'
 import OpinarPage           from './pages/OpinarPage'
-import PaymentSuccessPage   from './pages/PaymentSuccessPage'
-import PaymentCancelPage    from './pages/PaymentCancelPage'
+// import PaymentSuccessPage   from './pages/PaymentSuccessPage'   // desactivado — período gratuito
+// import PaymentCancelPage    from './pages/PaymentCancelPage'    // desactivado — período gratuito
 import ProtectedRoute       from './components/ProtectedRoute'
 import RemesasFloat        from './components/RemesasFloat'
 import { AuthProvider }     from './hooks/useAuth'
@@ -89,7 +89,8 @@ function Layout() {
         <Route path="/categoria/:slug" element={<CategoryPage />} />
         <Route path="/proveedores"          element={<ProvidersPage />} />
         <Route path="/registro-proveedores" element={<RegistroProveedoresPage />} />
-        <Route path="/planes"               element={<PricingPage />} />
+        {/* PLANES Y PAGOS — desactivados hasta lanzamiento comercial */}
+        {/* <Route path="/planes"         element={<PricingPage />} /> */}
         <Route path="/verificacion"         element={<VerificacionPage />} />
         <Route path="/proveedor/:slug"      element={<ProviderPage />} />
         <Route path="/primeros-pasos"       element={<FirstStepsPage />} />
@@ -116,9 +117,8 @@ function Layout() {
           </ProtectedRoute>
         } />
         <Route path="/opinar"               element={<OpinarPage />} />
-        {/* Stripe payment return URLs */}
-        <Route path="/pago/exito"           element={<PaymentSuccessPage />} />
-        <Route path="/pago/cancelado"       element={<PaymentCancelPage />} />
+        {/* <Route path="/pago/exito"     element={<PaymentSuccessPage />} /> */}
+        {/* <Route path="/pago/cancelado" element={<PaymentCancelPage />} /> */}
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
