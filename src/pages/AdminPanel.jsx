@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../hooks/useAuth'
+import { isGenericProviderName } from '../utils/validateProviderName'
 import './AdminPanel.css'
 
 const fmt = (iso) => iso ? new Date(iso).toLocaleDateString('es-CL') : '—'
@@ -755,6 +756,11 @@ function SubmissionsPanel() {
                   <tr key={s.id} className={expanded === s.id ? 'adm-tr--expanded' : ''}>
                     <td>
                       <strong>{s.business_name ?? '—'}</strong>
+                      {isGenericProviderName(s.business_name) && (
+                        <span className="badge-generic-name" title="El nombre parece genérico — revisar antes de aprobar">
+                          ⚠️ Nombre genérico
+                        </span>
+                      )}
                       <br /><span className="adm-td--sub">{s.service_title ?? ''}</span>
                     </td>
                     <td className="adm-td--sub">{(s.categories ?? []).join(', ') || '—'}</td>

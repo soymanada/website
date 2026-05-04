@@ -304,3 +304,20 @@
   display: flex;
   gap: 8px;
 }
+
+/* ── Badge nombre genérico en panel admin ──────────────────────────────────── */
+.badge-generic-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: #b45309;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+  cursor: help;
+}

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import PhoneInput from 'react-phone-number-input'
 import 'react-phone-number-input/style.css'
 import { trackEvent, Events } from '../utils/analytics'
+import { isGenericProviderName } from '../utils/validateProviderName'
 import { supabase } from '../lib/supabase'
 import PawIcon from '../components/PawIcon'
 import './RegistroProveedoresPage.css'
@@ -68,6 +69,7 @@ export default function RegistroProveedoresPage() {
   const [submitted, setSubmitted]   = useState(false)
   const [error, setError]           = useState('')
   const [fieldErrors, setFieldErrors] = useState({})
+  const [nameGenericWarning, setNameGenericWarning] = useState(false)
 
   const clearErr = (field) => setFieldErrors(prev => { const n = { ...prev }; delete n[field]; return n })
 
@@ -326,12 +328,43 @@ export default function RegistroProveedoresPage() {
                 <div className="ppg-form__section">
                   <h3 className="ppg-form__section-title">{t('registro.seccion_negocio')}</h3>
 
-                  <label className={`ppg-form__field${fieldErrors.business_name ? ' ppg-form__field--error' : ''}`}>
-                    <span className="ppg-form__label">{t('registro.campo_nombre')} <em>*</em></span>
+                  <div className={`ppg-form__field${fieldErrors.business_name ? ' ppg-form__field--error' : ''}`}>
+                    <label className="ppg-form__label" htmlFor="business_name">{t('registro.campo_nombre')} <em>*</em></label>
                     <span className="ppg-form__hint">{t('registro.campo_nombre_hint')}</span>
-                    <input value={form.business_name} onChange={e => { set('business_name', e.target.value); clearErr('business_name') }} placeholder={t('registro.campo_nombre_placeholder')} />
+
+                    {/* Advertencia estática — siempre visible */}
+                    <div className="name-hint-box">
+                      <span className="name-hint-icon">⚠️</span>
+                      <div>
+                        <strong>El nombre debe identificarte a ti, no a tu servicio.</strong>
+                        <div className="name-hint-examples">
+                          <span className="name-example valid">✅ Daniela Valenzuela — Traductora Certificada</span>
+                          <span className="name-example invalid">❌ Traducciones certificadas para Canadá</span>
+                        </div>
+                        <span className="name-hint-footer">Nombres genéricos serán rechazados en la revisión manual.</span>
+                      </div>
+                    </div>
+
+                    <input
+                      id="business_name"
+                      value={form.business_name}
+                      onChange={e => {
+                        set('business_name', e.target.value)
+                        clearErr('business_name')
+                        setNameGenericWarning(isGenericProviderName(e.target.value))
+                      }}
+                      placeholder={t('registro.campo_nombre_placeholder')}
+                    />
                     {fieldErrors.business_name && <span className="ppg-form__field-error">{fieldErrors.business_name}</span>}
-                  </label>
+
+                    {/* Warning en tiempo real — solo aparece si detecta nombre genérico */}
+                    {nameGenericWarning && (
+                      <div className="name-generic-warning" role="alert">
+                        🚫 Este nombre parece describir un servicio, no una persona.
+                        Usá tu nombre real seguido de tu especialidad.
+                      </div>
+                    )}
+                  </div>
 
                   <label className={`ppg-form__field${fieldErrors.service_title ? ' ppg-form__field--error' : ''}`}>
                     <span className="ppg-form__label">{t('registro.campo_servicio')} <em>*</em></span>

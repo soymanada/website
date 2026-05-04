@@ -487,3 +487,38 @@
 @media (max-width: 600px) {
   .ppg-hero__promo { flex-direction: column; align-items: flex-start; gap: 6px; }
 }
+
+/* ── Validación nombre genérico ────────────────────────────────────────────── */
+.name-hint-box {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+  color: #d97706;
+}
+.name-hint-icon { font-size: 1rem; margin-top: 2px; flex-shrink: 0; }
+.name-hint-examples {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin: 0.35rem 0;
+}
+.name-example { font-size: 0.82rem; }
+.name-example.valid  { color: #16a34a; }
+.name-example.invalid { color: #dc2626; }
+.name-hint-footer { color: #92400e; font-size: 0.8rem; }
+
+.name-generic-warning {
+  background: rgba(220, 38, 38, 0.08);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  border-radius: 6px;
+  padding: 0.6rem 0.9rem;
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  color: #dc2626;
+}
