@@ -94,7 +94,8 @@ function ProviderProfileEditor({ provider, onSave, saving, onAvatarUpload, avata
   }
 
   const handleSave = () => {
-    if (hasProfanity(form.name)) return // bloqueado silenciosamente — el warning ya es visible
+    if (hasProfanity(form.name)) return
+    if (isGenericProviderName(form.name)) return
     if (form.payment_link && !form.payment_link.startsWith('https://')) {
       setPayLinkError(t('errors.url_must_be_https'))
       return
@@ -193,7 +194,8 @@ function ProviderProfileEditor({ provider, onSave, saving, onAvatarUpload, avata
           <p className="t-xs" style={{ color: 'var(--text-500)' }}>{t('pdash.badge_assigned_text')}</p>
         </div>
 
-        <button className="btn btn-primary pdash__save-btn" onClick={handleSave} disabled={saving}>
+        <button className="btn btn-primary pdash__save-btn" onClick={handleSave}
+          disabled={saving || hasProfanity(form.name) || isGenericProviderName(form.name)}>
           <span>{saving ? t('pdash.saving') : t('pdash.save_changes')}</span>
         </button>
       </div>
