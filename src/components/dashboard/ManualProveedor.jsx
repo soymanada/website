@@ -12,11 +12,13 @@ const ARTICLES = [
     content: `Tu perfil es lo primero que ve un migrante al encontrarte en el directorio. Un perfil completo genera más confianza y más contactos.
 
 Campos esenciales:
-• **Nombre / Marca** — tu nombre o el nombre de tu servicio.
+• **Nombre / Marca** — tu nombre real o el de tu marca. Ej: "María González" o "Migrando Contigo". No puede ser genérico (ej: "Seguros", "Traducciones").
 • **Servicio principal** — una frase corta que describe lo que haces. Ej: "Asesoría migratoria a Canadá".
 • **Descripción** — cuéntale al migrante quién eres y cómo puedes ayudarlo. Mínimo 3 oraciones.
 • **Países donde operas** — separados por coma. Ej: Canadá, Chile.
 • **Idiomas** — los idiomas en que puedes atender.
+
+⚠️ Si el nombre es muy genérico, el botón **Guardar cambios** se desactiva automáticamente hasta que lo corrijas.
 
 Recuerda hacer clic en **Guardar cambios** al final de la sección.`,
     links: [{ label: 'Ir a Mi Perfil', tab: 'perfil' }],
@@ -57,6 +59,24 @@ Pasos:
 4. Haz clic en **Guardar cambios**.
 
 El botón aparecerá en tu perfil inmediatamente.`,
+    links: [{ label: 'Ir a Mi Perfil', tab: 'perfil' }],
+  },
+
+  {
+    id: 'perfil-contrasena',
+    category: 'Mi Perfil',
+    icon: '🔑',
+    title: 'Cambiar tu contraseña',
+    content: `Si iniciaste sesión con email y contraseña (no con Google), puedes cambiarla directamente desde tu perfil.
+
+Pasos:
+1. Ve a la pestaña **Mi Perfil**.
+2. Baja hasta la sección "Contraseña" (al final de la página).
+3. Haz clic en **Cambiar**.
+4. Ingresa tu nueva contraseña (mínimo 6 caracteres) y confírmala.
+5. Haz clic en **Guardar contraseña**.
+
+Si iniciaste sesión con Google, esta sección no aparece — tu contraseña la gestiona Google directamente.`,
     links: [{ label: 'Ir a Mi Perfil', tab: 'perfil' }],
   },
 
@@ -232,6 +252,57 @@ No necesitas hacer nada adicional — el sistema se encarga de todo.`,
     links: [{ label: 'Ir a Reservas', tab: 'reservas' }],
   },
 
+  // ── RECOMENDACIONES ──────────────────────────────────────────
+  {
+    id: 'recomendaciones-que-son',
+    category: 'Recomendaciones',
+    icon: '🤝',
+    title: '¿Qué son las recomendaciones entre proveedores?',
+    content: `Las recomendaciones son avales que un proveedor verificado puede dar a otro. Cuando alguien te recomienda, aparece un badge en tu tarjeta del directorio que dice "Recomendado por [nombre]".
+
+Esto aumenta la confianza de los migrantes que te encuentran y diferencia tu perfil de otros.
+
+Cada proveedor puede emitir hasta **5 recomendaciones activas** en total. Puedes retirarlas cuando quieras.`,
+    links: [{ label: 'Ir a Recomendaciones', tab: 'recomendaciones' }],
+  },
+  {
+    id: 'recomendaciones-como-dar',
+    category: 'Recomendaciones',
+    icon: '✍️',
+    title: 'Cómo recomendar a otro proveedor',
+    content: `Puedes recomendar a proveedores que ya están en SoyManada o sugerir a alguien nuevo para que se una.
+
+**Recomendar a un proveedor existente:**
+1. Ve a la pestaña **Recomendaciones**.
+2. Haz clic en **Recomendar a alguien**.
+3. En la pestaña "Buscar proveedor existente", escribe el nombre.
+4. Selecciónalo de la lista.
+5. Escribe tu recomendación (mínimo 10 caracteres, máximo 120).
+6. Haz clic en **Confirmar recomendación**.
+
+**Recomendar a alguien nuevo:**
+1. En el mismo modal, ve a la pestaña "Recomendar a alguien nuevo".
+2. Completa: nombre, categoría, servicio que ofrece (obligatorios) y contacto (opcional).
+3. Escribe tu recomendación y confirma.
+4. La persona quedará pendiente de revisión por el equipo Manada antes de aparecer en el directorio.`,
+    links: [{ label: 'Ir a Recomendaciones', tab: 'recomendaciones' }],
+  },
+  {
+    id: 'recomendaciones-retirar',
+    category: 'Recomendaciones',
+    icon: '↩️',
+    title: 'Cómo retirar una recomendación',
+    content: `Puedes retirar cualquier recomendación que hayas dado en cualquier momento.
+
+Pasos:
+1. Ve a la pestaña **Recomendaciones**.
+2. Verás la lista de todas tus recomendaciones activas.
+3. Haz clic en el ícono ✕ al lado derecho de la que quieres retirar.
+4. Confirma en el diálogo.
+
+La recomendación se desactiva inmediatamente y el badge desaparece del perfil del otro proveedor. El registro queda guardado internamente pero marcado como inactivo.`,
+    links: [{ label: 'Ir a Recomendaciones', tab: 'recomendaciones' }],
+  },
 ]
 
 const CATEGORIES = [...new Set(ARTICLES.map(a => a.category))]

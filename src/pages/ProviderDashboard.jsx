@@ -1031,7 +1031,7 @@ function SectionReservas({ provider }) {
 // ── Main dashboard ────────────────────────────────────────────────
 export default function ProviderDashboard() {
   const { t }    = useTranslation()
-  const { user, loading: authLoading } = useAuth()
+  const { user, loading: authLoading, isAdmin } = useAuth()
 
   const [provider,        setProvider]        = useState(null)
   const [tier,            setTier]            = useState(null)
@@ -1226,6 +1226,11 @@ export default function ProviderDashboard() {
                 className="pdash__hero-link"
               >
                 Ver perfil público ↗
+              </a>
+            )}
+            {isAdmin && (
+              <a href="/admin" className="pdash__hero-link pdash__hero-link--admin">
+                🛡 Panel admin
               </a>
             )}
             <button
