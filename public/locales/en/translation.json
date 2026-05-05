@@ -661,6 +661,7 @@
     "loading": "Loading your profile…",
     "saving": "Saving…",
     "save_changes": "Save changes",
+    "saved_ok": "Changes saved successfully.",
     "save_translations": "Save translations",
     "save_herramientas": "Save tools",
     "tab_perfil": "My profile",

@@ -661,6 +661,7 @@
     "loading": "Chargement de votre profil…",
     "saving": "Enregistrement…",
     "save_changes": "Enregistrer les modifications",
+    "saved_ok": "Modifications enregistrées avec succès.",
     "save_translations": "Enregistrer les traductions",
     "save_herramientas": "Enregistrer les outils",
     "tab_perfil": "Mon profil",
