@@ -1133,7 +1133,8 @@ export default function ProviderDashboard() {
     if (!user || !provider) return
     setAvatarUploading(true)
     const ext  = file.name.split('.').pop()
-    const path = `${provider.id}/avatar.${ext}`
+    // Timestamp en el nombre → URL nueva en cada upload, rompe caché de browser Y CDN
+    const path = `${provider.id}/avatar-${Date.now()}.${ext}`
     const { error: upErr } = await supabase.storage
       .from('provider-avatars')
       .upload(path, file, { upsert: true, contentType: file.type })
@@ -1143,9 +1144,13 @@ export default function ProviderDashboard() {
       .from('provider-avatars')
       .getPublicUrl(path)
 
-    const bust = `${publicUrl}?v=${Date.now()}`
-    await supabase.from('providers').update({ avatar_url: bust }).eq('user_id', user.id)
-    setProvider(prev => ({ ...prev, avatar_url: bust }))
+    const { error: updateErr } = await supabase
+      .from('providers')
+      .update({ avatar_url: publicUrl })
+      .eq('user_id', user.id)
+    if (updateErr) { setAvatarUploading(false); return }
+
+    setProvider(prev => ({ ...prev, avatar_url: publicUrl }))
     setAvatarUploading(false)
   }
 
