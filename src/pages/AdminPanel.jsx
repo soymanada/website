@@ -8,6 +8,7 @@ import { isGenericProviderName } from '../utils/validateProviderName'
 import './AdminPanel.css'
 
 const fmt = (iso) => iso ? new Date(iso).toLocaleDateString('es-CL') : '—'
+const fmtDateTime = (iso) => iso ? new Date(iso).toLocaleString('es-CL', { dateStyle: 'short', timeStyle: 'short' }) : '—'
 
 // ── Usuarios ──────────────────────────────────────────────────────────────────
 function UsersPanel() {
@@ -907,6 +908,180 @@ function PhotosPanel() {
   )
 }
 
+// ── Logs de actividad ─────────────────────────────────────────────────────────
+const LOG_RANGES = [
+  { label: 'Últimos 3 días', days: 3 },
+  { label: 'Últimos 7 días', days: 7 },
+  { label: 'Últimos 30 días', days: 30 },
+]
+
+function LogsPanel() {
+  const [rows,     setRows]     = useState([])
+  const [loading,  setLoading]  = useState(true)
+  const [range,    setRange]    = useState(3)       // días
+  const [search,   setSearch]   = useState('')      // filtro por proveedor
+  const [page,     setPage]     = useState(0)
+  const [providers, setProviders] = useState({})    // { uuid: name }
+  const PAGE_SIZE = 50
+
+  // Cargar mapa id→nombre de proveedores una sola vez
+  useEffect(() => {
+    supabase.from('providers').select('id, name').then(({ data }) => {
+      const map = {}
+      ;(data ?? []).forEach(p => { map[p.id] = p.name })
+      setProviders(map)
+    })
+  }, [])
+
+  const load = useCallback(async () => {
+    setLoading(true)
+    const since = new Date(Date.now() - range * 24 * 60 * 60 * 1000).toISOString()
+    const { data } = await supabase
+      .from('events')
+      .select('id, provider_id, event_type, created_at')
+      .gte('created_at', since)
+      .order('created_at', { ascending: false })
+      .limit(2000)
+    setRows(data ?? [])
+    setPage(0)
+    setLoading(false)
+  }, [range])
+
+  useEffect(() => { load() }, [load])
+
+  // Filtrado por nombre de proveedor (client-side sobre los datos ya cargados)
+  const filtered = rows.filter(r => {
+    if (!search.trim()) return true
+    const name = providers[r.provider_id] ?? r.provider_id ?? ''
+    return name.toLowerCase().includes(search.toLowerCase())
+  })
+
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE)
+  const paged = filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE)
+
+  // Resumen: vistas por proveedor en el rango
+  const summary = Object.entries(
+    rows.reduce((acc, r) => {
+      acc[r.provider_id] = (acc[r.provider_id] ?? 0) + 1
+      return acc
+    }, {})
+  )
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+
+  return (
+    <div className="adm-section">
+      <div className="adm-section__head">
+        <h2 className="adm-section__title">
+          Logs de actividad
+          <span className="adm-badge">{filtered.length} eventos</span>
+          <span className="adm-badge adm-badge--green">retención 30 días</span>
+        </h2>
+      </div>
+
+      {/* Controles */}
+      <div className="adm-logs__controls">
+        <div className="adm-logs__range">
+          {LOG_RANGES.map(r => (
+            <button
+              key={r.days}
+              className={`adm-btn adm-btn--sm ${
+                range === r.days ? 'adm-btn--primary' : 'adm-btn--ghost'
+              }`}
+              onClick={() => setRange(r.days)}>
+              {r.label}
+            </button>
+          ))}
+        </div>
+        <input
+          className="adm-logs__search"
+          placeholder="Filtrar por proveedor…"
+          value={search}
+          onChange={e => { setSearch(e.target.value); setPage(0) }}
+        />
+        <button className="adm-btn adm-btn--sm adm-btn--ghost" onClick={load} title="Refrescar">
+          ↺ Refrescar
+        </button>
+      </div>
+
+      {/* Top proveedores */}
+      {!loading && summary.length > 0 && (
+        <div className="adm-logs__summary">
+          <p className="adm-edit-section__title">Top proveedores por vistas</p>
+          <div className="adm-logs__summary-list">
+            {summary.map(([pid, count]) => (
+              <div key={pid} className="adm-logs__summary-item">
+                <span className="adm-logs__summary-name">
+                  {providers[pid] ?? <span className="adm-td--mono" style={{ fontSize: '0.75rem' }}>{pid.slice(0, 8)}…</span>}
+                </span>
+                <span className="adm-badge">{count}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Tabla */}
+      {loading ? (
+        <p className="adm-loading">Cargando logs…</p>
+      ) : filtered.length === 0 ? (
+        <p className="adm-empty">No hay eventos en este período.</p>
+      ) : (
+        <>
+          <div className="adm-table-wrap">
+            <table className="adm-table">
+              <thead>
+                <tr>
+                  <th>Fecha y hora</th>
+                  <th>Proveedor</th>
+                  <th>Tipo</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paged.map(r => (
+                  <tr key={r.id}>
+                    <td className="adm-td--mono">{fmtDateTime(r.created_at)}</td>
+                    <td>
+                      {providers[r.provider_id]
+                        ? <strong>{providers[r.provider_id]}</strong>
+                        : <span className="adm-td--mono adm-td--sub">{r.provider_id?.slice(0, 8)}…</span>
+                      }
+                    </td>
+                    <td>
+                      <span className="adm-pill adm-pill--provider">{r.event_type}</span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Paginación */}
+          {totalPages > 1 && (
+            <div className="adm-logs__pagination">
+              <button
+                className="adm-btn adm-btn--sm adm-btn--ghost"
+                onClick={() => setPage(p => Math.max(0, p - 1))}
+                disabled={page === 0}>
+                ← Anterior
+              </button>
+              <span className="adm-logs__page-info">
+                Página {page + 1} de {totalPages}
+              </span>
+              <button
+                className="adm-btn adm-btn--sm adm-btn--ghost"
+                onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
+                disabled={page === totalPages - 1}>
+                Siguiente →
+              </button>
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  )
+}
+
 // ── Panel principal ───────────────────────────────────────────────────────────
 export default function AdminPanel() {
   const { t } = useTranslation()
@@ -924,6 +1099,7 @@ export default function AdminPanel() {
     { id: 'providers',   label: t('admin.tabs.providers')   },
     { id: 'submissions', label: t('admin.tabs.submissions') },
     { id: 'photos',      label: t('admin.tabs.photos')      },
+    { id: 'logs',        label: 'Logs'                      },
   ]
 
   useEffect(() => {
@@ -958,6 +1134,7 @@ export default function AdminPanel() {
         {tab === 'providers'   && <ProvidersPanel />}
         {tab === 'submissions' && <SubmissionsPanel />}
         {tab === 'photos'      && <PhotosPanel />}
+        {tab === 'logs'        && <LogsPanel />}
       </div>
     </main>
   )

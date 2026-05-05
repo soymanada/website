@@ -321,3 +321,78 @@
   vertical-align: middle;
   cursor: help;
 }
+
+/* ── Logs Panel ──────────────────────────────────────────────────────────────── */
+.adm-logs__controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.adm-logs__range {
+  display: flex;
+  gap: 6px;
+}
+.adm-logs__search {
+  padding: 6px 12px;
+  border: 1.5px solid var(--iris-200);
+  border-radius: var(--r-sm);
+  font-size: 0.85rem;
+  color: var(--text-700);
+  background: var(--white);
+  font-family: inherit;
+  min-width: 200px;
+  flex: 1;
+  max-width: 300px;
+}
+.adm-logs__search:focus {
+  outline: none;
+  border-color: var(--iris-500);
+}
+
+/* Resumen top proveedores */
+.adm-logs__summary {
+  background: var(--white);
+  border: 1px solid var(--iris-100);
+  border-radius: var(--r-lg);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+}
+.adm-logs__summary-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+.adm-logs__summary-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--iris-50);
+}
+.adm-logs__summary-item:last-child { border-bottom: none; }
+.adm-logs__summary-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-700);
+}
+
+/* Paginación */
+.adm-logs__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--iris-100);
+}
+.adm-logs__page-info {
+  font-size: 0.85rem;
+  color: var(--text-500);
+  min-width: 120px;
+  text-align: center;
+}
