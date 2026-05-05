@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../hooks/useAuth'
 import { isGenericProviderName } from '../utils/validateProviderName'
+import { logAudit } from '../lib/auditLog'
 import './AdminPanel.css'
 
 const fmt = (iso) => iso ? new Date(iso).toLocaleDateString('es-CL') : '—'
@@ -54,22 +55,30 @@ function UsersPanel() {
       )
       const result = await res.json()
       if (result.ok) {
+        await logAudit({ action: 'invite_user', targetType: 'user', targetName: invForm.email, payload: { role: invForm.role, tier: invForm.tier } })
         setInvState('ok')
         setTimeout(() => { setInviting(false); setInvState('idle'); load() }, 1800)
       } else {
+        await logAudit({ action: 'invite_user', targetType: 'user', targetName: invForm.email, payload: { role: invForm.role }, result: 'error', errorMessage: result.error ?? 'Error desconocido' })
         setInvState('error')
         setInvError(result.error ?? 'Error desconocido')
       }
     } catch (e) {
+      await logAudit({ action: 'invite_user', targetType: 'user', targetName: invForm.email, result: 'error', errorMessage: e.message ?? 'Error de red' })
       setInvState('error')
       setInvError(e.message ?? 'Error de red')
     }
   }
 
   const save = async () => {
-    await supabase.from('profiles')
+    const { error } = await supabase.from('profiles')
       .update({ role: editing.role, tier: editing.tier })
       .eq('id', editing.id)
+    await logAudit({
+      action: 'change_role', targetType: 'user', targetId: editing.id,
+      payload: { role: editing.role, tier: editing.tier },
+      result: error ? 'error' : 'ok', errorMessage: error?.message,
+    })
     setEditing(null)
     load()
   }
@@ -263,16 +272,24 @@ function ProvidersPanel() {
   useEffect(() => { load() }, [load])
 
   const toggleVerified = async (p) => {
-    await supabase.from('providers')
-      .update({ verified: !p.verified })
-      .eq('id', p.id)
+    const newVal = !p.verified
+    const { error } = await supabase.from('providers').update({ verified: newVal }).eq('id', p.id)
+    await logAudit({
+      action: newVal ? 'verify_provider' : 'unverify_provider',
+      targetType: 'provider', targetId: p.id, targetName: p.name,
+      result: error ? 'error' : 'ok', errorMessage: error?.message,
+    })
     load()
   }
 
   const toggleActive = async (p) => {
-    await supabase.from('providers')
-      .update({ active: !p.active })
-      .eq('id', p.id)
+    const newVal = !p.active
+    const { error } = await supabase.from('providers').update({ active: newVal }).eq('id', p.id)
+    await logAudit({
+      action: newVal ? 'activate_provider' : 'deactivate_provider',
+      targetType: 'provider', targetId: p.id, targetName: p.name,
+      result: error ? 'error' : 'ok', errorMessage: error?.message,
+    })
     load()
   }
 
@@ -298,6 +315,11 @@ function ProvidersPanel() {
       },
     })
     setSaving(false)
+    await logAudit({
+      action: 'create_provider', targetType: 'provider', targetName: form.name.trim(),
+      payload: { slug: form.slug, category_slug: form.category_slug },
+      result: error ? 'error' : 'ok', errorMessage: error?.message,
+    })
     if (!error) { setCreating(false); load() }
     else alert('Error al crear: ' + error.message)
   }
@@ -346,6 +368,11 @@ function ProvidersPanel() {
     }
 
     setSaving(false)
+    await logAudit({
+      action: 'edit_provider', targetType: 'provider', targetId: id, targetName: f.name.trim(),
+      payload: { tier: f.tier, verified: f.verified, active: f.active },
+      result: error ? 'error' : 'ok', errorMessage: error?.message,
+    })
     if (error) alert('Error al guardar: ' + error.message)
     else { setEditing(null); load() }
   }
@@ -691,7 +718,12 @@ function SubmissionsPanel() {
         website:   s.website   || null,
       },
     })
-    if (error) { alert('Error al crear proveedor: ' + error.message); setActing(null); return }
+    if (error) {
+      await logAudit({ action: 'approve_provider', targetType: 'submission', targetId: s.id, targetName: s.business_name, result: 'error', errorMessage: error.message })
+      alert('Error al crear proveedor: ' + error.message)
+      setActing(null)
+      return
+    }
 
     // Update the user's role to 'provider' so they see the dashboard
     if (userId) {
@@ -702,6 +734,7 @@ function SubmissionsPanel() {
     }
 
     await supabase.from('provider_applications').update({ status: 'approved' }).eq('id', s.id)
+    await logAudit({ action: 'approve_provider', targetType: 'submission', targetId: s.id, targetName: s.business_name, payload: { providerSlug, userId } })
 
     // Notificar al proveedor por email (fire-and-forget)
     if (s.contact_email) {
@@ -723,6 +756,7 @@ function SubmissionsPanel() {
     if (!window.confirm(`¿Rechazar la solicitud de "${s.business_name}"?`)) return
     setActing(s.id)
     await supabase.from('provider_applications').update({ status: 'rejected' }).eq('id', s.id)
+    await logAudit({ action: 'reject_provider', targetType: 'submission', targetId: s.id, targetName: s.business_name })
     setActing(null)
     load()
   }
@@ -859,10 +893,15 @@ function PhotosPanel() {
   useEffect(() => { load() }, [load])
 
   const setStatus = async (id, status) => {
-    await supabase
+    const { error } = await supabase
       .from('community_photos')
       .update({ status, reviewed_at: new Date().toISOString() })
       .eq('id', id)
+    await logAudit({
+      action: status === 'approved' ? 'approve_photo' : 'reject_photo',
+      targetType: 'photo', targetId: id,
+      result: error ? 'error' : 'ok', errorMessage: error?.message,
+    })
     load()
   }
 
@@ -908,7 +947,7 @@ function PhotosPanel() {
   )
 }
 
-// ── Logs de actividad ─────────────────────────────────────────────────────────
+// ── Logs (actividad + errores + audit trail) ─────────────────────────────────
 const LOG_RANGES = [
   { label: 'Últimos 3 días', days: 3 },
   { label: 'Últimos 7 días', days: 7 },
@@ -916,25 +955,29 @@ const LOG_RANGES = [
 ]
 
 function LogsPanel() {
-  const [rows,     setRows]     = useState([])
-  const [loading,  setLoading]  = useState(true)
-  const [range,    setRange]    = useState(3)       // días
-  const [search,   setSearch]   = useState('')      // filtro por proveedor
-  const [page,     setPage]     = useState(0)
-  const [providers, setProviders] = useState({})    // { uuid: name }
+  const [subTab,     setSubTab]    = useState('activity')
+  // ── actividad ──
+  const [rows,       setRows]      = useState([])
+  const [range,      setRange]     = useState(3)
+  const [search,     setSearch]    = useState('')
+  const [page,       setPage]      = useState(0)
+  const [provMap,    setProvMap]   = useState({})
   const PAGE_SIZE = 50
+  // ── errores + audit ──
+  const [errors,     setErrors]    = useState([])
+  const [audit,      setAudit]     = useState([])
+  const [loading,    setLoading]   = useState(true)
 
-  // Cargar mapa id→nombre de proveedores una sola vez
+  // Mapa id→nombre de proveedores
   useEffect(() => {
     supabase.from('providers').select('id, name').then(({ data }) => {
       const map = {}
       ;(data ?? []).forEach(p => { map[p.id] = p.name })
-      setProviders(map)
+      setProvMap(map)
     })
   }, [])
 
-  const load = useCallback(async () => {
-    setLoading(true)
+  const loadActivity = useCallback(async () => {
     const since = new Date(Date.now() - range * 24 * 60 * 60 * 1000).toISOString()
     const { data } = await supabase
       .from('events')
@@ -944,139 +987,215 @@ function LogsPanel() {
       .limit(2000)
     setRows(data ?? [])
     setPage(0)
-    setLoading(false)
   }, [range])
 
-  useEffect(() => { load() }, [load])
+  const loadErrors = useCallback(async () => {
+    const { data } = await supabase
+      .from('system_error_logs')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(100)
+    setErrors(data ?? [])
+  }, [])
 
-  // Filtrado por nombre de proveedor (client-side sobre los datos ya cargados)
+  const loadAudit = useCallback(async () => {
+    const { data } = await supabase
+      .from('audit_logs')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(100)
+    setAudit(data ?? [])
+  }, [])
+
+  useEffect(() => {
+    setLoading(true)
+    Promise.all([loadActivity(), loadErrors(), loadAudit()]).finally(() => setLoading(false))
+  }, [loadActivity, loadErrors, loadAudit])
+
+  const markResolved = async (id) => {
+    await supabase.from('system_error_logs').update({ resolved: true }).eq('id', id)
+    loadErrors()
+  }
+
+  // Actividad: filtro + paginación
   const filtered = rows.filter(r => {
     if (!search.trim()) return true
-    const name = providers[r.provider_id] ?? r.provider_id ?? ''
+    const name = provMap[r.provider_id] ?? r.provider_id ?? ''
     return name.toLowerCase().includes(search.toLowerCase())
   })
-
   const totalPages = Math.ceil(filtered.length / PAGE_SIZE)
-  const paged = filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE)
+  const paged      = filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE)
+  const summary    = Object.entries(
+    rows.reduce((acc, r) => { acc[r.provider_id] = (acc[r.provider_id] ?? 0) + 1; return acc }, {})
+  ).sort((a, b) => b[1] - a[1]).slice(0, 5)
 
-  // Resumen: vistas por proveedor en el rango
-  const summary = Object.entries(
-    rows.reduce((acc, r) => {
-      acc[r.provider_id] = (acc[r.provider_id] ?? 0) + 1
-      return acc
-    }, {})
-  )
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 5)
+  const unresolvedCount = errors.filter(e => !e.resolved).length
 
   return (
     <div className="adm-section">
       <div className="adm-section__head">
-        <h2 className="adm-section__title">
-          Logs de actividad
-          <span className="adm-badge">{filtered.length} eventos</span>
-          <span className="adm-badge adm-badge--green">retención 30 días</span>
-        </h2>
+        <h2 className="adm-section__title">Logs</h2>
       </div>
 
-      {/* Controles */}
-      <div className="adm-logs__controls">
-        <div className="adm-logs__range">
-          {LOG_RANGES.map(r => (
-            <button
-              key={r.days}
-              className={`adm-btn adm-btn--sm ${
-                range === r.days ? 'adm-btn--primary' : 'adm-btn--ghost'
-              }`}
-              onClick={() => setRange(r.days)}>
-              {r.label}
-            </button>
-          ))}
-        </div>
-        <input
-          className="adm-logs__search"
-          placeholder="Filtrar por proveedor…"
-          value={search}
-          onChange={e => { setSearch(e.target.value); setPage(0) }}
-        />
-        <button className="adm-btn adm-btn--sm adm-btn--ghost" onClick={load} title="Refrescar">
-          ↺ Refrescar
+      <div className="adm-subtabs">
+        <button
+          className={`adm-subtab ${subTab === 'activity' ? 'adm-subtab--active' : ''}`}
+          onClick={() => setSubTab('activity')}>
+          📊 Actividad
+          <span className="adm-badge">{filtered.length}</span>
+        </button>
+        <button
+          className={`adm-subtab ${subTab === 'errors' ? 'adm-subtab--active' : ''}`}
+          onClick={() => setSubTab('errors')}>
+          ⚠️ Errores
+          {unresolvedCount > 0 && <span className="adm-badge adm-badge--red">{unresolvedCount}</span>}
+        </button>
+        <button
+          className={`adm-subtab ${subTab === 'audit' ? 'adm-subtab--active' : ''}`}
+          onClick={() => setSubTab('audit')}>
+          🛡 Acciones admin
+          <span className="adm-badge">{audit.length}</span>
         </button>
       </div>
 
-      {/* Top proveedores */}
-      {!loading && summary.length > 0 && (
-        <div className="adm-logs__summary">
-          <p className="adm-edit-section__title">Top proveedores por vistas</p>
-          <div className="adm-logs__summary-list">
-            {summary.map(([pid, count]) => (
-              <div key={pid} className="adm-logs__summary-item">
-                <span className="adm-logs__summary-name">
-                  {providers[pid] ?? <span className="adm-td--mono" style={{ fontSize: '0.75rem' }}>{pid.slice(0, 8)}…</span>}
-                </span>
-                <span className="adm-badge">{count}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      {loading && <p className="adm-loading">Cargando…</p>}
 
-      {/* Tabla */}
-      {loading ? (
-        <p className="adm-loading">Cargando logs…</p>
-      ) : filtered.length === 0 ? (
-        <p className="adm-empty">No hay eventos en este período.</p>
-      ) : (
+      {/* ── Actividad ── */}
+      {!loading && subTab === 'activity' && (
         <>
-          <div className="adm-table-wrap">
-            <table className="adm-table">
-              <thead>
-                <tr>
-                  <th>Fecha y hora</th>
-                  <th>Proveedor</th>
-                  <th>Tipo</th>
-                </tr>
-              </thead>
-              <tbody>
-                {paged.map(r => (
-                  <tr key={r.id}>
-                    <td className="adm-td--mono">{fmtDateTime(r.created_at)}</td>
-                    <td>
-                      {providers[r.provider_id]
-                        ? <strong>{providers[r.provider_id]}</strong>
-                        : <span className="adm-td--mono adm-td--sub">{r.provider_id?.slice(0, 8)}…</span>
-                      }
-                    </td>
-                    <td>
-                      <span className="adm-pill adm-pill--provider">{r.event_type}</span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="adm-logs__controls">
+            <div className="adm-logs__range">
+              {LOG_RANGES.map(r => (
+                <button key={r.days}
+                  className={`adm-btn adm-btn--sm ${range === r.days ? 'adm-btn--primary' : 'adm-btn--ghost'}`}
+                  onClick={() => setRange(r.days)}>
+                  {r.label}
+                </button>
+              ))}
+            </div>
+            <input
+              className="adm-logs__search"
+              placeholder="Filtrar por proveedor…"
+              value={search}
+              onChange={e => { setSearch(e.target.value); setPage(0) }}
+            />
+            <button className="adm-btn adm-btn--sm adm-btn--ghost" onClick={() => { setLoading(true); loadActivity().finally(() => setLoading(false)) }}>
+              ↺ Refrescar
+            </button>
           </div>
 
-          {/* Paginación */}
-          {totalPages > 1 && (
-            <div className="adm-logs__pagination">
-              <button
-                className="adm-btn adm-btn--sm adm-btn--ghost"
-                onClick={() => setPage(p => Math.max(0, p - 1))}
-                disabled={page === 0}>
-                ← Anterior
-              </button>
-              <span className="adm-logs__page-info">
-                Página {page + 1} de {totalPages}
-              </span>
-              <button
-                className="adm-btn adm-btn--sm adm-btn--ghost"
-                onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
-                disabled={page === totalPages - 1}>
-                Siguiente →
-              </button>
+          {summary.length > 0 && (
+            <div className="adm-logs__summary">
+              <p className="adm-edit-section__title">Top proveedores por vistas</p>
+              <div className="adm-logs__summary-list">
+                {summary.map(([pid, count]) => (
+                  <div key={pid} className="adm-logs__summary-item">
+                    <span className="adm-logs__summary-name">
+                      {provMap[pid] ?? <span className="adm-td--mono" style={{ fontSize: '0.75rem' }}>{pid.slice(0, 8)}…</span>}
+                    </span>
+                    <span className="adm-badge">{count}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
+
+          {filtered.length === 0
+            ? <p className="adm-empty">No hay eventos en este período.</p>
+            : (
+              <>
+                <div className="adm-table-wrap">
+                  <table className="adm-table">
+                    <thead><tr><th>Fecha y hora</th><th>Proveedor</th><th>Tipo</th></tr></thead>
+                    <tbody>
+                      {paged.map(r => (
+                        <tr key={r.id}>
+                          <td className="adm-td--mono">{fmtDateTime(r.created_at)}</td>
+                          <td>
+                            {provMap[r.provider_id]
+                              ? <strong>{provMap[r.provider_id]}</strong>
+                              : <span className="adm-td--mono adm-td--sub">{r.provider_id?.slice(0, 8)}…</span>
+                            }
+                          </td>
+                          <td><span className="adm-pill adm-pill--provider">{r.event_type}</span></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                {totalPages > 1 && (
+                  <div className="adm-logs__pagination">
+                    <button className="adm-btn adm-btn--sm adm-btn--ghost" onClick={() => setPage(p => Math.max(0, p - 1))} disabled={page === 0}>← Anterior</button>
+                    <span className="adm-logs__page-info">Página {page + 1} de {totalPages}</span>
+                    <button className="adm-btn adm-btn--sm adm-btn--ghost" onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))} disabled={page === totalPages - 1}>Siguiente →</button>
+                  </div>
+                )}
+              </>
+            )
+          }
         </>
+      )}
+
+      {/* ── Errores del sistema ── */}
+      {!loading && subTab === 'errors' && (
+        errors.length === 0
+          ? <p className="adm-empty">No hay errores registrados. ✓</p>
+          : (
+            <div className="adm-table-wrap">
+              <table className="adm-table">
+                <thead><tr><th>Fuente</th><th>Función</th><th>Error</th><th>Fecha</th><th></th></tr></thead>
+                <tbody>
+                  {errors.map(e => (
+                    <tr key={e.id} className={e.resolved ? 'adm-tr--resolved' : ''}>
+                      <td><span className="adm-pill">{e.source ?? '—'}</span></td>
+                      <td className="adm-td--mono">{e.function_name ?? '—'}</td>
+                      <td style={{ maxWidth: 320, wordBreak: 'break-word' }}>
+                        <span className="adm-td--err">{e.error_message}</span>
+                        {e.error_code && <span className="adm-td--sub"> [{e.error_code}]</span>}
+                      </td>
+                      <td>{fmt(e.created_at)}</td>
+                      <td>
+                        {!e.resolved
+                          ? <button className="adm-btn adm-btn--sm adm-btn--ghost" onClick={() => markResolved(e.id)}>Marcar resuelto</button>
+                          : <span className="adm-td--sub">✓ resuelto</span>
+                        }
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )
+      )}
+
+      {/* ── Audit trail ── */}
+      {!loading && subTab === 'audit' && (
+        audit.length === 0
+          ? <p className="adm-empty">No hay acciones registradas aún.</p>
+          : (
+            <div className="adm-table-wrap">
+              <table className="adm-table">
+                <thead><tr><th>Admin</th><th>Acción</th><th>Objetivo</th><th>Resultado</th><th>Fecha</th></tr></thead>
+                <tbody>
+                  {audit.map(a => (
+                    <tr key={a.id}>
+                      <td className="adm-td--mono">{a.admin_email}</td>
+                      <td><span className="adm-pill">{a.action}</span></td>
+                      <td>
+                        {a.target_name && <strong>{a.target_name}</strong>}
+                        {a.target_type && <span className="adm-td--sub"> ({a.target_type})</span>}
+                      </td>
+                      <td>
+                        <span className={`adm-dot adm-dot--${a.result === 'ok' ? 'on' : 'off'}`} />
+                        {a.result !== 'ok' && a.error_message && <span className="adm-td--sub"> {a.error_message}</span>}
+                      </td>
+                      <td>{fmt(a.created_at)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )
       )}
     </div>
   )
@@ -1099,7 +1218,7 @@ export default function AdminPanel() {
     { id: 'providers',   label: t('admin.tabs.providers')   },
     { id: 'submissions', label: t('admin.tabs.submissions') },
     { id: 'photos',      label: t('admin.tabs.photos')      },
-    { id: 'logs',        label: 'Logs'                      },
+    { id: 'logs',        label: '📋 Logs'                   },
   ]
 
   useEffect(() => {
