@@ -1133,7 +1133,7 @@ export default function ProviderDashboard() {
     if (!user || !provider) return
     setAvatarUploading(true)
     const ext  = file.name.split('.').pop()
-    const path = `${user.id}/avatar.${ext}`
+    const path = `${provider.id}/avatar.${ext}`
     const { error: upErr } = await supabase.storage
       .from('provider-avatars')
       .upload(path, file, { upsert: true, contentType: file.type })
