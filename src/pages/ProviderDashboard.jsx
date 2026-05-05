@@ -17,6 +17,22 @@ import { useDashboardBookings, updateBookingStatus } from '../hooks/useBookings'
 import { isGenericProviderName, hasProfanity } from '../utils/validateProviderName'
 import './ProviderDashboard.css'
 
+// ── Categorías disponibles ───────────────────────────────────────
+const PROVIDER_CATEGORIES = [
+  { slug: 'migracion',       label: '🛂 Asesoría migratoria' },
+  { slug: 'seguros',         label: '🛡️ Seguros de viaje' },
+  { slug: 'traducciones',    label: '📄 Traducciones' },
+  { slug: 'comunidad',       label: '🤝 Comunidad' },
+  { slug: 'banca',           label: '🏦 Banca' },
+  { slug: 'salud-mental',    label: '🧠 Salud mental' },
+  { slug: 'antes-de-viajar', label: '✈️ Antes de viajar' },
+  { slug: 'trabajo',         label: '💼 Trabajo' },
+  { slug: 'idiomas',         label: '🗣️ Idiomas' },
+  { slug: 'taxes',           label: '🧾 Taxes' },
+  { slug: 'remesas',         label: '💸 Remesas' },
+  { slug: 'alojamiento',     label: '🏠 Alojamiento' },
+]
+
 // ── Form sanitizers ──────────────────────────────────────────────
 function sanitizeInstagram(raw) {
   return raw
@@ -110,6 +126,9 @@ function ProviderProfileEditor({ provider, onSave, saving, onAvatarUpload, avata
     calendar_link:       provider?.calendar_link       ?? '',
     redirect_email:      provider?.redirect_email      ?? '',
     payment_link:        provider?.payment_link        ?? '',
+    category_slugs:      provider?.category_slugs?.length
+      ? provider.category_slugs
+      : [provider?.category_slug].filter(Boolean),
   })
   const [payLinkError, setPayLinkError] = useState('')
   const set = (k, v) => {
@@ -120,6 +139,7 @@ function ProviderProfileEditor({ provider, onSave, saving, onAvatarUpload, avata
   const handleSave = () => {
     if (hasProfanity(form.name)) return
     if (isGenericProviderName(form.name)) return
+    if (form.category_slugs.length === 0) return
     if (form.payment_link && !form.payment_link.startsWith('https://')) {
       setPayLinkError(t('errors.url_must_be_https'))
       return
@@ -172,6 +192,32 @@ function ProviderProfileEditor({ provider, onSave, saving, onAvatarUpload, avata
           <label className="pdash__label t-sm">Idiomas</label>
           <input className="pdash__input" value={form.languages}
             onChange={e => set('languages', e.target.value)} placeholder="Español, Inglés" />
+        </div>
+
+        <div className="pdash__field pdash__field--full">
+          <label className="pdash__label t-sm">Categorías en las que aparecés</label>
+          <div className="pdash__category-checks">
+            {PROVIDER_CATEGORIES.map(cat => (
+              <label key={cat.slug} className="pdash__check-label">
+                <input
+                  type="checkbox"
+                  checked={form.category_slugs.includes(cat.slug)}
+                  onChange={e => {
+                    const next = e.target.checked
+                      ? [...form.category_slugs, cat.slug]
+                      : form.category_slugs.filter(s => s !== cat.slug)
+                    set('category_slugs', next)
+                  }}
+                />
+                <span>{cat.label}</span>
+              </label>
+            ))}
+          </div>
+          {form.category_slugs.length === 0 && (
+            <p className="t-xs pdash__field-error">
+              Seleccioná al menos una categoría.
+            </p>
+          )}
         </div>
 
         <div className="pdash__field pdash__field--full pdash__divider-section">
@@ -239,7 +285,7 @@ function ProviderProfileEditor({ provider, onSave, saving, onAvatarUpload, avata
         </div>
 
         <button className="btn btn-primary pdash__save-btn" onClick={handleSave}
-          disabled={saving || hasProfanity(form.name) || isGenericProviderName(form.name)}>
+          disabled={saving || hasProfanity(form.name) || isGenericProviderName(form.name) || form.category_slugs.length === 0}>
           <span>{saving ? t('pdash.saving') : t('pdash.save_changes')}</span>
         </button>
       </div>
@@ -1171,6 +1217,11 @@ export default function ProviderDashboard() {
     if ('whatsapp' in payload) {
       payload.contact_whatsapp = payload.whatsapp
       delete payload.whatsapp
+    }
+
+    // Multi-categoría: sincronizar legacy category_slug con el primer elemento del array
+    if (Array.isArray(payload.category_slugs)) {
+      payload.category_slug = payload.category_slugs[0] ?? provider?.category_slug ?? null
     }
 
     // Constraint payment_link_must_be_https: null es válido, string vacío no

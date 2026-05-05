@@ -81,8 +81,9 @@ export default function ProvidersPage() {
       const matchText = !q || [resolved.name, resolved.service, resolved.description]
         .some(field => field?.toLowerCase().includes(q))
 
-      // Categoría
-      const matchCat = activeSlug === 'todas' || p.categorySlug === activeSlug
+      // Categoría — soporta multi-categoría (category_slugs) con fallback a categorySlug
+      const matchCat = activeSlug === 'todas' ||
+        (Array.isArray(p.category_slugs) ? p.category_slugs.includes(activeSlug) : p.categorySlug === activeSlug)
 
       // País
       const matchCountry = activeCountry === 'todos' ||

@@ -1009,3 +1009,35 @@
 .pdash__input--prefixed:focus {
   outline: none;
 }
+
+/* ── Multi-select categorías ── */
+.pdash__category-checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin-top: 8px;
+}
+.pdash__check-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.875rem;
+  color: var(--text-200);
+  cursor: pointer;
+  padding: 6px 12px;
+  border: 1px solid var(--border-100);
+  border-radius: 8px;
+  transition: background 180ms ease, border-color 180ms ease;
+  user-select: none;
+}
+.pdash__check-label:has(input:checked) {
+  background: var(--iris-50, #f3f0ff);
+  border-color: var(--iris-300, #a78bfa);
+  color: var(--iris-700, #6d28d9);
+}
+.pdash__check-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--iris-500, #7B4DC8);
+  cursor: pointer;
+}
