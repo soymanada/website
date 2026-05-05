@@ -1102,6 +1102,11 @@ export default function ProviderDashboard() {
       delete payload.whatsapp
     }
 
+    // Constraint payment_link_must_be_https: null es válido, string vacío no
+    if ('payment_link' in payload && !payload.payment_link) {
+      payload.payment_link = null
+    }
+
     const { error } = await supabase
       .from('providers')
       .update(payload)
