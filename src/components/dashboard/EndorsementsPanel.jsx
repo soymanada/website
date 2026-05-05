@@ -10,6 +10,22 @@ import {
 } from '../../lib/endorsements'
 import './EndorsementsPanel.css'
 
+const KNOWN_CATEGORIES = [
+  { slug: 'seguros',         name: 'Seguros' },
+  { slug: 'migracion',       name: 'Asesoría migratoria' },
+  { slug: 'traducciones',    name: 'Traducciones' },
+  { slug: 'trabajo',         name: 'Trabajo' },
+  { slug: 'alojamiento',     name: 'Alojamiento' },
+  { slug: 'idiomas',         name: 'Idiomas' },
+  { slug: 'banca',           name: 'Banca' },
+  { slug: 'salud-mental',    name: 'Bienestar' },
+  { slug: 'taxes',           name: 'Taxes' },
+  { slug: 'antes-de-viajar', name: 'Antes de viajar' },
+  { slug: 'comunidad',       name: 'Comunidad' },
+  { slug: 'remesas',         name: 'Remesas' },
+]
+const OTHER_VALUE = '__otra__'
+
 function dicebearUrl(seed) {
   return `https://api.dicebear.com/7.x/thumbs/svg?seed=${encodeURIComponent(seed)}&backgroundColor=b6e3f4`
 }
@@ -26,6 +42,7 @@ export default function EndorsementsPanel({ myProviderId }) {
   const [newProvider, setNewProvider]       = useState({
     name: '', categorySlug: '', service: '', contactWhatsapp: '', contactInstagram: ''
   })
+  const [categorySelect, setCategorySelect]  = useState('')
   const [submitting, setSubmitting]         = useState(false)
   const [feedback, setFeedback]             = useState(null)
 
@@ -103,6 +120,7 @@ export default function EndorsementsPanel({ myProviderId }) {
     setMode('search'); setSearchQuery(''); setSearchResults([])
     setSelectedProvider(null); setMessage('')
     setNewProvider({ name: '', categorySlug: '', service: '', contactWhatsapp: '', contactInstagram: '' })
+    setCategorySelect('')
   }
 
   return (
@@ -225,7 +243,39 @@ export default function EndorsementsPanel({ myProviderId }) {
             {mode === 'new' && (
               <div className="endorsements-modal__body">
                 <label>Nombre<input type="text" placeholder="Ej: María González" value={newProvider.name} onChange={e => setNewProvider(p => ({ ...p, name: e.target.value }))} /></label>
-                <label>Categoría<input type="text" placeholder="Ej: traducciones" value={newProvider.categorySlug} onChange={e => setNewProvider(p => ({ ...p, categorySlug: e.target.value }))} /></label>
+                <div className="form-field">
+                  <label>Categoría</label>
+                  <select
+                    value={categorySelect}
+                    onChange={e => {
+                      const val = e.target.value
+                      setCategorySelect(val)
+                      if (val !== OTHER_VALUE) {
+                        setNewProvider(p => ({ ...p, categorySlug: val }))
+                      } else {
+                        setNewProvider(p => ({ ...p, categorySlug: '' }))
+                      }
+                    }}
+                    className={`form-select${!categorySelect ? ' form-select--placeholder' : ''}`}
+                  >
+                    <option value="" disabled>Selecciona una categoría</option>
+                    {KNOWN_CATEGORIES.map(c => (
+                      <option key={c.slug} value={c.slug}>{c.name}</option>
+                    ))}
+                    <option value={OTHER_VALUE}>Otra categoría…</option>
+                  </select>
+
+                  {categorySelect === OTHER_VALUE && (
+                    <input
+                      type="text"
+                      placeholder="Ej: fotografía, mudanzas…"
+                      value={newProvider.categorySlug}
+                      onChange={e => setNewProvider(p => ({ ...p, categorySlug: e.target.value }))}
+                      className="form-input form-input--indent"
+                      style={{ marginTop: '8px' }}
+                    />
+                  )}
+                </div>
                 <label>Servicio que ofrece<input type="text" placeholder="Ej: Traducciones certificadas" value={newProvider.service} onChange={e => setNewProvider(p => ({ ...p, service: e.target.value }))} /></label>
                 <label>WhatsApp (opcional)<input type="text" placeholder="+56 9 1234 5678" value={newProvider.contactWhatsapp} onChange={e => setNewProvider(p => ({ ...p, contactWhatsapp: e.target.value }))} /></label>
                 <label>Instagram (opcional)<input type="text" placeholder="@usuario" value={newProvider.contactInstagram} onChange={e => setNewProvider(p => ({ ...p, contactInstagram: e.target.value }))} /></label>
