@@ -14,6 +14,7 @@ import EndorsementsPanel   from '../components/dashboard/EndorsementsPanel'
 import AvailabilityEditor  from '../components/AvailabilityEditor'
 import ProviderInbox       from '../components/ProviderInbox'
 import { useDashboardBookings, updateBookingStatus } from '../hooks/useBookings'
+import { isGenericProviderName, hasProfanity } from '../utils/validateProviderName'
 import './ProviderDashboard.css'
 
 // ── Avatar uploader ───────────────────────────────────────────────
@@ -93,6 +94,7 @@ function ProviderProfileEditor({ provider, onSave, saving, onAvatarUpload, avata
   }
 
   const handleSave = () => {
+    if (hasProfanity(form.name)) return // bloqueado silenciosamente — el warning ya es visible
     if (form.payment_link && !form.payment_link.startsWith('https://')) {
       setPayLinkError(t('errors.url_must_be_https'))
       return
@@ -114,6 +116,16 @@ function ProviderProfileEditor({ provider, onSave, saving, onAvatarUpload, avata
           <label className="pdash__label t-sm">Nombre / Marca</label>
           <input className="pdash__input" value={form.name}
             onChange={e => set('name', e.target.value)} placeholder="Tu nombre o marca" />
+          {hasProfanity(form.name) && (
+            <p className="t-xs pdash__field-error" style={{ marginTop: 4 }}>
+              ⚠️ El nombre contiene lenguaje inapropiado.
+            </p>
+          )}
+          {!hasProfanity(form.name) && isGenericProviderName(form.name) && (
+            <p className="t-xs" style={{ color: '#92400E', marginTop: 4 }}>
+              ⚠️ Este nombre es muy genérico. Usa tu nombre real o el de tu marca para diferenciarte.
+            </p>
+          )}
         </div>
         <div className="pdash__field">
           <label className="pdash__label t-sm">Servicio principal</label>
