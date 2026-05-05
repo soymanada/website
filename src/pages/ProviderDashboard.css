@@ -974,3 +974,38 @@
   padding-top: 20px;
   margin-top: 24px;
 }
+
+/* ── Input con prefijo (ej: Instagram) ─────────────────────────── */
+.pdash__input-prefix-wrap {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--border-100);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--bg-0, #fff);
+  transition: box-shadow 180ms ease;
+}
+.pdash__input-prefix-wrap:focus-within {
+  box-shadow: 0 0 0 2px var(--iris-200, #c4b5fd);
+}
+.pdash__input-prefix {
+  padding: 0 10px;
+  font-size: 0.8rem;
+  color: var(--text-300);
+  background: var(--bg-100);
+  border-right: 1px solid var(--border-100);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  user-select: none;
+}
+.pdash__input--prefixed {
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  flex: 1;
+  min-width: 0;
+}
+.pdash__input--prefixed:focus {
+  outline: none;
+}

@@ -17,6 +17,29 @@ import { useDashboardBookings, updateBookingStatus } from '../hooks/useBookings'
 import { isGenericProviderName, hasProfanity } from '../utils/validateProviderName'
 import './ProviderDashboard.css'
 
+// ── Form sanitizers ──────────────────────────────────────────────
+function sanitizeInstagram(raw) {
+  return raw
+    .trim()
+    .replace(/^https?:\/\/(www\.)?instagram\.com\//i, '')
+    .replace(/^@/, '')
+    .replace(/\s+/g, '')
+    .split('?')[0]
+    .split('/')[0]
+}
+
+function sanitizeUrl(raw) {
+  const v = raw.trim()
+  if (v && !v.startsWith('http://') && !v.startsWith('https://')) {
+    return 'https://' + v
+  }
+  return v
+}
+
+function isValidEmail(v) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)
+}
+
 // ── Avatar uploader ───────────────────────────────────────────────
 function AvatarUploader({ provider, onUpload, uploading }) {
   const { t } = useTranslation()
@@ -83,6 +106,7 @@ function ProviderProfileEditor({ provider, onSave, saving, onAvatarUpload, avata
     languages:           (provider?.languages ?? []).join(', '),
     countries:           (provider?.countries ?? []).join(', '),
     whatsapp:            provider?.contact_whatsapp    ?? '',
+    contact_instagram:   provider?.contact_instagram   ?? '',
     calendar_link:       provider?.calendar_link       ?? '',
     redirect_email:      provider?.redirect_email      ?? '',
     payment_link:        provider?.payment_link        ?? '',
@@ -166,6 +190,25 @@ function ProviderProfileEditor({ provider, onSave, saving, onAvatarUpload, avata
           />
         </div>
 
+        {/* Instagram */}
+        <div className="pdash__field">
+          <label className="pdash__label t-sm">Instagram</label>
+          <div className="pdash__input-prefix-wrap">
+            <span className="pdash__input-prefix">instagram.com/</span>
+            <input
+              className="pdash__input pdash__input--prefixed"
+              value={form.contact_instagram}
+              onChange={e => set('contact_instagram', sanitizeInstagram(e.target.value))}
+              placeholder="tu_usuario"
+              autoComplete="off"
+              spellCheck={false}
+            />
+          </div>
+          <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 4 }}>
+            Podés pegar el link completo — lo limpiamos automáticamente.
+          </p>
+        </div>
+
         {/* Link de pago — disponible para todos los tiers */}
         <div className="pdash__field pdash__field--full">
           <label className="pdash__label t-sm">💳 {t('provider.payment_link_label')}</label>
@@ -174,6 +217,7 @@ function ProviderProfileEditor({ provider, onSave, saving, onAvatarUpload, avata
             type="url"
             value={form.payment_link}
             onChange={e => set('payment_link', e.target.value)}
+            onBlur={e => set('payment_link', sanitizeUrl(e.target.value))}
             placeholder="https://mpago.la/tu-link · https://wise.com/pay/..."
           />
           {payLinkError
@@ -481,6 +525,7 @@ function SectionHerramientas({ provider, onSave, saving }) {
     })(),
   })
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
+  const [emailError, setEmailError] = useState('')
 
   return (
     <div className="pdash__section">
@@ -520,6 +565,7 @@ function SectionHerramientas({ provider, onSave, saving }) {
             className="pdash__input"
             value={form.calendar_link}
             onChange={e => set('calendar_link', e.target.value)}
+            onBlur={e => set('calendar_link', sanitizeUrl(e.target.value))}
             placeholder="https://calendly.com/tu-nombre"
           />
           <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 4 }}>
@@ -539,6 +585,7 @@ function SectionHerramientas({ provider, onSave, saving }) {
             className="pdash__input"
             value={form.call_link}
             onChange={e => set('call_link', e.target.value)}
+            onBlur={e => set('call_link', sanitizeUrl(e.target.value))}
             placeholder="https://zoom.us/j/... · https://meet.google.com/... · https://wa.me/56912345678"
           />
           <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 4 }}>
@@ -558,8 +605,18 @@ function SectionHerramientas({ provider, onSave, saving }) {
         <div className="pdash__form">
           <div className="pdash__field pdash__field--full">
             <label className="pdash__label t-sm">✉️ Email para redirección de consultas</label>
-            <input className="pdash__input" type="email" value={form.redirect_email}
-              onChange={e => set('redirect_email', e.target.value)} placeholder="tu@email.com" />
+            <input
+              className={`pdash__input${emailError ? ' pdash__input--error' : ''}`}
+              type="email"
+              value={form.redirect_email}
+              onChange={e => { set('redirect_email', e.target.value); setEmailError('') }}
+              onBlur={e => {
+                const v = e.target.value.trim()
+                if (v && !isValidEmail(v)) setEmailError('Revisá el formato del email.')
+              }}
+              placeholder="tu@email.com"
+            />
+            {emailError && <p className="t-xs pdash__field-error">{emailError}</p>}
           </div>
           <div className="pdash__field pdash__field--full">
             <label className="pdash__label t-sm">
