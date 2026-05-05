@@ -42,7 +42,7 @@ Recomendación: usa una foto tuya real o el logo de tu marca con fondo claro.`,
     category: 'Mi Perfil',
     icon: '💳',
     title: 'Agregar un link de pago externo',
-    content: `Disponible en **todos los planes**, incluyendo Wonderer. Puedes agregar un link de cobro que aparecerá como botón en tu perfil público.
+    content: `Puedes agregar un link de cobro que aparecerá como botón en tu perfil público.
 
 Acepta cualquier plataforma de pago:
 • MercadoPago: https://mpago.la/tu-link
@@ -66,7 +66,7 @@ El botón aparecerá en tu perfil inmediatamente.`,
     category: 'Herramientas',
     icon: '📱',
     title: 'Activar tu WhatsApp en el perfil',
-    content: `Disponible desde el plan **Cub**. Por defecto, tu número no es visible en el perfil público. Puedes activarlo manualmente.
+    content: `Por defecto, tu número no es visible en el perfil público. Puedes activarlo manualmente.
 
 Pasos:
 1. Ve a **Herramientas**.
@@ -83,7 +83,7 @@ Cuando está activado, los migrantes ven un botón de WhatsApp en tu perfil y pu
     category: 'Herramientas',
     icon: '📅',
     title: 'Configurar tu agenda de citas',
-    content: `La agenda te permite recibir reservas directamente desde tu perfil público. Disponible desde el plan **Cub**.
+    content: `La agenda te permite recibir reservas directamente desde tu perfil público.
 
 Tienes dos opciones:
 
@@ -100,16 +100,16 @@ Puedes usar ambas al mismo tiempo.
 
 **Plataforma de videollamada**
 En la misma sección configuras dónde se realizará la llamada:
-• **Plan Wolf:** se genera una sala automática de SoyManada (Jitsi) al confirmar cada reserva.
-• **Todos los planes:** pega un link de Zoom, Google Meet, Teams o WhatsApp. Ese link aparece en el email de confirmación del migrante.`,
+• Se genera una sala automática de SoyManada (Jitsi) al confirmar cada reserva.
+• También puedes pegar un link de Zoom, Google Meet, Teams o WhatsApp. Ese link aparece en el email de confirmación del migrante.`,
     links: [{ label: 'Ir a Herramientas', tab: 'herramientas' }],
   },
   {
     id: 'herramientas-stripe',
     category: 'Herramientas',
     icon: '🔐',
-    title: 'Configurar cobros seguros con Stripe (Wolf)',
-    content: `Disponible en el plan **Wolf**. Conecta tu cuenta bancaria a través de Stripe para recibir pagos con tarjeta directamente desde tu perfil.
+    title: 'Configurar cobros seguros con Stripe',
+    content: `Conecta tu cuenta bancaria a través de Stripe para recibir pagos con tarjeta directamente desde tu perfil.
 
 Pasos:
 1. Ve a **Herramientas → Cobros seguros con Stripe**.
@@ -130,8 +130,8 @@ Cuando está activo, el botón de pago con Stripe aparece en tu perfil público.
     id: 'herramientas-email',
     category: 'Herramientas',
     icon: '✉️',
-    title: 'Email de redirección de consultas (Wolf)',
-    content: `Disponible en el plan **Wolf**. Cada mensaje nuevo en tu inbox de SoyManada también te llega a tu correo personal.
+    title: 'Email de redirección de consultas',
+    content: `Cada mensaje nuevo en tu inbox de SoyManada también te llega a tu correo personal.
 
 Pasos:
 1. Ve a **Herramientas → Herramientas avanzadas**.
@@ -143,8 +143,8 @@ Pasos:
     id: 'herramientas-respuestas',
     category: 'Herramientas',
     icon: '💬',
-    title: 'Respuestas predefinidas (Wolf)',
-    content: `Disponible en el plan **Wolf**. Define textos que puedes reutilizar rápidamente al responder mensajes en tu inbox.
+    title: 'Respuestas predefinidas',
+    content: `Define textos que puedes reutilizar rápidamente al responder mensajes en tu inbox.
 
 Cómo configurarlas:
 1. Ve a **Herramientas → Herramientas avanzadas**.
@@ -164,8 +164,8 @@ Ejemplo de respuestas útiles:
     id: 'reseñas-responder',
     category: 'Reseñas',
     icon: '⭐',
-    title: 'Cómo responder reseñas de clientes (Wolf)',
-    content: `Disponible en el plan **Wolf**. Cuando un migrante deja una reseña en tu perfil, puedes responderla públicamente desde la pestaña Reseñas.
+    title: 'Cómo responder reseñas de clientes',
+    content: `Cuando un migrante deja una reseña en tu perfil, puedes responderla públicamente desde la pestaña Reseñas.
 
 Pasos:
 1. Ve a la pestaña **Reseñas**.
@@ -201,7 +201,7 @@ No puedes solicitar ni eliminar reseñas manualmente — el proceso es automáti
     category: 'Reservas',
     icon: '🗓',
     title: 'Cómo gestionar reservas pendientes',
-    content: `Cuando un migrante reserva una cita contigo, aparece en la pestaña **Reservas** con estado "Pendiente". Disponible desde el plan **Cub**.
+    content: `Cuando un migrante reserva una cita contigo, aparece en la pestaña **Reservas** con estado "Pendiente".
 
 Acciones disponibles:
 • **Confirmar** — acepta la reserva. El migrante recibe un email con los detalles y el link a la sala de videollamada.
@@ -232,53 +232,6 @@ No necesitas hacer nada adicional — el sistema se encarga de todo.`,
     links: [{ label: 'Ir a Reservas', tab: 'reservas' }],
   },
 
-  // ── PLANES ────────────────────────────────────────────────────
-  {
-    id: 'planes-diferencias',
-    category: 'Planes',
-    icon: '💎',
-    title: 'Diferencias entre Wonderer, Cub y Wolf',
-    content: `SoyManada tiene tres planes para proveedores:
-
-**✨ Wonderer — Gratis**
-- Perfil público en el directorio
-- Descripción, foto y redes sociales
-- Link de pago externo (Wise, MercadoPago, etc.)
-
-**🐾 Cub — $4.990 CLP/mes**
-- Todo lo de Wonderer
-- Métricas de visitas en tiempo real
-- WhatsApp visible en tu perfil
-- Agenda de citas y reservas
-- Inbox de mensajes directos
-
-**🐺 Wolf — $9.990 CLP/mes**
-- Todo lo de Cub
-- Cobros seguros con Stripe (tarjeta desde tu perfil)
-- Responder reseñas públicamente
-- Email de redirección de consultas
-- Respuestas predefinidas en el inbox
-
-Puedes comparar los planes y actualizar desde la pestaña **Herramientas** (al final de la sección).`,
-    links: [{ label: 'Ver planes', tab: 'herramientas' }],
-  },
-  {
-    id: 'planes-cambio',
-    category: 'Planes',
-    icon: '🔄',
-    title: 'Cómo cambiar de plan',
-    content: `Puedes actualizar tu plan en cualquier momento desde la pestaña **Herramientas**.
-
-Pasos:
-1. Ve a **Herramientas**.
-2. Desplázate hasta el final de la sección — encontrarás la comparación de planes.
-3. Haz clic en **Activar Cub** o **Activar Wolf** según el plan que desees.
-4. Serás redirigido a MercadoPago para completar el pago.
-5. Una vez procesado, tu plan se activa automáticamente.
-
-El cobro es mensual y puedes cancelar cuando quieras.`,
-    links: [{ label: 'Ir a Herramientas', tab: 'herramientas' }],
-  },
 ]
 
 const CATEGORIES = [...new Set(ARTICLES.map(a => a.category))]

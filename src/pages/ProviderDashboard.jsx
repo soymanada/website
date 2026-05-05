@@ -10,6 +10,7 @@ import MetricsSummary      from '../components/dashboard/MetricsSummary'
 import WeeklyActivity      from '../components/dashboard/WeeklyActivity'
 import AutoRecommendations from '../components/dashboard/AutoRecommendations'
 import ManualProveedor     from '../components/dashboard/ManualProveedor'
+import EndorsementsPanel   from '../components/dashboard/EndorsementsPanel'
 import AvailabilityEditor  from '../components/AvailabilityEditor'
 import ProviderInbox       from '../components/ProviderInbox'
 import { useDashboardBookings, updateBookingStatus } from '../hooks/useBookings'
@@ -1163,9 +1164,10 @@ export default function ProviderDashboard() {
     { id: 'herramientas', icon: '🛠',  label: t('pdash.tab_herramientas_label') },
     { id: 'metricas',     icon: '📊', label: t('pdash.tab_metricas_label') },
     { id: 'reseñas',      icon: '💬', label: 'Reseñas' },
-    { id: 'reservas',     icon: '📅', label: t('pdash.tab_reservas_label') },
-    { id: 'mensajes',     icon: '✉️',  label: t('pdash.tab_mensajes_label') },
-    { id: 'ayuda',        icon: '📖', label: 'Ayuda' },
+    { id: 'reservas',        icon: '📅', label: t('pdash.tab_reservas_label') },
+    { id: 'mensajes',        icon: '✉️',  label: t('pdash.tab_mensajes_label') },
+    { id: 'recomendaciones', icon: '🤝', label: 'Recomendaciones' },
+    { id: 'ayuda',           icon: '📖', label: 'Ayuda' },
   ]
 
   return (
@@ -1273,6 +1275,9 @@ export default function ProviderDashboard() {
           )}
           {activeTab === 'mensajes' && (
             <SectionMensajes provider={provider} />
+          )}
+          {activeTab === 'recomendaciones' && (
+            <EndorsementsPanel myProviderId={provider.id} />
           )}
           {activeTab === 'ayuda' && (
             <ManualProveedor provider={provider} onNavigate={setActiveTab} />

@@ -8,6 +8,7 @@ import { useAuth } from '../hooks/useAuth'
 import { supabase } from '../lib/supabase'
 import { usePilotRating } from '../hooks/usePilotRating'
 import VerificationBadge from './VerificationBadge'
+import EndorsementBadge from './EndorsementBadge'
 import PawRating from './PawRating'
 import MessageModal from './MessageModal'
 import BookingCalendar from './BookingCalendar'
@@ -129,6 +130,7 @@ export default function ProviderCard({ provider: rawProvider }) {
           <ellipse cx="27.5" cy="15" rx="3.2" ry="4" transform="rotate(25, 27.5, 15)"/>
         </svg>
         {verified && <VerificationBadge variant="pill" theme="light" />}
+        <EndorsementBadge providerId={id} />
         {rawProvider?.payment_link && (
           <span className="pcard__payment-badge" title={t('provider.accepts_online_payment')}>
             💳

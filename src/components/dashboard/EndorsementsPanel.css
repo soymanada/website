@@ -1,0 +1,154 @@
+.endorsements-panel { display: flex; flex-direction: column; gap: 16px; }
+
+.endorsements-panel__sub { margin: 2px 0 0; }
+
+.btn-endorse-add {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 14px; border-radius: 8px;
+  background: #7B4DC8; color: #fff;
+  font-size: 0.8125rem; font-weight: 600;
+  border: none; cursor: pointer; white-space: nowrap;
+  transition: background 150ms;
+}
+.btn-endorse-add:hover { background: #6339B0; }
+
+.endorsements-panel__feedback {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 14px; border-radius: 8px;
+  font-size: 0.8125rem;
+}
+.endorsements-panel__feedback--ok    { background: #ECFDF5; color: #065F46; }
+.endorsements-panel__feedback--error { background: #FEF2F2; color: #991B1B; }
+
+.endorsements-panel__empty {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; padding: 32px 16px;
+  color: #9ca3af; gap: 10px; font-size: 0.875rem;
+}
+
+.endorsements-panel__list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+
+.endorsements-panel__item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 14px; border: 1px solid #e5e7eb;
+  border-radius: 10px; background: #fff;
+}
+.endorsements-panel__item--inactive { opacity: 0.5; }
+.endorsements-panel__item-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+.endorsements-panel__item-info { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.endorsements-panel__item-name { font-size: 0.875rem; font-weight: 600; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.endorsements-panel__item-cat  { font-size: 0.75rem; color: #6b7280; }
+.endorsements-panel__item-msg  { font-size: 0.75rem; color: #374151; font-style: italic; }
+.endorsements-panel__item-tag {
+  font-size: 0.65rem; font-weight: 600; padding: 2px 7px;
+  border-radius: 9999px; background: #f3f4f6; color: #6b7280;
+}
+.endorsements-panel__item-tag--pending { background: #FEF3C7; color: #92400E; }
+.endorsements-panel__item-remove {
+  padding: 4px; border: none; background: none;
+  cursor: pointer; color: #9ca3af;
+  border-radius: 4px; transition: color 150ms;
+}
+.endorsements-panel__item-remove:hover { color: #ef4444; }
+
+/* ── Modal ────────────────────────────────────────────────────────── */
+.endorsements-modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.45);
+  z-index: 1000; display: flex; align-items: center; justify-content: center;
+  padding: 16px;
+}
+.endorsements-modal {
+  background: #fff; border-radius: 16px;
+  width: 100%; max-width: 480px;
+  max-height: 90vh; overflow-y: auto;
+  display: flex; flex-direction: column;
+}
+.endorsements-modal__head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px 20px 0; margin-bottom: 12px;
+}
+.endorsements-modal__head h4 { margin: 0; font-size: 1rem; font-weight: 700; }
+.endorsements-modal__head button { background: none; border: none; cursor: pointer; color: #6b7280; padding: 4px; }
+
+.endorsements-modal__tabs {
+  display: flex; gap: 0; padding: 0 20px; margin-bottom: 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+.endorsements-modal__tabs button {
+  flex: 1; padding: 10px 8px; border: none; background: none;
+  font-size: 0.8rem; color: #6b7280; cursor: pointer;
+  border-bottom: 2px solid transparent; font-weight: 500;
+  transition: all 150ms;
+}
+.endorsements-modal__tabs button.active { color: #7B4DC8; border-bottom-color: #7B4DC8; }
+
+.endorsements-modal__body { padding: 0 20px; display: flex; flex-direction: column; gap: 10px; }
+.endorsements-modal__body label { display: flex; flex-direction: column; gap: 4px; font-size: 0.8125rem; font-weight: 500; }
+.endorsements-modal__body input {
+  padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 8px;
+  font-size: 0.875rem; outline: none; transition: border-color 150ms;
+  font-family: inherit;
+}
+.endorsements-modal__body input:focus { border-color: #7B4DC8; }
+
+.endorsements-modal__search-wrap {
+  display: flex; align-items: center; gap: 8px;
+  border: 1px solid #d1d5db; border-radius: 8px; padding: 0 12px;
+}
+.endorsements-modal__search-wrap input {
+  flex: 1; border: none; padding: 10px 0; font-size: 0.875rem; outline: none;
+}
+
+.endorsements-modal__results {
+  list-style: none; padding: 0; margin: 0;
+  border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden;
+}
+.endorsements-modal__results li {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; cursor: pointer; font-size: 0.875rem;
+  transition: background 100ms;
+}
+.endorsements-modal__results li:hover { background: #F3EEF9; }
+.endorsements-modal__results li img { width: 32px; height: 32px; border-radius: 50%; }
+.endorsements-modal__result-cat { margin-left: auto; font-size: 0.75rem; color: #9ca3af; }
+
+.endorsements-modal__selected {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; background: #F3EEF9; border-radius: 10px;
+  font-size: 0.875rem; font-weight: 600; color: #5A3799;
+}
+.endorsements-modal__selected img { width: 36px; height: 36px; border-radius: 50%; }
+.endorsements-modal__selected button { margin-left: auto; background: none; border: none; cursor: pointer; color: #9ca3af; padding: 4px; }
+
+.endorsements-modal__note {
+  font-size: 0.75rem; color: #92400E;
+  background: #FEF3C7; padding: 10px 12px;
+  border-radius: 8px; margin: 0;
+}
+
+.endorsements-modal__message { padding: 16px 20px 0; }
+.endorsements-modal__message label {
+  display: flex; align-items: baseline; justify-content: space-between;
+  flex-wrap: wrap; gap: 4px;
+  font-size: 0.8125rem; font-weight: 500;
+}
+.endorsements-modal__message label span { color: #9ca3af; font-weight: 400; }
+.endorsements-modal__message textarea {
+  width: 100%; padding: 10px 12px;
+  border: 1px solid #d1d5db; border-radius: 8px;
+  font-size: 0.875rem; resize: none; outline: none;
+  margin-top: 4px; transition: border-color 150ms; font-family: inherit;
+  box-sizing: border-box;
+}
+.endorsements-modal__message textarea:focus { border-color: #7B4DC8; }
+
+.endorsements-modal__foot { padding: 16px 20px 20px; }
+.btn-endorse-submit {
+  width: 100%; padding: 12px;
+  background: #7B4DC8; color: #fff;
+  border: none; border-radius: 10px;
+  font-size: 0.9375rem; font-weight: 600;
+  cursor: pointer; transition: background 150ms;
+}
+.btn-endorse-submit:hover:not(:disabled) { background: #6339B0; }
+.btn-endorse-submit:disabled { opacity: 0.5; cursor: not-allowed; }
