@@ -797,7 +797,7 @@
     "password_min_hint": "Minimum 6 characters",
     "password_mismatch": "Passwords do not match.",
     "password_error": "Could not update. Please try again.",
-    "password_ok": "\u2713 Password updated."
+    "password_ok": "\u2713 Password updated.",
     "metrics_reviews_count": "{{count}} reviews"
   },
   "booking": {
