@@ -699,5 +699,52 @@
     "community_body": "El grupo de WhatsApp de la Manada es un espacio donde migrantes se apoyan mutuamente. No es terapia, pero sí comunidad real.",
     "community_cta": "Unirse al grupo de WhatsApp",
     "meta_title": "Bienestar emocional para migrantes | SoyManada"
-  }
+  },
+  "categories": {
+        "request_cta": "¿Buscas algo específico?"
+    "seguros": "Seguros",
+    "migracion": "Asesoría migratoria",
+        "suggest_cta": "¿No ves tu categoría?"
+    "trabajo": "Trabajo",
+    "alojamiento": "Alojamiento",
+    "idiomas": "Idiomas",
+    "banca": "Banca",
+    "salud-mental": "Bienestar",
+    "antes-de-viajar": "Antes de viajar",
+    "seguros_oneliner": "Protege tu salud, auto y hogar en tu nuevo país.",
+    "migracion_oneliner": "Visas, permisos y residencias con orientación real.",
+    "traducciones_oneliner": "Documentos oficiales traducidos por personas calificadas.",
+    "trabajo_oneliner": "Empleos, freelance y oportunidades para migrantes.",
+    "alojamiento_oneliner": "Piezas, arriendos y ayuda para instalarte.",
+    "idiomas_oneliner": "Clases, tutorías y práctica para integrarte mejor.",
+    "banca_oneliner": "Asesores bancarios que entienden tu realidad migratoria.",
+    "salud-mental_oneliner": "Salud mental, teleterapia y apoyo emocional para migrantes.",
+    "antes-de-viajar_oneliner": "Lo que nadie te dijo antes de emigrar.",
+    "taxes": "Impuestos",
+    "taxes_oneliner": "Asesores que te ayudan con tus taxes en Canadá.",
+    "comunidad": "Comunidad",
+    "comunidad_oneliner": "Eventos, encuentros y conexión con tu manada.",
+    "remesas": "Remesas",
+    "remesas_oneliner": "Envía dinero a casa sin perderlo en comisiones.",
+    "mascotas": "Mascotas",
+    "mascotas_oneliner": "Seguros, cuidado y servicios pet-friendly para tu compañero de viaje.",
+    "planes-telefono": "Planes de teléfono",
+    "planes-telefono_oneliner": "SIM, eSIM y planes móviles para recién llegados.",
+    "suggest_provider_cta": "Sugerir un proveedor"
+  },
+  "remesas_teaser": {
+    "aria": "Comparador de transferencias de dinero",
+    "eyebrow": "Herramienta gratuita",
+    "title": "Comparador de remesas",
+    "sub": "Encuentra el mejor tipo de cambio en segundos. Sin registro.",
+    "cta": "Comparar precios",
+    "float_label": "Tipos de cambio · Wise, Remitly y más"
+  },
+  "founder": {
+    "eyebrow": "La historia detrás de la manada",
+    "quote": "Migrar solo es difícil. Hacerlo con la manada correcta lo cambia todo.",
+    "bio": "Soy migrante. Sé lo que cuesta llegar a un país nuevo sin conocer a nadie — sin saber en quién confiar para tu visa, tu dinero o tu salud mental. SoyManada nació de esa frustración, para que el próximo migrante no tenga que buscar solo.",
+    "name": "Francisco Aleuy",
+    "role": "Fundador · Migrante",
+    "tiktok_stat": "+20K en TikTok"
 }
