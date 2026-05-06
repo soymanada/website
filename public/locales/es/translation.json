@@ -1032,9 +1032,7 @@
     "password_confirm_label": "Confirmar contraseña",
     "password_min_hint": "Mínimo 6 caracteres",
     "password_mismatch": "Las contraseñas no coinciden.",
-    "password_error": "No se pudo actualizar. Inténtalo de nuevo.",
-    "password_ok": "✓ Contraseña actualizada."
-    "metrics_reviews_count": "{{count}} reseñas"
+    "password_ok": "✓ Contraseña actualizada.",
   },
   "admin": {
     "title": "Panel de administración",
