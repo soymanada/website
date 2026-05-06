@@ -610,6 +610,10 @@
     "comunidad_oneliner": "Événements, rencontres et connexion avec ton groupe.",
     "remesas": "Transferts",
     "remesas_oneliner": "Envoie de l'argent sans perdre sur les frais.",
+    "mascotas": "Animaux de compagnie",
+    "mascotas_oneliner": "Assurances, soins et services pet-friendly pour votre compagnon de voyage.",
+    "planes-telefono": "Forfaits téléphoniques",
+    "planes-telefono_oneliner": "SIM, eSIM et forfaits mobiles pour les nouveaux arrivants.",
     "suggest_provider_cta": "Suggérer un fournisseur"
   },
   "provider_page": {

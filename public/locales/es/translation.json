@@ -607,6 +607,10 @@
     "comunidad_oneliner": "Eventos, encuentros y conexión con tu manada.",
     "remesas": "Remesas",
     "remesas_oneliner": "Envía y recibe dinero sin perder en el cambio.",
+    "mascotas": "Mascotas",
+    "mascotas_oneliner": "Seguros, cuidado y servicios pet-friendly para tu compañero de viaje.",
+    "planes-telefono": "Planes de teléfono",
+    "planes-telefono_oneliner": "SIM, eSIM y planes móviles para recién llegados.",
     "suggest_provider_cta": "Sugerir un proveedor"
   },
   "provider_page": {

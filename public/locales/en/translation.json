@@ -610,6 +610,10 @@
     "comunidad_oneliner": "Events, meetups and connection with your pack.",
     "remesas": "Remittances",
     "remesas_oneliner": "Send money home without losing it in fees.",
+    "mascotas": "Pets",
+    "mascotas_oneliner": "Insurance, care and pet-friendly services for your travel companion.",
+    "planes-telefono": "Phone plans",
+    "planes-telefono_oneliner": "SIM, eSIM and mobile plans for newcomers.",
     "suggest_provider_cta": "Suggest a provider"
   },
   "provider_page": {

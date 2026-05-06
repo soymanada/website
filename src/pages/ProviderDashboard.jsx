@@ -31,6 +31,8 @@ const PROVIDER_CATEGORIES = [
   { slug: 'taxes',           label: '🧾 Taxes' },
   { slug: 'remesas',         label: '💸 Remesas' },
   { slug: 'alojamiento',     label: '🏠 Alojamiento' },
+  { slug: 'mascotas',        label: '🐾 Mascotas' },
+  { slug: 'planes-telefono', label: '📱 Planes de teléfono' },
 ]
 
 // ── Form sanitizers ──────────────────────────────────────────────

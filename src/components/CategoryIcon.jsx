@@ -106,6 +106,23 @@ const paths = {
       <polyline points="9 12 5 16 9 20" />
     </>
   ),
+  // Huella de mascota (mascotas)
+  paw: (
+    <>
+      <circle cx="9" cy="8" r="2" />
+      <circle cx="15" cy="8" r="2" />
+      <circle cx="6" cy="13" r="2" />
+      <circle cx="18" cy="13" r="2" />
+      <path d="M8.5 18.5c.8 1.2 2 1.5 3.5 1.5s2.7-.3 3.5-1.5c1-1.5.5-4-.5-5.5-.7-1-1.8-1.5-3-1.5s-2.3.5-3 1.5c-1 1.5-1.5 4-.5 5.5z" />
+    </>
+  ),
+  // Smartphone (planes de teléfono)
+  smartphone: (
+    <>
+      <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+      <line x1="12" y1="18" x2="12.01" y2="18" strokeWidth="3" strokeLinecap="round" />
+    </>
+  ),
 }
 
 export default function CategoryIcon({ name, size = 24 }) {

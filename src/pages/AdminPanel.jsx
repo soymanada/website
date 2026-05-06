@@ -203,7 +203,7 @@ function UsersPanel() {
 const CATEGORY_SLUGS = [
   'seguros','migracion','traducciones','trabajo',
   'alojamiento','idiomas','banca','salud-mental','taxes','antes-de-viajar',
-  'comunidad','remesas',
+  'comunidad','remesas','mascotas','planes-telefono',
 ]
 
 const toSlug = (str) =>
@@ -656,6 +656,7 @@ const CAT_SLUG = {
   'Alojamiento': 'alojamiento', 'Idiomas': 'idiomas',
   'Banca': 'banca', 'Bienestar': 'salud-mental',
   'Taxes': 'taxes', 'Antes de viajar': 'antes-de-viajar',
+  'Mascotas': 'mascotas', 'Planes de teléfono': 'planes-telefono',
 }
 
 function SubmissionsPanel() {
