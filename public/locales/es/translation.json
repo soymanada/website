@@ -789,7 +789,7 @@
     "title": "Directorio de proveedores",
     "subtitle": "Proveedores verificados para la comunidad migrante hispanohablante. Busca, filtra y conecta directamente.",
     "search_placeholder": "Buscar proveedor…",
-    "filter_category": "Categoría",
+    "filter_all_categories": "Todas",     "filter_category": "Categoría",
     "filter_country": "País",
     "filter_verified": "Solo verificados por Manada",
     "results_count_one": "{{count}} proveedor",
