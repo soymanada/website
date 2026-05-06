@@ -749,7 +749,7 @@
     "metrics_rating": "Note moyenne",
     "metrics_messages": "Messages reçus",
     "metrics_reply_rate": "Taux de réponse",
-    "metrics_profile_score": "Complétude du profil",,
+    "metrics_profile_score": "Complétude du profil",
     "tab_resenas": "Avis",
     "tab_recomendaciones": "Recommandations",
     "tab_ayuda": "Aide",
@@ -797,7 +797,7 @@
     "password_min_hint": "Minimum 6 caractères",
     "password_mismatch": "Les mots de passe ne correspondent pas.",
     "password_error": "Impossible de mettre à jour. Veuillez réessayer.",
-    "password_ok": "✓ Mot de passe mis à jour."
+    "password_ok": "✓ Mot de passe mis à jour.",
     "metrics_reviews_count": "{{count}} avis"
   },
   "booking": {
