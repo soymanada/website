@@ -142,6 +142,12 @@
     "cta_primary": "Explorar proveedores",
     "cta_secondary": "Ver categorías"
   },
+  "auth_banner": {
+    "headline": "Únete gratis — ve contactos, deja tu huella 🐾 y ayuda a la comunidad.",
+    "copy": "Más de 500 migrantes ya confían en SoyManada para encontrar servicios verificados.",
+    "login": "Ingresar",
+    "register": "Crear cuenta gratis"
+  },
   "stats": {
     "members": "miembros en la comunidad",
     "years": "años acompañando",
@@ -160,6 +166,75 @@
     "cristobal_quote": "Encontré trabajo en demolición en menos de dos semanas. Lo más difícil fue conseguir alojamiento y gestionar los pagos al llegar. La Manada me ayudó con toda la información de documentos antes de salir de Chile.",
     "valeria_quote": "Llegué desde El Bosque con inglés muy básico y mucho miedo. La Manada me dijo que simplemente me lanzara — y tenían razón. Acá lo aprendes mucho más rápido que en cualquier curso.",
     "nandy_quote": "Conseguí trabajo en cuidado infantil antes de salir de Chile. Llegué con todo organizado gracias a la Manada: seguro de viaje, orientación, logística. El francés era lo más difícil, pero una familia bilingüe me ayudó a adaptarme rápido."
+  },
+  "manadaStories": {
+    "eyebrow": "La Manada en Canadá",
+    "title": "Fotos reales de nuestra comunidad",
+    "subtitle": "Momentos del camino compartidos por migrantes como tú.",
+    "items": {
+      "cristobal": {
+        "name": "Cristóbal M.",
+        "location": "Calgary, AB",
+        "alt": "Cristóbal trabajando en demolición en Calgary",
+        "quote": "Encontré trabajo en demolición en menos de dos semanas. La Manada me ayudó con toda la información antes de salir de Chile."
+      },
+      "valeria": {
+        "name": "Valeria R.",
+        "location": "Banff, AB",
+        "alt": "Valeria en las montañas de Banff",
+        "quote": "Llegué con inglés muy básico y mucho miedo. La Manada me dijo que simplemente me lanzara — y tenían razón."
+      },
+      "nandy": {
+        "name": "Nandy",
+        "location": "Quebec, QC",
+        "alt": "Nandy en Quebec con paisaje nevado",
+        "quote": "Conseguí trabajo en cuidado infantil antes de salir de Chile. Llegué con todo organizado gracias a la Manada."
+      },
+      "daniela": {
+        "name": "Daniela V.",
+        "location": "Toronto, ON",
+        "alt": "Daniela en Toronto",
+        "quote": "Toronto me recibió con todo su ritmo. La Manada me conectó con personas que ya habían pasado por lo mismo."
+      },
+      "hugo": {
+        "name": "Hugo A.",
+        "location": "Banff, AB",
+        "alt": "Hugo en el parque nacional de Banff",
+        "quote": "Ver los Rockies canadienses por primera vez es algo que no se olvida. Vine por trabajo y me quedé enamorado del paisaje."
+      },
+      "claudia": {
+        "name": "Claudia S.",
+        "location": "Sun Peaks, BC",
+        "alt": "Claudia en la estación de ski Sun Peaks",
+        "quote": "Mi primera temporada de nieve fue en Sun Peaks. No sabía esquiar — ahora no puedo parar."
+      },
+      "amelia": {
+        "name": "Amelia R.",
+        "location": "Nueva Escocia, NS",
+        "alt": "Amelia en la costa de Nueva Escocia",
+        "quote": "La costa este es un mundo diferente. Tranquilo, amable y con una comunidad que te adopta rápido."
+      }
+    }
+  },
+  "community_photos": {
+    "cta": "📸 Comparte tu foto",
+    "modal_title": "Comparte tu foto con la Manada",
+    "subtitle": "Tu imagen puede inspirar al próximo migrante. Revisamos cada envío antes de publicarlo.",
+    "photo_label": "Foto",
+    "photo_placeholder": "Haz clic para elegir una imagen (JPG, PNG, WebP · máx. 5 MB)",
+    "caption_label": "Descripción",
+    "caption_placeholder": "Ej: Mi primer invierno en Calgary ❄️",
+    "city_label": "Ciudad (opcional)",
+    "city_placeholder": "Ej: Vancouver, BC",
+    "name_label": "Tu nombre (opcional)",
+    "name_placeholder": "Ej: Valeria R.",
+    "submit": "Enviar foto",
+    "success_title": "¡Foto enviada!",
+    "success_body": "Gracias por compartir tu historia. La revisamos y si todo está bien, aparecerá en la galería de la Manada.",
+    "close": "Cerrar",
+    "error_type": "Solo se aceptan imágenes JPG, PNG o WebP.",
+    "error_size": "La imagen no puede superar los 5 MB.",
+    "error_upload": "No pudimos subir tu foto. Inténtalo de nuevo."
   },
   "messaging": {
     "cta": "Enviar mensaje",
