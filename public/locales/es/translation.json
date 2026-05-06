@@ -779,9 +779,8 @@
     "gate_cta": "Unirse gratis",
     "profile_link": "Ver perfil completo →",
     "profile_link_remesas": "Ver reseñas →",
-    "no_opinions": "Aún no hay reseñas"
-  }
-},
+    "no_opinions": "Aún no hay reseñas"},
+  
   "verification": {
     "verified": "VERIFICADO",
     "by_manada": "por Manada"
