@@ -109,12 +109,12 @@ function ProviderProfileEditor({ provider, onSave, saving, onAvatarUpload, avata
   const cancelPw = () => { setChangingPw(false); setPwNew(''); setPwConfirm(''); setPwMsg(null) }
   const savePw = async () => {
     if (pwNew.length < 6) { setPwMsg({ ok: false, text: 'Mínimo 6 caracteres.' }); return }
-    if (pwNew !== pwConfirm) { setPwMsg({ ok: false, text: 'Las contraseñas no coinciden.' }); return }
+    if (pwNew !== pwConfirm) { setPwMsg({ ok: false, text: '{t('pdash.password_mismatch')}' }); return }
     setPwSaving(true); setPwMsg(null)
     const { error } = await supabase.auth.updateUser({ password: pwNew })
     setPwSaving(false)
-    if (error) setPwMsg({ ok: false, text: 'No se pudo actualizar. Inténtalo de nuevo.' })
-    else { setPwMsg({ ok: true, text: '✓ Contraseña actualizada.' }); setTimeout(cancelPw, 2000) }
+    if (error) setPwMsg({ ok: false, text: '{t('pdash.password_error')}' })
+    else { setPwMsg({ ok: true, text: '{t('pdash.password_ok')}' }); setTimeout(cancelPw, 2000) }
   }
 
   const [form, setForm] = useState({
@@ -160,9 +160,9 @@ function ProviderProfileEditor({ provider, onSave, saving, onAvatarUpload, avata
 
       <div className="pdash__form">
         <div className="pdash__field">
-          <label className="pdash__label t-sm">Nombre / Marca</label>
+          <label className="pdash__label t-sm">{t('pdash.perfil_nombre_label')}</label>
           <input className="pdash__input" value={form.name}
-            onChange={e => set('name', e.target.value)} placeholder="Tu nombre o marca" />
+            onChange={e => set('name', e.target.value)} placeholder={t('pdash.perfil_nombre_placeholder')} />
           {hasProfanity(form.name) && (
             <p className="t-xs pdash__field-error" style={{ marginTop: 4 }}>
               ⚠️ El nombre contiene lenguaje inapropiado.
@@ -175,29 +175,29 @@ function ProviderProfileEditor({ provider, onSave, saving, onAvatarUpload, avata
           )}
         </div>
         <div className="pdash__field">
-          <label className="pdash__label t-sm">Servicio principal</label>
+          <label className="pdash__label t-sm">{t('pdash.perfil_servicio_label')}</label>
           <input className="pdash__input" value={form.service}
-            onChange={e => set('service', e.target.value)} placeholder="Ej: Asesoría migratoria a Canadá" />
+            onChange={e => set('service', e.target.value)} placeholder={t('pdash.perfil_servicio_placeholder')} />
         </div>
         <div className="pdash__field pdash__field--full">
-          <label className="pdash__label t-sm">Descripción</label>
+          <label className="pdash__label t-sm">{t('pdash.perfil_desc_label')}</label>
           <textarea className="pdash__textarea" rows={4} value={form.description}
             onChange={e => set('description', e.target.value)}
-            placeholder="Cuéntale al migrante quién eres y cómo puedes ayudarlo." />
+            placeholder={t('pdash.perfil_desc_placeholder')} />
         </div>
         <div className="pdash__field">
-          <label className="pdash__label t-sm">Países donde ofreces tu servicio</label>
+          <label className="pdash__label t-sm">{t('pdash.perfil_paises_label')}</label>
           <input className="pdash__input" value={form.countries}
             onChange={e => set('countries', e.target.value)} placeholder="Canadá, Chile (separados por coma)" />
         </div>
         <div className="pdash__field">
-          <label className="pdash__label t-sm">Idiomas</label>
+          <label className="pdash__label t-sm">{t('pdash.perfil_idiomas_label')}</label>
           <input className="pdash__input" value={form.languages}
             onChange={e => set('languages', e.target.value)} placeholder="Español, Inglés" />
         </div>
 
         <div className="pdash__field pdash__field--full">
-          <label className="pdash__label t-sm">Categorías en las que apareces</label>
+          <label className="pdash__label t-sm">{t('pdash.perfil_categorias_label')}</label>
           <div className="pdash__category-checks">
             {PROVIDER_CATEGORIES.map(cat => (
               <label key={cat.slug} className="pdash__check-label">
@@ -223,7 +223,7 @@ function ProviderProfileEditor({ provider, onSave, saving, onAvatarUpload, avata
         </div>
 
         <div className="pdash__field pdash__field--full pdash__divider-section">
-          <p className="label pdash__section-label">Contacto y pagos</p>
+          <p className="label pdash__section-label">{t('pdash.perfil_contacto_label')}</p>
         </div>
 
         <div className="pdash__field">
@@ -240,7 +240,7 @@ function ProviderProfileEditor({ provider, onSave, saving, onAvatarUpload, avata
 
         {/* Instagram */}
         <div className="pdash__field">
-          <label className="pdash__label t-sm">Instagram</label>
+          <label className="pdash__label t-sm">{t('pdash.perfil_instagram_label')}</label>
           <div className="pdash__input-prefix-wrap">
             <span className="pdash__input-prefix">instagram.com/</span>
             <input
@@ -253,7 +253,7 @@ function ProviderProfileEditor({ provider, onSave, saving, onAvatarUpload, avata
             />
           </div>
           <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 4 }}>
-            Puedes pegar el link completo — lo limpiamos automáticamente.
+            {t('pdash.perfil_instagram_hint')}
           </p>
         </div>
 
@@ -307,13 +307,13 @@ function ProviderProfileEditor({ provider, onSave, saving, onAvatarUpload, avata
           {changingPw ? (
             <div className="pdash__form">
               <div className="pdash__field">
-                <label className="pdash__label t-sm">Nueva contraseña</label>
+                <label className="pdash__label t-sm">{t('pdash.password_new_label')}</label>
                 <input className="pdash__input" type="password" value={pwNew}
                   onChange={e => setPwNew(e.target.value)}
                   placeholder="Mínimo 6 caracteres" autoFocus disabled={pwSaving} />
               </div>
               <div className="pdash__field">
-                <label className="pdash__label t-sm">Confirmar contraseña</label>
+                <label className="pdash__label t-sm">{t('pdash.password_confirm_label')}</label>
                 <input className="pdash__input" type="password" value={pwConfirm}
                   onChange={e => setPwConfirm(e.target.value)}
                   onKeyDown={e => { if (e.key === 'Enter') savePw(); if (e.key === 'Escape') cancelPw() }}
@@ -347,7 +347,7 @@ function ProviderProfileEditor({ provider, onSave, saving, onAvatarUpload, avata
             🌐 Traducciones automáticas
           </h3>
           <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 4 }}>
-            Generadas por DeepL al guardar. Puedes editarlas manualmente.
+            {t('pdash.traducciones_hint')}
           </p>
         </div>
 
@@ -357,8 +357,8 @@ function ProviderProfileEditor({ provider, onSave, saving, onAvatarUpload, avata
               <span className={`fi fi-${flag} pdash__trans-flag`} />
               <span className="t-sm" style={{ fontWeight: 700, color: 'var(--text-700)' }}>{lang}</span>
               {provider?.[`description_${suffix}`]
-                ? <span className="pdash__badge pdash__badge--verified" style={{ fontSize: '0.65rem' }}>✔ Traducido</span>
-                : <span className="pdash__badge" style={{ fontSize: '0.65rem' }}>Pendiente</span>
+                ? <span className="pdash__badge pdash__badge--verified" style={{ fontSize: '0.65rem' }}>{t('pdash.traducciones_status_done')}</span>
+                : <span className="pdash__badge" style={{ fontSize: '0.65rem' }}>{t('pdash.traducciones_status_pending')}</span>
               }
             </div>
             <div className="pdash__form" style={{ marginTop: 10 }}>
@@ -578,8 +578,8 @@ function SectionHerramientas({ provider, onSave, saving }) {
   return (
     <div className="pdash__section">
       <div className="pdash__section-header">
-        <h2 className="pdash__section-title d-md">Tus herramientas</h2>
-        <p className="t-sm pdash__section-sub">Configura tus canales de contacto y agenda.</p>
+        <h2 className="pdash__section-title d-md">{t('pdash.herramientas_title')}</h2>
+        <p className="t-sm pdash__section-sub">{t('pdash.herramientas_config_sub')}</p>
       </div>
 
       {/* Link de pago externo */}
@@ -604,11 +604,11 @@ function SectionHerramientas({ provider, onSave, saving }) {
       {/* Calendario y videollamada */}
       <div className="pdash__tools-block">
         <div className="pdash__tools-block-header">
-          <span className="pdash__tools-block-title t-sm">📅 Calendario de citas</span>
+          <span className="pdash__tools-block-title t-sm">{t('pdash.herramientas_agenda_title')}</span>
         </div>
 
         <div className="pdash__field pdash__field--full" style={{ marginBottom: 16 }}>
-          <label className="pdash__label t-sm">Link de agenda (Calendly, Cal.com, etc.)</label>
+          <label className="pdash__label t-sm">{t('pdash.herramientas_agenda_label')}</label>
           <input
             className="pdash__input"
             value={form.calendar_link}
@@ -622,7 +622,7 @@ function SectionHerramientas({ provider, onSave, saving }) {
         </div>
 
         <div className="pdash__field pdash__field--full" style={{ marginBottom: 16 }}>
-          <label className="pdash__label t-sm">📹 Plataforma para la llamada</label>
+          <label className="pdash__label t-sm">{t('pdash.herramientas_video_title')}</label>
           <div className="pdash__call-option pdash__call-option--gold" style={{ marginBottom: 10 }}>
             <span>✅ <strong>Sala Jitsi de SoyManada</strong> — se genera automáticamente al confirmar una reserva.</span>
             <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 2 }}>
@@ -648,11 +648,11 @@ function SectionHerramientas({ provider, onSave, saving }) {
       {/* Herramientas avanzadas */}
       <div className="pdash__tools-block" style={{ marginTop: 24 }}>
         <div className="pdash__tools-block-header">
-          <span className="pdash__tools-block-title t-sm">🛠 Herramientas avanzadas</span>
+          <span className="pdash__tools-block-title t-sm">{t('pdash.herramientas_advanced_title')}</span>
         </div>
         <div className="pdash__form">
           <div className="pdash__field pdash__field--full">
-            <label className="pdash__label t-sm">✉️ Email para redirección de consultas</label>
+            <label className="pdash__label t-sm">{t('pdash.herramientas_email_title')}</label>
             <input
               className={`pdash__input${emailError ? ' pdash__input--error' : ''}`}
               type="email"
@@ -802,7 +802,7 @@ function ReviewReplies({ provider }) {
   )
   if (opinions.length === 0) return (
     <p className="t-sm" style={{ color: 'var(--text-300)', padding: '8px 0' }}>
-      Aún no tienes reseñas de clientes.
+      {t('pdash.resenas_empty')}
     </p>
   )
 
@@ -963,9 +963,9 @@ function SectionReseñas({ provider }) {
   return (
     <div className="pdash__section">
       <div className="pdash__section-header">
-        <h2 className="pdash__section-title d-md">Reseñas de clientes</h2>
+        <h2 className="pdash__section-title d-md">{t('pdash.resenas_title')}</h2>
         <p className="t-sm pdash__section-sub">
-          Lee lo que tus clientes dicen de ti y responde públicamente desde aquí.
+          {t('pdash.resenas_lead')}
         </p>
       </div>
       <ReviewReplies provider={provider} />
