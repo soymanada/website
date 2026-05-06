@@ -17,7 +17,9 @@ export default function CategoryPage() {
   const { t } = useTranslation()
   const [providers, setProviders] = useState([])
   const cat  = categories.find(c => c.slug === slug)
-  const list = providers.filter(p => p.categorySlug === slug)
+  const list = providers.filter(p =>
+    Array.isArray(p.category_slugs) ? p.category_slugs.includes(slug) : p.categorySlug === slug
+  )
 
   useEffect(() => {
     let mounted = true
