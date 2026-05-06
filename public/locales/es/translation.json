@@ -747,5 +747,38 @@
     "name": "Francisco Aleuy",
     "role": "Fundador · Migrante",
     "tiktok_stat": "+20K en TikTok"
-}
+},
+  "not_found": {
+    "title": "Página no encontrada",
+    "back_home": "Volver al inicio"
+  },
+  "category_page": {
+    "not_found_title": "Categoría no encontrada",
+    "not_found_body": "La categoría que buscas no existe o fue movida.",
+    "back_home": "Volver al inicio",
+    "breadcrumb_home": "Inicio",
+    "provider_count_one": "{{count}} proveedor",
+    "provider_count_other": "{{count}} proveedores",
+    "provider_count": "{{count}} proveedores",
+    "verified_count_one": "{{count}} verificado por Manada",
+    "verified_count_other": "{{count}} verificados por Manada",
+    "verified_count": "{{count}} verificados por Manada",
+    "coming_soon_body": "Esta sección está en construcción, pero la conversación ya está ocurriendo.",
+    "coming_soon_cta": "Unirse al grupo Manada a Canadá →",
+    "empty_title": "Proveedores próximamente",
+    "empty_body": "Estamos validando proveedores para esta categoría.",
+    "empty_cta": "Sugerir un proveedor",
+    "others_title": "Otras categorías"
+  },
+  "provider_card": {
+    "exclusive_benefit": "Beneficio exclusivo:",
+    "contact_whatsapp": "Chatear por WhatsApp",
+    "contact_phone": "Llamar a la oficina",
+    "contact_instagram": "Instagram",
+    "gate_text": "Uníte gratis — ve contactos, deja tu huella 🐾 y ayuda a la comunidad a elegir mejor.",
+    "gate_cta": "Unirse gratis",
+    "profile_link": "Ver perfil completo →",
+    "profile_link_remesas": "Ver reseñas →",
+    "no_opinions": "Aún no hay reseñas"
+  }
 }
