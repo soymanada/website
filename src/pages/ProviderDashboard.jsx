@@ -186,7 +186,7 @@ function ProviderProfileEditor({ provider, onSave, saving, onAvatarUpload, avata
             placeholder="Cuéntale al migrante quién eres y cómo puedes ayudarlo." />
         </div>
         <div className="pdash__field">
-          <label className="pdash__label t-sm">Países donde operas</label>
+          <label className="pdash__label t-sm">Países donde ofreces tu servicio</label>
           <input className="pdash__input" value={form.countries}
             onChange={e => set('countries', e.target.value)} placeholder="Canadá, Chile (separados por coma)" />
         </div>
@@ -197,7 +197,7 @@ function ProviderProfileEditor({ provider, onSave, saving, onAvatarUpload, avata
         </div>
 
         <div className="pdash__field pdash__field--full">
-          <label className="pdash__label t-sm">Categorías en las que aparecés</label>
+          <label className="pdash__label t-sm">Categorías en las que apareces</label>
           <div className="pdash__category-checks">
             {PROVIDER_CATEGORIES.map(cat => (
               <label key={cat.slug} className="pdash__check-label">
@@ -217,7 +217,7 @@ function ProviderProfileEditor({ provider, onSave, saving, onAvatarUpload, avata
           </div>
           {form.category_slugs.length === 0 && (
             <p className="t-xs pdash__field-error">
-              Seleccioná al menos una categoría.
+              Selecciona al menos una categoría.
             </p>
           )}
         </div>
@@ -253,7 +253,7 @@ function ProviderProfileEditor({ provider, onSave, saving, onAvatarUpload, avata
             />
           </div>
           <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 4 }}>
-            Podés pegar el link completo — lo limpiamos automáticamente.
+            Puedes pegar el link completo — lo limpiamos automáticamente.
           </p>
         </div>
 
@@ -660,7 +660,7 @@ function SectionHerramientas({ provider, onSave, saving }) {
               onChange={e => { set('redirect_email', e.target.value); setEmailError('') }}
               onBlur={e => {
                 const v = e.target.value.trim()
-                if (v && !isValidEmail(v)) setEmailError('Revisá el formato del email.')
+                if (v && !isValidEmail(v)) setEmailError('Revisa el formato del email.')
               }}
               placeholder="tu@email.com"
             />
