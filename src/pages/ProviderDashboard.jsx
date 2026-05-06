@@ -1268,7 +1268,7 @@ export default function ProviderDashboard() {
       .from('provider-avatars')
       .getPublicUrl(path)
 
-    const { error: updateErr } = await supabase
+label: t('pdash.tab_reseñas_label')    const { error: updateErr } = await supabase
       .from('providers')
       .update({ avatar_url: publicUrl })
       .eq('user_id', user.id)
@@ -1297,11 +1297,11 @@ export default function ProviderDashboard() {
     { id: 'perfil',       icon: '👤', label: t('pdash.tab_perfil_label') },
     { id: 'herramientas', icon: '🛠',  label: t('pdash.tab_herramientas_label') },
     { id: 'metricas',     icon: '📊', label: t('pdash.tab_metricas_label') },
-    { id: 'reseñas',      icon: '💬', label: 'Reseñas' },
+    { id: 'reseñas',      icon: '💬', label: t('pdash.tab_reseñas_label') },
     { id: 'reservas',        icon: '📅', label: t('pdash.tab_reservas_label') },
     { id: 'mensajes',        icon: '✉️',  label: t('pdash.tab_mensajes_label') },
-    { id: 'recomendaciones', icon: '🤝', label: 'Recomendaciones' },
-    { id: 'ayuda',           icon: '📖', label: 'Ayuda' },
+    { id: 'recomendaciones', icon: '🤝', label: t('pdash.tab_recomendaciones_label') },
+    { id: 'ayuda',           icon: '📖', label: t('pdash.tab_ayuda_label') },
   ]
 
   return (
