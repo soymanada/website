@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useAuth } from '../hooks/useAuth'
 import { getUserDisplayName } from '../utils/userUtils'
 import LanguageSwitcher from './LanguageSwitcher'
+import categories from '../data/categories.json'
 import './Header.css'
 
 export default function Header() {
@@ -45,20 +46,10 @@ export default function Header() {
 
   useEffect(() => { setMenuOpen(false); setUserMenuOpen(false) }, [location])
 
-  const navLinks = [
-    { to: '/categoria/seguros',       label: t('header.nav_seguros') },
-    { to: '/categoria/migracion',     label: t('header.nav_migracion') },
-    { to: '/categoria/traducciones',  label: t('header.nav_traducciones') },
-    { to: '/categoria/trabajo',       label: t('header.nav_trabajo') },
-    { to: '/categoria/alojamiento',   label: t('header.nav_alojamiento') },
-    { to: '/categoria/idiomas',       label: t('header.nav_idiomas') },
-    { to: '/categoria/banca',         label: t('header.nav_banca') },
-    { to: '/categoria/salud-mental',  label: t('header.nav_salud_mental') },
-    { to: '/categoria/antes-de-viajar', label: t('header.nav_antes_de_viajar') },
-    { to: '/categoria/taxes',          label: t('header.nav_taxes') },
-    { to: '/categoria/comunidad',      label: t('header.nav_comunidad') },
-    { to: '/categoria/remesas',        label: t('header.nav_remesas') },
-  ]
+  const navLinks = categories
+    .filter(c => c.slug !== 'antes-de-viajar')
+    .sort((a, b) => a.order - b.order)
+    .map(c => ({ to: `/categoria/${c.slug}`, label: t(`categories.${c.slug}`, c.name) }))
 
   return (
     <header className={`hdr${(scrolled || darkHero) ? ' hdr--scrolled' : ''}${darkPage && !scrolled ? ' hdr--dark' : ''}${menuOpen ? ' hdr--open' : ''}`}>
