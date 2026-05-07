@@ -1268,7 +1268,7 @@ export default function ProviderDashboard() {
       .from('provider-avatars')
       .getPublicUrl(path)
 
-label: t('pdash.tab_reseñas_label')    const { error: updateErr } = await supabase
+  const { error: updateErr } = await supabase
       .from('providers')
       .update({ avatar_url: publicUrl })
       .eq('user_id', user.id)
