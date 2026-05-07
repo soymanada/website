@@ -32,6 +32,12 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+        - name: Validate locale JSON
+          run: |
+            python3 -m json.tool public/locales/es/translation.json > /dev/null && \
+            python3 -m json.tool public/locales/en/translation.json > /dev/null && \
+            python3 -m json.tool public/locales/fr-CA/translation.json > /dev/null
+
 
       - name: Build
         run: npm run build
