@@ -109,7 +109,7 @@ function ProviderProfileEditor({ provider, onSave, saving, onAvatarUpload, avata
   const cancelPw = () => { setChangingPw(false); setPwNew(''); setPwConfirm(''); setPwMsg(null) }
   const savePw = async () => {
     if (pwNew.length < 6) { setPwMsg({ ok: false, text: 'Mínimo 6 caracteres.' }); return }
-    if (pwNew !== pwConfirm) { setPwMsg({ ok: false, text: '{t('pdash.password_mismatch')}' }); return }
+    if (pwNew !== pwConfirm) { setPwMsg({ ok: false, text: t('pdash.password_mismatch') }); return }
     setPwSaving(true); setPwMsg(null)
     const { error } = await supabase.auth.updateUser({ password: pwNew })
     setPwSaving(false)
