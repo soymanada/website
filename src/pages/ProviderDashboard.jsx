@@ -1335,12 +1335,12 @@ label: t('pdash.tab_reseñas_label')    const { error: updateErr } = await supab
                 rel="noopener noreferrer"
                 className="pdash__hero-link"
               >
-                Ver perfil público ↗
+                {t('pdash.view_public_profile')}
               </a>
             )}
             {isAdmin && (
               <a href="/admin" className="pdash__hero-link pdash__hero-link--admin">
-                🛡 Panel admin
+                {t('pdash.admin_panel')}
               </a>
             )}
             <button
