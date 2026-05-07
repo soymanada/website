@@ -113,8 +113,8 @@ function ProviderProfileEditor({ provider, onSave, saving, onAvatarUpload, avata
     setPwSaving(true); setPwMsg(null)
     const { error } = await supabase.auth.updateUser({ password: pwNew })
     setPwSaving(false)
-    if (error) setPwMsg({ ok: false, text: '{t('pdash.password_error')}' })
-    else { setPwMsg({ ok: true, text: '{t('pdash.password_ok')}' }); setTimeout(cancelPw, 2000) }
+    if (error) setPwMsg({ ok: false, text: t('pdash.password_error') })
+    else { setPwMsg({ ok: true, text: t('pdash.password_ok') }); setTimeout(cancelPw, 2000) }
   }
 
   const [form, setForm] = useState({
