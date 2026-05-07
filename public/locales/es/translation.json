@@ -904,6 +904,8 @@
     "hero_eyebrow": "Panel de proveedor",
     "signout": "Cerrar sesión",
     "loading": "Cargando tu perfil…",
+    "no_provider": "Aún no tienes un perfil de proveedor activo. Postula para aparecer en el directorio.",
+    "register_cta": "Postular como proveedor",
     "saving": "Guardando…",
     "save_changes": "Guardar cambios",
     "saved_ok": "Cambios guardados correctamente.",
@@ -1052,7 +1054,8 @@
     }
   },
   "errors": {
-    "url_must_be_https": "El enlace debe comenzar con https://",
+    "url_must_be_https": "El enlace debe comenzar con https://"
+  },
   "registro": {
     "error_generico": "Ocurrió un error al enviar. Inténtalo de nuevo.",
     "exito_titulo": "🎉 Solicitud enviada",
@@ -1122,6 +1125,5 @@
     "pais_rep_checa": "República Checa",
     "pais_suecia": "Suecia",
     "pais_otro": "Otro país"
-  }
   }
 }

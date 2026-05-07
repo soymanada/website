@@ -663,6 +663,8 @@
     "hero_eyebrow": "Tableau de bord prestataire",
     "signout": "Se déconnecter",
     "loading": "Chargement de votre profil…",
+    "no_provider": "Vous n'avez pas encore de profil de prestataire actif. Postulez pour figurer dans l'annuaire.",
+    "register_cta": "Postuler comme prestataire",
     "saving": "Enregistrement…",
     "save_changes": "Enregistrer les modifications",
     "saved_ok": "Modifications enregistrées avec succès.",

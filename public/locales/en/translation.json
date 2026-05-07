@@ -663,6 +663,8 @@
     "hero_eyebrow": "Provider panel",
     "signout": "Sign out",
     "loading": "Loading your profile…",
+    "no_provider": "You don't have an active provider profile yet. Apply to be listed in the directory.",
+    "register_cta": "Apply as a provider",
     "saving": "Saving…",
     "save_changes": "Save changes",
     "saved_ok": "Changes saved successfully.",
