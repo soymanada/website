@@ -3,6 +3,10 @@ import { useTranslation } from 'react-i18next'
 import { getEndorsementsForProvider } from '../lib/endorsements'
 import './EndorsementBadge.css'
 
+function dicebearUrl(seed) {
+  return `https://api.dicebear.com/7.x/thumbs/svg?seed=${encodeURIComponent(seed)}&backgroundColor=b6e3f4`
+}
+
 export default function EndorsementBadge({ providerId }) {
   const { t } = useTranslation()
   const [endorsements, setEndorsements] = useState([])
@@ -29,9 +33,16 @@ export default function EndorsementBadge({ providerId }) {
 
   return (
     <div className="endorsement-badge" title={`Recomendado por ${label}`}>
-      <span className="endorsement-badge__icon" aria-hidden="true">⭐</span>
+      <img
+        className="endorsement-badge__avatar"
+        src={first.endorser_avatar || dicebearUrl(first.endorser_name)}
+        alt={first.endorser_name}
+        width={18}
+        height={18}
+        loading="lazy"
+      />
       <span className="endorsement-badge__text">
-        <strong>RECOMENDADO</strong> por {label}
+        Recomendado por <strong>{label}</strong>
       </span>
       {endorsements.length > 1 && (
         <span className="endorsement-badge__more">+{endorsements.length - 1}</span>
