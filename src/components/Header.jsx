@@ -175,9 +175,6 @@ export default function Header() {
 
         {/* ── Right actions ────────────────────────────────────────────── */}
         <div className="hdr__actions">
-          <NavLink to="/primeros-pasos" className={({ isActive }) => `hdr__first-steps${isActive ? ' hdr__first-steps--active' : ''}`}>
-            🐾 {t('header.nav_primeros_pasos')}
-          </NavLink>
           <Link to="/registro-proveedores" className="btn btn-ghost btn-sm hdr__provider-btn">
             {t('header.cta_proveedor')}
           </Link>

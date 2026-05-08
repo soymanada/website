@@ -35,6 +35,9 @@ export default function Hero() {
               onClick={(e) => { e.preventDefault(); document.getElementById('categorias')?.scrollIntoView({ behavior: 'smooth' }) }}>
               {t('hero.cta_secondary')}
             </Link>
+            <Link to="/primeros-pasos" className="hero__guide-link">
+              {t('hero.cta_guide')}
+            </Link>
           </div>
         </div>
       </div>

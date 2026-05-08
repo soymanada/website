@@ -80,6 +80,23 @@
   align-items: center;
 }
 
+.hero__guide-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--iris-600);
+  text-decoration: none;
+  padding: 0 4px;
+  border-bottom: 2px solid transparent;
+  transition: color var(--t-fast), border-color var(--t-fast);
+}
+.hero__guide-link:hover {
+  color: var(--iris-800);
+  border-bottom-color: var(--iris-400);
+}
+
 /* Social proof */
 .hero__proof {
   display: flex;
