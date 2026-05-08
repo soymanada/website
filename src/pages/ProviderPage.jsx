@@ -13,6 +13,7 @@ import PawRating from '../components/PawRating'
 import MessageModal    from '../components/MessageModal'
 import BookingCalendar from '../components/BookingCalendar'
 import Interstitial    from '../components/Interstitial'
+import { getEndorsementsForProvider } from '../lib/endorsements'
 import './ProviderPage.css'
 
 const COUNTRY_ISO = {
@@ -139,6 +140,61 @@ function OpinionsList({ providerId, onStats }) {
           )
         })}
       </div>
+    </section>
+  )
+}
+
+// ── Sección: recomendaciones de otros proveedores ─────────────────
+function dicebearUrl(seed) {
+  return `https://api.dicebear.com/7.x/thumbs/svg?seed=${encodeURIComponent(seed)}&backgroundColor=b6e3f4`
+}
+
+function EndorsementsSection({ providerId }) {
+  const [endorsements, setEndorsements] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    getEndorsementsForProvider(providerId)
+      .then(data => { setEndorsements(data); setLoading(false) })
+      .catch(() => setLoading(false))
+  }, [providerId])
+
+  if (loading || endorsements.length === 0) return null
+
+  return (
+    <section className="ppage__endorsements">
+      <h2 className="ppage__section-title ppage__endorsements-title">
+        🤝 Recomendado por la comunidad
+      </h2>
+      <ul className="ppage__endorsements-list">
+        {endorsements.map((e, i) => (
+          <li key={i} className="ppage__endorsement-item">
+            <img
+              src={e.endorser_avatar || dicebearUrl(e.endorser_name)}
+              alt={e.endorser_name}
+              className="ppage__endorsement-avatar"
+              width={40}
+              height={40}
+              loading="lazy"
+            />
+            <div className="ppage__endorsement-body">
+              <div className="ppage__endorsement-who">
+                {e.endorser_slug ? (
+                  <Link to={`/proveedor/${e.endorser_slug}`} className="ppage__endorsement-name">
+                    {e.endorser_name}
+                  </Link>
+                ) : (
+                  <span className="ppage__endorsement-name">{e.endorser_name}</span>
+                )}
+                {e.endorser_category && (
+                  <span className="ppage__endorsement-cat">{e.endorser_category}</span>
+                )}
+              </div>
+              <p className="ppage__endorsement-msg">"{e.message}"</p>
+            </div>
+          </li>
+        ))}
+      </ul>
     </section>
   )
 }
@@ -379,6 +435,8 @@ export default function ProviderPage() {
               )}
 
               {/* BookingCalendar disabled until tiers are implemented */}
+
+              <EndorsementsSection providerId={providerId} />
 
               <OpinionsList
                 providerId={providerId}
