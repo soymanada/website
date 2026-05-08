@@ -7,10 +7,10 @@ import es from '../public/locales/es/translation.json'
 import en from '../public/locales/en/translation.json'
 import frCA from '../public/locales/fr-CA/translation.json'
 
-// Limpia valores inválidos de localStorage antes de inicializar
+// Limpia valores inválidos de localStorage antes de inicializar.
+// Solo acepta exactamente 'es', 'en' o cualquier variante de 'fr'.
 const storedLang = localStorage.getItem('soymanada_lang')
-const validLangs = ['es', 'en', 'fr-CA']
-if (storedLang && !validLangs.some(l => storedLang.startsWith(l.split('-')[0]))) {
+if (storedLang && storedLang !== 'es' && storedLang !== 'en' && !storedLang.startsWith('fr')) {
   localStorage.removeItem('soymanada_lang')
 }
 
@@ -21,10 +21,13 @@ i18n
     resources: {
       es:      { translation: es },
       en:      { translation: en },
+      // Registrar bajo 'fr' Y 'fr-CA' para que funcione sin importar
+      // qué variante detecte el LanguageDetector o guarde en localStorage.
+      fr:      { translation: frCA },
       'fr-CA': { translation: frCA },
     },
     fallbackLng: 'es',
-    supportedLngs: ['es', 'en', 'fr-CA'],
+    supportedLngs: ['es', 'en', 'fr', 'fr-CA'],
     nonExplicitSupportedLngs: true,
     interpolation: { escapeValue: false },
     detection: {
