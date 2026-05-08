@@ -1138,7 +1138,6 @@ export default function ProviderDashboard() {
   const { user, loading: authLoading, isAdmin } = useAuth()
 
   const [provider,        setProvider]        = useState(null)
-  const [tier,            setTier]            = useState(null)
   const [providerLoading, setProviderLoading] = useState(true)
   const [saving,          setSaving]          = useState(false)
   const [avatarUploading, setAvatarUploading] = useState(false)
@@ -1161,19 +1160,48 @@ export default function ProviderDashboard() {
   }, [provider?.name])
 
   // ── load provider ────────────────────────────────────────────────
+  // 1st try: by user_id (normal)
+  // 2nd try: by contact_email (provider created by admin without user_id) → auto-link
   useEffect(() => {
     if (!user) return
     ;(async () => {
       setProviderLoading(true)
-      const { data, error } = await supabase
+
+      let found = null
+
+      // Try by user_id
+      const { data: byUid } = await supabase
         .from('providers')
         .select('*')
         .eq('user_id', user.id)
-        .single()
-      if (!error && data) {
-        setProvider(data)
-        setTier(data.tier ?? null)
+        .maybeSingle()
+
+      if (byUid) {
+        found = byUid
+      } else if (user.email) {
+        // Fallback: match by contact_email (admin-created provider)
+        const { data: byEmail } = await supabase
+          .from('providers')
+          .select('*')
+          .ilike('contact_email', user.email)
+          .maybeSingle()
+
+        if (byEmail) {
+          found = byEmail
+          // Auto-link user_id so next login uses fast path
+          await supabase
+            .from('providers')
+            .update({ user_id: user.id })
+            .eq('id', byEmail.id)
+          // Also ensure profile role is set
+          await supabase
+            .from('profiles')
+            .update({ role: 'provider' })
+            .eq('id', user.id)
+        }
       }
+
+      setProvider(found)
       setProviderLoading(false)
     })()
   }, [user])
@@ -1288,6 +1316,20 @@ export default function ProviderDashboard() {
     <div className="pdash__empty">
       <p>{t('pdash.no_provider')}</p>
       <Link to="/registro-proveedores" className="btn btn-primary">{t('pdash.register_cta')}</Link>
+    </div>
+  )
+  if (!provider.active) return (
+    <div className="pdash__pending">
+      <div className="pdash__pending-icon">⏳</div>
+      <h2 className="d-md">{t('pdash.pending_title', 'Tu perfil está pendiente de activación')}</h2>
+      <p className="t-sm">{t('pdash.pending_body', 'El equipo de SoyManada está revisando tu solicitud. Te avisaremos por email cuando tu perfil esté activo en el directorio.')}</p>
+      <button
+        className="btn btn-ghost"
+        onClick={async () => { await supabase.auth.signOut(); window.location.href = '/' }}
+        style={{ marginTop: 16 }}
+      >
+        {t('pdash.sign_out')}
+      </button>
     </div>
   )
 
