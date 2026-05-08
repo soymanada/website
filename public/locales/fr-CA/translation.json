@@ -143,7 +143,8 @@
     "subtitle": "SoyManada réunit des professionnels et des entreprises qui travaillent avec la communauté migrante hispanophone. Explorez, comparez les options et contactez directement.",
     "cta_primary": "Explorer les fournisseurs",
     "cta_secondary": "Voir les catégories",
-    "cta_guide": "🐾 Premiers pas"
+    "cta_guide": "🐾 Premiers pas",
+    "cta_guide_label": "Guide des premiers pas pour les nouveaux arrivants"
   },
   "stats": {
     "members": "membres dans la communauté",

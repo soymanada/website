@@ -108,8 +108,8 @@
 .hdr__group-menu {
   position: absolute;
   top: calc(100% + 10px);
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
+  transform: none;
   min-width: 200px;
   background: var(--white);
   border: 1px solid var(--iris-200);
@@ -125,8 +125,8 @@
   content: '';
   position: absolute;
   top: -6px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 20px;
+  transform: none;
   width: 12px; height: 6px;
   background: var(--white);
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);

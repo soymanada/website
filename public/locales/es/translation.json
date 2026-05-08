@@ -141,7 +141,8 @@
     "subtitle": "En SoyManada reunimos a profesionales y negocios que trabajan con la comunidad migrante hispanohablante. Explora, revisa opciones y contacta directo.",
     "cta_primary": "Explorar proveedores",
     "cta_secondary": "Ver categorías",
-    "cta_guide": "🐾 Primeros pasos"
+    "cta_guide": "🐾 Primeros pasos",
+    "cta_guide_label": "Guía de primeros pasos para recién llegados"
   },
   "auth_banner": {
     "headline": "Únete gratis — ve contactos, deja tu huella 🐾 y ayuda a la comunidad.",
