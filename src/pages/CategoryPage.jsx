@@ -20,7 +20,7 @@ function SegurosQuoteBanner() {
       <div className="catpage__cotiza-header">
         <span className="catpage__cotiza-badge">💡 Consejo clave</span>
         <h2 className="catpage__cotiza-title d-md">
-          Pedí cotización a más de uno — esa es la diferencia
+          Solicita cotización a varios — esa es la diferencia
         </h2>
         <p className="catpage__cotiza-body t-lg">
           Cada asesor trabaja con <strong>distintas aseguradoras</strong>. El mismo seguro puede
@@ -55,17 +55,17 @@ function SegurosQuoteBanner() {
 
       {!user && (
         <div className="catpage__cotiza-cta">
-          <Link to="/login" className="btn btn-primary">
-            <span>Crear cuenta gratis para contactarlos →</span>
+          <Link to="/login" className="btn btn-primary catpage__cotiza-btn">
+            <span>Crear cuenta gratis →</span>
           </Link>
           <p className="t-xs catpage__cotiza-cta-hint">
-            Con tu cuenta podés escribirles directo desde la plataforma
+            Con tu cuenta puedes escribirles directo desde la plataforma
           </p>
         </div>
       )}
       {user && (
         <p className="catpage__cotiza-loggedin t-sm">
-          ✅ Ya estás conectado — escribile a 2 o 3 y pediles su mejor precio.
+          ✅ Ya tienes cuenta — escríbeles a 2 o 3 y pídeles su mejor precio.
         </p>
       )}
     </div>

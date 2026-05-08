@@ -136,6 +136,11 @@
   gap: 16px;
   flex-wrap: wrap;
 }
+.catpage__cotiza-btn {
+  flex-shrink: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
 .catpage__cotiza-cta-hint {
   color: var(--text-300);
 }
