@@ -10,30 +10,36 @@ const DEST_COUNTRIES = [
   { id: 'australia',   code: 'au', available: false },
 ]
 
-const FlagImg = ({ code, label }) => (
+const ORIGIN_COUNTRIES = [
+  { id: 'chile',     code: 'cl', available: true  },
+  { id: 'argentina', code: 'ar', available: false },
+  { id: 'colombia',  code: 'co', available: false },
+  { id: 'venezuela', code: 've', available: false },
+  { id: 'mexico',    code: 'mx', available: false },
+]
+
+const FlagImg = ({ code, label, size = 24 }) => (
   <img
-    src={`https://flagcdn.com/24x18/${code}.png`}
-    srcSet={`https://flagcdn.com/48x36/${code}.png 2x`}
-    width="24" height="18"
+    src={`https://flagcdn.com/${size}x${Math.round(size * 0.75)}/${code}.png`}
+    srcSet={`https://flagcdn.com/${size * 2}x${Math.round(size * 1.5)}/${code}.png 2x`}
+    width={size} height={Math.round(size * 0.75)}
     alt={label}
     className="hero__guide-flag"
   />
 )
 
 export default function Hero() {
-  const { t }        = useTranslation()
-  const navigate     = useNavigate()
-  const [dest, setDest] = useState('canada')
+  const { t }             = useTranslation()
+  const navigate          = useNavigate()
+  const [dest,   setDest]   = useState('canada')
+  const [origin, setOrigin] = useState('chile')
 
-  const selected   = DEST_COUNTRIES.find(c => c.id === dest)
-  const isAvailable = selected?.available ?? false
+  const destData   = DEST_COUNTRIES.find(c => c.id === dest)
+  const originData = ORIGIN_COUNTRIES.find(c => c.id === origin)
+  const isReady    = !!(destData?.available && originData?.available)
 
   const handleGuide = () => {
-    if (dest === 'canada') {
-      navigate('/primeros-pasos')
-    } else {
-      navigate(`/primeros-pasos?dest=${dest}`)
-    }
+    navigate(`/primeros-pasos?dest=${dest}&from=${origin}`)
   }
 
   return (
@@ -70,43 +76,67 @@ export default function Hero() {
 
           {/* ── Country guide widget ─────────────────────────── */}
           <div className="hero__guide anim-fade-up delay-3">
-            <span className="hero__guide-label">
-              🐾 {t('hero.guide_label')}
-            </span>
+            <span className="hero__guide-label">🐾 {t('hero.guide_label')}</span>
             <div className="hero__guide-widget">
-              <div className="hero__guide-flags">
-                {DEST_COUNTRIES.map(c => (
-                  <button
-                    key={c.id}
-                    type="button"
-                    className={[
-                      'hero__guide-flag-btn',
-                      dest === c.id ? 'hero__guide-flag-btn--active' : '',
-                    ].filter(Boolean).join(' ')}
-                    onClick={() => setDest(c.id)}
-                    title={t(`first_steps.dest_${c.id.replace('-', '_')}`)}
-                    aria-pressed={dest === c.id}
-                  >
-                    <FlagImg code={c.code} label={t(`first_steps.dest_${c.id.replace('-', '_')}`)} />
-                    <span className="hero__guide-flag-name">
-                      {t(`first_steps.dest_${c.id.replace('-', '_')}`)}
-                    </span>
-                    {!c.available && (
-                      <span className="hero__guide-flag-soon">
-                        {t('first_steps.coming_soon_badge')}
-                      </span>
-                    )}
-                  </button>
-                ))}
+
+              {/* Row 1: origin */}
+              <div className="hero__guide-row">
+                <span className="hero__guide-row-label">{t('hero.guide_from_label')}</span>
+                <div className="hero__guide-flags">
+                  {ORIGIN_COUNTRIES.map(c => {
+                    const name = t(`hero.origin_${c.id}`)
+                    return (
+                      <button
+                        key={c.id}
+                        type="button"
+                        className={['hero__guide-flag-btn', origin === c.id ? 'hero__guide-flag-btn--active' : ''].filter(Boolean).join(' ')}
+                        onClick={() => setOrigin(c.id)}
+                        title={name}
+                        aria-pressed={origin === c.id}
+                      >
+                        <FlagImg code={c.code} label={name} />
+                        <span className="hero__guide-flag-name">{name}</span>
+                        {!c.available && <span className="hero__guide-flag-soon">{t('first_steps.coming_soon_badge')}</span>}
+                      </button>
+                    )
+                  })}
+                </div>
               </div>
+
+              {/* Divider */}
+              <div className="hero__guide-divider" />
+
+              {/* Row 2: destination */}
+              <div className="hero__guide-row">
+                <span className="hero__guide-row-label">{t('hero.guide_to_label')}</span>
+                <div className="hero__guide-flags">
+                  {DEST_COUNTRIES.map(c => {
+                    const name = t(`first_steps.dest_${c.id.replace('-', '_')}`)
+                    return (
+                      <button
+                        key={c.id}
+                        type="button"
+                        className={['hero__guide-flag-btn', dest === c.id ? 'hero__guide-flag-btn--active' : ''].filter(Boolean).join(' ')}
+                        onClick={() => setDest(c.id)}
+                        title={name}
+                        aria-pressed={dest === c.id}
+                      >
+                        <FlagImg code={c.code} label={name} />
+                        <span className="hero__guide-flag-name">{name}</span>
+                        {!c.available && <span className="hero__guide-flag-soon">{t('first_steps.coming_soon_badge')}</span>}
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+
+              {/* Go button */}
               <button
                 type="button"
-                className={`hero__guide-go${!isAvailable ? ' hero__guide-go--soon' : ''}`}
+                className={`hero__guide-go${!isReady ? ' hero__guide-go--soon' : ''}`}
                 onClick={handleGuide}
               >
-                {isAvailable
-                  ? t('hero.guide_go')
-                  : t('first_steps.coming_soon_badge')}
+                {isReady ? t('hero.guide_go') : t('first_steps.coming_soon_badge')}
                 <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
               </button>
             </div>

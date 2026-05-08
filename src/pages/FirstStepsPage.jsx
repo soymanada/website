@@ -13,6 +13,14 @@ const DEST_COUNTRIES = [
   { id: 'australia',   code: 'au', available: false },
 ]
 
+const ORIGIN_COUNTRIES = [
+  { id: 'chile',     code: 'cl', available: true  },
+  { id: 'argentina', code: 'ar', available: false },
+  { id: 'colombia',  code: 'co', available: false },
+  { id: 'venezuela', code: 've', available: false },
+  { id: 'mexico',    code: 'mx', available: false },
+]
+
 const FlagImg = ({ code, label }) => (
   <img
     src={`https://flagcdn.com/24x18/${code}.png`}
@@ -41,13 +49,17 @@ export default function FirstStepsPage() {
   const country = t('common.currentCountry') // used inside tab content (always Canada)
 
   const [searchParams] = useSearchParams()
-  const initialDest    = DEST_COUNTRIES.find(c => c.id === searchParams.get('dest'))?.id ?? 'canada'
-  const [selectedDest, setSelectedDest] = useState(initialDest)
-  const [active,       setActive]       = useState('sin')
+  const initialDest   = DEST_COUNTRIES.find(c => c.id === searchParams.get('dest'))?.id ?? 'canada'
+  const initialOrigin = ORIGIN_COUNTRIES.find(c => c.id === searchParams.get('from'))?.id ?? 'chile'
 
-  const destAvailable  = DEST_COUNTRIES.find(c => c.id === selectedDest)?.available ?? false
-  // Dynamic country name for the hero title (changes with selector)
-  const destLabel      = t(`first_steps.dest_${selectedDest.replace('-', '_')}`)
+  const [selectedDest,   setSelectedDest]   = useState(initialDest)
+  const [selectedOrigin, setSelectedOrigin] = useState(initialOrigin)
+  const [active,         setActive]         = useState('sin')
+
+  const destData      = DEST_COUNTRIES.find(c => c.id === selectedDest)
+  const originData    = ORIGIN_COUNTRIES.find(c => c.id === selectedOrigin)
+  const destAvailable = !!(destData?.available && originData?.available)
+  const destLabel     = t(`first_steps.dest_${selectedDest.replace('-', '_')}`)
 
   useEffect(() => {
     const title = t('first_steps.meta_title', { country })
@@ -90,27 +102,54 @@ export default function FirstStepsPage() {
 
           {/* ── Country selector ─────────────────────────────── */}
           <div className="fsp__dest-selector">
-            <span className="fsp__dest-label">{t('first_steps.dest_label')}</span>
+            {/* Origin row */}
+            <span className="fsp__dest-label">{t('hero.guide_from_label')}</span>
+            <div className="fsp__dest-pills" style={{ marginBottom: 10 }}>
+              {ORIGIN_COUNTRIES.map(c => {
+                const name = t(`hero.origin_${c.id}`)
+                return (
+                  <button
+                    key={c.id}
+                    type="button"
+                    className={[
+                      'fsp__dest-pill',
+                      selectedOrigin === c.id ? 'fsp__dest-pill--active'      : '',
+                      !c.available            ? 'fsp__dest-pill--coming-soon' : '',
+                    ].filter(Boolean).join(' ')}
+                    onClick={() => setSelectedOrigin(c.id)}
+                    aria-pressed={selectedOrigin === c.id}
+                  >
+                    <FlagImg code={c.code} label={name} />
+                    <span className="fsp__dest-pill-name">{name}</span>
+                    {!c.available && <span className="fsp__dest-coming-badge">{t('first_steps.coming_soon_badge')}</span>}
+                  </button>
+                )
+              })}
+            </div>
+
+            {/* Destination row */}
+            <span className="fsp__dest-label">{t('hero.guide_to_label')}</span>
             <div className="fsp__dest-pills">
-              {DEST_COUNTRIES.map(c => (
-                <button
-                  key={c.id}
-                  type="button"
-                  className={[
-                    'fsp__dest-pill',
-                    selectedDest === c.id   ? 'fsp__dest-pill--active'      : '',
-                    !c.available            ? 'fsp__dest-pill--coming-soon' : '',
-                  ].filter(Boolean).join(' ')}
-                  onClick={() => setSelectedDest(c.id)}
-                  aria-pressed={selectedDest === c.id}
-                >
-                  <FlagImg code={c.code} label={t(`first_steps.dest_${c.id.replace('-', '_')}`)} />
-                  <span className="fsp__dest-pill-name">{t(`first_steps.dest_${c.id.replace('-', '_')}`)}</span>
-                  {!c.available && (
-                    <span className="fsp__dest-coming-badge">{t('first_steps.coming_soon_badge')}</span>
-                  )}
-                </button>
-              ))}
+              {DEST_COUNTRIES.map(c => {
+                const name = t(`first_steps.dest_${c.id.replace('-', '_')}`)
+                return (
+                  <button
+                    key={c.id}
+                    type="button"
+                    className={[
+                      'fsp__dest-pill',
+                      selectedDest === c.id ? 'fsp__dest-pill--active'      : '',
+                      !c.available          ? 'fsp__dest-pill--coming-soon' : '',
+                    ].filter(Boolean).join(' ')}
+                    onClick={() => setSelectedDest(c.id)}
+                    aria-pressed={selectedDest === c.id}
+                  >
+                    <FlagImg code={c.code} label={name} />
+                    <span className="fsp__dest-pill-name">{name}</span>
+                    {!c.available && <span className="fsp__dest-coming-badge">{t('first_steps.coming_soon_badge')}</span>}
+                  </button>
+                )
+              })}
             </div>
           </div>
         </div>

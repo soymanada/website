@@ -277,7 +277,14 @@
     "cta_guide": "🐾 First Steps",
     "cta_guide_label": "First steps guide for newcomers",
     "guide_label": "First steps guide",
-    "guide_go": "View guide"
+    "guide_go": "View guide",
+    "guide_from_label": "I'm from",
+    "guide_to_label": "Going to",
+    "origin_chile": "Chile",
+    "origin_argentina": "Argentina",
+    "origin_colombia": "Colombia",
+    "origin_venezuela": "Venezuela",
+    "origin_mexico": "Mexico"
   },
   "stats": {
     "members": "community members",

@@ -277,7 +277,14 @@
     "cta_guide": "🐾 Premiers pas",
     "cta_guide_label": "Guide des premiers pas pour les nouveaux arrivants",
     "guide_label": "Guide des premiers pas",
-    "guide_go": "Voir le guide"
+    "guide_go": "Voir le guide",
+    "guide_from_label": "Je viens de",
+    "guide_to_label": "Je vais à",
+    "origin_chile": "Chili",
+    "origin_argentina": "Argentine",
+    "origin_colombia": "Colombie",
+    "origin_venezuela": "Venezuela",
+    "origin_mexico": "Mexique"
   },
   "stats": {
     "members": "membres dans la communauté",

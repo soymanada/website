@@ -275,7 +275,14 @@
     "cta_guide": "🐾 Primeros pasos",
     "cta_guide_label": "Guía de primeros pasos para recién llegados",
     "guide_label": "Guía de primeros pasos",
-    "guide_go": "Ver guía"
+    "guide_go": "Ver guía",
+    "guide_from_label": "Soy de",
+    "guide_to_label": "Voy a",
+    "origin_chile": "Chile",
+    "origin_argentina": "Argentina",
+    "origin_colombia": "Colombia",
+    "origin_venezuela": "Venezuela",
+    "origin_mexico": "México"
   },
   "auth_banner": {
     "headline": "Únete gratis — ve contactos, deja tu huella 🐾 y ayuda a la comunidad.",
