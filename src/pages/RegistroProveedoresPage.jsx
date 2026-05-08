@@ -317,18 +317,6 @@ export default function RegistroProveedoresPage() {
 
               <form className="ppg-form__form" onSubmit={handleSubmit} noValidate>
 
-                {/* Framing período gratuito — remover cuando se active cobro */}
-                <div className="free-period-banner">
-                  <span className="free-period-icon">🎉</span>
-                  <div>
-                    <strong>Acceso gratuito durante el período de lanzamiento</strong>
-                    <p>
-                      Mientras construimos la comunidad, todos los proveedores entran sin costo.
-                      Cuando activemos los planes, te avisaremos con anticipación.
-                    </p>
-                  </div>
-                </div>
-
                 {/* Sección 1: Negocio */}
                 <div className="ppg-form__section">
                   <h3 className="ppg-form__section-title">{t('registro.seccion_negocio')}</h3>
