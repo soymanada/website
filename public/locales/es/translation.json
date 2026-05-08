@@ -1262,5 +1262,11 @@
         "link_label": "Ir a Recomendaciones"
       }
     }
+  },
+  "nav": {
+    "group_status": "Asegura tu estatus",
+    "group_settlement": "Tu Aterrizaje",
+    "group_growth": "Tu Crecimiento",
+    "group_lifestyle": "Tu Vida en Manada"
   }
 }

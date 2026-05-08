@@ -1177,5 +1177,11 @@
         "link_label": "Go to Recommendations"
       }
     }
+  },
+  "nav": {
+    "group_status": "Your Status",
+    "group_settlement": "Your Settlement",
+    "group_growth": "Your Growth",
+    "group_lifestyle": "Life in Manada"
   }
 }

@@ -7,19 +7,47 @@ import LanguageSwitcher from './LanguageSwitcher'
 import categories from '../data/categories.json'
 import './Header.css'
 
+// ── Grouped navigation structure ─────────────────────────────────────────────
+// Keys map to t('nav.group_<key>') in all locale files
+const NAV_GROUPS = [
+  { key: 'status',     icon: '🛂', slugs: ['migracion', 'traducciones', 'taxes'] },
+  { key: 'settlement', icon: '🏠', slugs: ['alojamiento', 'banca', 'seguros', 'planes-telefono', 'remesas'] },
+  { key: 'growth',     icon: '💼', slugs: ['trabajo', 'idiomas'] },
+  { key: 'lifestyle',  icon: '🐾', slugs: ['salud-mental', 'mascotas', 'comunidad'] },
+]
+
+// Build a lookup: slug → category object
+const CAT_BY_SLUG = Object.fromEntries(categories.map(c => [c.slug, c]))
+
+// ─────────────────────────────────────────────────────────────────────────────
 export default function Header() {
-  const [scrolled,     setScrolled]     = useState(false)
-  const [menuOpen,     setMenuOpen]     = useState(false)
-  const [userMenuOpen, setUserMenuOpen] = useState(false)
+  const [scrolled,      setScrolled]      = useState(false)
+  const [menuOpen,      setMenuOpen]      = useState(false)
+  const [userMenuOpen,  setUserMenuOpen]  = useState(false)
+  const [openGroup,     setOpenGroup]     = useState(null)   // desktop dropdown
+  const [openAccordion, setOpenAccordion] = useState(null)   // mobile accordion
+
+  const navRef     = useRef(null)
   const userMenuRef = useRef(null)
-  const location = useLocation()
-  const navigate = useNavigate()
+  const location   = useLocation()
+  const navigate   = useNavigate()
   const { t, i18n } = useTranslation()
 
   const darkHero = ['/proveedores', '/mi-perfil', '/cuenta'].includes(location.pathname)
   const darkPage = ['/primeros-pasos'].includes(location.pathname)
   const { user, isProvider, signOut } = useAuth()
 
+  // ── helpers ──────────────────────────────────────────────────────────────
+  const isGroupActive = (slugs) =>
+    slugs.some(slug => location.pathname === `/categoria/${slug}`)
+
+  const buildGroupLinks = (slugs) =>
+    slugs
+      .map(slug => CAT_BY_SLUG[slug])
+      .filter(Boolean)
+      .map(c => ({ to: `/categoria/${c.slug}`, label: t(`categories.${c.slug}`, c.name) }))
+
+  // ── event handlers ───────────────────────────────────────────────────────
   const handleSignOut = async () => {
     await signOut()
     navigate('/', { replace: true })
@@ -27,33 +55,61 @@ export default function Header() {
     setUserMenuOpen(false)
   }
 
+  const toggleGroup = (key) =>
+    setOpenGroup(prev => (prev === key ? null : key))
+
+  const toggleAccordion = (key) =>
+    setOpenAccordion(prev => (prev === key ? null : key))
+
+  // ── effects ──────────────────────────────────────────────────────────────
+  // Close user menu on outside click
   useEffect(() => {
     if (!userMenuOpen) return
     const handler = (e) => {
-      if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target))
         setUserMenuOpen(false)
-      }
     }
     document.addEventListener('mousedown', handler)
     return () => document.removeEventListener('mousedown', handler)
   }, [userMenuOpen])
 
+  // Close nav dropdown on outside click
+  useEffect(() => {
+    if (!openGroup) return
+    const handler = (e) => {
+      if (navRef.current && !navRef.current.contains(e.target))
+        setOpenGroup(null)
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [openGroup])
+
+  // Scroll detection
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 24)
     window.addEventListener('scroll', fn, { passive: true })
     return () => window.removeEventListener('scroll', fn)
   }, [])
 
-  useEffect(() => { setMenuOpen(false); setUserMenuOpen(false) }, [location])
+  // Close everything on route change
+  useEffect(() => {
+    setMenuOpen(false)
+    setUserMenuOpen(false)
+    setOpenGroup(null)
+  }, [location])
 
-  const navLinks = categories
-    .filter(c => c.slug !== 'antes-de-viajar')
-    .sort((a, b) => a.order - b.order)
-    .map(c => ({ to: `/categoria/${c.slug}`, label: t(`categories.${c.slug}`, c.name) }))
-
+  // ── render ───────────────────────────────────────────────────────────────
   return (
-    <header className={`hdr${(scrolled || darkHero) ? ' hdr--scrolled' : ''}${darkPage && !scrolled ? ' hdr--dark' : ''}${menuOpen ? ' hdr--open' : ''}`}>
+    <header className={[
+      'hdr',
+      (scrolled || darkHero) ? 'hdr--scrolled' : '',
+      darkPage && !scrolled  ? 'hdr--dark'     : '',
+      menuOpen               ? 'hdr--open'     : '',
+    ].filter(Boolean).join(' ')}>
+
       <div className="hdr__bar container">
+
+        {/* ── Logo ────────────────────────────────────────────────────── */}
         <Link to="/" className="hdr__logo">
           <svg className="hdr__logo-glyph" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor" width="22" height="22" aria-hidden="true">
             <ellipse cx="16" cy="25" rx="8" ry="5.5"/>
@@ -70,14 +126,54 @@ export default function Header() {
           </span>
         </Link>
 
-        <nav className="hdr__nav">
-          {navLinks.slice(0, 6).map(l => (
-            <NavLink key={l.to} to={l.to} className={({ isActive }) => `hdr__link${isActive ? ' hdr__link--active' : ''}`}>
-              {l.label}
-            </NavLink>
-          ))}
+        {/* ── Desktop grouped nav ──────────────────────────────────────── */}
+        <nav className="hdr__nav" ref={navRef} aria-label={t('header.nav_label', 'Categorías')}>
+          {NAV_GROUPS.map(group => {
+            const active = isGroupActive(group.slugs)
+            const open   = openGroup === group.key
+            return (
+              <div key={group.key} className="hdr__group">
+                <button
+                  type="button"
+                  className={[
+                    'hdr__group-btn',
+                    active ? 'hdr__group-btn--active' : '',
+                    open   ? 'hdr__group-btn--open'   : '',
+                  ].filter(Boolean).join(' ')}
+                  aria-haspopup="true"
+                  aria-expanded={open}
+                  onClick={() => toggleGroup(group.key)}
+                >
+                  <span className="hdr__group-icon" aria-hidden="true">{group.icon}</span>
+                  {t(`nav.group_${group.key}`)}
+                  <svg className="hdr__group-caret" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <polyline points="6 9 12 15 18 9"/>
+                  </svg>
+                </button>
+
+                {open && (
+                  <div className="hdr__group-menu" role="menu">
+                    {buildGroupLinks(group.slugs).map(link => (
+                      <NavLink
+                        key={link.to}
+                        to={link.to}
+                        role="menuitem"
+                        className={({ isActive }) =>
+                          `hdr__group-item${isActive ? ' hdr__group-item--active' : ''}`
+                        }
+                        onClick={() => setOpenGroup(null)}
+                      >
+                        {link.label}
+                      </NavLink>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )
+          })}
         </nav>
 
+        {/* ── Right actions ────────────────────────────────────────────── */}
         <div className="hdr__actions">
           <NavLink to="/primeros-pasos" className={({ isActive }) => `hdr__first-steps${isActive ? ' hdr__first-steps--active' : ''}`}>
             🐾 {t('header.nav_primeros_pasos')}
@@ -133,21 +229,72 @@ export default function Header() {
           )}
         </div>
 
+        {/* ── Mobile: language switcher in top bar ──────────────────────── */}
         <div className="hdr__lang-mobile">
           <LanguageSwitcher />
         </div>
 
-        <button className={`hdr__burger${menuOpen ? ' hdr__burger--open' : ''}`} onClick={() => setMenuOpen(v => !v)} aria-label={t('header.menu_label')}>
+        {/* ── Burger ────────────────────────────────────────────────────── */}
+        <button
+          className={`hdr__burger${menuOpen ? ' hdr__burger--open' : ''}`}
+          onClick={() => setMenuOpen(v => !v)}
+          aria-label={t('header.menu_label')}
+          aria-expanded={menuOpen}
+        >
           <span /><span /><span />
         </button>
       </div>
 
+      {/* ── Mobile drawer ─────────────────────────────────────────────── */}
       <div className={`hdr__drawer${menuOpen ? ' hdr__drawer--open' : ''}`}>
         <nav className="hdr__drawer-nav">
           <NavLink to="/" end>{t('header.nav_inicio')}</NavLink>
           <NavLink to="/primeros-pasos">🐾 {t('header.nav_primeros_pasos')}</NavLink>
-          {navLinks.map(l => <NavLink key={l.to} to={l.to}>{l.label}</NavLink>)}
+
+          {/* Accordion groups */}
+          {NAV_GROUPS.map(group => {
+            const active   = isGroupActive(group.slugs)
+            const expanded = openAccordion === group.key
+            return (
+              <div key={group.key} className="hdr__acc">
+                <button
+                  type="button"
+                  className={[
+                    'hdr__acc-trigger',
+                    active   ? 'hdr__acc-trigger--active' : '',
+                    expanded ? 'hdr__acc-trigger--open'   : '',
+                  ].filter(Boolean).join(' ')}
+                  aria-expanded={expanded}
+                  onClick={() => toggleAccordion(group.key)}
+                >
+                  <span>
+                    <span className="hdr__acc-icon" aria-hidden="true">{group.icon}</span>
+                    {t(`nav.group_${group.key}`)}
+                  </span>
+                  <svg className="hdr__acc-caret" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <polyline points="6 9 12 15 18 9"/>
+                  </svg>
+                </button>
+                {expanded && (
+                  <div className="hdr__acc-body">
+                    {buildGroupLinks(group.slugs).map(link => (
+                      <NavLink
+                        key={link.to}
+                        to={link.to}
+                        className={({ isActive }) =>
+                          `hdr__acc-link${isActive ? ' hdr__acc-link--active' : ''}`
+                        }
+                      >
+                        {link.label}
+                      </NavLink>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )
+          })}
         </nav>
+
         <div className="hdr__drawer-actions">
           <Link to="/registro-proveedores" className="btn btn-secondary btn-full">{t('header.cta_proveedor')}</Link>
           <Link to="/proveedores" className="btn btn-primary btn-full"><span>{t('header.cta_explorar')}</span></Link>
