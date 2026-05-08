@@ -9,8 +9,68 @@ import ProviderCard        from '../components/ProviderCard'
 import CategoryIcon        from '../components/CategoryIcon'
 import PawIcon             from '../components/PawIcon'
 import RemesasComparator   from '../components/RemesasComparator'
+import { useAuth }         from '../hooks/useAuth'
 import { trackEvent, Events } from '../utils/analytics'
 import './CategoryPage.css'
+
+function SegurosQuoteBanner() {
+  const { user } = useAuth()
+  return (
+    <div className="catpage__cotiza">
+      <div className="catpage__cotiza-header">
+        <span className="catpage__cotiza-badge">💡 Consejo clave</span>
+        <h2 className="catpage__cotiza-title d-md">
+          Pedí cotización a más de uno — esa es la diferencia
+        </h2>
+        <p className="catpage__cotiza-body t-lg">
+          Cada asesor trabaja con <strong>distintas aseguradoras</strong>. El mismo seguro puede
+          tener precios y coberturas muy distintas según quién lo gestione.
+          Comparar es gratis y puede ahorrarte cientos de dólares.
+        </p>
+      </div>
+
+      <div className="catpage__cotiza-props">
+        <div className="catpage__cotiza-prop">
+          <span className="catpage__cotiza-prop-icon">💰</span>
+          <div>
+            <strong className="t-sm">Precios distintos</strong>
+            <p className="t-xs">La misma cobertura puede costar muy diferente según la agencia</p>
+          </div>
+        </div>
+        <div className="catpage__cotiza-prop">
+          <span className="catpage__cotiza-prop-icon">🎯</span>
+          <div>
+            <strong className="t-sm">Plan a tu medida</strong>
+            <p className="t-xs">Cada asesor puede armar una oferta según tu edad, destino y actividad</p>
+          </div>
+        </div>
+        <div className="catpage__cotiza-prop">
+          <span className="catpage__cotiza-prop-icon">✉️</span>
+          <div>
+            <strong className="t-sm">Sin compromiso</strong>
+            <p className="t-xs">Contactarlos es gratis — nada te obliga a contratar</p>
+          </div>
+        </div>
+      </div>
+
+      {!user && (
+        <div className="catpage__cotiza-cta">
+          <Link to="/login" className="btn btn-primary">
+            <span>Crear cuenta gratis para contactarlos →</span>
+          </Link>
+          <p className="t-xs catpage__cotiza-cta-hint">
+            Con tu cuenta podés escribirles directo desde la plataforma
+          </p>
+        </div>
+      )}
+      {user && (
+        <p className="catpage__cotiza-loggedin t-sm">
+          ✅ Ya estás conectado — escribile a 2 o 3 y pediles su mejor precio.
+        </p>
+      )}
+    </div>
+  )
+}
 
 export default function CategoryPage() {
   const { slug } = useParams()
@@ -98,6 +158,7 @@ export default function CategoryPage() {
       <section className="catpage__providers section">
         <div className="container">
           {slug === 'remesas' && <RemesasComparator />}
+          {slug === 'seguros' && <SegurosQuoteBanner />}
           {cat.comingSoon ? (
             <div className="catpage__empty">
               <span className="catpage__empty-icon" aria-hidden="true">🧳</span>
