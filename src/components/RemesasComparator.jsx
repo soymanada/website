@@ -82,11 +82,20 @@ export default function RemesasComparator() {
         .sort((a, b) => b.received - a.received)
     : []
 
-  const fmtReceived = (val) =>
-    new Intl.NumberFormat('es-CL', { maximumFractionDigits: 0 }).format(val)
+  const fmtReceived = (val) => {
+    if (val === 0) return '0'
+    if (val < 0.01)  return new Intl.NumberFormat('es-CL', { minimumFractionDigits: 4, maximumFractionDigits: 4 }).format(val)
+    if (val < 1)     return new Intl.NumberFormat('es-CL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(val)
+    if (val < 100)   return new Intl.NumberFormat('es-CL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(val)
+    return new Intl.NumberFormat('es-CL', { maximumFractionDigits: 0 }).format(val)
+  }
 
-  const fmtRate = (rate) =>
-    new Intl.NumberFormat('es-CL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(rate)
+  const fmtRate = (rate) => {
+    if (rate === 0) return '0.00'
+    if (rate < 0.0001) return new Intl.NumberFormat('es-CL', { minimumFractionDigits: 6, maximumFractionDigits: 6 }).format(rate)
+    if (rate < 0.01)   return new Intl.NumberFormat('es-CL', { minimumFractionDigits: 4, maximumFractionDigits: 4 }).format(rate)
+    return new Intl.NumberFormat('es-CL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(rate)
+  }
 
   const fromLabel = ALL_CURRENCIES.find(c => c.code === fromCurrency)?.code ?? fromCurrency
 

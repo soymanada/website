@@ -1318,7 +1318,7 @@ export default function ProviderDashboard() {
       <Link to="/registro-proveedores" className="btn btn-primary">{t('pdash.register_cta')}</Link>
     </div>
   )
-  if (!provider.active) return (
+  if (!provider.active && !isAdmin) return (
     <div className="pdash__pending">
       <div className="pdash__pending-icon">⏳</div>
       <h2 className="d-md">{t('pdash.pending_title', 'Tu perfil está pendiente de activación')}</h2>
