@@ -105,7 +105,7 @@
   border-color: rgba(255,255,255,0.35);
   color: var(--white);
 }
-.fsp__dest-pill-flag { font-size: 1.1rem; line-height: 1; }
+.fsp__dest-pill-flag { display: block; border-radius: 2px; flex-shrink: 0; }
 .fsp__dest-pill-name { line-height: 1; }
 .fsp__dest-coming-badge {
   font-size: 0.62rem;
@@ -130,9 +130,10 @@
   animation: menu-in 0.22s var(--ease-out) both;
 }
 .fsp__coming-soon__flag {
-  font-size: 4rem;
-  line-height: 1;
-  filter: grayscale(0.2);
+  width: 80px;
+  height: auto;
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
 }
 .fsp__coming-soon__title {
   font-family: var(--font-display);

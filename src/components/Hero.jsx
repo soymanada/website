@@ -5,10 +5,20 @@ import { trackEvent, Events } from '../utils/analytics'
 import './Hero.css'
 
 const DEST_COUNTRIES = [
-  { id: 'canada',      flag: '🇨🇦', available: true  },
-  { id: 'new-zealand', flag: '🇳🇿', available: false },
-  { id: 'australia',   flag: '🇦🇺', available: false },
+  { id: 'canada',      code: 'ca', available: true  },
+  { id: 'new-zealand', code: 'nz', available: false },
+  { id: 'australia',   code: 'au', available: false },
 ]
+
+const FlagImg = ({ code, label }) => (
+  <img
+    src={`https://flagcdn.com/24x18/${code}.png`}
+    srcSet={`https://flagcdn.com/48x36/${code}.png 2x`}
+    width="24" height="18"
+    alt={label}
+    className="hero__guide-flag"
+  />
+)
 
 export default function Hero() {
   const { t }        = useTranslation()
@@ -77,7 +87,7 @@ export default function Hero() {
                     title={t(`first_steps.dest_${c.id.replace('-', '_')}`)}
                     aria-pressed={dest === c.id}
                   >
-                    <span className="hero__guide-flag">{c.flag}</span>
+                    <FlagImg code={c.code} label={t(`first_steps.dest_${c.id.replace('-', '_')}`)} />
                     <span className="hero__guide-flag-name">
                       {t(`first_steps.dest_${c.id.replace('-', '_')}`)}
                     </span>

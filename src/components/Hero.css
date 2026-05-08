@@ -131,7 +131,7 @@
   background: var(--iris-100);
   border-color: var(--iris-300);
 }
-.hero__guide-flag { font-size: 1.1rem; line-height: 1; }
+.hero__guide-flag { display: block; border-radius: 2px; flex-shrink: 0; }
 .hero__guide-flag-name {
   font-size: 0.8rem;
   font-weight: 500;

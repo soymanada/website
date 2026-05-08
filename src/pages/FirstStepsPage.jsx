@@ -8,10 +8,20 @@ const WA_GROUP     = 'https://chat.whatsapp.com/CMIWk9cQkEIDso4Ll6JG8j'
 const WA_SUBGROUPS = 'https://chat.whatsapp.com/CMIWk9cQkEIDso4Ll6JG8j'
 
 const DEST_COUNTRIES = [
-  { id: 'canada',       flag: '🇨🇦', available: true  },
-  { id: 'new-zealand',  flag: '🇳🇿', available: false },
-  { id: 'australia',    flag: '🇦🇺', available: false },
+  { id: 'canada',      code: 'ca', available: true  },
+  { id: 'new-zealand', code: 'nz', available: false },
+  { id: 'australia',   code: 'au', available: false },
 ]
+
+const FlagImg = ({ code, label }) => (
+  <img
+    src={`https://flagcdn.com/24x18/${code}.png`}
+    srcSet={`https://flagcdn.com/48x36/${code}.png 2x`}
+    width="24" height="18"
+    alt={label}
+    className="fsp__dest-pill-flag"
+  />
+)
 
 const setMeta = (sel, val) => {
   let el = document.querySelector(sel)
@@ -28,14 +38,16 @@ function CtaButton({ href, to, icon = '→', label, variant = 'community' }) {
 
 export default function FirstStepsPage() {
   const { t } = useTranslation()
-  const country = t('common.currentCountry')
+  const country = t('common.currentCountry') // used inside tab content (always Canada)
 
   const [searchParams] = useSearchParams()
   const initialDest    = DEST_COUNTRIES.find(c => c.id === searchParams.get('dest'))?.id ?? 'canada'
   const [selectedDest, setSelectedDest] = useState(initialDest)
   const [active,       setActive]       = useState('sin')
 
-  const destAvailable = DEST_COUNTRIES.find(c => c.id === selectedDest)?.available ?? false
+  const destAvailable  = DEST_COUNTRIES.find(c => c.id === selectedDest)?.available ?? false
+  // Dynamic country name for the hero title (changes with selector)
+  const destLabel      = t(`first_steps.dest_${selectedDest.replace('-', '_')}`)
 
   useEffect(() => {
     const title = t('first_steps.meta_title', { country })
@@ -72,7 +84,7 @@ export default function FirstStepsPage() {
           <p className="fsp__eyebrow">{t('first_steps.eyebrow')}</p>
           <h1 className="fsp__title">
             {t('first_steps.title')}<br />
-            <em>{t('first_steps.title_em', { country })}</em>
+            <em>{t('first_steps.title_em', { country: destLabel })}</em>
           </h1>
           <p className="fsp__sub">{t('first_steps.sub')}</p>
 
@@ -92,7 +104,7 @@ export default function FirstStepsPage() {
                   onClick={() => setSelectedDest(c.id)}
                   aria-pressed={selectedDest === c.id}
                 >
-                  <span className="fsp__dest-pill-flag">{c.flag}</span>
+                  <FlagImg code={c.code} label={t(`first_steps.dest_${c.id.replace('-', '_')}`)} />
                   <span className="fsp__dest-pill-name">{t(`first_steps.dest_${c.id.replace('-', '_')}`)}</span>
                   {!c.available && (
                     <span className="fsp__dest-coming-badge">{t('first_steps.coming_soon_badge')}</span>
@@ -143,7 +155,13 @@ function ComingSoonPanel({ t, dest }) {
   const countryName = t(`first_steps.dest_${dest.id.replace('-', '_')}`)
   return (
     <div className="fsp__coming-soon">
-      <div className="fsp__coming-soon__flag">{dest.flag}</div>
+      <img
+        src={`https://flagcdn.com/80x60/${dest.code}.png`}
+        srcSet={`https://flagcdn.com/160x120/${dest.code}.png 2x`}
+        width="80" height="60"
+        alt={countryName}
+        className="fsp__coming-soon__flag"
+      />
       <h2 className="fsp__coming-soon__title">
         {t('first_steps.coming_soon_title', { country: countryName })}
       </h2>
