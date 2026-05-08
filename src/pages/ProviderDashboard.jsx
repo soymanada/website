@@ -19,20 +19,18 @@ import './ProviderDashboard.css'
 
 // ── Categorías disponibles ───────────────────────────────────────
 const PROVIDER_CATEGORIES = [
-  { slug: 'migracion',       label: '🛂 Asesoría migratoria' },
-  { slug: 'seguros',         label: '🛡️ Seguros de viaje' },
-  { slug: 'traducciones',    label: '📄 Traducciones' },
-  { slug: 'comunidad',       label: '🤝 Comunidad' },
-  { slug: 'banca',           label: '🏦 Banca' },
-  { slug: 'salud-mental',    label: '🧠 Salud mental' },
-  { slug: 'antes-de-viajar', label: '✈️ Antes de viajar' },
-  { slug: 'trabajo',         label: '💼 Trabajo' },
-  { slug: 'idiomas',         label: '🗣️ Idiomas' },
-  { slug: 'taxes',           label: '🧾 Taxes' },
-  { slug: 'remesas',         label: '💸 Remesas' },
-  { slug: 'alojamiento',     label: '🏠 Alojamiento' },
-  { slug: 'mascotas',        label: '🐾 Mascotas' },
-  { slug: 'planes-telefono', label: '📱 Planes de teléfono' },
+  { slug: 'seguros'        },
+  { slug: 'migracion'      },
+  { slug: 'traducciones'   },
+  { slug: 'trabajo'        },
+  { slug: 'alojamiento'    },
+  { slug: 'idiomas'        },
+  { slug: 'banca'          },
+  { slug: 'salud-mental'   },
+  { slug: 'taxes'          },
+  { slug: 'remesas'        },
+  { slug: 'mascotas'       },
+  { slug: 'planes-telefono'},
 ]
 
 // ── Form sanitizers ──────────────────────────────────────────────

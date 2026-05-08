@@ -19,9 +19,9 @@ const CATEGORIES = [
   { value: 'Banca',               labelKey: 'categories.banca' },
   { value: 'Bienestar',           labelKey: 'categories.salud-mental' },
   { value: 'Taxes',               labelKey: 'categories.taxes' },
-  { value: 'Antes de viajar',     labelKey: 'categories.antes-de-viajar' },
-  { value: 'Comunidad',           labelKey: 'categories.comunidad' },
   { value: 'Remesas',             labelKey: 'categories.remesas' },
+  { value: 'Mascotas',            labelKey: 'categories.mascotas' },
+  { value: 'Planes de teléfono',  labelKey: 'categories.planes-telefono' },
 ]
 
 const LANGUAGES = [

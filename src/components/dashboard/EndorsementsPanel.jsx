@@ -12,18 +12,18 @@ import {
 import './EndorsementsPanel.css'
 
 const KNOWN_CATEGORIES = [
-  { slug: 'seguros',         name: 'Seguros' },
-  { slug: 'migracion',       name: 'Asesoría migratoria' },
-  { slug: 'traducciones',    name: 'Traducciones' },
-  { slug: 'trabajo',         name: 'Trabajo' },
-  { slug: 'alojamiento',     name: 'Alojamiento' },
-  { slug: 'idiomas',         name: 'Idiomas' },
-  { slug: 'banca',           name: 'Banca' },
-  { slug: 'salud-mental',    name: 'Bienestar' },
-  { slug: 'taxes',           name: 'Taxes' },
-  { slug: 'antes-de-viajar', name: 'Antes de viajar' },
-  { slug: 'comunidad',       name: 'Comunidad' },
-  { slug: 'remesas',         name: 'Remesas' },
+  { slug: 'seguros'         },
+  { slug: 'migracion'       },
+  { slug: 'traducciones'    },
+  { slug: 'trabajo'         },
+  { slug: 'alojamiento'     },
+  { slug: 'idiomas'         },
+  { slug: 'banca'           },
+  { slug: 'salud-mental'    },
+  { slug: 'taxes'           },
+  { slug: 'remesas'         },
+  { slug: 'mascotas'        },
+  { slug: 'planes-telefono' },
 ]
 const OTHER_VALUE = '__otra__'
 

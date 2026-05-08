@@ -1,16 +1,14 @@
 [
-  { "slug": "seguros",         "name": "Seguros",             "oneLiner": "Protege tu salud, auto y hogar en tu nuevo país.",                          "icon": "shield",      "order": 1,  "isHot": true },
-  { "slug": "migracion",       "name": "Asesoría migratoria", "oneLiner": "Visas, permisos y residencia con orientación real.",                        "icon": "compass",     "order": 2 },
-  { "slug": "traducciones",    "name": "Traducciones",        "oneLiner": "Documentos oficiales traducidos por personas calificadas.",                  "icon": "globe",       "order": 3 },
-  { "slug": "trabajo",         "name": "Trabajo",             "oneLiner": "Empleo, freelance y oportunidades para migrantes.",                         "icon": "briefcase",   "order": 4 },
-  { "slug": "alojamiento",     "name": "Alojamiento",         "oneLiner": "Habitaciones, arriendos y ayuda para instalarte.",                          "icon": "home",        "order": 5 },
-  { "slug": "idiomas",         "name": "Idiomas",             "oneLiner": "Clases, tutorías y práctica para integrarte mejor.",                        "icon": "book-open",   "order": 6 },
-  { "slug": "banca",           "name": "Banca",               "oneLiner": "Ejecutivos bancarios que entienden tu realidad migratoria",                 "icon": "credit-card", "order": 7,  "isHot": true },
-  { "slug": "salud-mental",    "name": "Bienestar",           "oneLiner": "Salud mental, teleterapia y apoyo emocional para migrantes.",               "icon": "heart",       "order": 8 },
-  { "slug": "taxes",           "name": "Taxes",               "oneLiner": "Asesores que entienden tus obligaciones fiscales como migrante.",           "icon": "file-text",   "order": 9,  "isHot": true },
-  { "slug": "antes-de-viajar", "name": "Antes de viajar",    "oneLiner": "Lo que nadie te contó antes de emigrar",                                    "icon": "plane",       "order": 10, "isHot": true, "comingSoon": true, "comingSoonLink": "https://chat.whatsapp.com/CMIWk9cQkEIDso4Ll6JG8j" },
-  { "slug": "comunidad",       "name": "Comunidad",           "oneLiner": "Eventos, encuentros y conexión con tu manada.",                             "icon": "comunidad",   "order": 11, "isHot": false, "comingSoon": true },
-  { "slug": "remesas",         "name": "Remesas",             "oneLiner": "Envía y recibe dinero sin perder en el cambio.",                            "icon": "remesas",     "order": 12, "isHot": true  },
-  { "slug": "mascotas",        "name": "Mascotas",            "oneLiner": "Seguros, cuidado y servicios pet-friendly para tu compañero de viaje.",      "icon": "paw",         "order": 13 },
-  { "slug": "planes-telefono", "name": "Planes de teléfono",  "oneLiner": "SIM, eSIM y planes móviles para recién llegados.",                           "icon": "smartphone",  "order": 14 }
+  { "slug": "seguros",         "name": "Seguros",             "oneLiner": "Protege tu salud, auto y hogar en tu nuevo país.",                         "icon": "shield",      "order": 1,  "isHot": true },
+  { "slug": "migracion",       "name": "Asesoría migratoria", "oneLiner": "Visas, permisos y residencia con orientación real.",                       "icon": "compass",     "order": 2 },
+  { "slug": "traducciones",    "name": "Traducciones",        "oneLiner": "Documentos oficiales traducidos por personas calificadas.",                 "icon": "globe",       "order": 3 },
+  { "slug": "trabajo",         "name": "Trabajo",             "oneLiner": "Empleo, freelance y oportunidades para migrantes.",                        "icon": "briefcase",   "order": 4 },
+  { "slug": "alojamiento",     "name": "Alojamiento",         "oneLiner": "Habitaciones, arriendos y ayuda para instalarte.",                         "icon": "home",        "order": 5 },
+  { "slug": "idiomas",         "name": "Idiomas",             "oneLiner": "Clases, tutorías y práctica para integrarte mejor.",                       "icon": "book-open",   "order": 6 },
+  { "slug": "banca",           "name": "Banca",               "oneLiner": "Ejecutivos bancarios que entienden tu realidad migratoria.",                "icon": "credit-card", "order": 7,  "isHot": true },
+  { "slug": "salud-mental",    "name": "Bienestar",           "oneLiner": "Salud mental, teleterapia y apoyo emocional para migrantes.",              "icon": "heart",       "order": 8 },
+  { "slug": "taxes",           "name": "Impuestos",           "oneLiner": "Asesores que entienden tus obligaciones fiscales como migrante.",          "icon": "file-text",   "order": 9,  "isHot": true },
+  { "slug": "remesas",         "name": "Remesas",             "oneLiner": "Envía y recibe dinero sin perder en el cambio.",                           "icon": "remesas",     "order": 10, "isHot": true },
+  { "slug": "mascotas",        "name": "Mascotas",            "oneLiner": "Seguros, cuidado y servicios pet-friendly para tu compañero de viaje.",     "icon": "paw",         "order": 11 },
+  { "slug": "planes-telefono", "name": "Planes de teléfono",  "oneLiner": "SIM, eSIM y planes móviles para recién llegados.",                          "icon": "smartphone",  "order": 12 }
 ]
