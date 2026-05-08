@@ -592,14 +592,14 @@
     "filter_country": "Pays",
     "filter_all_countries": "Tous les pays",
     "filter_verified": "Vérifiés par Manada seulement",
-    "clear_filters": "✕ Effacer les filtres",
+    "clear_filters": "Effacer les filtres",
     "results_count_one": "{{count}} fournisseur",
     "results_count_other": "{{count}} fournisseurs",
     "no_results_title": "Aucun résultat",
     "no_results_body": "Essayez d'autres termes ou effacez les filtres.",
     "clear_filters_btn": "Effacer les filtres",
-    "suggest_cta": "Êtes-vous un fournisseur de services pour migrants?",
-    "suggest_btn": "Rejoindre le répertoire"
+    "suggest_cta": "Vous ne trouvez pas ce que vous cherchez ?",
+    "suggest_btn": "Suggérer un fournisseur"
   },
   "category_page": {
     "not_found_title": "Catégorie introuvable",

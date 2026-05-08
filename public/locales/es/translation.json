@@ -1074,7 +1074,12 @@
     "results_count_one": "{{count}} proveedor",
     "results_count_other": "{{count}} proveedores",
     "no_results_title": "Sin resultados",
-    "no_results_body": "Intenta con otra categoría o término de búsqueda."
+    "no_results_body": "Intenta con otra categoría o término de búsqueda.",
+    "filter_all_countries": "Todos los países",
+    "clear_filters": "Limpiar filtros",
+    "clear_filters_btn": "Limpiar filtros",
+    "suggest_cta": "¿No encuentras lo que buscas?",
+    "suggest_btn": "Sugerir un proveedor"
   },
   "login_page": {
     "tab_login": "Iniciar sesión",
