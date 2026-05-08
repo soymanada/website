@@ -707,11 +707,11 @@
     "meta_title": "Bienestar emocional para migrantes | SoyManada"
   },
   "categories": {
-        "request_cta": "¿Buscas algo específico?",
+    "request_cta": "¿Buscas algo específico?",
     "seguros": "Seguros",
     "traducciones": "Traducciones",
     "migracion": "Asesoría migratoria",
-        "suggest_cta": "¿No ves tu categoría?",
+    "suggest_cta": "¿No ves tu categoría?",
     "trabajo": "Trabajo",
     "alojamiento": "Alojamiento",
     "idiomas": "Idiomas",
@@ -754,7 +754,7 @@
     "name": "Francisco Aleuy",
     "role": "Fundador · Migrante",
     "tiktok_stat": "+20K en TikTok"
-},
+  },
   "not_found": {
     "title": "Página no encontrada",
     "back_home": "Volver al inicio"
@@ -786,8 +786,8 @@
     "gate_cta": "Unirse gratis",
     "profile_link": "Ver perfil completo →",
     "profile_link_remesas": "Ver reseñas →",
-    "no_opinions": "Aún no hay reseñas"},
-  
+    "no_opinions": "Aún no hay reseñas"
+  },
   "verification": {
     "verified": "VERIFICADO",
     "by_manada": "por Manada"
@@ -796,7 +796,8 @@
     "title": "Directorio de proveedores",
     "subtitle": "Proveedores verificados para la comunidad migrante hispanohablante. Busca, filtra y conecta directamente.",
     "search_placeholder": "Buscar proveedor…",
-    "filter_all_categories": "Todas",     "filter_category": "Categoría",
+    "filter_all_categories": "Todas",
+    "filter_category": "Categoría",
     "filter_country": "País",
     "filter_verified": "Solo verificados por Manada",
     "results_count_one": "{{count}} proveedor",
@@ -921,7 +922,10 @@
     "tab_metricas_label": "Métricas",
     "tab_herramientas_label": "Herramientas",
     "tab_reservas_label": "Reservas",
-    "tab_miplan_label": "Mi plan",     "tab_reseñas_label": "Reseñas",     "tab_recomendaciones_label": "Recomendaciones",     "tab_ayuda_label": "Ayuda",
+    "tab_miplan_label": "Mi plan",
+    "tab_reseñas_label": "Reseñas",
+    "tab_recomendaciones_label": "Recomendaciones",
+    "tab_ayuda_label": "Ayuda",
     "tab_mensajes_label": "Mensajes",
     "view_public_profile": "Ver perfil público ↗",
     "admin_panel": "🛡 Panel admin",
@@ -1043,7 +1047,22 @@
     "password_confirm_label": "Confirmar contraseña",
     "password_min_hint": "Mínimo 6 caracteres",
     "password_mismatch": "Las contraseñas no coinciden.",
-    "password_ok": "✓ Contraseña actualizada."
+    "password_ok": "✓ Contraseña actualizada.",
+    "payment_link_label": "Link de pago externo",
+    "payment_link_configured": "✓ Configurado — visible en tu perfil público.",
+    "payment_link_not_configured": "Aún no configurado. Puedes añadirlo desde la pestaña Perfil.",
+    "calendar_optional_hint": "Opcional. Si lo configuras, el migrante verá este link además de la agenda interna.",
+    "jitsi_info": "✅ Sala Jitsi de SoyManada — se genera automáticamente al confirmar una reserva.",
+    "jitsi_priority_hint": "Si configuras un link personalizado abajo, ese link tendrá prioridad sobre la sala Jitsi.",
+    "call_link_optional": "Opcional. Pega aquí el link de Zoom, Google Meet, Teams, Whereby, WhatsApp u otro. Si lo dejas vacío, se usará la sala Jitsi automática.",
+    "email_error": "Revisa el formato del email.",
+    "replies_hint": "Define pares de pregunta y respuesta. Aparecerán como respuestas rápidas en tu inbox.",
+    "reply_pair": "Par #{{num}}",
+    "reply_delete": "Eliminar par",
+    "reply_q_placeholder": "¿Cuál es tu tarifa por consulta?",
+    "reply_a_placeholder": "Mi consulta inicial es de $50 USD por 30 minutos.",
+    "reply_add": "Agregar pregunta y respuesta",
+    "sign_out": "Cerrar sesión"
   },
   "admin": {
     "title": "Panel de administración",
@@ -1127,5 +1146,121 @@
     "pais_rep_checa": "República Checa",
     "pais_suecia": "Suecia",
     "pais_otro": "Otro país"
+  },
+  "avail": {
+    "hint": "Activa días y define uno o varios bloques horarios. Puedes añadir rangos separados para el mismo día (p. ej. 8–10, 12–15, 17–19).",
+    "add_range": "+ rango",
+    "add_range_title": "Añadir otro rango horario",
+    "unavailable": "No disponible",
+    "remove_range": "Eliminar este rango",
+    "error_save": "Error al guardar. Intenta de nuevo.",
+    "loading": "Cargando disponibilidad…",
+    "saving": "Guardando…",
+    "saved": "✓ Disponibilidad guardada",
+    "save": "Guardar disponibilidad",
+    "days": {
+      "mon": "Lunes",
+      "tue": "Martes",
+      "wed": "Miércoles",
+      "thu": "Jueves",
+      "fri": "Viernes",
+      "sat": "Sábado",
+      "sun": "Domingo"
+    }
+  },
+  "manual": {
+    "title": "❓ Manual del Proveedor",
+    "subtitle": "Todo lo que necesitas saber para sacarle el máximo provecho a SoyManada.",
+    "search_placeholder": "Buscar en el manual…",
+    "search_clear": "Limpiar búsqueda",
+    "empty": "No encontramos artículos para \"{{search}}\".",
+    "all_categories": "Todos",
+    "cat_perfil": "Mi Perfil",
+    "cat_herramientas": "Herramientas",
+    "cat_resenas": "Reseñas",
+    "cat_reservas": "Reservas",
+    "cat_recomendaciones": "Recomendaciones",
+    "articles": {
+      "perfil-completar": {
+        "title": "¿Cómo completo mi perfil?",
+        "content": "Tu perfil es lo primero que ve un migrante al encontrarte en el directorio. Un perfil completo genera más confianza y más contactos.\n\nCampos esenciales:\n• **Nombre / Marca** — tu nombre real o el de tu marca. Ej: \"María González\" o \"Migrando Contigo\". No puede ser genérico (ej: \"Seguros\", \"Traducciones\").\n• **Servicio principal** — una frase corta que describe lo que haces. Ej: \"Asesoría migratoria a Canadá\".\n• **Descripción** — cuéntale al migrante quién eres y cómo puedes ayudarlo. Mínimo 3 oraciones.\n• **Países donde operas** — separados por coma. Ej: Canadá, Chile.\n• **Idiomas** — los idiomas en que puedes atender.\n\n⚠️ Si el nombre es muy genérico, el botón **Guardar cambios** se desactiva automáticamente hasta que lo corrijas.\n\nRecuerda hacer clic en **Guardar cambios** al final de la sección.",
+        "link_label": "Ir a Mi Perfil"
+      },
+      "perfil-foto": {
+        "title": "Cómo subir tu foto de perfil",
+        "content": "Una foto real aumenta la confianza del migrante y diferencia tu perfil de los demás.\n\nPasos:\n1. Ve a la pestaña **Mi Perfil**.\n2. Haz clic en el círculo con tu inicial (o en tu foto actual).\n3. Selecciona una imagen JPG, PNG o WebP de **máximo 2 MB**.\n4. La foto se guarda automáticamente — no necesitas hacer clic en Guardar.\n\nRecomendación: usa una foto tuya real o el logo de tu marca con fondo claro.",
+        "link_label": "Ir a Mi Perfil"
+      },
+      "perfil-pago-externo": {
+        "title": "Agregar un link de pago externo",
+        "content": "Puedes agregar un link de cobro que aparecerá como botón en tu perfil público.\n\nAcepta cualquier plataforma de pago:\n• MercadoPago: https://mpago.la/tu-link\n• Wise: https://wise.com/pay/tu-nombre\n• PayPal: https://paypal.me/tu-nombre\n• Cualquier otra plataforma con URL directa\n\nPasos:\n1. Ve a la pestaña **Mi Perfil**.\n2. En la sección \"Contacto y pagos\", pega tu link en el campo \"Link de pago\".\n3. El link debe comenzar con https://\n4. Haz clic en **Guardar cambios**.\n\nEl botón aparecerá en tu perfil inmediatamente.",
+        "link_label": "Ir a Mi Perfil"
+      },
+      "perfil-contrasena": {
+        "title": "Cambiar tu contraseña",
+        "content": "Si iniciaste sesión con email y contraseña (no con Google), puedes cambiarla directamente desde tu perfil.\n\nPasos:\n1. Ve a la pestaña **Mi Perfil**.\n2. Baja hasta la sección \"Contraseña\" (al final de la página).\n3. Haz clic en **Cambiar**.\n4. Ingresa tu nueva contraseña (mínimo 6 caracteres) y confírmala.\n5. Haz clic en **Guardar contraseña**.\n\nSi iniciaste sesión con Google, esta sección no aparece — tu contraseña la gestiona Google directamente.",
+        "link_label": "Ir a Mi Perfil"
+      },
+      "herramientas-whatsapp": {
+        "title": "Activar tu WhatsApp en el perfil",
+        "content": "Por defecto, tu número no es visible en el perfil público. Puedes activarlo manualmente.\n\nPasos:\n1. Ve a **Herramientas**.\n2. En la sección \"WhatsApp\", activa el toggle.\n3. Se guarda automáticamente.\n\nCuando está activado, los migrantes ven un botón de WhatsApp en tu perfil y pueden contactarte directamente.\n\n⚠️ Asegúrate de haber ingresado tu número en **Mi Perfil → WhatsApp** antes de activar esta opción.",
+        "link_label": "Ir a Herramientas"
+      },
+      "herramientas-agenda": {
+        "title": "Configurar tu agenda de citas",
+        "content": "La agenda te permite recibir reservas directamente desde tu perfil público.\n\nTienes dos opciones:\n\n**Opción A — Agenda interna de SoyManada (recomendada)**\n1. Ve a **Herramientas → Calendario de citas**.\n2. Usa el editor de disponibilidad para marcar tus bloques horarios libres.\n3. Los migrantes podrán reservar directamente desde tu perfil.\n\n**Opción B — Link externo (Calendly, Cal.com, etc.)**\n1. Pega tu link de Calendly o Cal.com en el campo \"Link de agenda\".\n2. Guarda. Tu perfil mostrará ese link como botón adicional.\n\nPuedes usar ambas al mismo tiempo.\n\n**Plataforma de videollamada**\nEn la misma sección configuras dónde se realizará la llamada:\n• Se genera una sala automática de SoyManada (Jitsi) al confirmar cada reserva.\n• También puedes pegar un link de Zoom, Google Meet, Teams o WhatsApp. Ese link aparece en el email de confirmación del migrante.",
+        "link_label": "Ir a Herramientas"
+      },
+      "herramientas-stripe": {
+        "title": "Configurar cobros seguros con Stripe",
+        "content": "Conecta tu cuenta bancaria a través de Stripe para recibir pagos con tarjeta directamente desde tu perfil.\n\nPasos:\n1. Ve a **Herramientas → Cobros seguros con Stripe**.\n2. Haz clic en **Conectar mi cuenta Stripe**.\n3. Serás redirigido al portal de Stripe para verificar tu identidad y cuenta bancaria.\n4. Una vez completado, vuelves automáticamente a SoyManada.\n\nEstados posibles:\n• **Sin conectar** — aún no iniciaste el proceso.\n• **Onboarding incompleto** — iniciaste pero no terminaste. Haz clic en \"Completar verificación\".\n• **Requisitos pendientes** — Stripe necesita más información. Entra a \"Ver requisitos pendientes\".\n• **Activo** — tu cuenta está verificada y puedes recibir pagos.\n\nCuando está activo, el botón de pago con Stripe aparece en tu perfil público.",
+        "link_label": "Ir a Herramientas"
+      },
+      "herramientas-email": {
+        "title": "Email de redirección de consultas",
+        "content": "Cada mensaje nuevo en tu inbox de SoyManada también te llega a tu correo personal.\n\nPasos:\n1. Ve a **Herramientas → Herramientas avanzadas**.\n2. Ingresa tu email en el campo \"Email para redirección de consultas\".\n3. Haz clic en **Guardar**.",
+        "link_label": "Ir a Herramientas"
+      },
+      "herramientas-respuestas": {
+        "title": "Respuestas predefinidas",
+        "content": "Define textos que puedes reutilizar rápidamente al responder mensajes en tu inbox.\n\nCómo configurarlas:\n1. Ve a **Herramientas → Herramientas avanzadas**.\n2. Haz clic en **Agregar pregunta y respuesta**.\n3. Escribe la pregunta frecuente y la respuesta correspondiente.\n4. Puedes agregar varios pares. Haz clic en **Guardar**.\n\nEjemplo de respuestas útiles:\n• \"Mi primera consulta es gratuita y dura 30 minutos.\"\n• \"Opero de lunes a viernes de 9 a 18 hrs (hora Santiago).\"\n• \"Puedes agendar directamente desde mi perfil.\"",
+        "link_label": "Ir a Herramientas"
+      },
+      "resenas-responder": {
+        "title": "Cómo responder reseñas de clientes",
+        "content": "Cuando un migrante deja una reseña en tu perfil, puedes responderla públicamente desde la pestaña Reseñas.\n\nPasos:\n1. Ve a la pestaña **Reseñas**.\n2. Verás las reseñas de tus clientes con autor, calificación y texto.\n3. Haz clic en el área de texto debajo de la reseña, escribe tu respuesta y haz clic en **Responder**.\n4. Tu respuesta aparecerá en tu perfil público debajo de esa reseña.\n\nPara editar una respuesta ya publicada, haz clic en **Editar respuesta**.\n\nLas respuestas públicas muestran profesionalismo y generan confianza en nuevos migrantes que visiten tu perfil.",
+        "link_label": "Ir a Reseñas"
+      },
+      "resenas-como-llegan": {
+        "title": "¿Cómo recibo reseñas de mis clientes?",
+        "content": "Las reseñas se generan automáticamente después de una cita completada.\n\nFlujo:\n1. Un migrante reserva y confirmas la cita.\n2. Una vez que la cita ocurre, marcas la reserva como **Completada** en la pestaña Reservas.\n3. SoyManada envía automáticamente un email al migrante invitándolo a dejar una reseña.\n4. Si el migrante deja la reseña, aparece en tu perfil público y en tu pestaña Reseñas.\n\nNo puedes solicitar ni eliminar reseñas manualmente — el proceso es automático para garantizar la autenticidad.",
+        "link_label": "Ir a Reservas"
+      },
+      "reservas-gestionar": {
+        "title": "Cómo gestionar reservas pendientes",
+        "content": "Cuando un migrante reserva una cita contigo, aparece en la pestaña **Reservas** con estado \"Pendiente\".\n\nAcciones disponibles:\n• **Confirmar** — acepta la reserva. El migrante recibe un email con los detalles y el link a la sala de videollamada.\n• **Rechazar** — cancela la reserva. El migrante es notificado automáticamente.\n\nUna vez confirmada, la reserva aparece en \"Confirmadas\". Cuando la cita se realice, márcala como **Completada** para habilitar la solicitud de reseña al migrante.",
+        "link_label": "Ir a Reservas"
+      },
+      "reservas-confirmacion": {
+        "title": "Qué recibe el migrante al confirmar una cita",
+        "content": "Cuando confirmas una reserva, SoyManada envía automáticamente emails a ambas partes.\n\n**Al migrante:**\n- Fecha y hora de la cita\n- Notas si las hay\n- Botón para entrar a la sala de videollamada\n\n**A ti (proveedor):**\n- Resumen de la cita\n- Link a la sala\n\nLa sala de videollamada se genera automáticamente al confirmar y es accesible desde la pestaña **Reservas** en tu cuenta y en la del migrante.\n\nNo necesitas hacer nada adicional — el sistema se encarga de todo.",
+        "link_label": "Ir a Reservas"
+      },
+      "recomendaciones-que-son": {
+        "title": "¿Qué son las recomendaciones entre proveedores?",
+        "content": "Las recomendaciones son avales que un proveedor verificado puede dar a otro. Cuando alguien te recomienda, aparece un badge en tu tarjeta del directorio que dice \"Recomendado por [nombre]\".\n\nEsto aumenta la confianza de los migrantes que te encuentran y diferencia tu perfil de otros.\n\nCada proveedor puede emitir hasta **5 recomendaciones activas** en total. Puedes retirarlas cuando quieras.",
+        "link_label": "Ir a Recomendaciones"
+      },
+      "recomendaciones-como-dar": {
+        "title": "Cómo recomendar a otro proveedor",
+        "content": "Puedes recomendar a proveedores que ya están en SoyManada o sugerir a alguien nuevo para que se una.\n\n**Recomendar a un proveedor existente:**\n1. Ve a la pestaña **Recomendaciones**.\n2. Haz clic en **Recomendar a alguien**.\n3. En la pestaña \"Buscar proveedor existente\", escribe el nombre.\n4. Selecciónalo de la lista.\n5. Escribe tu recomendación (mínimo 10 caracteres, máximo 120).\n6. Haz clic en **Confirmar recomendación**.\n\n**Recomendar a alguien nuevo:**\n1. En el mismo modal, ve a la pestaña \"Recomendar a alguien nuevo\".\n2. Completa: nombre, categoría, servicio que ofrece (obligatorios) y contacto (opcional).\n3. Escribe tu recomendación y confirma.\n4. La persona quedará pendiente de revisión por el equipo Manada antes de aparecer en el directorio.",
+        "link_label": "Ir a Recomendaciones"
+      },
+      "recomendaciones-retirar": {
+        "title": "Cómo retirar una recomendación",
+        "content": "Puedes retirar cualquier recomendación que hayas dado en cualquier momento.\n\nPasos:\n1. Ve a la pestaña **Recomendaciones**.\n2. Verás la lista de todas tus recomendaciones activas.\n3. Haz clic en el ícono ✕ al lado derecho de la que quieres retirar.\n4. Confirma en el diálogo.\n\nLa recomendación se desactiva inmediatamente y el badge desaparece del perfil del otro proveedor. El registro queda guardado internamente pero marcado como inactivo.",
+        "link_label": "Ir a Recomendaciones"
+      }
+    }
   }
 }

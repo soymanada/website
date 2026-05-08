@@ -586,14 +586,14 @@ function SectionHerramientas({ provider, onSave, saving }) {
       <div className="pdash__tool-active">
         <span className="pdash__tool-icon">💳</span>
         <div>
-          <strong className="t-sm">Link de pago externo</strong>
+          <strong className="t-sm">{t('pdash.payment_link_label')}</strong>
           <p className="t-xs" style={{
             color: provider?.payment_link ? 'var(--green-700, #15803d)' : 'var(--text-300)',
             marginTop: 3,
           }}>
             {provider?.payment_link
-              ? '✓ Configurado — visible en tu perfil público.'
-              : 'Aún no configurado. Puedes añadirlo desde la pestaña Perfil.'}
+              ? t('pdash.payment_link_configured')
+              : t('pdash.payment_link_not_configured')}
           </p>
         </div>
       </div>
@@ -617,16 +617,16 @@ function SectionHerramientas({ provider, onSave, saving }) {
             placeholder="https://calendly.com/tu-nombre"
           />
           <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 4 }}>
-            Opcional. Si lo configuras, el migrante verá este link además de la agenda interna.
+            {t('pdash.calendar_optional_hint')}
           </p>
         </div>
 
         <div className="pdash__field pdash__field--full" style={{ marginBottom: 16 }}>
           <label className="pdash__label t-sm">{t('pdash.herramientas_video_title')}</label>
           <div className="pdash__call-option pdash__call-option--gold" style={{ marginBottom: 10 }}>
-            <span>✅ <strong>Sala Jitsi de SoyManada</strong> — se genera automáticamente al confirmar una reserva.</span>
+            <span>{t('pdash.jitsi_info')}</span>
             <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 2 }}>
-              Si configuras un link personalizado abajo, ese link tendrá prioridad sobre la sala Jitsi.
+              {t('pdash.jitsi_priority_hint')}
             </p>
           </div>
           <input
@@ -637,8 +637,7 @@ function SectionHerramientas({ provider, onSave, saving }) {
             placeholder="https://zoom.us/j/... · https://meet.google.com/... · https://wa.me/56912345678"
           />
           <p className="t-xs" style={{ color: 'var(--text-300)', marginTop: 4 }}>
-            Opcional. Pega aquí el link de Zoom, Google Meet, Teams, Whereby, WhatsApp u otro.
-            Si lo dejas vacío, se usará la sala Jitsi automática.
+            {t('pdash.call_link_optional')}
           </p>
         </div>
 
@@ -660,7 +659,7 @@ function SectionHerramientas({ provider, onSave, saving }) {
               onChange={e => { set('redirect_email', e.target.value); setEmailError('') }}
               onBlur={e => {
                 const v = e.target.value.trim()
-                if (v && !isValidEmail(v)) setEmailError('Revisa el formato del email.')
+                if (v && !isValidEmail(v)) setEmailError(t('pdash.email_error'))
               }}
               placeholder="tu@email.com"
             />
@@ -671,7 +670,7 @@ function SectionHerramientas({ provider, onSave, saving }) {
               {t('pdash.predefined_replies_label')}
             </label>
             <p className="t-xs" style={{ color: 'var(--text-300)', marginBottom: 10 }}>
-              Define pares de pregunta y respuesta. Aparecerán como respuestas rápidas en tu inbox.
+              {t('pdash.replies_hint')}
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               {form.predefined_responses.map((pair, idx) => (
@@ -685,7 +684,7 @@ function SectionHerramientas({ provider, onSave, saving }) {
                   gap: 8,
                 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span className="t-xs" style={{ color: 'var(--text-300)', fontWeight: 600 }}>Par #{idx + 1}</span>
+                    <span className="t-xs" style={{ color: 'var(--text-300)', fontWeight: 600 }}>{t('pdash.reply_pair', { num: idx + 1 })}</span>
                     {form.predefined_responses.length > 1 && (
                       <button
                         type="button"
@@ -693,13 +692,13 @@ function SectionHerramientas({ provider, onSave, saving }) {
                           form.predefined_responses.filter((_, i) => i !== idx)
                         )}
                         style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-300)', fontSize: 18, lineHeight: 1 }}
-                        title="Eliminar par"
+                        title={t('pdash.reply_delete')}
                       >×</button>
                     )}
                   </div>
                   <input
                     className="pdash__input"
-                    placeholder="¿Cuál es tu tarifa por consulta?"
+                    placeholder={t('pdash.reply_q_placeholder')}
                     value={pair.q}
                     onChange={e => {
                       const updated = [...form.predefined_responses]
@@ -710,7 +709,7 @@ function SectionHerramientas({ provider, onSave, saving }) {
                   <textarea
                     className="pdash__textarea"
                     rows={2}
-                    placeholder="Mi consulta inicial es de $50 USD por 30 minutos."
+                    placeholder={t('pdash.reply_a_placeholder')}
                     value={pair.a}
                     onChange={e => {
                       const updated = [...form.predefined_responses]
@@ -728,7 +727,7 @@ function SectionHerramientas({ provider, onSave, saving }) {
               onClick={() => set('predefined_responses', [...form.predefined_responses, { q: '', a: '' }])}
             >
               <span style={{ fontSize: 18, lineHeight: 1 }}>+</span>
-              Agregar pregunta y respuesta
+              {t('pdash.reply_add')}
             </button>
           </div>
         </div>
@@ -1349,7 +1348,7 @@ export default function ProviderDashboard() {
               className="pdash__hero-link"
               onClick={async () => { await supabase.auth.signOut(); window.location.href = '/' }}
             >
-              Cerrar sesión
+              {t('pdash.sign_out')}
             </button>
           </div>
         </div>

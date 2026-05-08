@@ -1,21 +1,24 @@
 // src/components/AvailabilityEditor.jsx
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useAvailability, saveAvailability } from '../hooks/useBookings'
 import './AvailabilityEditor.css'
 
-const DAYS = [
-  { value: 1, label: 'Lunes' },
-  { value: 2, label: 'Martes' },
-  { value: 3, label: 'Miércoles' },
-  { value: 4, label: 'Jueves' },
-  { value: 5, label: 'Viernes' },
-  { value: 6, label: 'Sábado' },
-  { value: 0, label: 'Domingo' },
+const DAY_KEYS = [
+  { value: 1, key: 'avail.days.mon' },
+  { value: 2, key: 'avail.days.tue' },
+  { value: 3, key: 'avail.days.wed' },
+  { value: 4, key: 'avail.days.thu' },
+  { value: 5, key: 'avail.days.fri' },
+  { value: 6, key: 'avail.days.sat' },
+  { value: 0, key: 'avail.days.sun' },
 ]
 const SLOT_OPTIONS  = [30, 60, 90]
 const DEFAULT_RANGE = { start: '09:00', end: '17:00', slot: 60 }
 
 export default function AvailabilityEditor({ providerId }) {
+  const { t } = useTranslation()
+  const DAYS = DAY_KEYS.map(d => ({ value: d.value, label: t(d.key) }))
   const { availability, loading } = useAvailability(providerId)
   const [schedule, setSchedule] = useState(null)
   const [saving,   setSaving]   = useState(false)
@@ -93,19 +96,18 @@ export default function AvailabilityEditor({ providerId }) {
     })
     const { error } = await saveAvailability(providerId, slots)
     setSaving(false)
-    if (error) setErr('Error al guardar. Intenta de nuevo.')
+    if (error) setErr(t('avail.error_save'))
     else { setSaved(true); setTimeout(() => setSaved(false), 3000) }
   }
 
   if (loading || !schedule) {
-    return <p className="t-xs" style={{ color: 'var(--text-300)' }}>Cargando disponibilidad…</p>
+    return <p className="t-xs" style={{ color: 'var(--text-300)' }}>{t('avail.loading')}</p>
   }
 
   return (
     <div className="avail">
       <p className="t-xs avail__hint">
-        Activa días y define uno o varios bloques horarios. Puedes añadir rangos separados
-        para el mismo día (p. ej. 8–10, 12–15, 17–19).
+        {t('avail.hint')}
       </p>
 
       <div className="avail__grid">
@@ -124,9 +126,9 @@ export default function AvailabilityEditor({ providerId }) {
                     type="button"
                     className="avail__add-range"
                     onClick={() => addRange(day.value)}
-                    title="Añadir otro rango horario"
+                    title={t('avail.add_range_title')}
                   >
-                    + rango
+                    {t('avail.add_range')}
                   </button>
                 )}
               </div>
@@ -149,7 +151,7 @@ export default function AvailabilityEditor({ providerId }) {
                       {d.ranges.length > 1 && (
                         <button type="button" className="avail__remove-range"
                           onClick={() => removeRange(day.value, i)}
-                          title="Eliminar este rango">
+                          title={t('avail.remove_range')}>
                           ×
                         </button>
                       )}
@@ -157,7 +159,7 @@ export default function AvailabilityEditor({ providerId }) {
                   ))}
                 </div>
               ) : (
-                <span className="avail__off t-xs">No disponible</span>
+                <span className="avail__off t-xs">{t('avail.unavailable')}</span>
               )}
             </div>
           )
@@ -167,7 +169,7 @@ export default function AvailabilityEditor({ providerId }) {
       {err && <p className="t-xs" style={{ color: 'var(--error, #e53e3e)', marginTop: 8 }}>{err}</p>}
 
       <button className="btn btn-primary avail__save" onClick={handleSave} disabled={saving}>
-        <span>{saving ? 'Guardando…' : saved ? '✓ Disponibilidad guardada' : 'Guardar disponibilidad'}</span>
+        <span>{saving ? t('avail.saving') : saved ? t('avail.saved') : t('avail.save')}</span>
       </button>
     </div>
   )
