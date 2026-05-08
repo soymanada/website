@@ -7,15 +7,15 @@ import './Hero.css'
 const DEST_COUNTRIES = [
   { id: 'canada',      code: 'ca', available: true  },
   { id: 'new-zealand', code: 'nz', available: true  },
-  { id: 'australia',   code: 'au', available: false },
+  { id: 'australia',   code: 'au', available: true  },
 ]
 
 const ORIGIN_COUNTRIES = [
   { id: 'chile',     code: 'cl', available: true  },
-  { id: 'argentina', code: 'ar', available: false },
-  { id: 'colombia',  code: 'co', available: false },
-  { id: 'venezuela', code: 've', available: false },
-  { id: 'mexico',    code: 'mx', available: false },
+  { id: 'argentina', code: 'ar', available: true  },
+  { id: 'colombia',  code: 'co', available: true  },
+  { id: 'venezuela', code: 've', available: true  },
+  { id: 'mexico',    code: 'mx', available: true  },
 ]
 
 const FlagImg = ({ code, label, size = 24 }) => (
