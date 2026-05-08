@@ -814,8 +814,8 @@ function ReviewReplies({ provider }) {
           <div key={op.id} className="pdash__reply-card">
             <div className="pdash__reply-meta">
               <span className="t-sm pdash__reply-author">{op.author_name ?? 'Anónimo'}</span>
-              {op.rating && (
-                <span className="pdash__reply-stars">{'🐾'.repeat(op.rating)}</span>
+              {op.rating > 0 && (
+                <span className="pdash__reply-stars">{'🐾'.repeat(Math.min(Math.floor(Number(op.rating) || 0), 10))}</span>
               )}
               <span className="pdash__reply-date t-xs">
                 {new Date(op.created_at).toLocaleDateString('es-CL')}

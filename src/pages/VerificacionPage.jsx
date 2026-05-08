@@ -119,7 +119,7 @@ export default function VerificacionPage() {
       {/* CTA */}
       <section className="verif__cta section">
         <div className="container">
-          <p className="t-lg verif__cta-text">¿Eres un proveedor y querés aparecer en el directorio?</p>
+          <p className="t-lg verif__cta-text">¿Eres un proveedor y quieres aparecer en el directorio?</p>
           <Link to="/registro-proveedores" className="btn btn-primary btn-lg">
             <span>Postularme ahora</span>
           </Link>

@@ -33,6 +33,11 @@ i18n
       caches: ['localStorage'],
       lookupLocalStorage: 'soymanada_lang',
     },
+    // i18next v25 resuelve init() como Promise incluso con recursos en memoria.
+    // Sin esto react-i18next v16 puede suspender el árbol antes de que
+    // las traducciones estén disponibles y mostrar las claves literales.
+    initImmediate: false,
+    react: { useSuspense: false },
   })
 
 export default i18n
