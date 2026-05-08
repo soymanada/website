@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { getEndorsementsForProvider } from '../lib/endorsements'
 import './EndorsementBadge.css'
 
-function dicebearUrl(seed) {
-  return `https://api.dicebear.com/7.x/thumbs/svg?seed=${encodeURIComponent(seed)}&backgroundColor=b6e3f4`
-}
-
 export default function EndorsementBadge({ providerId }) {
+  const { t } = useTranslation()
   const [endorsements, setEndorsements] = useState([])
 
   useEffect(() => {
@@ -19,8 +17,14 @@ export default function EndorsementBadge({ providerId }) {
   if (!endorsements.length) return null
 
   const first = endorsements[0]
-  const label = first.endorser_category
-    ? `${first.endorser_name} (${first.endorser_category})`
+
+  // Translate category slug → readable name, fallback to slug if key missing
+  const categoryName = first.endorser_category
+    ? t(`categories.${first.endorser_category}`, { defaultValue: first.endorser_category })
+    : null
+
+  const label = categoryName
+    ? `${first.endorser_name} (${categoryName})`
     : first.endorser_name
 
   return (

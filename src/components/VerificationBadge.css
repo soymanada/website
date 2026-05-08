@@ -9,7 +9,7 @@
   align-items: center;
   gap: 10px;
   padding: 11px 28px 11px 32px;
-  background: var(--iris-700);
+  background: #4C1D95;
   user-select: none;
 }
 
@@ -17,24 +17,26 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.25);
-  border: 1.5px solid rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0.18);
+  border: 1.5px solid rgba(255,255,255,0.45);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   color: #fff;
+  flex-shrink: 0;
 }
 
 .vb-banner__check {
-  width: 11px;
-  height: 11px;
+  width: 10px;
+  height: 10px;
 }
 
 .vb-banner__text {
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   line-height: 1;
   color: #fff;
+  white-space: nowrap;
 }
 
 .vb-banner__text strong {
@@ -44,7 +46,14 @@
 
 .vb-banner__text span {
   font-weight: 400;
-  opacity: 0.85;
+  opacity: 0.8;
+}
+
+@media (max-width: 600px) {
+  .vb-banner {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
 }
 
 /* ── PILL (variant="pill") ──────────────────────────── */

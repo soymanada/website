@@ -1,17 +1,18 @@
 /* EndorsementBadge — pill default, full-bleed banner inside .pcard__banners */
 
+/* ── Standalone (sin wrapper) — pill compacto ───────────────── */
 .endorsement-badge {
   position: relative;
   z-index: 1;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   padding: 5px 12px;
-  background: #ECFDF5;
-  border: 1px solid #A7F3D0;
+  background: #F0FDF4;
+  border: 1px solid #BBF7D0;
   border-radius: 9999px;
   font-size: 0.75rem;
-  color: #065F46;
+  color: #166534;
   line-height: 1.3;
   max-width: 100%;
   white-space: nowrap;
@@ -20,18 +21,22 @@
   user-select: none;
 }
 
-/* Full-bleed banner when inside pcard__banners wrapper */
+/* ── Full-bleed banner dentro de .pcard__banners ─────────────── */
 .pcard__banners .endorsement-badge {
   border-radius: 0;
   border: none;
-  border-top: 1px solid #A7F3D0;
+  border-top: 1px solid #BBF7D0;
+  background: #F0FDF4;
   padding: 10px 28px 10px 32px;
   max-width: none;
-  white-space: normal;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #15803D;
 }
 
 .endorsement-badge__icon {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   flex-shrink: 0;
   line-height: 1;
 }
@@ -39,19 +44,28 @@
 .endorsement-badge__text {
   overflow: hidden;
   text-overflow: ellipsis;
+  font-size: 0.76rem;
 }
 
 .endorsement-badge__text strong {
   font-weight: 800;
   letter-spacing: 0.06em;
+  font-size: 0.72rem;
 }
 
 .endorsement-badge__more {
-  background: #A7F3D0;
-  color: #064E3B;
+  background: #BBF7D0;
+  color: #14532D;
   border-radius: 9999px;
   padding: 1px 6px;
-  font-size: 0.7rem;
-  font-weight: 600;
+  font-size: 0.68rem;
+  font-weight: 700;
   flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+  .pcard__banners .endorsement-badge {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
 }
