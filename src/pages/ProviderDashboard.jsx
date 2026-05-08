@@ -751,6 +751,7 @@ function SectionHerramientas({ provider, onSave, saving }) {
 
 // ── Responder reseñas (Wolf) ──────────────────────────────────────
 function ReviewReplies({ provider }) {
+  const { t } = useTranslation()
   const [opinions,  setOpinions]  = useState([])
   const [loading,   setLoading]   = useState(true)
   const [replyText, setReplyText] = useState({})  // { [id]: string }
@@ -960,6 +961,7 @@ function WAVisibilityToggle({ provider }) {
 
 // ── Reseñas tab ──────────────────────────────────────────────────
 function SectionReseñas({ provider }) {
+  const { t } = useTranslation()
   return (
     <div className="pdash__section">
       <div className="pdash__section-header">
