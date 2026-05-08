@@ -79,7 +79,15 @@
     "cta_banca": "Find banking advisors on Manada →",
     "cta_alojamiento": "Find housing advisors →",
     "cta_trabajo": "Find employment advisors →",
-    "meta_title": "Getting started in {{country}} | SoyManada"
+    "meta_title": "Getting started in {{country}} | SoyManada",
+    "dest_label": "Select your destination",
+    "dest_canada": "Canada",
+    "dest_new_zealand": "New Zealand",
+    "dest_australia": "Australia",
+    "coming_soon_badge": "Coming soon",
+    "coming_soon_title": "{{country}} guide on its way",
+    "coming_soon_body": "We're preparing the first steps guide for migrants in {{country}}. Join our community to be among the first to know when it launches.",
+    "coming_soon_cta": "Join the Manada community"
   },
   "brand_name": "MyPack",
   "header": {

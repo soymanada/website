@@ -50,6 +50,111 @@
   max-width: 480px;
 }
 
+/* ── Country destination selector ────────────────────────────────── */
+.fsp__dest-selector {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.fsp__dest-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--iris-300);
+}
+.fsp__dest-pills {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.fsp__dest-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border-radius: 99px;
+  border: 1.5px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.07);
+  color: var(--iris-200);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--t-fast);
+  position: relative;
+}
+.fsp__dest-pill:hover:not(.fsp__dest-pill--active) {
+  background: rgba(255,255,255,0.13);
+  border-color: rgba(255,255,255,0.3);
+  color: var(--white);
+}
+.fsp__dest-pill--active {
+  background: var(--white);
+  border-color: var(--white);
+  color: var(--iris-800);
+  font-weight: 700;
+}
+.fsp__dest-pill--coming-soon {
+  opacity: 0.75;
+  cursor: pointer;
+}
+.fsp__dest-pill--coming-soon.fsp__dest-pill--active {
+  background: rgba(255,255,255,0.15);
+  border-color: rgba(255,255,255,0.35);
+  color: var(--white);
+}
+.fsp__dest-pill-flag { font-size: 1.1rem; line-height: 1; }
+.fsp__dest-pill-name { line-height: 1; }
+.fsp__dest-coming-badge {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--iris-900);
+  background: var(--iris-300);
+  border-radius: 99px;
+  padding: 2px 7px;
+  line-height: 1.4;
+}
+
+/* ── Coming Soon panel ────────────────────────────────────────────── */
+.fsp__coming-soon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 72px 24px 80px;
+  gap: 20px;
+  animation: menu-in 0.22s var(--ease-out) both;
+}
+.fsp__coming-soon__flag {
+  font-size: 4rem;
+  line-height: 1;
+  filter: grayscale(0.2);
+}
+.fsp__coming-soon__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 700;
+  color: var(--iris-900);
+  letter-spacing: -0.02em;
+  max-width: 480px;
+}
+.fsp__coming-soon__body {
+  font-size: 1rem;
+  color: var(--text-500);
+  line-height: 1.7;
+  max-width: 440px;
+  margin: 0;
+}
+.fsp__coming-soon__cta {
+  margin-top: 8px;
+  width: auto !important;
+  min-width: 260px;
+}
+
 /* Body */
 .fsp__body {
   padding-top: 72px;

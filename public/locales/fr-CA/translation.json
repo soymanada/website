@@ -79,7 +79,15 @@
     "cta_banca": "Trouver des conseillers bancaires →",
     "cta_alojamiento": "Trouver des conseillers en logement →",
     "cta_trabajo": "Trouver des conseillers en emploi →",
-    "meta_title": "Premiers pas au {{country}} | SoyManada"
+    "meta_title": "Premiers pas au {{country}} | SoyManada",
+    "dest_label": "Sélectionnez votre destination",
+    "dest_canada": "Canada",
+    "dest_new_zealand": "Nouvelle-Zélande",
+    "dest_australia": "Australie",
+    "coming_soon_badge": "Bientôt disponible",
+    "coming_soon_title": "Guide {{country}} en préparation",
+    "coming_soon_body": "Nous préparons le guide des premiers pas pour les migrants en {{country}}. Rejoignez notre communauté pour être parmi les premiers informés.",
+    "coming_soon_cta": "Rejoindre la communauté Manada"
   },
   "brand_name": "MonTroupeau",
   "header": {

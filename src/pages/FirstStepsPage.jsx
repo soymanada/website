@@ -7,6 +7,12 @@ import './FirstStepsPage.css'
 const WA_GROUP     = 'https://chat.whatsapp.com/CMIWk9cQkEIDso4Ll6JG8j'
 const WA_SUBGROUPS = 'https://chat.whatsapp.com/CMIWk9cQkEIDso4Ll6JG8j'
 
+const DEST_COUNTRIES = [
+  { id: 'canada',       flag: '🇨🇦', available: true  },
+  { id: 'new-zealand',  flag: '🇳🇿', available: false },
+  { id: 'australia',    flag: '🇦🇺', available: false },
+]
+
 const setMeta = (sel, val) => {
   let el = document.querySelector(sel)
   if (!el) { el = document.createElement('meta'); document.head.appendChild(el) }
@@ -23,6 +29,11 @@ function CtaButton({ href, to, icon = '→', label, variant = 'community' }) {
 export default function FirstStepsPage() {
   const { t } = useTranslation()
   const country = t('common.currentCountry')
+
+  const [selectedDest, setSelectedDest] = useState('canada')
+  const [active,       setActive]       = useState('sin')
+
+  const destAvailable = DEST_COUNTRIES.find(c => c.id === selectedDest)?.available ?? false
 
   useEffect(() => {
     const title = t('first_steps.meta_title', { country })
@@ -51,8 +62,6 @@ export default function FirstStepsPage() {
     { id: 'visas',    icon: '📋', label: t('first_steps.tab_visas') },
   ]
 
-  const [active, setActive] = useState('sin')
-
   return (
     <main className="fsp">
       <div className="fsp__hero">
@@ -64,32 +73,91 @@ export default function FirstStepsPage() {
             <em>{t('first_steps.title_em', { country })}</em>
           </h1>
           <p className="fsp__sub">{t('first_steps.sub')}</p>
+
+          {/* ── Country selector ─────────────────────────────── */}
+          <div className="fsp__dest-selector">
+            <span className="fsp__dest-label">{t('first_steps.dest_label')}</span>
+            <div className="fsp__dest-pills">
+              {DEST_COUNTRIES.map(c => (
+                <button
+                  key={c.id}
+                  type="button"
+                  className={[
+                    'fsp__dest-pill',
+                    selectedDest === c.id   ? 'fsp__dest-pill--active'      : '',
+                    !c.available            ? 'fsp__dest-pill--coming-soon' : '',
+                  ].filter(Boolean).join(' ')}
+                  onClick={() => setSelectedDest(c.id)}
+                  aria-pressed={selectedDest === c.id}
+                >
+                  <span className="fsp__dest-pill-flag">{c.flag}</span>
+                  <span className="fsp__dest-pill-name">{t(`first_steps.dest_${c.id.replace('-', '_')}`)}</span>
+                  {!c.available && (
+                    <span className="fsp__dest-coming-badge">{t('first_steps.coming_soon_badge')}</span>
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
       <div className="fsp__body container">
-        <nav className="fsp__tabs" aria-label="Secciones">
-          {TABS.map(tab => (
-            <button
-              key={tab.id}
-              className={`fsp__tab${active === tab.id ? ' fsp__tab--active' : ''}`}
-              onClick={() => setActive(tab.id)}
-            >
-              <span className="fsp__tab-icon">{tab.icon}</span>
-              <span>{tab.label}</span>
-            </button>
-          ))}
-        </nav>
-
-        <div className="fsp__panel">
-          {active === 'sin'      && <SinContent      t={t} />}
-          {active === 'banca'    && <BancaContent    t={t} country={country} />}
-          {active === 'arriendo' && <ArriendoContent t={t} country={country} />}
-          {active === 'trabajo'  && <TrabajoContent  t={t} country={country} />}
-          {active === 'visas'    && <VisasContent    t={t} country={country} />}
-        </div>
+        {destAvailable ? (
+          <>
+            <nav className="fsp__tabs" aria-label="Secciones">
+              {TABS.map(tab => (
+                <button
+                  key={tab.id}
+                  className={`fsp__tab${active === tab.id ? ' fsp__tab--active' : ''}`}
+                  onClick={() => setActive(tab.id)}
+                >
+                  <span className="fsp__tab-icon">{tab.icon}</span>
+                  <span>{tab.label}</span>
+                </button>
+              ))}
+            </nav>
+            <div className="fsp__panel">
+              {active === 'sin'      && <SinContent      t={t} />}
+              {active === 'banca'    && <BancaContent    t={t} country={country} />}
+              {active === 'arriendo' && <ArriendoContent t={t} country={country} />}
+              {active === 'trabajo'  && <TrabajoContent  t={t} country={country} />}
+              {active === 'visas'    && <VisasContent    t={t} country={country} />}
+            </div>
+          </>
+        ) : (
+          <ComingSoonPanel
+            t={t}
+            destId={selectedDest}
+            dest={DEST_COUNTRIES.find(c => c.id === selectedDest)}
+          />
+        )}
       </div>
     </main>
+  )
+}
+
+function ComingSoonPanel({ t, dest }) {
+  const countryName = t(`first_steps.dest_${dest.id.replace('-', '_')}`)
+  return (
+    <div className="fsp__coming-soon">
+      <div className="fsp__coming-soon__flag">{dest.flag}</div>
+      <h2 className="fsp__coming-soon__title">
+        {t('first_steps.coming_soon_title', { country: countryName })}
+      </h2>
+      <p className="fsp__coming-soon__body">
+        {t('first_steps.coming_soon_body', { country: countryName })}
+      </p>
+      <a
+        href={WA_GROUP}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fsp__cta-btn fsp__cta-btn--community fsp__coming-soon__cta"
+      >
+        <span className="fsp__cta-btn-icon">💬</span>
+        {t('first_steps.coming_soon_cta')}
+      </a>
+    </div>
   )
 }
 

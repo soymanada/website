@@ -78,7 +78,15 @@
     "cta_banca": "Ver asesores bancarios en Manada →",
     "cta_alojamiento": "Ver asesores de alojamiento →",
     "cta_trabajo": "Ver asesores de empleo →",
-    "meta_title": "Guía de llegada a {{country}} | SoyManada"
+    "meta_title": "Guía de llegada a {{country}} | SoyManada",
+    "dest_label": "Seleccioná tu destino",
+    "dest_canada": "Canadá",
+    "dest_new_zealand": "Nueva Zelanda",
+    "dest_australia": "Australia",
+    "coming_soon_badge": "Próximamente",
+    "coming_soon_title": "Guía de {{country}} en camino",
+    "coming_soon_body": "Estamos preparando la guía de primeros pasos para migrantes en {{country}}. Unite a nuestra comunidad para ser de los primeros en enterarte.",
+    "coming_soon_cta": "Únete a la comunidad Manada"
   },
   "header": {
     "nav_inicio": "Inicio",
