@@ -6,7 +6,7 @@ import './Hero.css'
 
 const DEST_COUNTRIES = [
   { id: 'canada',      code: 'ca', available: true  },
-  { id: 'new-zealand', code: 'nz', available: false },
+  { id: 'new-zealand', code: 'nz', available: true  },
   { id: 'australia',   code: 'au', available: false },
 ]
 
