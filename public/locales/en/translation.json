@@ -581,7 +581,8 @@
     "gate_cta": "Join free",
     "profile_link": "View full profile →",
     "profile_link_remesas": "View reviews →",
-    "no_opinions": "No reviews yet"
+    "no_opinions": "No reviews yet",
+    "recommended_by": "Recommended by"
   },
   "providers_page": {
     "title": "Provider directory",
@@ -933,7 +934,8 @@
     "error": "We couldn't fetch the rates. Please try again.",
     "retry": "Retry",
     "disclaimer": "Rates are estimates based on the interbank reference exchange rate and may differ from actual rates at the time of your transfer. Verify the exact amount on each platform before transferring. SoyManada may receive a commission if you complete a transaction through these links, at no additional cost to you.",
-    "from_currency_label": "Origin currency"
+    "from_currency_label": "Origin",
+    "swap_tooltip": "Swap currencies"
   },
   "remesas_teaser": {
     "aria": "Money transfer comparator",

@@ -1057,7 +1057,8 @@
     "gate_cta": "Unirse gratis",
     "profile_link": "Ver perfil completo →",
     "profile_link_remesas": "Ver reseñas →",
-    "no_opinions": "Aún no hay reseñas"
+    "no_opinions": "Aún no hay reseñas",
+    "recommended_by": "Recomendado por"
   },
   "verification": {
     "verified": "VERIFICADO",
@@ -1148,7 +1149,10 @@
     "cta": "Enviar con {{name}}",
     "best_badge": "Mejor tasa",
     "error": "No pudimos obtener las tasas. Intenta nuevamente.",
-    "disclaimer": "Tasas referenciales. Pueden variar según comisiones y monto enviado."
+    "disclaimer": "Tasas referenciales. Pueden variar según comisiones y monto enviado.",
+    "from_currency_label": "Origen",
+    "retry": "Reintentar",
+    "swap_tooltip": "Invertir monedas"
   },
   "booking": {
     "title": "📅 Reservar una sesión",

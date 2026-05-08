@@ -581,7 +581,8 @@
     "gate_cta": "Rejoindre gratuitement",
     "profile_link": "Voir le profil complet →",
     "profile_link_remesas": "Voir les avis →",
-    "no_opinions": "Aucun avis pour l'instant"
+    "no_opinions": "Aucun avis pour l'instant",
+    "recommended_by": "Recommandé par"
   },
   "providers_page": {
     "title": "Répertoire des fournisseurs",
@@ -933,7 +934,8 @@
     "error": "Impossible d'obtenir les taux. Réessayez.",
     "retry": "Réessayer",
     "disclaimer": "Les taux sont des estimations basées sur le taux de change interbancaire de référence et peuvent différer des taux réels au moment de votre transfert. Vérifiez le montant exact sur chaque plateforme avant de transférer. SoyManada peut recevoir une commission si vous effectuez une opération depuis ces liens, sans frais supplémentaires pour vous.",
-    "from_currency_label": "Devise d'origine"
+    "from_currency_label": "Origine",
+    "swap_tooltip": "Inverser les devises"
   },
   "remesas_teaser": {
     "aria": "Comparateur de transferts d'argent",

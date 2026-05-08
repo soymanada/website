@@ -23,11 +23,42 @@
 /* Controls */
 .remcomp__controls {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   margin-bottom: 24px;
+  align-items: flex-end;
   flex-wrap: wrap;
 }
 .remcomp__control-group { display: flex; flex-direction: column; gap: 6px; }
+
+/* ── Botón swap ⇄ ─────────────────────────────────── */
+.remcomp__swap-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid var(--iris-300);
+  background: var(--iris-50);
+  color: var(--iris-600);
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-bottom: 2px;
+  transition: all 0.15s;
+}
+.remcomp__swap-btn:hover {
+  background: var(--iris-100);
+  border-color: var(--iris-500);
+  transform: rotate(180deg);
+}
+@media (max-width: 600px) {
+  .remcomp__swap-btn {
+    transform: rotate(90deg);
+  }
+  .remcomp__swap-btn:hover {
+    transform: rotate(270deg);
+  }
+}
 .remcomp__label {
   color: var(--text-400);
   font-weight: 700;

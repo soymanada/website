@@ -4,6 +4,14 @@ import { useTranslation } from 'react-i18next'
 import { REMESAS_PLATFORMS, CURRENCY_PAIRS, ORIGIN_CURRENCIES } from '../data/remesas.config'
 import './RemesasComparator.css'
 
+// Unión de todas las monedas disponibles (origen + destino sin duplicados)
+const ALL_CURRENCIES = [
+  ...ORIGIN_CURRENCIES,
+  ...CURRENCY_PAIRS.filter(
+    p => !ORIGIN_CURRENCIES.some(o => o.code === p.code)
+  ),
+]
+
 function SkeletonRow() {
   return (
     <tr className="remcomp__row">
@@ -19,12 +27,11 @@ export default function RemesasComparator() {
   const { t } = useTranslation()
 
   const [fromCurrency, setFromCurrency] = useState('CAD')
-  const [toCurrency,   setToCurrency]   = useState(CURRENCY_PAIRS[0].code)
+  const [toCurrency,   setToCurrency]   = useState('CLP')
   const [amount,       setAmount]       = useState(500)
   const [rates,        setRates]        = useState(null)
-  const [status,       setStatus]       = useState('loading') // loading | error | ready
+  const [status,       setStatus]       = useState('loading')
 
-  // Fetch se repite solo cuando cambia la moneda de origen
   const fetchRates = useCallback(async () => {
     setStatus('loading')
     try {
@@ -39,6 +46,29 @@ export default function RemesasComparator() {
   }, [fromCurrency])
 
   useEffect(() => { fetchRates() }, [fetchRates])
+
+  // Swap: intercambia origen y destino
+  const handleSwap = () => {
+    setFromCurrency(toCurrency)
+    setToCurrency(fromCurrency)
+  }
+
+  // Si el usuario cambia origen y coincide con destino, ajusta destino
+  const handleFromChange = (val) => {
+    setFromCurrency(val)
+    if (val === toCurrency) {
+      const other = ALL_CURRENCIES.find(c => c.code !== val)
+      if (other) setToCurrency(other.code)
+    }
+  }
+
+  const handleToChange = (val) => {
+    setToCurrency(val)
+    if (val === fromCurrency) {
+      const other = ALL_CURRENCIES.find(c => c.code !== val)
+      if (other) setFromCurrency(other.code)
+    }
+  }
 
   const numericAmount = Math.max(0, parseFloat(amount) || 0)
 
@@ -58,7 +88,7 @@ export default function RemesasComparator() {
   const fmtRate = (rate) =>
     new Intl.NumberFormat('es-CL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(rate)
 
-  const originLabel = ORIGIN_CURRENCIES.find(c => c.code === fromCurrency)?.code ?? fromCurrency
+  const fromLabel = ALL_CURRENCIES.find(c => c.code === fromCurrency)?.code ?? fromCurrency
 
   return (
     <div className="remcomp">
@@ -69,19 +99,24 @@ export default function RemesasComparator() {
 
       {/* Controles */}
       <div className="remcomp__controls">
+
+        {/* Origen */}
         <div className="remcomp__control-group">
           <label className="remcomp__label t-xs">{t('remesas_comp.from_currency_label')}</label>
           <select
             className="remcomp__select"
             value={fromCurrency}
-            onChange={e => setFromCurrency(e.target.value)}
+            onChange={e => handleFromChange(e.target.value)}
           >
-            {ORIGIN_CURRENCIES.map(c => (
-              <option key={c.code} value={c.code}>{c.label} ({c.code})</option>
+            {ALL_CURRENCIES.map(c => (
+              <option key={c.code} value={c.code} disabled={c.code === toCurrency}>
+                {c.label} ({c.code})
+              </option>
             ))}
           </select>
         </div>
 
+        {/* Monto */}
         <div className="remcomp__control-group">
           <label className="remcomp__label t-xs">{t('remesas_comp.amount_label')}</label>
           <div className="remcomp__amount-wrap">
@@ -97,15 +132,32 @@ export default function RemesasComparator() {
           </div>
         </div>
 
+        {/* Botón swap */}
+        <button
+          className="remcomp__swap-btn"
+          onClick={handleSwap}
+          title={t('remesas_comp.swap_tooltip')}
+          aria-label={t('remesas_comp.swap_tooltip')}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M7 16V4m0 0L3 8m4-4 4 4"/>
+            <path d="M17 8v12m0 0 4-4m-4 4-4-4"/>
+          </svg>
+        </button>
+
+        {/* Destino */}
         <div className="remcomp__control-group">
           <label className="remcomp__label t-xs">{t('remesas_comp.to_currency_label')}</label>
           <select
             className="remcomp__select"
             value={toCurrency}
-            onChange={e => setToCurrency(e.target.value)}
+            onChange={e => handleToChange(e.target.value)}
           >
-            {CURRENCY_PAIRS.map(p => (
-              <option key={p.code} value={p.code}>{p.label} ({p.code})</option>
+            {ALL_CURRENCIES.map(c => (
+              <option key={c.code} value={c.code} disabled={c.code === fromCurrency}>
+                {c.label} ({c.code})
+              </option>
             ))}
           </select>
         </div>
@@ -117,7 +169,7 @@ export default function RemesasComparator() {
           <thead>
             <tr>
               <th>{t('remesas_comp.col_platform')}</th>
-              <th>1 {originLabel} =</th>
+              <th>1 {fromLabel} =</th>
               <th>{t('remesas_comp.col_receive')}</th>
               <th />
             </tr>
