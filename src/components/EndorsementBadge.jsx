@@ -19,19 +19,15 @@ export default function EndorsementBadge({ providerId }) {
   if (!endorsements.length) return null
 
   const first = endorsements[0]
+  const label = first.endorser_category
+    ? `${first.endorser_name} (${first.endorser_category})`
+    : first.endorser_name
 
   return (
-    <div className="endorsement-badge" title={`Recomendado por ${first.endorser_name}`}>
-      <img
-        className="endorsement-badge__avatar"
-        src={first.endorser_avatar || dicebearUrl(first.endorser_name)}
-        alt={first.endorser_name}
-        width={20}
-        height={20}
-        loading="lazy"
-      />
+    <div className="endorsement-badge" title={`Recomendado por ${label}`}>
+      <span className="endorsement-badge__icon" aria-hidden="true">⭐</span>
       <span className="endorsement-badge__text">
-        Recomendado por <strong>{first.endorser_name}</strong>
+        <strong>RECOMENDADO</strong> por {label}
       </span>
       {endorsements.length > 1 && (
         <span className="endorsement-badge__more">+{endorsements.length - 1}</span>

@@ -129,8 +129,15 @@ export default function ProviderCard({ provider: rawProvider }) {
           <ellipse cx="21" cy="8" rx="3.2" ry="4" transform="rotate(10, 21, 8)"/>
           <ellipse cx="27.5" cy="15" rx="3.2" ry="4" transform="rotate(25, 27.5, 15)"/>
         </svg>
-        {verified && <VerificationBadge variant="pill" theme="light" />}
-        <EndorsementBadge providerId={id} />
+        {/* Top banners — full-bleed when verified, standalone pill otherwise */}
+        {verified ? (
+          <div className="pcard__banners">
+            <VerificationBadge variant="banner" />
+            <EndorsementBadge providerId={id} />
+          </div>
+        ) : (
+          <EndorsementBadge providerId={id} />
+        )}
         {rawProvider?.payment_link && (
           <span className="pcard__payment-badge" title={t('provider.accepts_online_payment')}>
             💳

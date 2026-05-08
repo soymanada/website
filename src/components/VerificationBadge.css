@@ -3,6 +3,50 @@
    Usa tokens de globals.css. Sin colores hardcodeados.
    ═══════════════════════════════════════════════════════ */
 
+/* ── BANNER (variant="banner") — full-bleed inside pcard__banners ── */
+.vb-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 28px 11px 32px;
+  background: var(--iris-700);
+  user-select: none;
+}
+
+.vb-banner__dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  border: 1.5px solid rgba(255,255,255,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #fff;
+}
+
+.vb-banner__check {
+  width: 11px;
+  height: 11px;
+}
+
+.vb-banner__text {
+  font-size: 0.78rem;
+  line-height: 1;
+  color: #fff;
+}
+
+.vb-banner__text strong {
+  font-weight: 800;
+  letter-spacing: 0.07em;
+}
+
+.vb-banner__text span {
+  font-weight: 400;
+  opacity: 0.85;
+}
+
 /* ── PILL (variant="pill") ──────────────────────────── */
 .vb-pill {
   display: inline-flex;

@@ -14,6 +14,22 @@ export default function VerificationBadge({ variant = 'pill', theme = 'light' })
   const label = t('verification.verified')
   const sub   = t('verification.by_manada')
 
+  if (variant === 'banner') {
+    return (
+      <div className="vb-banner" role="img" aria-label={`${label} ${sub}`}>
+        <div className="vb-banner__dot">
+          <svg className="vb-banner__check" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+            <path d="M2 5l2.5 2.5 4-4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
+        <span className="vb-banner__text">
+          <strong>{label}</strong>
+          <span> {sub}</span>
+        </span>
+      </div>
+    )
+  }
+
   if (variant === 'seal') {
     return (
       <div className={`vb-seal vb-seal--${theme}`} role="img" aria-label={`${label} ${sub}`}>

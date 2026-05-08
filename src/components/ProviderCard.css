@@ -21,6 +21,26 @@
   display: none;
 }
 
+/* ── Banners full-bleed (verificado + recomendado) ───────────────── */
+.pcard__banners {
+  /* cancela el padding superior y lateral de .pcard (28px top, 28px right, 32px left) */
+  margin: -28px -28px 0 -32px;
+  display: flex;
+  flex-direction: column;
+  /* el overflow:hidden del padre (.pcard) recorta las esquinas superiores */
+}
+
+@media (max-width: 600px) {
+  .pcard__banners {
+    margin: -24px -24px 0 -24px;
+  }
+  .pcard__banners .endorsement-badge,
+  .vb-banner {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
 .pcard__header {
   display: flex;
   align-items: flex-start;
