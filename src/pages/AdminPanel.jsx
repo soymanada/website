@@ -208,7 +208,7 @@ const CATEGORY_SLUGS = [
 
 const toSlug = (str) =>
   str.toLowerCase()
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '')
 
@@ -347,7 +347,6 @@ function ProvidersPanel() {
       languages:            f.languages.split(',').map(s => s.trim()).filter(Boolean),
       verified:             f.verified,
       active:               f.active,
-      // Columnas reales de contacto en Supabase (no objeto anidado)
       contact_whatsapp:     f.whatsapp?.trim()      || null,
       contact_instagram:    f.instagram?.trim()     || null,
       contact_website:      f.website?.trim()       || null,
@@ -360,7 +359,6 @@ function ProvidersPanel() {
       tier:                 f.tier,
     }).eq('id', id)
 
-    // tier vive en profiles — sincronizar si el proveedor tiene user_id vinculado
     if (!error && f.user_id?.trim()) {
       await supabase.from('profiles')
         .update({ tier: f.tier })
@@ -455,7 +453,6 @@ function ProvidersPanel() {
         </div>
       )}
 
-      {/* ── Modal edición completa ── */}
       {editing && (
         <div className="adm-overlay" onClick={() => setEditing(null)}>
           <div className="adm-modal adm-modal--xl" onClick={e => e.stopPropagation()}>
@@ -463,7 +460,6 @@ function ProvidersPanel() {
 
             <div className="adm-edit-sections">
 
-              {/* Identidad */}
               <div className="adm-edit-section">
                 <p className="adm-edit-section__title">Identidad</p>
                 <div className="adm-form-grid">
@@ -514,7 +510,6 @@ function ProvidersPanel() {
                 </div>
               </div>
 
-              {/* Servicio y descripción */}
               <div className="adm-edit-section">
                 <p className="adm-edit-section__title">Servicio y descripción</p>
                 <div className="adm-form-grid">
@@ -542,7 +537,6 @@ function ProvidersPanel() {
                 </div>
               </div>
 
-              {/* Ubicación e idiomas */}
               <div className="adm-edit-section">
                 <p className="adm-edit-section__title">Ubicación e idiomas</p>
                 <div className="adm-form-grid">
@@ -555,7 +549,6 @@ function ProvidersPanel() {
                 </div>
               </div>
 
-              {/* Contacto */}
               <div className="adm-edit-section">
                 <p className="adm-edit-section__title">Contacto</p>
                 <div className="adm-form-grid">
@@ -571,7 +564,6 @@ function ProvidersPanel() {
                 </div>
               </div>
 
-              {/* Herramientas */}
               <div className="adm-edit-section">
                 <p className="adm-edit-section__title">Herramientas (Silver / Gold)</p>
                 <div className="adm-form-grid">
@@ -590,7 +582,7 @@ function ProvidersPanel() {
                 </div>
               </div>
 
-            </div>{/* end adm-edit-sections */}
+            </div>
 
             <div className="adm-modal__actions">
               <button className="adm-btn adm-btn--ghost" onClick={() => setEditing(null)}>Cancelar</button>
@@ -664,7 +656,7 @@ function SubmissionsPanel() {
   const [loading,  setLoading]  = useState(true)
   const [loadErr,  setLoadErr]  = useState(null)
   const [expanded, setExpanded] = useState(null)
-  const [acting,   setActing]   = useState(null) // id being processed
+  const [acting,   setActing]   = useState(null)
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -689,11 +681,10 @@ function SubmissionsPanel() {
     const waNumber     = (s.whatsapp ?? '').replace(/^\+/, '')
     const providerSlug = s.business_name
       .toLowerCase()
-      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .normalize('NFD').replace(/[̀-ͯ]/g, '')
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-|-$/g, '')
 
-    // Look up the user account via auth.users (SECURITY DEFINER function)
     let userId = null
     if (s.contact_email) {
       const { data } = await supabase
@@ -726,26 +717,21 @@ function SubmissionsPanel() {
       return
     }
 
-    // Update the user's role to 'provider' so they see the dashboard
     let roleUpdated = false
-    if (userId) {
-      const { error: roleErr } = await supabase
-        .from('profiles')
-        .update({ role: 'provider' })
-        .eq('id', userId)
-      roleUpdated = !roleErr
-      if (roleErr) console.error('Error updating role:', roleErr)
+    if (s.contact_email) {
+      const { data: assigned, error: roleErr } = await supabase
+        .rpc('assign_provider_role_by_email', { target_email: s.contact_email.trim() })
+      roleUpdated = assigned === true
+      if (roleErr) console.error('[assign_provider_role]', roleErr)
     }
 
-    // Warn admin if role could not be auto-assigned
     if (!roleUpdated) {
-      alert(`⚠️ Proveedor creado pero NO se pudo asignar el rol automáticamente.\n\nEmail: ${s.contact_email || '(sin email)'}\n\nVe a la pestaña Usuarios y asigna el rol "provider" manualmente.`)
+      alert(`⚠️ Proveedor creado pero NO se pudo asignar el rol automáticamente.\n\nEmail: ${s.contact_email || '(sin email)'}\n\nCausa probable: el proveedor todavía no creó su cuenta en SoyManada con ese email.\n\nCuando se registre, ve a la pestaña Usuarios y asigna el rol "provider" manualmente.`)
     }
 
     await supabase.from('provider_applications').update({ status: 'approved' }).eq('id', s.id)
     await logAudit({ action: 'approve_provider', targetType: 'submission', targetId: s.id, targetName: s.business_name, payload: { providerSlug, userId, roleUpdated } })
 
-    // Notificar al proveedor por email (fire-and-forget)
     if (s.contact_email) {
       supabase.functions.invoke('send-welcome-email', {
         body: {
@@ -838,38 +824,14 @@ function SubmissionsPanel() {
                     <tr key={`${s.id}-detail`} className="adm-tr--detail">
                       <td colSpan={6}>
                         <div className="adm-detail">
-                          <div className="adm-detail__row">
-                            <span className="adm-detail__label">Descripción</span>
-                            <span>{s.description ?? '—'}</span>
-                          </div>
-                          <div className="adm-detail__row">
-                            <span className="adm-detail__label">Modalidad</span>
-                            <span>{s.modality ?? '—'}</span>
-                          </div>
-                          <div className="adm-detail__row">
-                            <span className="adm-detail__label">Países</span>
-                            <span>{(s.countries ?? []).join(', ') || '—'}</span>
-                          </div>
-                          <div className="adm-detail__row">
-                            <span className="adm-detail__label">Idiomas</span>
-                            <span>{(s.languages ?? []).join(', ') || '—'}</span>
-                          </div>
-                          <div className="adm-detail__row">
-                            <span className="adm-detail__label">WhatsApp</span>
-                            <span>{s.whatsapp ?? '—'}</span>
-                          </div>
-                          <div className="adm-detail__row">
-                            <span className="adm-detail__label">Instagram</span>
-                            <span>{s.instagram ?? '—'}</span>
-                          </div>
-                          <div className="adm-detail__row">
-                            <span className="adm-detail__label">Sitio web</span>
-                            <span>{s.website ?? '—'}</span>
-                          </div>
-                          <div className="adm-detail__row">
-                            <span className="adm-detail__label">Perfil verificación</span>
-                            <a href={s.profile_link} target="_blank" rel="noopener noreferrer">{s.profile_link ?? '—'}</a>
-                          </div>
+                          <div className="adm-detail__row"><span className="adm-detail__label">Descripción</span><span>{s.description ?? '—'}</span></div>
+                          <div className="adm-detail__row"><span className="adm-detail__label">Modalidad</span><span>{s.modality ?? '—'}</span></div>
+                          <div className="adm-detail__row"><span className="adm-detail__label">Países</span><span>{(s.countries ?? []).join(', ') || '—'}</span></div>
+                          <div className="adm-detail__row"><span className="adm-detail__label">Idiomas</span><span>{(s.languages ?? []).join(', ') || '—'}</span></div>
+                          <div className="adm-detail__row"><span className="adm-detail__label">WhatsApp</span><span>{s.whatsapp ?? '—'}</span></div>
+                          <div className="adm-detail__row"><span className="adm-detail__label">Instagram</span><span>{s.instagram ?? '—'}</span></div>
+                          <div className="adm-detail__row"><span className="adm-detail__label">Sitio web</span><span>{s.website ?? '—'}</span></div>
+                          <div className="adm-detail__row"><span className="adm-detail__label">Perfil verificación</span><a href={s.profile_link} target="_blank" rel="noopener noreferrer">{s.profile_link ?? '—'}</a></div>
                         </div>
                       </td>
                     </tr>
@@ -940,12 +902,8 @@ function PhotosPanel() {
               </div>
               {p.status === 'pending' && (
                 <div className="adm-photo-card__actions">
-                  <button className="btn btn-primary btn-sm" onClick={() => setStatus(p.id, 'approved')}>
-                    ✓ Aprobar
-                  </button>
-                  <button className="btn btn-ghost btn-sm" onClick={() => setStatus(p.id, 'rejected')}>
-                    ✕ Rechazar
-                  </button>
+                  <button className="btn btn-primary btn-sm" onClick={() => setStatus(p.id, 'approved')}>✓ Aprobar</button>
+                  <button className="btn btn-ghost btn-sm" onClick={() => setStatus(p.id, 'rejected')}>✕ Rechazar</button>
                 </div>
               )}
             </div>
@@ -956,7 +914,7 @@ function PhotosPanel() {
   )
 }
 
-// ── Logs (actividad + errores + audit trail) ─────────────────────────────────
+// ── Logs ──────────────────────────────────────────────────────────────────────
 const LOG_RANGES = [
   { label: 'Últimos 3 días', days: 3 },
   { label: 'Últimos 7 días', days: 7 },
@@ -964,20 +922,17 @@ const LOG_RANGES = [
 ]
 
 function LogsPanel() {
-  const [subTab,     setSubTab]    = useState('activity')
-  // ── actividad ──
-  const [rows,       setRows]      = useState([])
-  const [range,      setRange]     = useState(3)
-  const [search,     setSearch]    = useState('')
-  const [page,       setPage]      = useState(0)
-  const [provMap,    setProvMap]   = useState({})
+  const [subTab,  setSubTab]  = useState('activity')
+  const [rows,    setRows]    = useState([])
+  const [range,   setRange]   = useState(3)
+  const [search,  setSearch]  = useState('')
+  const [page,    setPage]    = useState(0)
+  const [provMap, setProvMap] = useState({})
   const PAGE_SIZE = 50
-  // ── errores + audit ──
-  const [errors,     setErrors]    = useState([])
-  const [audit,      setAudit]     = useState([])
-  const [loading,    setLoading]   = useState(true)
+  const [errors,  setErrors]  = useState([])
+  const [audit,   setAudit]   = useState([])
+  const [loading, setLoading] = useState(true)
 
-  // Mapa id→nombre de proveedores
   useEffect(() => {
     supabase.from('providers').select('id, name').then(({ data }) => {
       const map = {}
@@ -999,20 +954,12 @@ function LogsPanel() {
   }, [range])
 
   const loadErrors = useCallback(async () => {
-    const { data } = await supabase
-      .from('system_error_logs')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .limit(100)
+    const { data } = await supabase.from('system_error_logs').select('*').order('created_at', { ascending: false }).limit(100)
     setErrors(data ?? [])
   }, [])
 
   const loadAudit = useCallback(async () => {
-    const { data } = await supabase
-      .from('audit_logs')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .limit(100)
+    const { data } = await supabase.from('audit_logs').select('*').order('created_at', { ascending: false }).limit(100)
     setAudit(data ?? [])
   }, [])
 
@@ -1026,8 +973,7 @@ function LogsPanel() {
     loadErrors()
   }
 
-  // Actividad: filtro + paginación
-  const filtered = rows.filter(r => {
+  const filtered   = rows.filter(r => {
     if (!search.trim()) return true
     const name = provMap[r.provider_id] ?? r.provider_id ?? ''
     return name.toLowerCase().includes(search.toLowerCase())
@@ -1037,7 +983,6 @@ function LogsPanel() {
   const summary    = Object.entries(
     rows.reduce((acc, r) => { acc[r.provider_id] = (acc[r.provider_id] ?? 0) + 1; return acc }, {})
   ).sort((a, b) => b[1] - a[1]).slice(0, 5)
-
   const unresolvedCount = errors.filter(e => !e.resolved).length
 
   return (
@@ -1045,166 +990,108 @@ function LogsPanel() {
       <div className="adm-section__head">
         <h2 className="adm-section__title">Logs</h2>
       </div>
-
       <div className="adm-subtabs">
-        <button
-          className={`adm-subtab ${subTab === 'activity' ? 'adm-subtab--active' : ''}`}
-          onClick={() => setSubTab('activity')}>
-          📊 Actividad
-          <span className="adm-badge">{filtered.length}</span>
+        <button className={`adm-subtab ${subTab === 'activity' ? 'adm-subtab--active' : ''}`} onClick={() => setSubTab('activity')}>
+          📊 Actividad <span className="adm-badge">{filtered.length}</span>
         </button>
-        <button
-          className={`adm-subtab ${subTab === 'errors' ? 'adm-subtab--active' : ''}`}
-          onClick={() => setSubTab('errors')}>
-          ⚠️ Errores
-          {unresolvedCount > 0 && <span className="adm-badge adm-badge--red">{unresolvedCount}</span>}
+        <button className={`adm-subtab ${subTab === 'errors' ? 'adm-subtab--active' : ''}`} onClick={() => setSubTab('errors')}>
+          ⚠️ Errores {unresolvedCount > 0 && <span className="adm-badge adm-badge--red">{unresolvedCount}</span>}
         </button>
-        <button
-          className={`adm-subtab ${subTab === 'audit' ? 'adm-subtab--active' : ''}`}
-          onClick={() => setSubTab('audit')}>
-          🛡 Acciones admin
-          <span className="adm-badge">{audit.length}</span>
+        <button className={`adm-subtab ${subTab === 'audit' ? 'adm-subtab--active' : ''}`} onClick={() => setSubTab('audit')}>
+          🛡 Acciones admin <span className="adm-badge">{audit.length}</span>
         </button>
       </div>
-
       {loading && <p className="adm-loading">Cargando…</p>}
-
-      {/* ── Actividad ── */}
       {!loading && subTab === 'activity' && (
         <>
           <div className="adm-logs__controls">
             <div className="adm-logs__range">
               {LOG_RANGES.map(r => (
-                <button key={r.days}
-                  className={`adm-btn adm-btn--sm ${range === r.days ? 'adm-btn--primary' : 'adm-btn--ghost'}`}
-                  onClick={() => setRange(r.days)}>
-                  {r.label}
-                </button>
+                <button key={r.days} className={`adm-btn adm-btn--sm ${range === r.days ? 'adm-btn--primary' : 'adm-btn--ghost'}`} onClick={() => setRange(r.days)}>{r.label}</button>
               ))}
             </div>
-            <input
-              className="adm-logs__search"
-              placeholder="Filtrar por proveedor…"
-              value={search}
-              onChange={e => { setSearch(e.target.value); setPage(0) }}
-            />
-            <button className="adm-btn adm-btn--sm adm-btn--ghost" onClick={() => { setLoading(true); loadActivity().finally(() => setLoading(false)) }}>
-              ↺ Refrescar
-            </button>
+            <input className="adm-logs__search" placeholder="Filtrar por proveedor…" value={search} onChange={e => { setSearch(e.target.value); setPage(0) }} />
+            <button className="adm-btn adm-btn--sm adm-btn--ghost" onClick={() => { setLoading(true); loadActivity().finally(() => setLoading(false)) }}>↺ Refrescar</button>
           </div>
-
           {summary.length > 0 && (
             <div className="adm-logs__summary">
               <p className="adm-edit-section__title">Top proveedores por vistas</p>
               <div className="adm-logs__summary-list">
                 {summary.map(([pid, count]) => (
                   <div key={pid} className="adm-logs__summary-item">
-                    <span className="adm-logs__summary-name">
-                      {provMap[pid] ?? <span className="adm-td--mono" style={{ fontSize: '0.75rem' }}>{pid.slice(0, 8)}…</span>}
-                    </span>
+                    <span className="adm-logs__summary-name">{provMap[pid] ?? <span className="adm-td--mono" style={{ fontSize: '0.75rem' }}>{pid.slice(0, 8)}…</span>}</span>
                     <span className="adm-badge">{count}</span>
                   </div>
                 ))}
               </div>
             </div>
           )}
-
-          {filtered.length === 0
-            ? <p className="adm-empty">No hay eventos en este período.</p>
-            : (
-              <>
-                <div className="adm-table-wrap">
-                  <table className="adm-table">
-                    <thead><tr><th>Fecha y hora</th><th>Proveedor</th><th>Tipo</th></tr></thead>
-                    <tbody>
-                      {paged.map(r => (
-                        <tr key={r.id}>
-                          <td className="adm-td--mono">{fmtDateTime(r.created_at)}</td>
-                          <td>
-                            {provMap[r.provider_id]
-                              ? <strong>{provMap[r.provider_id]}</strong>
-                              : <span className="adm-td--mono adm-td--sub">{r.provider_id?.slice(0, 8)}…</span>
-                            }
-                          </td>
-                          <td><span className="adm-pill adm-pill--provider">{r.event_type}</span></td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+          {filtered.length === 0 ? <p className="adm-empty">No hay eventos en este período.</p> : (
+            <>
+              <div className="adm-table-wrap">
+                <table className="adm-table">
+                  <thead><tr><th>Fecha y hora</th><th>Proveedor</th><th>Tipo</th></tr></thead>
+                  <tbody>
+                    {paged.map(r => (
+                      <tr key={r.id}>
+                        <td className="adm-td--mono">{fmtDateTime(r.created_at)}</td>
+                        <td>{provMap[r.provider_id] ? <strong>{provMap[r.provider_id]}</strong> : <span className="adm-td--mono adm-td--sub">{r.provider_id?.slice(0, 8)}…</span>}</td>
+                        <td><span className="adm-pill adm-pill--provider">{r.event_type}</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              {totalPages > 1 && (
+                <div className="adm-logs__pagination">
+                  <button className="adm-btn adm-btn--sm adm-btn--ghost" onClick={() => setPage(p => Math.max(0, p - 1))} disabled={page === 0}>← Anterior</button>
+                  <span className="adm-logs__page-info">Página {page + 1} de {totalPages}</span>
+                  <button className="adm-btn adm-btn--sm adm-btn--ghost" onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))} disabled={page === totalPages - 1}>Siguiente →</button>
                 </div>
-                {totalPages > 1 && (
-                  <div className="adm-logs__pagination">
-                    <button className="adm-btn adm-btn--sm adm-btn--ghost" onClick={() => setPage(p => Math.max(0, p - 1))} disabled={page === 0}>← Anterior</button>
-                    <span className="adm-logs__page-info">Página {page + 1} de {totalPages}</span>
-                    <button className="adm-btn adm-btn--sm adm-btn--ghost" onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))} disabled={page === totalPages - 1}>Siguiente →</button>
-                  </div>
-                )}
-              </>
-            )
-          }
+              )}
+            </>
+          )}
         </>
       )}
-
-      {/* ── Errores del sistema ── */}
       {!loading && subTab === 'errors' && (
-        errors.length === 0
-          ? <p className="adm-empty">No hay errores registrados. ✓</p>
-          : (
-            <div className="adm-table-wrap">
-              <table className="adm-table">
-                <thead><tr><th>Fuente</th><th>Función</th><th>Error</th><th>Fecha</th><th></th></tr></thead>
-                <tbody>
-                  {errors.map(e => (
-                    <tr key={e.id} className={e.resolved ? 'adm-tr--resolved' : ''}>
-                      <td><span className="adm-pill">{e.source ?? '—'}</span></td>
-                      <td className="adm-td--mono">{e.function_name ?? '—'}</td>
-                      <td style={{ maxWidth: 320, wordBreak: 'break-word' }}>
-                        <span className="adm-td--err">{e.error_message}</span>
-                        {e.error_code && <span className="adm-td--sub"> [{e.error_code}]</span>}
-                      </td>
-                      <td>{fmt(e.created_at)}</td>
-                      <td>
-                        {!e.resolved
-                          ? <button className="adm-btn adm-btn--sm adm-btn--ghost" onClick={() => markResolved(e.id)}>Marcar resuelto</button>
-                          : <span className="adm-td--sub">✓ resuelto</span>
-                        }
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )
+        errors.length === 0 ? <p className="adm-empty">No hay errores registrados. ✓</p> : (
+          <div className="adm-table-wrap">
+            <table className="adm-table">
+              <thead><tr><th>Fuente</th><th>Función</th><th>Error</th><th>Fecha</th><th></th></tr></thead>
+              <tbody>
+                {errors.map(e => (
+                  <tr key={e.id} className={e.resolved ? 'adm-tr--resolved' : ''}>
+                    <td><span className="adm-pill">{e.source ?? '—'}</span></td>
+                    <td className="adm-td--mono">{e.function_name ?? '—'}</td>
+                    <td style={{ maxWidth: 320, wordBreak: 'break-word' }}><span className="adm-td--err">{e.error_message}</span>{e.error_code && <span className="adm-td--sub"> [{e.error_code}]</span>}</td>
+                    <td>{fmt(e.created_at)}</td>
+                    <td>{!e.resolved ? <button className="adm-btn adm-btn--sm adm-btn--ghost" onClick={() => markResolved(e.id)}>Marcar resuelto</button> : <span className="adm-td--sub">✓ resuelto</span>}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )
       )}
-
-      {/* ── Audit trail ── */}
       {!loading && subTab === 'audit' && (
-        audit.length === 0
-          ? <p className="adm-empty">No hay acciones registradas aún.</p>
-          : (
-            <div className="adm-table-wrap">
-              <table className="adm-table">
-                <thead><tr><th>Admin</th><th>Acción</th><th>Objetivo</th><th>Resultado</th><th>Fecha</th></tr></thead>
-                <tbody>
-                  {audit.map(a => (
-                    <tr key={a.id}>
-                      <td className="adm-td--mono">{a.admin_email}</td>
-                      <td><span className="adm-pill">{a.action}</span></td>
-                      <td>
-                        {a.target_name && <strong>{a.target_name}</strong>}
-                        {a.target_type && <span className="adm-td--sub"> ({a.target_type})</span>}
-                      </td>
-                      <td>
-                        <span className={`adm-dot adm-dot--${a.result === 'ok' ? 'on' : 'off'}`} />
-                        {a.result !== 'ok' && a.error_message && <span className="adm-td--sub"> {a.error_message}</span>}
-                      </td>
-                      <td>{fmt(a.created_at)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )
+        audit.length === 0 ? <p className="adm-empty">No hay acciones registradas aún.</p> : (
+          <div className="adm-table-wrap">
+            <table className="adm-table">
+              <thead><tr><th>Admin</th><th>Acción</th><th>Objetivo</th><th>Resultado</th><th>Fecha</th></tr></thead>
+              <tbody>
+                {audit.map(a => (
+                  <tr key={a.id}>
+                    <td className="adm-td--mono">{a.admin_email}</td>
+                    <td><span className="adm-pill">{a.action}</span></td>
+                    <td>{a.target_name && <strong>{a.target_name}</strong>}{a.target_type && <span className="adm-td--sub"> ({a.target_type})</span>}</td>
+                    <td><span className={`adm-dot adm-dot--${a.result === 'ok' ? 'on' : 'off'}`} />{a.result !== 'ok' && a.error_message && <span className="adm-td--sub"> {a.error_message}</span>}</td>
+                    <td>{fmt(a.created_at)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )
       )}
     </div>
   )
@@ -1243,11 +1130,8 @@ export default function AdminPanel() {
             <h1 className="d-lg adm__title">{t('admin.title')}</h1>
             <p className="t-sm adm__sub">{t('admin.subtitle')}</p>
           </div>
-          <button className="adm-btn adm-btn--ghost" onClick={handleSignOut}>
-            Cerrar sesión
-          </button>
+          <button className="adm-btn adm-btn--ghost" onClick={handleSignOut}>Cerrar sesión</button>
         </div>
-
         <nav className="adm__tabs">
           {TABS.map(tab_item => (
             <button key={tab_item.id}
@@ -1257,7 +1141,6 @@ export default function AdminPanel() {
             </button>
           ))}
         </nav>
-
         {tab === 'users'       && <UsersPanel />}
         {tab === 'providers'   && <ProvidersPanel />}
         {tab === 'submissions' && <SubmissionsPanel />}
