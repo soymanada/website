@@ -211,7 +211,7 @@ function ProviderProfileEditor({ provider, onSave, saving, onAvatarUpload, avata
                     set('category_slugs', next)
                   }}
                 />
-                <span>{cat.label}</span>
+                <span>{t(`categories.${cat.slug}`)}</span>
               </label>
             ))}
           </div>

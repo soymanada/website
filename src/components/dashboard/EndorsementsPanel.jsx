@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Search, X, UserPlus, CheckCircle, AlertCircle } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
 import {
@@ -31,6 +32,7 @@ function dicebearUrl(seed) {
 }
 
 export default function EndorsementsPanel({ myProviderId }) {
+  const { t } = useTranslation()
   const [endorsements, setEndorsements]     = useState([])
   const [loading, setLoading]               = useState(true)
   const [showModal, setShowModal]           = useState(false)
@@ -260,7 +262,7 @@ export default function EndorsementsPanel({ myProviderId }) {
                   >
                     <option value="" disabled>Selecciona una categoría</option>
                     {KNOWN_CATEGORIES.map(c => (
-                      <option key={c.slug} value={c.slug}>{c.name}</option>
+                      <option key={c.slug} value={c.slug}>{t(`categories.${c.slug}`)}</option>
                     ))}
                     <option value={OTHER_VALUE}>Otra categoría…</option>
                   </select>
