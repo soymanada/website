@@ -465,7 +465,20 @@
     "pais_portugal": "Portugal",
     "pais_rep_checa": "République tchèque",
     "pais_suecia": "Suède",
-    "pais_otro": "Autre"
+    "pais_otro": "Autre",
+    "rec_titulo": "Vous connaissez quelqu'un qui devrait être prestataire?",
+    "rec_subtitulo": "Aidez-nous à faire grandir la meute. Si vous connaissez quelqu'un offrant un bon service à la communauté migrante, recommandez-le ici.",
+    "rec_numero": "Recommandation {{n}}",
+    "rec_nombre": "Nom complet",
+    "rec_nombre_placeholder": "Ex. : Carlos Rodríguez",
+    "rec_servicio": "Quel service offre-t-il/elle?",
+    "rec_servicio_placeholder": "Ex. : Conseils en immigration, traducteur...",
+    "rec_contacto": "Courriel ou WhatsApp",
+    "rec_contacto_placeholder": "Ex. : carlos@mail.com ou +56912345678",
+    "rec_agregar_primero": "Recommander un prestataire",
+    "rec_agregar_otro": "Ajouter une autre recommandation",
+    "rec_maximo": "Maximum 5 recommandations par demande.",
+    "rec_quitar": "Retirer la recommandation"
   },
   "registro_proveedores": {
     "eyebrow": "Pour les fournisseurs",

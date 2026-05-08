@@ -61,6 +61,9 @@ const EMPTY = {
   contact_name: '', contact_email: '', terms_accepted: false,
 }
 
+const EMPTY_REC   = { name: '', service: '', contact: '' }
+const MAX_RECS    = 5
+
 export default function RegistroProveedoresPage() {
   const { t } = useTranslation()
   const formRef = useRef(null)
@@ -70,6 +73,12 @@ export default function RegistroProveedoresPage() {
   const [error, setError]           = useState('')
   const [fieldErrors, setFieldErrors] = useState({})
   const [nameGenericWarning, setNameGenericWarning] = useState(false)
+  const [recommendations, setRecommendations] = useState([])
+
+  const addRec    = () => setRecommendations(p => p.length < MAX_RECS ? [...p, { ...EMPTY_REC }] : p)
+  const removeRec = (i) => setRecommendations(p => p.filter((_, j) => j !== i))
+  const updateRec = (i, field, val) =>
+    setRecommendations(p => p.map((r, j) => j === i ? { ...r, [field]: val } : r))
 
   const clearErr = (field) => setFieldErrors(prev => { const n = { ...prev }; delete n[field]; return n })
 
@@ -119,21 +128,23 @@ export default function RegistroProveedoresPage() {
     setFieldErrors({})
     setSubmitting(true)
     setError('')
+    const filledRecs = recommendations.filter(r => r.name.trim())
     const { error: dbErr } = await supabase.from('provider_applications').insert({
-      business_name:  form.business_name,
-      service_title:  form.service_title,
-      categories:     form.categories,
-      description:    form.description,
-      languages:      form.languages,
-      countries:      form.countries,
-      modality:       form.modality,
-      whatsapp:       form.whatsapp,
-      instagram:      form.instagram   || null,
-      website:        form.website     || null,
-      profile_link:   form.profile_link,
-      contact_name:   form.contact_name,
-      contact_email:  form.contact_email,
-      terms_accepted: form.terms_accepted,
+      business_name:   form.business_name,
+      service_title:   form.service_title,
+      categories:      form.categories,
+      description:     form.description,
+      languages:       form.languages,
+      countries:       form.countries,
+      modality:        form.modality,
+      whatsapp:        form.whatsapp,
+      instagram:       form.instagram   || null,
+      website:         form.website     || null,
+      profile_link:    form.profile_link,
+      contact_name:    form.contact_name,
+      contact_email:   form.contact_email,
+      terms_accepted:  form.terms_accepted,
+      recommendations: filledRecs.length > 0 ? filledRecs : null,
     })
     if (dbErr) {
       setError(`${t('registro.error_generico')} (${dbErr.message})`)
@@ -489,6 +500,70 @@ export default function RegistroProveedoresPage() {
                     <input type="email" value={form.contact_email} onChange={e => { set('contact_email', e.target.value); clearErr('contact_email') }} placeholder={t('registro.campo_email_placeholder')} />
                     {fieldErrors.contact_email && <span className="ppg-form__field-error">{fieldErrors.contact_email}</span>}
                   </label>
+                </div>
+
+                {/* Sección 5: Recomendaciones (opcional) */}
+                <div className="ppg-form__section ppg-rec">
+                  <div className="ppg-rec__intro">
+                    <div className="ppg-rec__intro-text">
+                      <h3 className="ppg-form__section-title">🤝 {t('registro.rec_titulo')}</h3>
+                      <p className="ppg-form__section-note">{t('registro.rec_subtitulo')}</p>
+                    </div>
+                    <span className="ppg-rec__badge">{t('registro.opcional')}</span>
+                  </div>
+
+                  {recommendations.map((rec, idx) => (
+                    <div key={idx} className="ppg-rec__entry">
+                      <div className="ppg-rec__entry-head">
+                        <span className="ppg-rec__entry-num">
+                          🤝 {t('registro.rec_numero', { n: idx + 1 })}
+                        </span>
+                        <button
+                          type="button"
+                          className="ppg-rec__remove"
+                          onClick={() => removeRec(idx)}
+                          aria-label={t('registro.rec_quitar')}
+                        >✕</button>
+                      </div>
+                      <div className="ppg-rec__fields">
+                        <label className="ppg-form__field">
+                          <span className="ppg-form__label">{t('registro.rec_nombre')}</span>
+                          <input
+                            value={rec.name}
+                            onChange={e => updateRec(idx, 'name', e.target.value)}
+                            placeholder={t('registro.rec_nombre_placeholder')}
+                          />
+                        </label>
+                        <label className="ppg-form__field">
+                          <span className="ppg-form__label">{t('registro.rec_servicio')}</span>
+                          <input
+                            value={rec.service}
+                            onChange={e => updateRec(idx, 'service', e.target.value)}
+                            placeholder={t('registro.rec_servicio_placeholder')}
+                          />
+                        </label>
+                        <label className="ppg-form__field">
+                          <span className="ppg-form__label">{t('registro.rec_contacto')}</span>
+                          <input
+                            value={rec.contact}
+                            onChange={e => updateRec(idx, 'contact', e.target.value)}
+                            placeholder={t('registro.rec_contacto_placeholder')}
+                          />
+                        </label>
+                      </div>
+                    </div>
+                  ))}
+
+                  {recommendations.length < MAX_RECS ? (
+                    <button type="button" className="ppg-rec__add" onClick={addRec}>
+                      <span className="ppg-rec__add-icon">+</span>
+                      {recommendations.length === 0
+                        ? t('registro.rec_agregar_primero')
+                        : t('registro.rec_agregar_otro')}
+                    </button>
+                  ) : (
+                    <p className="ppg-rec__max">{t('registro.rec_maximo')}</p>
+                  )}
                 </div>
 
                 {/* Términos */}

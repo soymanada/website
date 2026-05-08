@@ -520,3 +520,123 @@
   color: #6d28d9;
   line-height: 1.5;
 }
+
+/* ── Recommendations section ──────────────────────────────────────── */
+.ppg-rec__intro {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.ppg-rec__intro-text { flex: 1; }
+.ppg-rec__badge {
+  flex-shrink: 0;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--iris-500);
+  background: var(--iris-50);
+  border: 1px solid var(--iris-200);
+  border-radius: 99px;
+  padding: 3px 10px;
+  margin-top: 2px;
+}
+
+/* Individual recommendation card */
+.ppg-rec__entry {
+  background: var(--iris-50);
+  border: 1.5px solid var(--iris-200);
+  border-radius: var(--r-lg);
+  padding: 18px 20px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: menu-in 0.18s var(--ease-out) both;
+}
+.ppg-rec__entry-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.ppg-rec__entry-num {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--iris-600);
+}
+.ppg-rec__remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  background: none;
+  color: var(--text-300);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background var(--t-fast), color var(--t-fast);
+}
+.ppg-rec__remove:hover {
+  background: #fee2e2;
+  color: #c0392b;
+}
+.ppg-rec__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+/* Inside the card the labels look lighter */
+.ppg-rec__entry .ppg-form__field { gap: 4px; }
+.ppg-rec__entry .ppg-form__label { font-size: 0.78rem; color: var(--text-500); }
+.ppg-rec__entry input {
+  background: var(--white);
+  border-color: var(--iris-200);
+  font-size: 0.875rem;
+  padding: 9px 12px;
+}
+
+/* Add button */
+.ppg-rec__add {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  padding: 10px 20px;
+  border-radius: 99px;
+  border: 1.5px dashed var(--iris-300);
+  background: transparent;
+  color: var(--iris-600);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
+}
+.ppg-rec__add:hover {
+  background: var(--iris-50);
+  border-color: var(--iris-500);
+  border-style: solid;
+  color: var(--iris-700);
+}
+.ppg-rec__add-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--iris-100);
+  font-size: 1rem;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: background var(--t-fast);
+}
+.ppg-rec__add:hover .ppg-rec__add-icon { background: var(--iris-200); }
+
+.ppg-rec__max {
+  font-size: 0.78rem;
+  color: var(--iris-500);
+  font-style: italic;
+}
