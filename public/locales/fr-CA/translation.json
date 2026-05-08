@@ -152,7 +152,9 @@
     "cta_primary": "Explorer les fournisseurs",
     "cta_secondary": "Voir les catégories",
     "cta_guide": "🐾 Premiers pas",
-    "cta_guide_label": "Guide des premiers pas pour les nouveaux arrivants"
+    "cta_guide_label": "Guide des premiers pas pour les nouveaux arrivants",
+    "guide_label": "Guide des premiers pas",
+    "guide_go": "Voir le guide"
   },
   "stats": {
     "members": "membres dans la communauté",

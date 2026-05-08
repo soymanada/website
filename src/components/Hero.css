@@ -80,47 +80,114 @@
   align-items: center;
 }
 
-/* Primeros Pasos featured button */
-.hero__guide-btn {
-  display: inline-flex;
-  align-items: center;
+/* ── Primeros Pasos country guide widget ────────────────────────── */
+.hero__guide {
+  display: flex;
+  flex-direction: column;
   gap: 10px;
-  margin-top: 6px;
-  padding: 13px 22px;
-  border-radius: var(--r-lg);
-  background: linear-gradient(135deg, var(--iris-50) 0%, rgba(196,176,240,0.18) 100%);
-  border: 1.5px solid var(--iris-200);
-  text-decoration: none;
-  transition: background var(--t-fast), border-color var(--t-fast), box-shadow var(--t-fast), transform var(--t-fast);
+  margin-top: 12px;
   align-self: flex-start;
 }
-.hero__guide-btn:hover {
-  background: linear-gradient(135deg, var(--iris-100) 0%, rgba(196,176,240,0.32) 100%);
-  border-color: var(--iris-400);
-  box-shadow: 0 4px 18px rgba(91,45,158,0.14);
-  transform: translateY(-1px);
-}
-.hero__guide-btn-icon {
-  font-size: 1.25rem;
-  line-height: 1;
-  flex-shrink: 0;
-}
-.hero__guide-btn-text {
-  font-family: var(--font-body);
-  font-size: 0.9rem;
+.hero__guide-label {
+  font-size: 0.78rem;
   font-weight: 600;
+  color: var(--text-400);
+  letter-spacing: 0.03em;
+}
+.hero__guide-widget {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: var(--white);
+  border: 1.5px solid var(--iris-200);
+  border-radius: 99px;
+  padding: 5px 5px 5px 8px;
+  box-shadow: 0 2px 10px rgba(91,45,158,0.08);
+  width: fit-content;
+}
+
+/* Flag pills inside the widget */
+.hero__guide-flags {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+.hero__guide-flag-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
+  border-radius: 99px;
+  border: 1.5px solid transparent;
+  background: none;
+  cursor: pointer;
+  transition: background var(--t-fast), border-color var(--t-fast);
+  white-space: nowrap;
+}
+.hero__guide-flag-btn:hover:not(.hero__guide-flag-btn--active) {
+  background: var(--iris-50);
+}
+.hero__guide-flag-btn--active {
+  background: var(--iris-100);
+  border-color: var(--iris-300);
+}
+.hero__guide-flag { font-size: 1.1rem; line-height: 1; }
+.hero__guide-flag-name {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-600);
+}
+.hero__guide-flag-btn--active .hero__guide-flag-name {
   color: var(--iris-700);
-  line-height: 1.2;
+  font-weight: 600;
 }
-.hero__guide-btn svg {
-  color: var(--iris-400);
+.hero__guide-flag-soon {
+  font-size: 0.58rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--iris-500);
+  background: var(--iris-100);
+  border-radius: 99px;
+  padding: 2px 6px;
+  line-height: 1.4;
+}
+
+/* Divider */
+.hero__guide-widget::before {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 22px;
+  background: var(--iris-200);
+  margin: 0 6px;
   flex-shrink: 0;
-  transition: transform var(--t-fast);
 }
-.hero__guide-btn:hover svg {
-  transform: translateX(3px);
+
+/* Go button */
+.hero__guide-go {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 16px;
+  border-radius: 99px;
+  background: var(--iris-600);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--t-fast), transform var(--t-fast);
+  flex-shrink: 0;
+}
+.hero__guide-go:hover { background: var(--iris-700); transform: translateX(1px); }
+.hero__guide-go--soon {
+  background: var(--iris-200);
   color: var(--iris-600);
 }
+.hero__guide-go--soon:hover { background: var(--iris-300); transform: none; }
 
 /* Social proof */
 .hero__proof {
@@ -155,8 +222,12 @@
   .hero__sub { max-width: 100%; }
 }
 
+@media (max-width: 560px) {
+  .hero__guide-widget { flex-wrap: wrap; border-radius: var(--r-lg); padding: 8px; gap: 6px; }
+  .hero__guide-widget::before { display: none; }
+  .hero__guide-go { width: 100%; justify-content: center; border-radius: 99px; }
+}
 @media (max-width: 480px) {
   .hero__actions { flex-direction: column; align-items: stretch; }
   .hero__actions .btn { justify-content: center; }
-  .hero__guide-btn { align-self: stretch; justify-content: center; }
 }

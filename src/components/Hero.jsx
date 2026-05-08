@@ -1,10 +1,31 @@
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { trackEvent, Events } from '../utils/analytics'
 import './Hero.css'
 
+const DEST_COUNTRIES = [
+  { id: 'canada',      flag: '🇨🇦', available: true  },
+  { id: 'new-zealand', flag: '🇳🇿', available: false },
+  { id: 'australia',   flag: '🇦🇺', available: false },
+]
+
 export default function Hero() {
-  const { t } = useTranslation()
+  const { t }        = useTranslation()
+  const navigate     = useNavigate()
+  const [dest, setDest] = useState('canada')
+
+  const selected   = DEST_COUNTRIES.find(c => c.id === dest)
+  const isAvailable = selected?.available ?? false
+
+  const handleGuide = () => {
+    if (dest === 'canada') {
+      navigate('/primeros-pasos')
+    } else {
+      navigate(`/primeros-pasos?dest=${dest}`)
+    }
+  }
+
   return (
     <section className="hero">
       <div className="hero__mesh" aria-hidden="true">
@@ -36,11 +57,50 @@ export default function Hero() {
               {t('hero.cta_secondary')}
             </Link>
           </div>
-          <Link to="/primeros-pasos" className="hero__guide-btn anim-fade-up delay-3">
-            <span className="hero__guide-btn-icon">🐾</span>
-            <span className="hero__guide-btn-text">{t('hero.cta_guide_label')}</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
-          </Link>
+
+          {/* ── Country guide widget ─────────────────────────── */}
+          <div className="hero__guide anim-fade-up delay-3">
+            <span className="hero__guide-label">
+              🐾 {t('hero.guide_label')}
+            </span>
+            <div className="hero__guide-widget">
+              <div className="hero__guide-flags">
+                {DEST_COUNTRIES.map(c => (
+                  <button
+                    key={c.id}
+                    type="button"
+                    className={[
+                      'hero__guide-flag-btn',
+                      dest === c.id ? 'hero__guide-flag-btn--active' : '',
+                    ].filter(Boolean).join(' ')}
+                    onClick={() => setDest(c.id)}
+                    title={t(`first_steps.dest_${c.id.replace('-', '_')}`)}
+                    aria-pressed={dest === c.id}
+                  >
+                    <span className="hero__guide-flag">{c.flag}</span>
+                    <span className="hero__guide-flag-name">
+                      {t(`first_steps.dest_${c.id.replace('-', '_')}`)}
+                    </span>
+                    {!c.available && (
+                      <span className="hero__guide-flag-soon">
+                        {t('first_steps.coming_soon_badge')}
+                      </span>
+                    )}
+                  </button>
+                ))}
+              </div>
+              <button
+                type="button"
+                className={`hero__guide-go${!isAvailable ? ' hero__guide-go--soon' : ''}`}
+                onClick={handleGuide}
+              >
+                {isAvailable
+                  ? t('hero.guide_go')
+                  : t('first_steps.coming_soon_badge')}
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </section>

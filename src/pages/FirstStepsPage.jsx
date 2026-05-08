@@ -1,6 +1,6 @@
 // src/pages/FirstStepsPage.jsx
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import './FirstStepsPage.css'
 
@@ -30,7 +30,9 @@ export default function FirstStepsPage() {
   const { t } = useTranslation()
   const country = t('common.currentCountry')
 
-  const [selectedDest, setSelectedDest] = useState('canada')
+  const [searchParams] = useSearchParams()
+  const initialDest    = DEST_COUNTRIES.find(c => c.id === searchParams.get('dest'))?.id ?? 'canada'
+  const [selectedDest, setSelectedDest] = useState(initialDest)
   const [active,       setActive]       = useState('sin')
 
   const destAvailable = DEST_COUNTRIES.find(c => c.id === selectedDest)?.available ?? false

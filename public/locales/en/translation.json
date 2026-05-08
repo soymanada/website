@@ -152,7 +152,9 @@
     "cta_primary": "Browse providers",
     "cta_secondary": "View categories",
     "cta_guide": "🐾 First Steps",
-    "cta_guide_label": "First steps guide for newcomers"
+    "cta_guide_label": "First steps guide for newcomers",
+    "guide_label": "First steps guide",
+    "guide_go": "View guide"
   },
   "stats": {
     "members": "community members",

@@ -150,7 +150,9 @@
     "cta_primary": "Explorar proveedores",
     "cta_secondary": "Ver categorías",
     "cta_guide": "🐾 Primeros pasos",
-    "cta_guide_label": "Guía de primeros pasos para recién llegados"
+    "cta_guide_label": "Guía de primeros pasos para recién llegados",
+    "guide_label": "Guía de primeros pasos",
+    "guide_go": "Ver guía"
   },
   "auth_banner": {
     "headline": "Únete gratis — ve contactos, deja tu huella 🐾 y ayuda a la comunidad.",
