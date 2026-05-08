@@ -923,6 +923,8 @@
     "tab_reservas_label": "Reservas",
     "tab_miplan_label": "Mi plan",     "tab_reseñas_label": "Reseñas",     "tab_recomendaciones_label": "Recomendaciones",     "tab_ayuda_label": "Ayuda",
     "tab_mensajes_label": "Mensajes",
+    "view_public_profile": "Ver perfil público ↗",
+    "admin_panel": "🛡 Panel admin",
     "perfil_sub": "Esto es exactamente lo que los migrantes ven de ti.",
     "avatar_label": "Foto de perfil",
     "avatar_hint": "JPG o PNG · máx 2 MB",
