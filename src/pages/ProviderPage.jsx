@@ -378,13 +378,7 @@ export default function ProviderPage() {
                 </div>
               )}
 
-              {['cob', 'wolf'].includes(rawProvider?.tier) && (
-                <BookingCalendar
-                  providerId={providerId}
-                  userId={user?.id}
-                  providerName={name}
-                />
-              )}
+              {/* BookingCalendar disabled until tiers are implemented */}
 
               <OpinionsList
                 providerId={providerId}
@@ -424,7 +418,6 @@ export default function ProviderPage() {
                       </button>
 
                       {contact?.whatsapp &&
-                        rawProvider?.tier !== 'bronze' &&
                         (rawProvider?.show_whatsapp ?? true) && (
                           <button className="ppage__btn ppage__btn--wa"
                             onClick={() => handleContact('whatsapp', `https://wa.me/${contact.whatsapp}`)}>

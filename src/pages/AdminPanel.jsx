@@ -727,15 +727,23 @@ function SubmissionsPanel() {
     }
 
     // Update the user's role to 'provider' so they see the dashboard
+    let roleUpdated = false
     if (userId) {
-      await supabase
+      const { error: roleErr } = await supabase
         .from('profiles')
         .update({ role: 'provider' })
         .eq('id', userId)
+      roleUpdated = !roleErr
+      if (roleErr) console.error('Error updating role:', roleErr)
+    }
+
+    // Warn admin if role could not be auto-assigned
+    if (!roleUpdated) {
+      alert(`⚠️ Proveedor creado pero NO se pudo asignar el rol automáticamente.\n\nEmail: ${s.contact_email || '(sin email)'}\n\nVe a la pestaña Usuarios y asigna el rol "provider" manualmente.`)
     }
 
     await supabase.from('provider_applications').update({ status: 'approved' }).eq('id', s.id)
-    await logAudit({ action: 'approve_provider', targetType: 'submission', targetId: s.id, targetName: s.business_name, payload: { providerSlug, userId } })
+    await logAudit({ action: 'approve_provider', targetType: 'submission', targetId: s.id, targetName: s.business_name, payload: { providerSlug, userId, roleUpdated } })
 
     // Notificar al proveedor por email (fire-and-forget)
     if (s.contact_email) {

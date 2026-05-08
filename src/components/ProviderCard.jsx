@@ -44,10 +44,10 @@ export default function ProviderCard({ provider: rawProvider }) {
   const { id, slug, name, service, description, countries, verified, testimonial, benefit, price_clp, price_cad, avatar_url, categorySlug } = provider
   const location    = useLocation()
   const isMigrantUser  = !!user && !isProvider
-  const providerTier   = String(rawProvider?.tier || 'bronze').toLowerCase()
-  const isBronzeProvider = providerTier === 'bronze'
+  // Tiers not active yet — treat all providers equally until plans are implemented
+  const isBronzeProvider = false
   const isSegurosCategory = categorySlug === 'seguros' || location.pathname.startsWith('/categoria/seguros')
-  const hideWhatsAppForMigrant = isMigrantUser && isSegurosCategory && isBronzeProvider
+  const hideWhatsAppForMigrant = false
 
   // Computed in normalizeProvider: show_whatsapp (Silver toggle) OR whatsapp_addon (Gold paid)
   const whatsappEnabled = rawProvider?.whatsappEnabled ?? false
