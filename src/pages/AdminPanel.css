@@ -402,3 +402,44 @@
 /* ── Logs: errores + audit ─────────────────────────────────────────────────── */
 .adm-td--err          { color: #b91c1c; font-size: 0.82rem; }
 .adm-tr--resolved td  { opacity: 0.45; }
+
+/* ── Users: buscador y paginación ──────────────────────────────────────────── */
+.adm-users-search {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.adm-users-search__input {
+  flex: 1;
+  padding: 8px 14px;
+  border: 1.5px solid var(--iris-200);
+  border-radius: var(--r-sm);
+  font-size: 0.875rem;
+  font-family: inherit;
+  color: var(--text-700);
+  background: var(--white);
+  transition: border-color .15s;
+}
+.adm-users-search__input:focus {
+  outline: none;
+  border-color: var(--iris-500);
+}
+.adm-users-search__count {
+  font-size: 0.78rem;
+  color: var(--text-400);
+  white-space: nowrap;
+}
+.adm-users-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--iris-100);
+}
+.adm-users-pagination__info {
+  font-size: 0.85rem;
+  color: var(--text-500);
+}
