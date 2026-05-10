@@ -36,6 +36,47 @@
 .adm-section__head  { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
 .adm-section__title { font-size: 1.05rem; font-weight: 700; color: var(--iris-900); display: flex; align-items: center; gap: 8px; }
 
+/* Search bar */
+.adm-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--white);
+  border: 1.5px solid var(--iris-200);
+  border-radius: var(--r-md);
+  padding: 8px 14px;
+  margin-bottom: 16px;
+  transition: border-color .15s;
+}
+.adm-search-bar:focus-within { border-color: var(--iris-500); }
+.adm-search-bar svg { color: var(--text-400); flex-shrink: 0; }
+.adm-search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--text-800);
+  background: transparent;
+}
+.adm-search-input::placeholder { color: var(--text-300); }
+.adm-search-clear {
+  border: none;
+  background: none;
+  color: var(--text-400);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 2px;
+}
+.adm-search-clear:hover { color: var(--text-700); }
+.adm-td--empty {
+  padding: 28px !important;
+  text-align: center;
+  color: var(--text-400);
+  font-style: italic;
+}
+
 /* Badge */
 .adm-badge {
   background: var(--iris-100);

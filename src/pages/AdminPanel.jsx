@@ -17,7 +17,7 @@ function UsersPanel() {
   const [loading,  setLoading]  = useState(true)
   const [editing,  setEditing]  = useState(null)
   const [inviting, setInviting] = useState(false)
-  const [invForm,  setInvForm]  = useState({ email: '', role: 'migrant', tier: 'bronze' })
+  const [invForm,  setInvForm]  = useState({ email: '', role: 'migrant' })
   const [invState, setInvState] = useState('idle') // idle | sending | ok | error
   const [invError, setInvError] = useState('')
   const [search,   setSearch]   = useState('')
@@ -28,7 +28,7 @@ function UsersPanel() {
     setLoading(true)
     const { data } = await supabase
       .from('profiles')
-      .select('id, email, role, tier, created_at')
+      .select('id, email, role, created_at')
       .order('created_at', { ascending: false })
     setUsers(data ?? [])
     setLoading(false)
@@ -52,13 +52,12 @@ function UsersPanel() {
           body: JSON.stringify({
             email: invForm.email.trim(),
             role:  invForm.role,
-            tier:  invForm.tier,
           }),
         }
       )
       const result = await res.json()
       if (result.ok) {
-        await logAudit({ action: 'invite_user', targetType: 'user', targetName: invForm.email, payload: { role: invForm.role, tier: invForm.tier } })
+        await logAudit({ action: 'invite_user', targetType: 'user', targetName: invForm.email, payload: { role: invForm.role } })
         setInvState('ok')
         setTimeout(() => { setInviting(false); setInvState('idle'); load() }, 1800)
       } else {
@@ -75,22 +74,26 @@ function UsersPanel() {
 
   const save = async () => {
     const { error } = await supabase.from('profiles')
-      .update({ role: editing.role, tier: editing.tier })
+      .update({ role: editing.role })
       .eq('id', editing.id)
     await logAudit({
       action: 'change_role', targetType: 'user', targetId: editing.id,
-      payload: { role: editing.role, tier: editing.tier },
+      payload: { role: editing.role },
       result: error ? 'error' : 'ok', errorMessage: error?.message,
     })
     setEditing(null)
     load()
   }
 
-  // Filtrado y paginación — busca en email y rol
-  const filtered   = users.filter(u => {
-    const q = search.toLowerCase()
-    return (u.email ?? '').toLowerCase().includes(q) || (u.role ?? '').toLowerCase().includes(q)
-  })
+  // Filtrado y paginación
+  const q          = search.trim().toLowerCase()
+  const filtered   = q
+    ? users.filter(u =>
+        (u.email ?? '').toLowerCase().includes(q) ||
+        (u.role  ?? '').toLowerCase().includes(q) ||
+        (u.id    ?? '').toLowerCase().includes(q)
+      )
+    : users
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
   const paginated  = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
@@ -100,9 +103,26 @@ function UsersPanel() {
         <h2 className="adm-section__title">
           Usuarios <span className="adm-badge">{users.length}</span>
         </h2>
-        <button className="adm-btn adm-btn--primary" onClick={() => { setInviting(true); setInvState('idle'); setInvForm({ email: '', role: 'migrant', tier: 'bronze' }) }}>
+        <button className="adm-btn adm-btn--primary" onClick={() => { setInviting(true); setInvState('idle'); setInvForm({ email: '', role: 'migrant' }) }}>
           + Invitar usuario
         </button>
+      </div>
+
+      <div className="adm-search-bar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input
+          className="adm-search-input"
+          type="text"
+          placeholder="Buscar por email, rol o UUID…"
+          value={search}
+          onChange={e => { setSearch(e.target.value); setPage(1) }}
+          autoComplete="off"
+        />
+        {search && (
+          <button className="adm-search-clear" onClick={() => setSearch('')} aria-label="Limpiar búsqueda">×</button>
+        )}
       </div>
 
       {inviting && (
@@ -126,15 +146,6 @@ function UsersPanel() {
                 <option value="admin">admin</option>
               </select>
             </label>
-            {invForm.role !== 'migrant' && (
-              <label>Tier
-                <select value={invForm.tier} onChange={e => setInvForm(p => ({ ...p, tier: e.target.value }))}>
-                  <option value="bronze">bronze</option>
-                  <option value="cob">cob</option>
-                  <option value="wolf">wolf</option>
-                </select>
-              </label>
-            )}
             {invState === 'ok'    && <p className="adm-modal__ok">✓ Invitación enviada</p>}
             {invState === 'error' && <p className="adm-modal__err">Error: {invError}</p>}
             <div className="adm-modal__actions">
@@ -152,19 +163,6 @@ function UsersPanel() {
 
       {loading ? <p className="adm-loading">Cargando...</p> : (
         <>
-          <div className="adm-users-search">
-            <input
-              type="search"
-              placeholder="Buscar por email o rol…"
-              value={search}
-              onChange={e => { setSearch(e.target.value); setPage(1) }}
-              className="adm-users-search__input"
-            />
-            <span className="adm-users-search__count">
-              {filtered.length} de {users.length} usuarios
-            </span>
-          </div>
-
           <div className="adm-table-wrap">
             <table className="adm-table">
               <thead>
@@ -173,8 +171,8 @@ function UsersPanel() {
                 </tr>
               </thead>
               <tbody>
-                {paginated.length === 0 ? (
-                  <tr><td colSpan={4} className="adm-empty">Sin resultados para "{search}"</td></tr>
+                {filtered.length === 0 ? (
+                  <tr><td colSpan={4} className="adm-td--empty">Sin resultados para «{search}»</td></tr>
                 ) : paginated.map(u => (
                   <tr key={u.id}>
                     <td className="adm-td--mono">{u.email ?? '—'}</td>
@@ -182,7 +180,8 @@ function UsersPanel() {
                     <td>{fmt(u.created_at)}</td>
                     <td>
                       <button className="adm-btn adm-btn--sm adm-btn--ghost"
-                        onClick={() => setEditing({ id: u.id, role: u.role, tier: u.tier ?? 'bronze' })}>
+                        onClick={() => setEditing({ id: u.id, role: u.role })}>
+
                         Editar
                       </button>
                     </td>
@@ -224,16 +223,6 @@ function UsersPanel() {
                 <option value="admin">admin</option>
               </select>
             </label>
-            {editing.role !== 'migrant' && (
-              <label>Tier
-                <select value={editing.tier}
-                  onChange={e => setEditing(p => ({ ...p, tier: e.target.value }))}>
-                  <option value="bronze">bronze</option>
-                  <option value="cob">cob</option>
-                  <option value="wolf">wolf</option>
-                </select>
-              </label>
-            )}
             <div className="adm-modal__actions">
               <button className="adm-btn adm-btn--ghost" onClick={() => setEditing(null)}>Cancelar</button>
               <button className="adm-btn adm-btn--primary" onClick={save}>Guardar</button>
@@ -270,7 +259,6 @@ function providerToForm(p) {
     name:                 p.name                ?? '',
     slug:                 p.slug                ?? '',
     category_slug:        p.category_slug       ?? 'seguros',
-    tier:                 p.tier                ?? 'bronze',
     service:              p.service             ?? '',
     service_en:           p.service_en          ?? '',
     service_fr:           p.service_fr          ?? '',
@@ -400,19 +388,12 @@ function ProvidersPanel() {
       redirect_email:       f.redirect_email?.trim()|| null,
       predefined_responses: f.predefined_responses?.split('\n').map(s => s.trim()).filter(Boolean) ?? [],
       user_id:              f.user_id?.trim()       || null,
-      tier:                 f.tier,
     }).eq('id', id)
-
-    if (!error && f.user_id?.trim()) {
-      await supabase.from('profiles')
-        .update({ tier: f.tier })
-        .eq('id', f.user_id.trim())
-    }
 
     setSaving(false)
     await logAudit({
       action: 'edit_provider', targetType: 'provider', targetId: id, targetName: f.name.trim(),
-      payload: { tier: f.tier, verified: f.verified, active: f.active },
+      payload: { verified: f.verified, active: f.active },
       result: error ? 'error' : 'ok', errorMessage: error?.message,
     })
     if (error) alert('Error al guardar: ' + error.message)
@@ -527,13 +508,6 @@ function ProvidersPanel() {
                   <label>Categoría
                     <select value={editing.category_slug} onChange={e => setEd('category_slug', e.target.value)}>
                       {CATEGORY_SLUGS.map(s => <option key={s} value={s}>{s}</option>)}
-                    </select>
-                  </label>
-                  <label>Tier
-                    <select value={editing.tier} onChange={e => setEd('tier', e.target.value)}>
-                      <option value="bronze">bronze</option>
-                      <option value="cob">cob</option>
-                      <option value="wolf">wolf</option>
                     </select>
                   </label>
                   <label>Avatar URL
@@ -651,9 +625,6 @@ function ProvidersPanel() {
                 <tr key={p.id}>
                   <td>
                     <strong>{p.name}</strong>
-                    {isGenericProviderName(p.name) && (
-                      <span className="badge-generic-name" title="Nombre genérico detectado">⚠ nombre genérico</span>
-                    )}
                     <br /><span className="adm-td--sub">{p.service}</span>
                   </td>
                   <td>{p.category_slug ?? p.categorySlug ?? '—'}</td>
@@ -738,17 +709,17 @@ function SubmissionsPanel() {
     }
 
     const { error } = await supabase.from('providers').insert({
-      name:          s.business_name,
-      slug:          providerSlug,
-      category_slug: categorySlug,
-      service:       s.service_title ?? '',
-      description:   s.description   ?? '',
-      countries:     s.countries      ?? [],
-      languages:     s.languages      ?? [],
-      verified:      false,
-      active:        true,
-      tier:          'bronze',
-      user_id:       userId,
+      name:           s.business_name,
+      slug:           providerSlug,
+      category_slug:  categorySlug,
+      service:        s.service_title ?? '',
+      description:    s.description   ?? '',
+      countries:      s.countries      ?? [],
+      languages:      s.languages      ?? [],
+      verified:       false,
+      active:         true,
+      user_id:        userId,
+      redirect_email: s.contact_email?.trim() || null,
       contact: {
         whatsapp:  waNumber || null,
         instagram: s.instagram || null,

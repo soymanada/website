@@ -1179,11 +1179,11 @@ export default function ProviderDashboard() {
       if (byUid) {
         found = byUid
       } else if (user.email) {
-        // Fallback: match by contact_email (admin-created provider)
+        // Fallback: match by redirect_email (admin-created provider, email stored at approval time)
         const { data: byEmail } = await supabase
           .from('providers')
           .select('*')
-          .ilike('contact_email', user.email)
+          .ilike('redirect_email', user.email)
           .maybeSingle()
 
         if (byEmail) {
