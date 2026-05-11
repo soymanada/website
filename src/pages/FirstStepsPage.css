@@ -1,4 +1,4 @@
-/* ── FirstStepsPage ───────────────────────────────────────────────── */
+/* ── FirstStepsPage ──────────────────────────────────────── */
 
 .fsp__hero {
   position: relative;
@@ -50,7 +50,7 @@
   max-width: 480px;
 }
 
-/* ── Country destination selector ────────────────────────────────── */
+/* ── Country destination selector ────────────────────────── */
 .fsp__dest-selector {
   margin-top: 32px;
   display: flex;
@@ -119,7 +119,7 @@
   line-height: 1.4;
 }
 
-/* ── Coming Soon panel ────────────────────────────────────────────── */
+/* ── Coming Soon panel ────────────────────────────────── */
 .fsp__coming-soon {
   display: flex;
   flex-direction: column;
@@ -381,7 +381,7 @@
 }
 .fsp__cta-block p { margin: 0; color: var(--iris-900); font-weight: 500; }
 
-/* ── CTA Buttons ──────────────────────────────────────────────────── */
+/* ── CTA Buttons ──────────────────────────────────────── */
 .fsp__cta-btn {
   display: inline-flex;
   align-items: center;
@@ -441,4 +441,45 @@
 .fsp__cta-row .fsp__cta-btn {
   flex: 1 1 auto;
   margin-top: 0;
+}
+
+/* ── Baggage banner ──────────────────────────────────── */
+.fsp__baggage-banner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--ivory);
+  border: 1.5px solid var(--iris-200);
+  border-radius: var(--r-xl);
+  padding: 16px 20px;
+  margin-bottom: 32px;
+  text-decoration: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.fsp__baggage-banner:hover {
+  border-color: var(--iris-400);
+  box-shadow: 0 2px 12px rgba(91,60,163,0.08);
+}
+.fsp__baggage-banner__icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+.fsp__baggage-banner__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+.fsp__baggage-banner__text strong {
+  font-size: 0.95rem;
+  color: var(--iris-900);
+}
+.fsp__baggage-banner__text span {
+  font-size: 0.85rem;
+  color: var(--text-500);
+}
+.fsp__baggage-banner__arrow {
+  font-size: 1.2rem;
+  color: var(--iris-500);
+  flex-shrink: 0;
 }
