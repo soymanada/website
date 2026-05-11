@@ -128,6 +128,12 @@ export default function Header() {
 
         {/* ── Desktop grouped nav ──────────────────────────────────────── */}
         <nav className="hdr__nav" ref={navRef} aria-label={t('header.nav_label', 'Categorías')}>
+          <NavLink to="/equipaje" className={({ isActive }) =>
+            `hdr__nav-link${isActive ? ' hdr__nav-link--active' : ''}`
+          }>
+            🧳 {t('header.nav_equipaje', 'Equipaje')}
+          </NavLink>
+
           {NAV_GROUPS.map(group => {
             const active = isGroupActive(group.slugs)
             const open   = openGroup === group.key
@@ -247,6 +253,7 @@ export default function Header() {
         <nav className="hdr__drawer-nav">
           <NavLink to="/" end>{t('header.nav_inicio')}</NavLink>
           <NavLink to="/primeros-pasos">🐾 {t('header.nav_primeros_pasos')}</NavLink>
+          <NavLink to="/equipaje">🧳 {t('header.nav_equipaje', 'Equipaje')}</NavLink>
 
           {/* Accordion groups */}
           {NAV_GROUPS.map(group => {
