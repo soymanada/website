@@ -1,0 +1,206 @@
+{
+  "items": [
+    { "slug": "carry_on",   "label": "Equipaje de mano",        "emoji": "🎒", "desc": "Maleta de cabina (overhead o bajo asiento)" },
+    { "slug": "bag_1",      "label": "1ª maleta (bodega)",       "emoji": "🧳", "desc": "Primera maleta facturada, hasta 23 kg" },
+    { "slug": "bag_2",      "label": "2ª maleta (bodega)",       "emoji": "🧳", "desc": "Segunda maleta facturada, hasta 23 kg" },
+    { "slug": "instrument", "label": "Instrumento musical",      "emoji": "🎸", "desc": "Guitarra, violín, teclado u otros" },
+    { "slug": "bicycle",    "label": "Bicicleta",                "emoji": "🚲", "desc": "Bicicleta desarmada y embalada" },
+    { "slug": "surfboard",  "label": "Tabla de surf / Snowboard","emoji": "🏄", "desc": "Tabla de surf, wakeboard o snowboard" },
+    { "slug": "golf",       "label": "Equipo de golf",           "emoji": "⛳", "desc": "Bolsa de palos + accesorios" },
+    { "slug": "skis",       "label": "Skíes / Botas",            "emoji": "⛷️", "desc": "Skíes o tabla de snow + botas + bastones" },
+    { "slug": "pet_cabin",  "label": "Mascota en cabina",        "emoji": "🐾", "desc": "Perro o gato pequeño en cabina" },
+    { "slug": "pet_hold",   "label": "Mascota en bodega",        "emoji": "📦", "desc": "Mascota mediana/grande como equipaje" }
+  ],
+  "airlines": [
+    {
+      "slug": "latam",
+      "name": "LATAM Airlines",
+      "hub": "SCL / GRU",
+      "routes": "Latinoamérica, Norteamérica, Europa",
+      "url": "https://www.latam.com/es_cl/viaja-con-nosotros/informacion-en-el-vuelo/equipaje/",
+      "fees": {
+        "carry_on":   { "display": "Gratis*", "from": 0,   "limits": "10 kg · 55×35×25 cm", "note": "Incluido en Economy y Flex. Tarifa Light: solo artículo personal (bajo el asiento)." },
+        "bag_1":      { "display": "Gratis*", "from": 0,   "limits": "23 kg · 158 cm lineales", "note": "Incluido en Economy+. Tarifa Light en ruta Chile–Norteamérica: USD 35–80." },
+        "bag_2":      { "display": "USD 80–100", "from": 80, "limits": "23 kg · 158 cm lineales", "note": "Aprox. USD 80 en rutas Latam, USD 100 en rutas a EEUU/Europa." },
+        "instrument": { "display": "Gratis / USD 80", "from": 0, "limits": "Cabina: 10 kg · 55×35×25 cm. Bodega: 32 kg · 158 cm", "note": "Guitarra clásica cabe en cabina si entra en el compartimento. En bodega como ítem especial: ~USD 80. Instrumentos grandes (cello, contrabajo): compra de asiento extra." },
+        "bicycle":    { "display": "USD 80–130", "from": 80, "limits": "Máx. 32 kg · embalaje rígido obligatorio", "note": "Debe ir desarmada (manillar, pedales, ruedas). Tarifa varía según ruta." },
+        "surfboard":  { "display": "USD 80–130", "from": 80, "limits": "Máx. 32 kg", "note": "Como equipaje deportivo especial. Se recomienda embalaje rígido." },
+        "golf":       { "display": "USD 50–80",  "from": 50, "limits": "Máx. 23 kg", "note": "Bolsa de golf + palos + zapatos. Sin cobro adicional si está dentro del peso incluido." },
+        "skis":       { "display": "USD 50–80",  "from": 50, "limits": "Máx. 23 kg", "note": "Skíes + bastones + botas. Se puede incluir en el límite de peso de maleta si aplica." },
+        "pet_cabin":  { "display": "USD 75–90",  "from": 75, "limits": "Mascota + transportín: 8 kg · 45×35×20 cm", "note": "Solo perros y gatos. Requiere reserva anticipada. No disponible en todas las rutas ni en tarifa Light." },
+        "pet_hold":   { "display": "USD 120–200","from": 120,"limits": "Según tamaño del contenedor", "note": "Transporte como cargo en bodega. Requiere trámites sanitarios del país destino." }
+      }
+    },
+    {
+      "slug": "american",
+      "name": "American Airlines",
+      "hub": "MIA / DFW",
+      "routes": "Chile → EEUU, Canadá, Europa (vía conexión)",
+      "url": "https://www.aa.com/i18n/travel-info/baggage/checked-baggage-policy.jsp",
+      "fees": {
+        "carry_on":   { "display": "Gratis",     "from": 0,   "limits": "22×14×9 in (56×36×23 cm) · sin límite de peso", "note": "Incluido en todas las tarifas. Basic Economy: solo artículo personal en algunos mercados." },
+        "bag_1":      { "display": "Gratis*",    "from": 0,   "limits": "23 kg (50 lb) · 158 cm lineales", "note": "Incluida en rutas Chile–EEUU en la mayoría de tarifas. Verificar al momento de comprar." },
+        "bag_2":      { "display": "USD 65",     "from": 65,  "limits": "23 kg · 158 cm lineales", "note": "Segunda maleta en rutas internacionales desde Sudamérica." },
+        "instrument": { "display": "Gratis / USD 150", "from": 0, "limits": "Cabina: 22×14×9 in. Bodega: 23 kg · 158 cm", "note": "En cabina si cabe en compartimento superior, sin costo adicional (no garantizado). En bodega como sobremedida: USD 150. Se puede comprar asiento extra." },
+        "bicycle":    { "display": "USD 150",    "from": 150, "limits": "Máx. 23 kg · embalaje requerido", "note": "Debe ir embalada. Misma tarifa que equipaje sobremedida." },
+        "surfboard":  { "display": "USD 150",    "from": 150, "limits": "Máx. 23 kg", "note": "Aplica la tarifa de equipaje deportivo sobremedida." },
+        "golf":       { "display": "USD 35–150", "from": 35,  "limits": "Máx. 23 kg", "note": "USD 35 si está dentro de límites estándar; USD 150 si excede tamaño o peso." },
+        "skis":       { "display": "USD 35",     "from": 35,  "limits": "Máx. 23 kg", "note": "Skíes + bastones como un ítem. Botas pueden ir en maleta aparte." },
+        "pet_cabin":  { "display": "USD 125",    "from": 125, "limits": "Mascota + bolsa: 5 kg (11 lb) · bolsa aprobada", "note": "Solo perros, gatos y pájaros. Debe caber bajo el asiento frontal. Reservar con tiempo." },
+        "pet_hold":   { "display": "USD 200",    "from": 200, "limits": "Según contenedor IATA", "note": "Disponible en rutas seleccionadas. Muchas rutas internacionales ya no aceptan mascotas en bodega." }
+      }
+    },
+    {
+      "slug": "aircanada",
+      "name": "Air Canada",
+      "hub": "YYZ / YVR",
+      "routes": "Chile → Canadá (vía Lima u otras conexiones)",
+      "url": "https://www.aircanada.com/ca/en/aco/home/fly/baggage/checked.html",
+      "fees": {
+        "carry_on":   { "display": "Gratis",      "from": 0,   "limits": "10 kg · 55×40×23 cm", "note": "Incluido en Standard y superiores. Tarifa Basic: solo artículo personal." },
+        "bag_1":      { "display": "CAD 35 (~USD 26)", "from": 26, "limits": "23 kg · 158 cm lineales", "note": "Tarifa Standard. Incluida en Flex, Comfort, Latitude y Business." },
+        "bag_2":      { "display": "CAD 65 (~USD 48)", "from": 48, "limits": "23 kg · 158 cm lineales", "note": "Segunda maleta en rutas internacionales." },
+        "instrument": { "display": "Gratis / CAD 100 (~USD 73)", "from": 0, "limits": "Cabina: 10 kg · 55×40×23 cm. Bodega: 32 kg · 158 cm", "note": "Cabe en cabina sin costo si entra en el compartimento. En bodega como sobremedida: CAD 100. Posibilidad de comprar asiento extra para instrumentos grandes." },
+        "bicycle":    { "display": "CAD 100 (~USD 73)", "from": 73, "limits": "Máx. 32 kg · embalaje requerido", "note": "Debe ir desarmada en caja o bolsa de bicicleta." },
+        "surfboard":  { "display": "CAD 100 (~USD 73)", "from": 73, "limits": "Máx. 32 kg", "note": "Tabla + correa de pie. Embalaje rígido recomendado." },
+        "golf":       { "display": "CAD 65 (~USD 48)", "from": 48, "limits": "Máx. 23 kg", "note": "Bolsa + palos como ítem especial." },
+        "skis":       { "display": "CAD 65 (~USD 48)", "from": 48, "limits": "Máx. 23 kg", "note": "Skíes + bastones. Botas se cuentan por separado si van en otra bolsa." },
+        "pet_cabin":  { "display": "CAD 50–100 (~USD 37–73)", "from": 37, "limits": "Mascota + bolsa: 10 kg · 23×40×55 cm", "note": "Perros y gatos. Tarifa varía según ruta. No disponible en vuelos de más de 10 horas." },
+        "pet_hold":   { "display": "Consultar Air Canada Cargo", "from": 999, "limits": "Según contenedor IATA", "note": "Las mascotas en bodega deben ir como cargo en Air Canada Cargo, no como equipaje regular." }
+      }
+    },
+    {
+      "slug": "copa",
+      "name": "Copa Airlines",
+      "hub": "PTY (Panamá)",
+      "routes": "Chile → Norteamérica, Caribe, EEUU (vía Panamá)",
+      "url": "https://www.copaair.com/es/web/gs/equipaje",
+      "fees": {
+        "carry_on":   { "display": "Gratis",    "from": 0,  "limits": "10 kg · 55×35×25 cm", "note": "Incluido en todas las tarifas Economy y superiores." },
+        "bag_1":      { "display": "Gratis*",   "from": 0,  "limits": "23 kg · 158 cm lineales", "note": "Incluida en Economy en la mayoría de rutas internacionales. Tarifa Promo puede no incluirla." },
+        "bag_2":      { "display": "USD 50–80", "from": 50, "limits": "23 kg · 158 cm lineales", "note": "Segunda maleta, precio varía según ruta." },
+        "instrument": { "display": "USD 50–80", "from": 50, "limits": "Bodega: 32 kg · 158 cm", "note": "En cabina si entra (sin costo extra). En bodega como ítem especial: USD 50–80 según ruta." },
+        "bicycle":    { "display": "USD 50–80", "from": 50, "limits": "Máx. 32 kg · embalaje requerido", "note": "Debe desarmarse parcialmente. Precio varía según ruta." },
+        "surfboard":  { "display": "USD 50–75", "from": 50, "limits": "Máx. 32 kg", "note": "Como equipo deportivo especial." },
+        "golf":       { "display": "USD 50",    "from": 50, "limits": "Máx. 23 kg", "note": "Bolsa de golf + palos." },
+        "skis":       { "display": "USD 50",    "from": 50, "limits": "Máx. 23 kg", "note": "Skíes + bastones + botas como un ítem." },
+        "pet_cabin":  { "display": "USD 75–125","from": 75, "limits": "Mascota + bolsa: 8 kg · 40×20×35 cm", "note": "Perros y gatos pequeños. Solo en rutas seleccionadas." },
+        "pet_hold":   { "display": "USD 100–150","from": 100,"limits": "Contenedor IATA requerido", "note": "Disponible en rutas seleccionadas. Contactar con anticipación." }
+      }
+    },
+    {
+      "slug": "iberia",
+      "name": "Iberia",
+      "hub": "MAD",
+      "routes": "Chile → España y Europa",
+      "url": "https://www.iberia.com/es/informacion/equipaje/",
+      "fees": {
+        "carry_on":   { "display": "Gratis*",   "from": 0,  "limits": "10 kg · 56×45×25 cm", "note": "Incluido en Economy y Flex. Tarifa Básica: solo artículo personal (máx. 10×40×30 cm). Verificar al comprar." },
+        "bag_1":      { "display": "Gratis / EUR 60 (~USD 65)", "from": 0, "limits": "23 kg · 158 cm lineales", "note": "Incluida en Economy y tarifas superiores. Tarifa Básica: ~EUR 60 adicionales." },
+        "bag_2":      { "display": "EUR 100 (~USD 108)", "from": 100, "limits": "23 kg · 158 cm lineales", "note": "Segunda maleta en rutas intercontinentales." },
+        "instrument": { "display": "Gratis / EUR 60 (~USD 65)", "from": 0, "limits": "Cabina: 10 kg · 56×45×25 cm. Bodega: 32 kg", "note": "En cabina si cabe en el maletero sin costo adicional. En bodega: tarifa de sobremedida ~EUR 60. Instrumentos grandes: compra de asiento extra." },
+        "bicycle":    { "display": "EUR 60 (~USD 65)", "from": 60, "limits": "Máx. 32 kg · 158 cm lineales", "note": "Embalaje rígido recomendado." },
+        "surfboard":  { "display": "EUR 60–100 (~USD 65–108)", "from": 60, "limits": "Máx. 32 kg", "note": "Como artículo deportivo especial." },
+        "golf":       { "display": "EUR 60 (~USD 65)", "from": 60, "limits": "Máx. 23 kg", "note": "Bolsa de golf + palos." },
+        "skis":       { "display": "EUR 60 (~USD 65)", "from": 60, "limits": "Máx. 23 kg", "note": "Skíes + bastones. Las botas pueden ir en la maleta regular." },
+        "pet_cabin":  { "display": "EUR 55–70 (~USD 60–76)", "from": 55, "limits": "Mascota + bolsa: 8 kg · 45×35×20 cm", "note": "Solo perros y gatos en vuelos dentro de Europa. En vuelos intercontinentales (Madrid–Chile): solo como cargo." },
+        "pet_hold":   { "display": "Solo vía cargo (IATA)", "from": 999, "limits": "Según contenedor IATA", "note": "En vuelos intercontinentales las mascotas deben ir como cargo aéreo, no como equipaje. Requiere trámites sanitarios (SENASA o equivalente)." }
+      }
+    },
+    {
+      "slug": "united",
+      "name": "United Airlines",
+      "hub": "EWR / IAH / ORD",
+      "routes": "Chile → EEUU, Canadá (vía conexión)",
+      "url": "https://www.united.com/en/us/fly/travel/baggage/checked.html",
+      "fees": {
+        "carry_on":   { "display": "Gratis",    "from": 0,  "limits": "22×14×9 in (56×36×23 cm)", "note": "Incluido en todas las tarifas." },
+        "bag_1":      { "display": "Gratis*",   "from": 0,  "limits": "23 kg (50 lb) · 158 cm lineales", "note": "Generalmente incluida en rutas internacionales desde Sudamérica. Verificar al comprar." },
+        "bag_2":      { "display": "USD 100",   "from": 100,"limits": "23 kg · 158 cm lineales", "note": "Segunda maleta en rutas internacionales." },
+        "instrument": { "display": "Gratis / USD 150", "from": 0, "limits": "Cabina: 22×14×9 in. Bodega: 23 kg · 158 cm", "note": "En cabina: sin costo si cabe en maletero (no garantizado en aviones pequeños). En bodega: USD 150. Se puede comprar asiento extra para instrumentos grandes." },
+        "bicycle":    { "display": "USD 150",   "from": 150,"limits": "Máx. 23 kg (50 lb) · embalaje requerido", "note": "Embalaje rígido obligatorio. Se cobra como ítem sobremedida." },
+        "surfboard":  { "display": "USD 150",   "from": 150,"limits": "Máx. 23 kg", "note": "Como artículo deportivo sobremedida." },
+        "golf":       { "display": "USD 35",    "from": 35, "limits": "Máx. 23 kg (50 lb)", "note": "Bolsa de golf como equipo deportivo estándar." },
+        "skis":       { "display": "USD 35",    "from": 35, "limits": "Máx. 23 kg", "note": "Skíes + bastones. Botas aparte pueden ir en la maleta." },
+        "pet_cabin":  { "display": "USD 125",   "from": 125,"limits": "Mascota + bolsa: bajo el asiento frontal · máx. aprox. 40×25×22 cm", "note": "Perros y gatos. Debe reservarse con anticipación. Límite de mascotas por vuelo." },
+        "pet_hold":   { "display": "USD 200",   "from": 200,"limits": "Contenedor IATA aprobado", "note": "Disponible en rutas seleccionadas. Muchas rutas internacionales ya no aceptan mascotas en bodega." }
+      }
+    },
+    {
+      "slug": "delta",
+      "name": "Delta Air Lines",
+      "hub": "ATL / JFK",
+      "routes": "Chile → EEUU, Caribe, Europa (vía conexión)",
+      "url": "https://www.delta.com/us/en/baggage/overview",
+      "fees": {
+        "carry_on":   { "display": "Gratis",    "from": 0,  "limits": "22×14×9 in (56×36×23 cm)", "note": "Incluido en todas las tarifas." },
+        "bag_1":      { "display": "Gratis*",   "from": 0,  "limits": "23 kg (50 lb) · 158 cm lineales", "note": "Generalmente incluida en rutas internacionales desde Sudamérica. Basic Economy puede tener restricciones." },
+        "bag_2":      { "display": "USD 100",   "from": 100,"limits": "23 kg · 158 cm lineales", "note": "Segunda maleta en rutas internacionales." },
+        "instrument": { "display": "Gratis / USD 150", "from": 0, "limits": "Cabina: 22×14×9 in. Bodega: 23 kg · 158 cm", "note": "En cabina si cabe: sin costo. En bodega: USD 150. Se puede comprar asiento extra para instrumentos grandes." },
+        "bicycle":    { "display": "USD 150",   "from": 150,"limits": "Máx. 23 kg (50 lb) · embalaje requerido", "note": "Embalaje rígido obligatorio. Se cobra como ítem sobremedida." },
+        "surfboard":  { "display": "USD 150",   "from": 150,"limits": "Máx. 23 kg", "note": "Como artículo deportivo sobremedida." },
+        "golf":       { "display": "USD 35–150","from": 35, "limits": "Máx. 23 kg (50 lb)", "note": "USD 35 si está dentro del límite de peso y tamaño; USD 150 como sobremedida si excede." },
+        "skis":       { "display": "USD 35",    "from": 35, "limits": "Máx. 23 kg", "note": "Skíes + bastones como equipaje deportivo." },
+        "pet_cabin":  { "display": "USD 95–200","from": 95, "limits": "Mascota + bolsa: bajo el asiento · máx. 44×30×20 cm", "note": "Perros, gatos y aves. USD 95 en vuelos domésticos EEUU; USD 200 en internacionales. Requiere reserva anticipada." },
+        "pet_hold":   { "display": "USD 200–400","from": 200,"limits": "Contenedor IATA aprobado", "note": "Solo en rutas seleccionadas. Delta recomienda evitar bodega en temporadas de calor extremo." }
+      }
+    },
+    {
+      "slug": "avianca",
+      "name": "Avianca",
+      "hub": "BOG (Bogotá)",
+      "routes": "Chile → Colombia, EEUU, España (vía Bogotá)",
+      "url": "https://www.avianca.com/cl/es/antes-de-volar/equipaje/",
+      "fees": {
+        "carry_on":   { "display": "Gratis",    "from": 0,  "limits": "10 kg · 55×35×25 cm", "note": "Incluido en Economy y superiores. Tarifa Básica: solo artículo personal." },
+        "bag_1":      { "display": "Gratis*",   "from": 0,  "limits": "23 kg · 158 cm lineales", "note": "Incluida en Economy en rutas internacionales. Tarifa Básica puede requerir pago adicional." },
+        "bag_2":      { "display": "USD 60–80", "from": 60, "limits": "23 kg · 158 cm lineales", "note": "Segunda maleta en rutas internacionales, precio varía según ruta." },
+        "instrument": { "display": "Gratis / USD 50–80", "from": 0, "limits": "Cabina: 10 kg · 55×35×25 cm. Bodega: 32 kg · 158 cm", "note": "En cabina si cabe: sin costo. En bodega: ~USD 50–80 como ítem especial." },
+        "bicycle":    { "display": "USD 50–100","from": 50, "limits": "Máx. 32 kg · embalaje requerido", "note": "Desarmada y embalada. Precio varía según ruta." },
+        "surfboard":  { "display": "USD 50–100","from": 50, "limits": "Máx. 32 kg", "note": "Como equipo deportivo especial." },
+        "golf":       { "display": "USD 50",    "from": 50, "limits": "Máx. 23 kg", "note": "Bolsa + palos como ítem deportivo." },
+        "skis":       { "display": "USD 50",    "from": 50, "limits": "Máx. 23 kg", "note": "Skíes + bastones + botas." },
+        "pet_cabin":  { "display": "USD 75–125","from": 75, "limits": "Mascota + bolsa: 8 kg · 45×20×35 cm", "note": "Perros y gatos pequeños. Reserva anticipada obligatoria. No disponible en todos los vuelos." },
+        "pet_hold":   { "display": "USD 100–150","from": 100,"limits": "Contenedor IATA requerido", "note": "Disponible en rutas seleccionadas. Requiere certificado veterinario y documentación del país destino." }
+      }
+    },
+    {
+      "slug": "sky",
+      "name": "Sky Airline",
+      "hub": "SCL",
+      "routes": "Chile doméstico + Perú, Argentina, Bolivia, Brasil",
+      "url": "https://www.skyairline.com/chile/informacion-vuelo/equipaje",
+      "fees": {
+        "carry_on":   { "display": "USD 10–25", "from": 10, "limits": "10 kg · 55×40×20 cm", "note": "No incluido en tarifa base. Se compra por separado o en combo con maleta." },
+        "bag_1":      { "display": "USD 20–45", "from": 20, "limits": "23 kg · 158 cm lineales", "note": "No incluido en tarifa base. Más barato si se compra al momento del ticket." },
+        "bag_2":      { "display": "USD 30–60", "from": 30, "limits": "23 kg · 158 cm lineales", "note": "Segunda maleta. Precio puede variar según anticipación de compra." },
+        "instrument": { "display": "USD 30–50", "from": 30, "limits": "Bodega: hasta 23 kg · 158 cm lineales", "note": "Como maleta extra o ítem especial. Verificar con Sky antes del vuelo." },
+        "bicycle":    { "display": "USD 50–60", "from": 50, "limits": "Máx. 23 kg · embalaje requerido", "note": "Confirmar disponibilidad al momento de reservar." },
+        "surfboard":  { "display": "USD 50–60", "from": 50, "limits": "Máx. 23 kg", "note": "Como ítem especial sobremedida." },
+        "golf":       { "display": "USD 30–50", "from": 30, "limits": "Máx. 23 kg", "note": "Bolsa + palos." },
+        "skis":       { "display": "USD 30–50", "from": 30, "limits": "Máx. 23 kg", "note": "Skíes + bastones." },
+        "pet_cabin":  { "display": "USD 40–55", "from": 40, "limits": "Mascota + bolsa: 6 kg · 40×20×30 cm", "note": "Solo rutas dentro de Chile y algunos internacionales. Verificar disponibilidad." },
+        "pet_hold":   { "display": "USD 70–100","from": 70, "limits": "Contenedor aprobado por Sky", "note": "Disponible en rutas seleccionadas. Consultar con anticipación." }
+      }
+    },
+    {
+      "slug": "jetsmart",
+      "name": "JetSmart",
+      "hub": "SCL",
+      "routes": "Chile doméstico + Argentina, Perú, Colombia, Brasil",
+      "url": "https://jetsmart.com/cl/es/equipaje/",
+      "fees": {
+        "carry_on":   { "display": "USD 8–22",  "from": 8,  "limits": "10 kg · 55×40×20 cm", "note": "No incluido en tarifa base Smart. Se compra adicional." },
+        "bag_1":      { "display": "USD 18–40", "from": 18, "limits": "23 kg · 158 cm lineales", "note": "No incluido. Se compra por separado. Más barato al reservar con anticipación." },
+        "bag_2":      { "display": "USD 28–55", "from": 28, "limits": "23 kg · 158 cm lineales", "note": "Segunda maleta, tarifa variable." },
+        "instrument": { "display": "USD 28–45", "from": 28, "limits": "Bodega: hasta 23 kg · 158 cm lineales", "note": "Como maleta adicional. JetSmart no ofrece tarifa específica para instrumentos; verificar directamente." },
+        "bicycle":    { "display": "USD 45–55", "from": 45, "limits": "Máx. 23 kg · embalaje requerido", "note": "Reservar con anticipación. Disponibilidad limitada por vuelo." },
+        "surfboard":  { "display": "USD 45–55", "from": 45, "limits": "Máx. 23 kg", "note": "Como ítem sobremedida." },
+        "golf":       { "display": "USD 28–45", "from": 28, "limits": "Máx. 23 kg", "note": "Bolsa + palos como maleta especial." },
+        "skis":       { "display": "USD 28–45", "from": 28, "limits": "Máx. 23 kg", "note": "Skíes + bastones." },
+        "pet_cabin":  { "display": "USD 35–55", "from": 35, "limits": "Mascota + bolsa: 8 kg · 40×25×20 cm", "note": "Solo perros y gatos. Disponible en rutas seleccionadas. Reservar al comprar el pasaje." },
+        "pet_hold":   { "display": "No disponible", "from": 9999, "limits": "—", "note": "JetSmart no acepta mascotas en bodega como equipaje." }
+      }
+    }
+  ]
+}
