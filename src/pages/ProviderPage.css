@@ -421,6 +421,56 @@ a.ppage__endorsement-name:hover {
   line-height: 1.5;
 }
 
+/* ── Manuales públicos ───────────────────────────────────────── */
+.ppage__manuals {
+  margin-bottom: 36px;
+}
+.ppage__manuals-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ppage__manual-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--white);
+  border: 1px solid var(--iris-100);
+  border-radius: var(--r-md);
+  padding: 12px 14px;
+  transition: border-color .15s;
+}
+.ppage__manual-item:hover { border-color: var(--iris-300); }
+.ppage__manual-icon { font-size: 1.4rem; flex-shrink: 0; line-height: 1; }
+.ppage__manual-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.ppage__manual-title {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--iris-700);
+  text-decoration: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ppage__manual-title:hover { text-decoration: underline; }
+.ppage__manual-desc { color: var(--text-400); margin: 0; }
+.ppage__manual-meta { color: var(--text-300); }
+.ppage__manual-download {
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: var(--iris-50);
+  color: var(--iris-600);
+  font-size: 1rem;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: background .15s;
+}
+.ppage__manual-download:hover { background: var(--iris-100); }
+
 /* ── Componente 3 — Reacción de huella ───────────────────────── */
 .ppage__reaction {
   display: inline-flex;

@@ -199,6 +199,72 @@ function EndorsementsSection({ providerId }) {
   )
 }
 
+// ── Manuales públicos ─────────────────────────────────────────────
+function ManualsSection({ providerId }) {
+  const [manuals, setManuals] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    supabase
+      .from('provider_manuals_public')
+      .select('*')
+      .eq('provider_id', providerId)
+      .order('created_at', { ascending: false })
+      .then(({ data }) => { setManuals(data ?? []); setLoading(false) })
+      .catch(() => setLoading(false))
+  }, [providerId])
+
+  if (loading || manuals.length === 0) return null
+
+  const getUrl = (path) =>
+    supabase.storage.from('provider-manuals').getPublicUrl(path).data.publicUrl
+
+  const fileIcon = (type) => type === 'pdf' ? '📄' : '📝'
+  const fmtSize  = (bytes) => {
+    if (!bytes) return ''
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+  }
+
+  return (
+    <section className="ppage__manuals">
+      <h2 className="ppage__section-title">📚 Documentos y recursos</h2>
+      <ul className="ppage__manuals-list">
+        {manuals.map(m => (
+          <li key={m.id} className="ppage__manual-item">
+            <span className="ppage__manual-icon">{fileIcon(m.file_type)}</span>
+            <div className="ppage__manual-body">
+              <a
+                href={getUrl(m.file_path)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ppage__manual-title"
+              >
+                {m.title}
+              </a>
+              {m.description && (
+                <p className="ppage__manual-desc t-xs">{m.description}</p>
+              )}
+              <span className="ppage__manual-meta t-xs">
+                {m.file_name} {m.file_size ? `· ${fmtSize(m.file_size)}` : ''}
+              </span>
+            </div>
+            <a
+              href={getUrl(m.file_path)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ppage__manual-download"
+              download
+            >
+              ↓
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
 // ── Página principal ──────────────────────────────────────────────
 export default function ProviderPage() {
   const { slug }     = useParams()
@@ -437,6 +503,8 @@ export default function ProviderPage() {
               {/* BookingCalendar disabled until tiers are implemented */}
 
               <EndorsementsSection providerId={providerId} />
+
+              <ManualsSection providerId={providerId} />
 
               <OpinionsList
                 providerId={providerId}

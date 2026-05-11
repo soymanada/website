@@ -11,6 +11,7 @@ import WeeklyActivity      from '../components/dashboard/WeeklyActivity'
 import AutoRecommendations from '../components/dashboard/AutoRecommendations'
 import ManualProveedor     from '../components/dashboard/ManualProveedor'
 import EndorsementsPanel   from '../components/dashboard/EndorsementsPanel'
+import SectionDocumentos   from '../components/dashboard/SectionDocumentos'
 import AvailabilityEditor  from '../components/AvailabilityEditor'
 import ProviderInbox       from '../components/ProviderInbox'
 import { useDashboardBookings, updateBookingStatus } from '../hooks/useBookings'
@@ -1341,6 +1342,7 @@ export default function ProviderDashboard() {
     { id: 'reseñas',      icon: '💬', label: t('pdash.tab_reseñas_label') },
     { id: 'reservas',        icon: '📅', label: t('pdash.tab_reservas_label') },
     { id: 'mensajes',        icon: '✉️',  label: t('pdash.tab_mensajes_label') },
+    { id: 'documentos',      icon: '📚', label: t('pdash.tab_documentos_label', 'Documentos') },
     { id: 'recomendaciones', icon: '🤝', label: t('pdash.tab_recomendaciones_label') },
     { id: 'ayuda',           icon: '📖', label: t('pdash.tab_ayuda_label') },
   ]
@@ -1455,6 +1457,9 @@ export default function ProviderDashboard() {
           )}
           {activeTab === 'mensajes' && (
             <SectionMensajes provider={provider} />
+          )}
+          {activeTab === 'documentos' && (
+            <SectionDocumentos provider={provider} />
           )}
           {activeTab === 'recomendaciones' && (
             <EndorsementsPanel myProviderId={provider.id} />
