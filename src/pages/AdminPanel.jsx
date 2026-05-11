@@ -86,8 +86,11 @@ function UsersPanel() {
     load()
   }
 
-  // Filtrado y paginación
-  const filtered   = users.filter(u => (u.email ?? '').toLowerCase().includes(search.toLowerCase()))
+  // Filtrado y paginación — busca en email y rol
+  const filtered   = users.filter(u => {
+    const q = search.toLowerCase()
+    return (u.email ?? '').toLowerCase().includes(q) || (u.role ?? '').toLowerCase().includes(q)
+  })
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
   const paginated  = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
@@ -152,7 +155,7 @@ function UsersPanel() {
           <div className="adm-users-search">
             <input
               type="search"
-              placeholder="Buscar por email…"
+              placeholder="Buscar por email o rol…"
               value={search}
               onChange={e => { setSearch(e.target.value); setPage(1) }}
               className="adm-users-search__input"
@@ -166,17 +169,16 @@ function UsersPanel() {
             <table className="adm-table">
               <thead>
                 <tr>
-                  <th>Email</th><th>Rol</th><th>Tier</th><th>Registro</th><th></th>
+                  <th>Email</th><th>Rol</th><th>Registro</th><th></th>
                 </tr>
               </thead>
               <tbody>
                 {paginated.length === 0 ? (
-                  <tr><td colSpan={5} className="adm-empty">Sin resultados para "{search}"</td></tr>
+                  <tr><td colSpan={4} className="adm-empty">Sin resultados para "{search}"</td></tr>
                 ) : paginated.map(u => (
                   <tr key={u.id}>
                     <td className="adm-td--mono">{u.email ?? '—'}</td>
                     <td><span className={`adm-pill adm-pill--${u.role}`}>{u.role}</span></td>
-                    <td>{u.tier ?? '—'}</td>
                     <td>{fmt(u.created_at)}</td>
                     <td>
                       <button className="adm-btn adm-btn--sm adm-btn--ghost"
@@ -251,7 +253,7 @@ const CATEGORY_SLUGS = [
 
 const toSlug = (str) =>
   str.toLowerCase()
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '')
 
@@ -263,7 +265,6 @@ const EMPTY_PROVIDER = {
   whatsapp: '', instagram: '', website: '',
 }
 
-// Flatten a provider record into a flat form object
 function providerToForm(p) {
   return {
     name:                 p.name                ?? '',
@@ -298,7 +299,7 @@ function ProvidersPanel() {
   const [providers, setProviders] = useState([])
   const [loading,   setLoading]   = useState(true)
   const [creating,  setCreating]  = useState(false)
-  const [editing,   setEditing]   = useState(null)   // { id, ...form }
+  const [editing,   setEditing]   = useState(null)
   const [form,      setForm]      = useState(EMPTY_PROVIDER)
   const [saving,    setSaving]    = useState(false)
 
@@ -500,7 +501,6 @@ function ProvidersPanel() {
         <div className="adm-overlay" onClick={() => setEditing(null)}>
           <div className="adm-modal adm-modal--xl" onClick={e => e.stopPropagation()}>
             <h3>Editar proveedor — {editing.name}</h3>
-
             <div className="adm-edit-sections">
 
               <div className="adm-edit-section">
@@ -651,7 +651,6 @@ function ProvidersPanel() {
                 <tr key={p.id}>
                   <td>
                     <strong>{p.name}</strong>
-                    {p.tier && <span className={`adm-pill adm-pill--${p.tier}`} style={{ marginLeft: '6px', fontSize: '0.7rem' }}>{p.tier}</span>}
                     {isGenericProviderName(p.name) && (
                       <span className="badge-generic-name" title="Nombre genérico detectado">⚠ nombre genérico</span>
                     )}
@@ -687,6 +686,7 @@ function ProvidersPanel() {
   )
 }
 
+// ── Solicitudes ───────────────────────────────────────────────────────────────
 const CAT_SLUG = {
   'Seguros': 'seguros', 'Asesoría migratoria': 'migracion',
   'Traducciones': 'traducciones', 'Trabajo': 'trabajo',
@@ -726,7 +726,7 @@ function SubmissionsPanel() {
     const waNumber     = (s.whatsapp ?? '').replace(/^\+/, '')
     const providerSlug = s.business_name
       .toLowerCase()
-      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .normalize('NFD').replace(/[̀-ͯ]/g, '')
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-|-$/g, '')
 
@@ -765,19 +765,29 @@ function SubmissionsPanel() {
     let roleUpdated = false
     if (s.contact_email) {
       const { data: assigned, error: roleErr } = await supabase
-        .rpc('set_user_role_by_email', { lookup_email: s.contact_email.trim(), new_role: 'provider' })
-      roleUpdated = !roleErr
+        .rpc('assign_provider_role_by_email', { target_email: s.contact_email.trim() })
+      roleUpdated = assigned === true
+      if (roleErr) console.error('[assign_provider_role]', roleErr)
     }
 
-    await supabase.from('provider_applications')
-      .update({ status: 'approved' })
-      .eq('id', s.id)
+    if (!roleUpdated) {
+      alert(`⚠️ Proveedor creado pero NO se pudo asignar el rol automáticamente.\n\nEmail: ${s.contact_email || '(sin email)'}\n\nCausa probable: el proveedor todavía no creó su cuenta en SoyManada con ese email.\n\nCuando se registre, ve a la pestaña Usuarios y asigna el rol "provider" manualmente.`)
+    }
 
-    await logAudit({
-      action: 'approve_provider', targetType: 'submission', targetId: s.id, targetName: s.business_name,
-      payload: { categorySlug, providerSlug, roleUpdated },
-      result: 'ok',
-    })
+    await supabase.from('provider_applications').update({ status: 'approved' }).eq('id', s.id)
+    await logAudit({ action: 'approve_provider', targetType: 'submission', targetId: s.id, targetName: s.business_name, payload: { providerSlug, userId, roleUpdated } })
+
+    if (s.contact_email) {
+      supabase.functions.invoke('send-welcome-email', {
+        body: {
+          contact_email: s.contact_email,
+          business_name: s.business_name,
+          contact_name:  s.contact_name ?? s.business_name,
+          languages:     s.languages ?? [],
+        },
+      }).catch(console.error)
+    }
+
     setActing(null)
     load()
   }
@@ -785,13 +795,8 @@ function SubmissionsPanel() {
   const reject = async (s) => {
     if (!window.confirm(`¿Rechazar la solicitud de "${s.business_name}"?`)) return
     setActing(s.id)
-    const { error } = await supabase.from('provider_applications')
-      .update({ status: 'rejected' })
-      .eq('id', s.id)
-    await logAudit({
-      action: 'reject_provider', targetType: 'submission', targetId: s.id, targetName: s.business_name,
-      result: error ? 'error' : 'ok', errorMessage: error?.message,
-    })
+    await supabase.from('provider_applications').update({ status: 'rejected' }).eq('id', s.id)
+    await logAudit({ action: 'reject_provider', targetType: 'submission', targetId: s.id, targetName: s.business_name })
     setActing(null)
     load()
   }
@@ -800,44 +805,59 @@ function SubmissionsPanel() {
     <div className="adm-section">
       <div className="adm-section__head">
         <h2 className="adm-section__title">
-          Solicitudes
-          <span className="adm-badge">{subs.length}</span>
-          {pending > 0 && <span className="adm-badge adm-badge--red">{pending} pendientes</span>}
+          Postulaciones <span className="adm-badge">{pending} pendientes</span>
         </h2>
       </div>
-      {loadErr && <p style={{ color: 'red' }}>Error al cargar: {loadErr}</p>}
-      {loading ? <p className="adm-loading">Cargando...</p> : (
+      {loadErr && (
+        <p style={{ color: '#dc2626', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 6, padding: '8px 12px', fontSize: '0.85rem' }}>
+          Error al cargar: {loadErr}
+        </p>
+      )}
+      {loading ? <p className="adm-loading">Cargando...</p>
+        : subs.length === 0 ? <p className="adm-empty">No hay postulaciones.</p>
+        : (
         <div className="adm-table-wrap">
           <table className="adm-table">
             <thead>
               <tr>
-                <th>Negocio</th><th>Email contacto</th><th>Categorías</th>
-                <th>Estado</th><th>Fecha</th><th></th>
+                <th>Negocio</th><th>Categorías</th><th>Estado</th>
+                <th>Fecha</th><th>Contacto interno</th><th></th>
               </tr>
             </thead>
             <tbody>
               {subs.map(s => (
                 <>
-                  <tr key={s.id}
-                    className={expanded === s.id ? 'adm-tr--expanded' : ''}
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => setExpanded(expanded === s.id ? null : s.id)}>
-                    <td><strong>{s.business_name}</strong></td>
-                    <td className="adm-td--mono">{s.contact_email ?? '—'}</td>
-                    <td>{(s.categories ?? []).join(', ') || '—'}</td>
-                    <td><span className={`adm-pill adm-pill--${s.status ?? 'pending'}`}>{s.status ?? 'pending'}</span></td>
+                  <tr key={s.id} className={expanded === s.id ? 'adm-tr--expanded' : ''}>
+                    <td>
+                      <strong>{s.business_name ?? '—'}</strong>
+                      {isGenericProviderName(s.business_name) && (
+                        <span className="badge-generic-name" title="El nombre parece genérico — revisar antes de aprobar">
+                          ⚠️ Nombre genérico
+                        </span>
+                      )}
+                      <br /><span className="adm-td--sub">{s.service_title ?? ''}</span>
+                    </td>
+                    <td className="adm-td--sub">{(s.categories ?? []).join(', ') || '—'}</td>
+                    <td>
+                      <span className={`adm-pill adm-pill--${s.status ?? 'pending'}`}>
+                        {s.status ?? 'pending'}
+                      </span>
+                    </td>
                     <td>{fmt(s.created_at)}</td>
-                    <td className="adm-td--actions" onClick={e => e.stopPropagation()}>
+                    <td className="adm-td--mono">{s.contact_name ?? '—'}<br /><span className="adm-td--sub">{s.contact_email ?? ''}</span></td>
+                    <td className="adm-td--actions">
+                      <button className="adm-btn adm-btn--sm adm-btn--ghost"
+                        onClick={() => setExpanded(expanded === s.id ? null : s.id)}>
+                        {expanded === s.id ? 'Cerrar' : 'Ver'}
+                      </button>
                       {(!s.status || s.status === 'pending') && (
                         <>
-                          <button className="adm-btn adm-btn--sm adm-btn--primary"
-                            disabled={acting === s.id}
-                            onClick={() => approve(s)}>
+                          <button className="adm-btn adm-btn--sm adm-btn--success"
+                            onClick={() => approve(s)} disabled={acting === s.id}>
                             {acting === s.id ? '…' : 'Aprobar'}
                           </button>
                           <button className="adm-btn adm-btn--sm adm-btn--danger"
-                            disabled={acting === s.id}
-                            onClick={() => reject(s)}>
+                            onClick={() => reject(s)} disabled={acting === s.id}>
                             Rechazar
                           </button>
                         </>
@@ -845,26 +865,17 @@ function SubmissionsPanel() {
                     </td>
                   </tr>
                   {expanded === s.id && (
-                    <tr className="adm-tr--detail">
+                    <tr key={`${s.id}-detail`} className="adm-tr--detail">
                       <td colSpan={6}>
                         <div className="adm-detail">
-                          {[
-                            ['WhatsApp', s.whatsapp],
-                            ['Instagram', s.instagram],
-                            ['Sitio web', s.website],
-                            ['Países', (s.countries ?? []).join(', ')],
-                            ['Idiomas', (s.languages ?? []).join(', ')],
-                            ['Título servicio', s.service_title],
-                            ['Descripción', s.description],
-                            ['Experiencia', s.experience],
-                            ['Precio ref.', s.price_range],
-                            ['Cómo conoció', s.referral_source],
-                          ].map(([label, val]) => val ? (
-                            <div className="adm-detail__row" key={label}>
-                              <span className="adm-detail__label">{label}</span>
-                              <span>{val}</span>
-                            </div>
-                          ) : null)}
+                          <div className="adm-detail__row"><span className="adm-detail__label">Descripción</span><span>{s.description ?? '—'}</span></div>
+                          <div className="adm-detail__row"><span className="adm-detail__label">Modalidad</span><span>{s.modality ?? '—'}</span></div>
+                          <div className="adm-detail__row"><span className="adm-detail__label">Países</span><span>{(s.countries ?? []).join(', ') || '—'}</span></div>
+                          <div className="adm-detail__row"><span className="adm-detail__label">Idiomas</span><span>{(s.languages ?? []).join(', ') || '—'}</span></div>
+                          <div className="adm-detail__row"><span className="adm-detail__label">WhatsApp</span><span>{s.whatsapp ?? '—'}</span></div>
+                          <div className="adm-detail__row"><span className="adm-detail__label">Instagram</span><span>{s.instagram ?? '—'}</span></div>
+                          <div className="adm-detail__row"><span className="adm-detail__label">Sitio web</span><span>{s.website ?? '—'}</span></div>
+                          <div className="adm-detail__row"><span className="adm-detail__label">Perfil verificación</span><a href={s.profile_link} target="_blank" rel="noopener noreferrer">{s.profile_link ?? '—'}</a></div>
                         </div>
                       </td>
                     </tr>
@@ -879,272 +890,307 @@ function SubmissionsPanel() {
   )
 }
 
-// ── Logs Panel ────────────────────────────────────────────────────────────────
-function LogsPanel() {
-  const TABS = [
-    { key: 'audit',  label: 'Actividad' },
-    { key: 'errors', label: 'Errores' },
-  ]
-  const [tab, setTab] = useState('audit')
+// ── Fotos de la comunidad ─────────────────────────────────────────────────────
+function PhotosPanel() {
+  const [photos,  setPhotos]  = useState([])
+  const [loading, setLoading] = useState(true)
 
-  // ── Audit log state ──────────────────────────────────────────────────────
-  const [auditRows, setAuditRows]   = useState([])
-  const [auditLoad, setAuditLoad]   = useState(true)
-  const [auditErr,  setAuditErr]    = useState(null)
-  const [auditQ,    setAuditQ]      = useState('')
-  const [auditPage, setAuditPage]   = useState(1)
-  const [auditFrom, setAuditFrom]   = useState('')
-  const [auditTo,   setAuditTo]     = useState('')
-  const AUDIT_PAGE = 30
-
-  const loadAudit = useCallback(async () => {
-    setAuditLoad(true); setAuditErr(null)
-    let q = supabase.from('audit_log')
-      .select('id, action, actor_email, target_type, target_name, result, error_message, created_at')
-      .order('created_at', { ascending: false })
-      .limit(500)
-    if (auditFrom) q = q.gte('created_at', auditFrom)
-    if (auditTo)   q = q.lte('created_at', auditTo + 'T23:59:59')
-    const { data, error } = await q
-    if (error) setAuditErr(error.message)
-    setAuditRows(data ?? [])
-    setAuditLoad(false)
-  }, [auditFrom, auditTo])
-
-  useEffect(() => { if (tab === 'audit') loadAudit() }, [tab, loadAudit])
-
-  const filteredAudit = auditRows.filter(r =>
-    !auditQ ||
-    (r.action ?? '').includes(auditQ) ||
-    (r.actor_email ?? '').includes(auditQ) ||
-    (r.target_name ?? '').includes(auditQ)
-  )
-  const auditPages  = Math.max(1, Math.ceil(filteredAudit.length / AUDIT_PAGE))
-  const auditSlice  = filteredAudit.slice((auditPage - 1) * AUDIT_PAGE, auditPage * AUDIT_PAGE)
-
-  const auditSummary = filteredAudit.reduce((acc, r) => {
-    const k = r.action ?? 'unknown'
-    acc[k] = (acc[k] ?? 0) + 1
-    return acc
-  }, {})
-  const topActions = Object.entries(auditSummary).sort((a, b) => b[1] - a[1]).slice(0, 5)
-
-  // ── System errors state ──────────────────────────────────────────────────
-  const [errRows,  setErrRows]  = useState([])
-  const [errLoad,  setErrLoad]  = useState(true)
-  const [errErr,   setErrErr]   = useState(null)
-  const [errQ,     setErrQ]     = useState('')
-  const [errPage,  setErrPage]  = useState(1)
-  const ERR_PAGE = 20
-
-  const loadErrors = useCallback(async () => {
-    setErrLoad(true); setErrErr(null)
-    const { data, error } = await supabase
-      .from('system_errors')
-      .select('id, service, error_code, message, context, resolved, created_at')
-      .order('created_at', { ascending: false })
-      .limit(200)
-    if (error) setErrErr(error.message)
-    setErrRows(data ?? [])
-    setErrLoad(false)
+  const load = useCallback(async () => {
+    setLoading(true)
+    const { data } = await supabase
+      .from('community_photos')
+      .select('*')
+      .order('submitted_at', { ascending: false })
+    setPhotos(data ?? [])
+    setLoading(false)
   }, [])
 
-  useEffect(() => { if (tab === 'errors') loadErrors() }, [tab, loadErrors])
+  useEffect(() => { load() }, [load])
 
-  const toggleResolved = async (row) => {
-    await supabase.from('system_errors').update({ resolved: !row.resolved }).eq('id', row.id)
-    loadErrors()
+  const setStatus = async (id, status) => {
+    const { error } = await supabase
+      .from('community_photos')
+      .update({ status, reviewed_at: new Date().toISOString() })
+      .eq('id', id)
+    await logAudit({
+      action: status === 'approved' ? 'approve_photo' : 'reject_photo',
+      targetType: 'photo', targetId: id,
+      result: error ? 'error' : 'ok', errorMessage: error?.message,
+    })
+    load()
   }
-
-  const filteredErr = errRows.filter(r =>
-    !errQ ||
-    (r.service ?? '').includes(errQ) ||
-    (r.error_code ?? '').includes(errQ) ||
-    (r.message ?? '').includes(errQ)
-  )
-  const errPages = Math.max(1, Math.ceil(filteredErr.length / ERR_PAGE))
-  const errSlice = filteredErr.slice((errPage - 1) * ERR_PAGE, errPage * ERR_PAGE)
-  const unresolvedCount = errRows.filter(r => !r.resolved).length
 
   return (
     <div className="adm-section">
-      <div className="adm-subtabs">
-        {TABS.map(t => (
-          <button key={t.key}
-            className={`adm-subtab${tab === t.key ? ' adm-subtab--active' : ''}`}
-            onClick={() => setTab(t.key)}>
-            {t.label}
-            {t.key === 'errors' && unresolvedCount > 0 &&
-              <span className="adm-badge adm-badge--red">{unresolvedCount}</span>}
-          </button>
-        ))}
+      <div className="adm-section__head">
+        <h2 className="adm-section__title">Fotos de la comunidad</h2>
+        <p className="adm-section__sub">Aprueba o rechaza las fotos enviadas por los usuarios.</p>
       </div>
+      {loading ? (
+        <p className="adm-section__empty">Cargando…</p>
+      ) : photos.length === 0 ? (
+        <p className="adm-section__empty">No hay fotos pendientes.</p>
+      ) : (
+        <div className="adm-photos">
+          {photos.map(p => (
+            <div key={p.id} className={`adm-photo-card adm-photo-card--${p.status}`}>
+              <img src={p.public_url} alt={p.caption} className="adm-photo-card__img" />
+              <div className="adm-photo-card__info">
+                <p className="adm-photo-card__caption"><strong>{p.caption}</strong></p>
+                {p.city           && <p className="adm-photo-card__meta">📍 {p.city}</p>}
+                {p.submitter_name && <p className="adm-photo-card__meta">👤 {p.submitter_name}</p>}
+                <p className="adm-photo-card__meta">{fmt(p.submitted_at)}</p>
+                <span className={`adm-photo-card__badge adm-photo-card__badge--${p.status}`}>
+                  {p.status === 'pending' ? 'Pendiente' : p.status === 'approved' ? 'Aprobada' : 'Rechazada'}
+                </span>
+              </div>
+              {p.status === 'pending' && (
+                <div className="adm-photo-card__actions">
+                  <button className="btn btn-primary btn-sm" onClick={() => setStatus(p.id, 'approved')}>✓ Aprobar</button>
+                  <button className="btn btn-ghost btn-sm" onClick={() => setStatus(p.id, 'rejected')}>✕ Rechazar</button>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
 
-      {tab === 'audit' && (
+// ── Logs ──────────────────────────────────────────────────────────────────────
+const LOG_RANGES = [
+  { label: 'Últimos 3 días', days: 3 },
+  { label: 'Últimos 7 días', days: 7 },
+  { label: 'Últimos 30 días', days: 30 },
+]
+
+function LogsPanel() {
+  const [subTab,  setSubTab]  = useState('activity')
+  const [rows,    setRows]    = useState([])
+  const [range,   setRange]   = useState(3)
+  const [search,  setSearch]  = useState('')
+  const [page,    setPage]    = useState(0)
+  const [provMap, setProvMap] = useState({})
+  const PAGE_SIZE = 50
+  const [errors,  setErrors]  = useState([])
+  const [audit,   setAudit]   = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    supabase.from('providers').select('id, name').then(({ data }) => {
+      const map = {}
+      ;(data ?? []).forEach(p => { map[p.id] = p.name })
+      setProvMap(map)
+    })
+  }, [])
+
+  const loadActivity = useCallback(async () => {
+    const since = new Date(Date.now() - range * 24 * 60 * 60 * 1000).toISOString()
+    const { data } = await supabase
+      .from('events')
+      .select('id, provider_id, event_type, created_at')
+      .gte('created_at', since)
+      .order('created_at', { ascending: false })
+      .limit(2000)
+    setRows(data ?? [])
+    setPage(0)
+  }, [range])
+
+  const loadErrors = useCallback(async () => {
+    const { data } = await supabase.from('system_error_logs').select('*').order('created_at', { ascending: false }).limit(100)
+    setErrors(data ?? [])
+  }, [])
+
+  const loadAudit = useCallback(async () => {
+    const { data } = await supabase.from('audit_logs').select('*').order('created_at', { ascending: false }).limit(100)
+    setAudit(data ?? [])
+  }, [])
+
+  useEffect(() => {
+    setLoading(true)
+    Promise.all([loadActivity(), loadErrors(), loadAudit()]).finally(() => setLoading(false))
+  }, [loadActivity, loadErrors, loadAudit])
+
+  const markResolved = async (id) => {
+    await supabase.from('system_error_logs').update({ resolved: true }).eq('id', id)
+    loadErrors()
+  }
+
+  const filtered   = rows.filter(r => {
+    if (!search.trim()) return true
+    const name = provMap[r.provider_id] ?? r.provider_id ?? ''
+    return name.toLowerCase().includes(search.toLowerCase())
+  })
+  const totalPages     = Math.ceil(filtered.length / PAGE_SIZE)
+  const paged          = filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE)
+  const summary        = Object.entries(
+    rows.reduce((acc, r) => { acc[r.provider_id] = (acc[r.provider_id] ?? 0) + 1; return acc }, {})
+  ).sort((a, b) => b[1] - a[1]).slice(0, 5)
+  const unresolvedCount = errors.filter(e => !e.resolved).length
+
+  return (
+    <div className="adm-section">
+      <div className="adm-section__head">
+        <h2 className="adm-section__title">Logs</h2>
+      </div>
+      <div className="adm-subtabs">
+        <button className={`adm-subtab ${subTab === 'activity' ? 'adm-subtab--active' : ''}`} onClick={() => setSubTab('activity')}>
+          📊 Actividad <span className="adm-badge">{filtered.length}</span>
+        </button>
+        <button className={`adm-subtab ${subTab === 'errors' ? 'adm-subtab--active' : ''}`} onClick={() => setSubTab('errors')}>
+          ⚠️ Errores {unresolvedCount > 0 && <span className="adm-badge adm-badge--red">{unresolvedCount}</span>}
+        </button>
+        <button className={`adm-subtab ${subTab === 'audit' ? 'adm-subtab--active' : ''}`} onClick={() => setSubTab('audit')}>
+          🛡 Acciones admin <span className="adm-badge">{audit.length}</span>
+        </button>
+      </div>
+      {loading && <p className="adm-loading">Cargando…</p>}
+      {!loading && subTab === 'activity' && (
         <>
           <div className="adm-logs__controls">
             <div className="adm-logs__range">
-              <input type="date" value={auditFrom} onChange={e => { setAuditFrom(e.target.value); setAuditPage(1) }}
-                className="adm-btn adm-btn--ghost" style={{ fontSize: '0.82rem', padding: '5px 10px' }} />
-              <input type="date" value={auditTo} onChange={e => { setAuditTo(e.target.value); setAuditPage(1) }}
-                className="adm-btn adm-btn--ghost" style={{ fontSize: '0.82rem', padding: '5px 10px' }} />
+              {LOG_RANGES.map(r => (
+                <button key={r.days} className={`adm-btn adm-btn--sm ${range === r.days ? 'adm-btn--primary' : 'adm-btn--ghost'}`} onClick={() => setRange(r.days)}>{r.label}</button>
+              ))}
             </div>
-            <input className="adm-logs__search" placeholder="Buscar acción, email, nombre…"
-              value={auditQ} onChange={e => { setAuditQ(e.target.value); setAuditPage(1) }} />
-            <button className="adm-btn adm-btn--ghost adm-btn--sm" onClick={loadAudit}>↺ Actualizar</button>
+            <input className="adm-logs__search" placeholder="Filtrar por proveedor…" value={search} onChange={e => { setSearch(e.target.value); setPage(0) }} />
+            <button className="adm-btn adm-btn--sm adm-btn--ghost" onClick={() => { setLoading(true); loadActivity().finally(() => setLoading(false)) }}>↺ Refrescar</button>
           </div>
-
-          {topActions.length > 0 && (
+          {summary.length > 0 && (
             <div className="adm-logs__summary">
-              <strong style={{ fontSize: '0.8rem', color: 'var(--text-500)' }}>TOP ACCIONES</strong>
+              <p className="adm-edit-section__title">Top proveedores por vistas</p>
               <div className="adm-logs__summary-list">
-                {topActions.map(([action, count]) => (
-                  <div key={action} className="adm-logs__summary-item">
-                    <span className="adm-logs__summary-name">{action}</span>
+                {summary.map(([pid, count]) => (
+                  <div key={pid} className="adm-logs__summary-item">
+                    <span className="adm-logs__summary-name">{provMap[pid] ?? <span className="adm-td--mono" style={{ fontSize: '0.75rem' }}>{pid.slice(0, 8)}…</span>}</span>
                     <span className="adm-badge">{count}</span>
                   </div>
                 ))}
               </div>
             </div>
           )}
-
-          {auditErr && <p style={{ color: 'red' }}>Error: {auditErr}</p>}
-          {auditLoad ? <p className="adm-loading">Cargando…</p> : (
-            <div className="adm-table-wrap">
-              <table className="adm-table">
-                <thead><tr>
-                  <th>Fecha</th><th>Acción</th><th>Actor</th><th>Target</th><th>Resultado</th>
-                </tr></thead>
-                <tbody>
-                  {auditSlice.map(r => (
-                    <tr key={r.id}>
-                      <td style={{ whiteSpace: 'nowrap', fontSize: '0.8rem' }}>{fmtDateTime(r.created_at)}</td>
-                      <td><code style={{ fontSize: '0.78rem' }}>{r.action}</code></td>
-                      <td className="adm-td--mono">{r.actor_email ?? '—'}</td>
-                      <td>{r.target_name ?? r.target_type ?? '—'}</td>
-                      <td>
-                        <span className={`adm-pill adm-pill--${r.result === 'error' ? 'rejected' : 'approved'}`}>
-                          {r.result ?? 'ok'}
-                        </span>
-                        {r.result === 'error' && r.error_message &&
-                          <span className="adm-td--err" title={r.error_message}> {r.error_message.slice(0, 40)}</span>}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-          {auditPages > 1 && (
-            <div className="adm-logs__pagination">
-              <button className="adm-btn adm-btn--ghost adm-btn--sm"
-                onClick={() => setAuditPage(p => Math.max(1, p - 1))} disabled={auditPage === 1}>← Anterior</button>
-              <span className="adm-logs__page-info">Página {auditPage} de {auditPages} · {filteredAudit.length} registros</span>
-              <button className="adm-btn adm-btn--ghost adm-btn--sm"
-                onClick={() => setAuditPage(p => Math.min(auditPages, p + 1))} disabled={auditPage === auditPages}>Siguiente →</button>
-            </div>
+          {filtered.length === 0 ? <p className="adm-empty">No hay eventos en este período.</p> : (
+            <>
+              <div className="adm-table-wrap">
+                <table className="adm-table">
+                  <thead><tr><th>Fecha y hora</th><th>Proveedor</th><th>Tipo</th></tr></thead>
+                  <tbody>
+                    {paged.map(r => (
+                      <tr key={r.id}>
+                        <td className="adm-td--mono">{fmtDateTime(r.created_at)}</td>
+                        <td>{provMap[r.provider_id] ? <strong>{provMap[r.provider_id]}</strong> : <span className="adm-td--mono adm-td--sub">{r.provider_id?.slice(0, 8)}…</span>}</td>
+                        <td><span className="adm-pill adm-pill--provider">{r.event_type}</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              {totalPages > 1 && (
+                <div className="adm-logs__pagination">
+                  <button className="adm-btn adm-btn--sm adm-btn--ghost" onClick={() => setPage(p => Math.max(0, p - 1))} disabled={page === 0}>← Anterior</button>
+                  <span className="adm-logs__page-info">Página {page + 1} de {totalPages}</span>
+                  <button className="adm-btn adm-btn--sm adm-btn--ghost" onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))} disabled={page === totalPages - 1}>Siguiente →</button>
+                </div>
+              )}
+            </>
           )}
         </>
       )}
-
-      {tab === 'errors' && (
-        <>
-          <div className="adm-logs__controls">
-            <input className="adm-logs__search" placeholder="Buscar servicio, código, mensaje…"
-              value={errQ} onChange={e => { setErrQ(e.target.value); setErrPage(1) }} />
-            <button className="adm-btn adm-btn--ghost adm-btn--sm" onClick={loadErrors}>↺ Actualizar</button>
+      {!loading && subTab === 'errors' && (
+        errors.length === 0 ? <p className="adm-empty">No hay errores registrados. ✓</p> : (
+          <div className="adm-table-wrap">
+            <table className="adm-table">
+              <thead><tr><th>Fuente</th><th>Función</th><th>Error</th><th>Fecha</th><th></th></tr></thead>
+              <tbody>
+                {errors.map(e => (
+                  <tr key={e.id} className={e.resolved ? 'adm-tr--resolved' : ''}>
+                    <td><span className="adm-pill">{e.source ?? '—'}</span></td>
+                    <td className="adm-td--mono">{e.function_name ?? '—'}</td>
+                    <td style={{ maxWidth: 320, wordBreak: 'break-word' }}><span className="adm-td--err">{e.error_message}</span>{e.error_code && <span className="adm-td--sub"> [{e.error_code}]</span>}</td>
+                    <td>{fmt(e.created_at)}</td>
+                    <td>{!e.resolved ? <button className="adm-btn adm-btn--sm adm-btn--ghost" onClick={() => markResolved(e.id)}>Marcar resuelto</button> : <span className="adm-td--sub">✓ resuelto</span>}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-          {errErr && <p style={{ color: 'red' }}>Error: {errErr}</p>}
-          {errLoad ? <p className="adm-loading">Cargando…</p> : (
-            <div className="adm-table-wrap">
-              <table className="adm-table">
-                <thead><tr>
-                  <th>Fecha</th><th>Servicio</th><th>Código</th><th>Mensaje</th><th>Resuelto</th>
-                </tr></thead>
-                <tbody>
-                  {errSlice.map(r => (
-                    <tr key={r.id} className={r.resolved ? 'adm-tr--resolved' : ''}>
-                      <td style={{ whiteSpace: 'nowrap', fontSize: '0.8rem' }}>{fmtDateTime(r.created_at)}</td>
-                      <td><code style={{ fontSize: '0.78rem' }}>{r.service}</code></td>
-                      <td><code style={{ fontSize: '0.78rem' }}>{r.error_code ?? '—'}</code></td>
-                      <td className="adm-td--err" title={r.message}>{(r.message ?? '').slice(0, 80)}</td>
-                      <td>
-                        <button className={`adm-btn adm-btn--sm ${r.resolved ? 'adm-btn--ghost' : 'adm-btn--success'}`}
-                          onClick={() => toggleResolved(r)}>
-                          {r.resolved ? 'Reabrir' : 'Resolver'}
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-          {errPages > 1 && (
-            <div className="adm-logs__pagination">
-              <button className="adm-btn adm-btn--ghost adm-btn--sm"
-                onClick={() => setErrPage(p => Math.max(1, p - 1))} disabled={errPage === 1}>← Anterior</button>
-              <span className="adm-logs__page-info">Página {errPage} de {errPages} · {filteredErr.length} errores</span>
-              <button className="adm-btn adm-btn--ghost adm-btn--sm"
-                onClick={() => setErrPage(p => Math.min(errPages, p + 1))} disabled={errPage === errPages}>Siguiente →</button>
-            </div>
-          )}
-        </>
+        )
+      )}
+      {!loading && subTab === 'audit' && (
+        audit.length === 0 ? <p className="adm-empty">No hay acciones registradas aún.</p> : (
+          <div className="adm-table-wrap">
+            <table className="adm-table">
+              <thead><tr><th>Admin</th><th>Acción</th><th>Objetivo</th><th>Resultado</th><th>Fecha</th></tr></thead>
+              <tbody>
+                {audit.map(a => (
+                  <tr key={a.id}>
+                    <td className="adm-td--mono">{a.admin_email}</td>
+                    <td><span className="adm-pill">{a.action}</span></td>
+                    <td>{a.target_name && <strong>{a.target_name}</strong>}{a.target_type && <span className="adm-td--sub"> ({a.target_type})</span>}</td>
+                    <td><span className={`adm-dot adm-dot--${a.result === 'ok' ? 'on' : 'off'}`} />{a.result !== 'ok' && a.error_message && <span className="adm-td--sub"> {a.error_message}</span>}</td>
+                    <td>{fmt(a.created_at)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )
       )}
     </div>
   )
 }
 
-// ── Shell ─────────────────────────────────────────────────────────────────────
-const TABS = [
-  { key: 'users',       label: 'Usuarios' },
-  { key: 'providers',   label: 'Proveedores' },
-  { key: 'submissions', label: 'Solicitudes' },
-  { key: 'logs',        label: 'Logs' },
-]
-
+// ── Panel principal ───────────────────────────────────────────────────────────
 export default function AdminPanel() {
-  const { user, loading: authLoading } = useAuth()
+  const { t } = useTranslation()
+  const { signOut } = useAuth()
   const navigate = useNavigate()
   const [tab, setTab] = useState('users')
-  const [profile, setProfile] = useState(null)
+
+  const handleSignOut = async () => {
+    await signOut()
+    navigate('/', { replace: true })
+  }
+
+  const TABS = [
+    { id: 'users',       label: t('admin.tabs.users')       },
+    { id: 'providers',   label: t('admin.tabs.providers')   },
+    { id: 'submissions', label: t('admin.tabs.submissions') },
+    { id: 'photos',      label: t('admin.tabs.photos')      },
+    { id: 'logs',        label: '📋 Logs'                   },
+  ]
 
   useEffect(() => {
-    if (!authLoading && !user) { navigate('/'); return }
-    if (user) {
-      supabase.from('profiles').select('role').eq('id', user.id).single()
-        .then(({ data }) => {
-          setProfile(data)
-          if (data?.role !== 'admin') navigate('/')
-        })
-    }
-  }, [user, authLoading, navigate])
-
-  if (authLoading || !profile) return null
+    document.title = 'Admin | SoyManada'
+    return () => { document.title = 'SoyManada – Directorio para la comunidad migrante' }
+  }, [])
 
   return (
-    <div className="adm">
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 24px' }}>
+    <main className="adm">
+      <div className="container">
         <div className="adm__header">
           <div>
-            <h1 className="adm__title">Panel de administración</h1>
-            <p className="adm__sub">SoyManada · {user?.email}</p>
+            <h1 className="d-lg adm__title">{t('admin.title')}</h1>
+            <p className="t-sm adm__sub">{t('admin.subtitle')}</p>
           </div>
+          <button className="adm-btn adm-btn--ghost" onClick={handleSignOut}>Cerrar sesión</button>
         </div>
-        <div className="adm__tabs">
-          {TABS.map(t => (
-            <button key={t.key}
-              className={`adm__tab${tab === t.key ? ' adm__tab--active' : ''}`}
-              onClick={() => setTab(t.key)}>
-              {t.label}
+        <nav className="adm__tabs">
+          {TABS.map(tab_item => (
+            <button key={tab_item.id}
+              className={`adm__tab ${tab === tab_item.id ? 'adm__tab--active' : ''}`}
+              onClick={() => setTab(tab_item.id)}>
+              {tab_item.label}
             </button>
           ))}
-        </div>
+        </nav>
         {tab === 'users'       && <UsersPanel />}
         {tab === 'providers'   && <ProvidersPanel />}
         {tab === 'submissions' && <SubmissionsPanel />}
+        {tab === 'photos'      && <PhotosPanel />}
         {tab === 'logs'        && <LogsPanel />}
       </div>
-    </div>
+    </main>
   )
 }
