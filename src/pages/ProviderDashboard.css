@@ -86,25 +86,30 @@
   animation: pulse-dot 2s ease-in-out infinite;
 }
 
-/* Tabs — wrapper (flex-start: justify-content:center recorta el scroll horizontal) */
+/* Tabs: centrado si caben; scroll horizontal en el wrap si no (evita clip con solo center) */
 .pdash__tabs-wrap {
   width: 100%;
-}
-
-.pdash__tabs {
-  display: flex;
-  justify-content: flex-start;
-  gap: 0;
   overflow-x: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
-.pdash__tabs::-webkit-scrollbar { display: none; }
+.pdash__tabs-wrap::-webkit-scrollbar { display: none; }
+
+.pdash__tabs {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  width: max-content;
+  min-width: 100%;
+  margin-inline: auto;
+  box-sizing: border-box;
+}
 
 .pdash__tab {
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex-shrink: 0;
   gap: 3px;
   padding: 13px 14px;
   font-family: var(--font-body); font-size: 0.82rem; font-weight: 500;
