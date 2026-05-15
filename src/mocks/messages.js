@@ -49,24 +49,20 @@ export async function sendMessage({ providerId, userId, body }) {
     return { data, error }
   }
 
-  // Notify provider only when a new conversation starts (not on follow-up messages)
-  if (isNewConversation) {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      const migrantName = user?.user_metadata?.full_name ?? user?.email ?? 'Un migrante'
-      supabase.functions
-        .invoke('notify-new-message', {
-          body: {
-            type:         'new_message',
-            to_provider_id: providerId,
-            body_preview:   body.slice(0, 120),
-          },
-        })
-        .then(({ error: fnErr }) => {
-          if (fnErr) console.warn('[notify-new-message]', fnErr.message)
-        })
-        .catch(() => {})
-    }).catch(() => {})
-  }
+  // Notify provider on every message (new conversation OR follow-up)
+  supabase.functions
+    .invoke('notify-new-message', {
+      body: {
+        type:           'new_message',
+        to_provider_id: providerId,
+        body_preview:   body.slice(0, 120),
+        is_new_thread:  isNewConversation,
+      },
+    })
+    .then(({ error: fnErr }) => {
+      if (fnErr) console.warn('[notify-new-message] invoke error:', fnErr.message)
+    })
+    .catch(err => console.warn('[notify-new-message] invoke failed:', err))
 
   return { data, error: null }
 }
@@ -89,6 +85,16 @@ export async function replyMessage({ conversationId, body }) {
     console.warn('[replyMessage] insert', msgErr.message)
     return { data: null, error: msgErr }
   }
+
+  // Notify migrant that the provider replied
+  supabase.functions
+    .invoke('notify-provider-reply', {
+      body: { conversation_id: conversationId, body_preview: body.slice(0, 120) },
+    })
+    .then(({ error: fnErr }) => {
+      if (fnErr) console.warn('[notify-provider-reply] invoke error:', fnErr.message)
+    })
+    .catch(err => console.warn('[notify-provider-reply] invoke failed:', err))
 
   // Update conversation metadata
   const { data: conv } = await supabase

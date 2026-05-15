@@ -16,6 +16,7 @@ serve(async (req) => {
     // Legacy callers:  { provider_id,    message_preview, migrant_name }
     const provider_id     = payload.to_provider_id ?? payload.provider_id
     const message_preview = payload.body_preview   ?? payload.message_preview ?? ''
+    const is_new_thread   = payload.is_new_thread  ?? true
     let   migrant_name    = payload.migrant_name   ?? ''
 
     if (!provider_id) {
@@ -74,14 +75,17 @@ serve(async (req) => {
       })
     }
 
-    const preview   = message_preview.slice(0, 200)
-    const dashboard = `${SITE_URL}/mi-perfil`
+    const preview    = message_preview.slice(0, 200)
+    const dashboard  = `${SITE_URL}/mi-perfil`
+    const emailLabel = is_new_thread
+      ? `<strong>${migrant_name}</strong> te escribió por primera vez en SoyManada:`
+      : `<strong>${migrant_name}</strong> te envió un nuevo mensaje en SoyManada:`
 
     const html = `
 <div style="font-family:sans-serif;max-width:520px;margin:0 auto;color:#333">
   <h2 style="color:#2d5a27;margin-bottom:4px">Nuevo mensaje de ${migrant_name}</h2>
   <p style="color:#555">
-    <strong>${migrant_name}</strong> te escribió por primera vez en SoyManada:
+    ${emailLabel}
   </p>
   <blockquote style="border-left:3px solid #2d5a27;margin:16px 0;padding:10px 16px;background:#f6faf5;color:#444;font-style:italic">
     ${preview}${preview.length >= 200 ? '…' : ''}
